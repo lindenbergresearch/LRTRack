@@ -1,18 +1,21 @@
 #!/bin/bash
 
-PARAM=$1
-RACKDIR="../.."
+# script argument
+ARG=$1
 
+# Rack base dir
+RACK_DIR="../.."
 
-make clean
+# build plugin
 make
 
+# quit if compiling fails
 [[ $? != 0 ]] && exit 1
 
-[[ ${PARAM} == "run" ]] || exit
+# build and run
+if [[ ${ARG} == "run" ]]; then
+    pushd $RACK_DIR
+        make run
+    popd
+fi
 
-
-pushd $RACKDIR
-  make clean
-  make run
-popd
