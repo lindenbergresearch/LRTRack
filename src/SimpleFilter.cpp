@@ -77,13 +77,17 @@ void SimpleFilter::step() {
     // Adapted for VCV Rack by Lindenberg Research
     // http://musicdsp.org/showArchiveComment.php?ArchiveID=25
 
-    float out = 0;
+    // calculate CV inputs
+    float cutoffCVValue = (inputs[CUTOFF_CV_INPUT].value * 0.05f * params[CUTOFF_CV_PARAM].value);
+    float resonanceCVValue = (inputs[RESONANCE_CV_INPUT].value * 0.05f * params[RESONANCE_CV_PARAM].value);
 
-    float freqinhz = 20.f * powf(1000.f, params[CUTOFF_PARAM].value);
+    // translate frequency to logarithmic scale
+    float freqinhz = 20.f * powf(1000.f, params[CUTOFF_PARAM].value + cutoffCVValue);
     frequency = clip(freqinhz * (1.f / (engineGetSampleRate() / 2.0f)), 1.f);
 
-    //frequency = params[CUTOFF_PARAM].value;
-    resonance = params[RESONANCE_PARAM].value;
+
+    // determine correct parameters with CV values
+    resonance = clip(params[RESONANCE_PARAM].value + resonanceCVValue, 1.f);
 
     // normalize signal input to [-1.0...+1.0]
     in = clip(inputs[FILTER_INPUT].value * 0.1f, 1.0f);
@@ -94,16 +98,20 @@ void SimpleFilter::step() {
     f = p + p - 1.0f;
     q = resonance * (1.0f + 0.5f * q * (1.0f - q + 5.6f * q * q));
 
-
     in -= q * b4;
+
     t1 = b1;
     b1 = (in + b0) * p - b1 * f;
+
     t2 = b2;
     b2 = (b1 + t1) * p - b2 * f;
+
     t1 = b3;
     b3 = (b2 + t2) * p - b3 * f;
+
     b4 = (b3 + t1) * p - b4 * f;
-    b4 = b4 - b4 * b4 * b4 * 0.166667f;
+
+    b4 = b4 - b4 * b4 * b4 * 0.166666667f;
     b0 = in;
 
     // Lowpass  output:  b4
@@ -111,7 +119,7 @@ void SimpleFilter::step() {
     // Bandpass output:  3.0f * (b3 - b4);
 
 
-    // scale normalized output to +/-5V
+    // scale normalized output back to +/-5V
     outputs[FILTER_OUTPUT].value = clip(b4, 1.0f) * 5.0f;
     outputs[FILTER2_OUTPUT].value = clip(b4, 1.0f) * 5.0f;
 
@@ -139,28 +147,28 @@ SimpleFilterWidget::SimpleFilterWidget() {
     // ***** SCREWS **********
 
     // ***** MAIN KNOBS ******
-    addParam(createParam<LRBasicKnobWhite>(Vec(28, 287), module, SimpleFilter::CUTOFF_PARAM, 0.f, 1.f, 0.f));
-    addParam(createParam<LRBasicKnobWhite>(Vec(128, 230), module, SimpleFilter::RESONANCE_PARAM, -0.f, 1.f, 0.0f));
+    addParam(createParam<LRBasicKnobWhite>(Vec(12, 200), module, SimpleFilter::CUTOFF_PARAM, 0.f, 1.f, 0.f));
+    addParam(createParam<LRBasicKnobWhite>(Vec(100 - 32, 200), module, SimpleFilter::RESONANCE_PARAM, -0.f, 1.f, 0.0f));
     // ***** MAIN KNOBS ******
 
     // ***** CV INPUTS *******
-    addParam(createParam<LRBasicKnobWhite>(Vec(22, 100), module, SimpleFilter::CUTOFF_CV_PARAM, 0.f, 1.f, 0.f));
-    addParam(createParam<LRBasicKnobWhite>(Vec(102-12, 100), module, SimpleFilter::RESONANCE_CV_PARAM, 0.f, 1.f, 0.f));
+    addParam(createParam<LRBasicKnobWhite>(Vec(12, 130), module, SimpleFilter::CUTOFF_CV_PARAM, 0.f, 1.f, 0.f));
+    addParam(createParam<LRBasicKnobWhite>(Vec(100 - 32, 130), module, SimpleFilter::RESONANCE_CV_PARAM, 0.f, 1.f, 0.f));
 
-    addInput(createInput<PJ301MPort>(Vec(30, 60), module, SimpleFilter::CUTOFF_CV_INPUT));
-    addInput(createInput<PJ301MPort>(Vec(150 - 24, 60), module, SimpleFilter::RESONANCE_CV_INPUT));
+    addInput(createInput<PJ301MPort>(Vec(20, 70), module, SimpleFilter::CUTOFF_CV_INPUT));
+    addInput(createInput<PJ301MPort>(Vec(100 - 24, 70), module, SimpleFilter::RESONANCE_CV_INPUT));
     // ***** CV INPUTS *******
 
     // ***** INPUTS **********
-    addInput(createInput<PJ301MPort>(Vec(33, 286), module, SimpleFilter::FILTER_INPUT));
+    addInput(createInput<PJ301MPort>(Vec(60 - 12, 285), module, SimpleFilter::FILTER_INPUT));
     // ***** INPUTS **********
 
     // ***** OUTPUTS *********
-    addOutput(createOutput<PJ301MPort>(Vec(33, 275), module, SimpleFilter::FILTER_OUTPUT));
-    addOutput(createOutput<PJ301MPort>(Vec(63, 275), module, SimpleFilter::FILTER2_OUTPUT));
+    addOutput(createOutput<PJ301MPort>(Vec(20, 255), module, SimpleFilter::FILTER_OUTPUT));
+    addOutput(createOutput<PJ301MPort>(Vec(100 - 24, 255), module, SimpleFilter::FILTER2_OUTPUT));
     // ***** OUTPUTS *********
 
     // ***** LED *************
-    addChild(createLight<MediumLight<RedLight>>(Vec(85, 200), module, SimpleFilter::BLINK_LIGHT));
+    addChild(createLight<MediumLight<RedLight>>(Vec(55, 200), module, SimpleFilter::BLINK_LIGHT));
     // ***** LED *************
 }
