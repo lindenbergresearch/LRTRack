@@ -17,7 +17,6 @@ struct SimpleFilter : Module {
     };
     enum OutputIds {
         FILTER_OUTPUT,
-        FILTER2_OUTPUT,
         NUM_OUTPUTS
     };
     enum LightIds {
@@ -79,17 +78,15 @@ void SimpleFilter::step() {
 
     // calculate CV inputs
     float cutoffCVValue = (inputs[CUTOFF_CV_INPUT].value * 0.05f * params[CUTOFF_CV_PARAM].value);
-    float resonanceCVValue = (inputs[RESONANCE_CV_INPUT].value * 0.05f * params[RESONANCE_CV_PARAM].value);
+    float resonanceCVValue = (inputs[RESONANCE_CV_INPUT].value * 0.1f * params[RESONANCE_CV_PARAM].value);
 
     // translate frequency to logarithmic scale
-    float freqinhz = 20.f * powf(1000.f, params[CUTOFF_PARAM].value + cutoffCVValue);
-    frequency = clip(freqinhz * (1.f / (engineGetSampleRate() / 2.0f)), 1.f);
-
-
-    // determine correct parameters with CV values
+    float freqHz = 20.f * powf(1000.f, params[CUTOFF_PARAM].value + cutoffCVValue);
+    frequency = clip(freqHz * (1.f / (engineGetSampleRate() / 2.0f)), 1.f);
     resonance = clip(params[RESONANCE_PARAM].value + resonanceCVValue, 1.f);
 
     // normalize signal input to [-1.0...+1.0]
+    // filter starts to be very unstable for input gain above 1.f and below 0.f
     in = clip(inputs[FILTER_INPUT].value * 0.1f, 1.0f);
 
     // Set coefficients given frequency & resonance [0.0...1.0]
@@ -121,7 +118,6 @@ void SimpleFilter::step() {
 
     // scale normalized output back to +/-5V
     outputs[FILTER_OUTPUT].value = clip(b4, 1.0f) * 5.0f;
-    outputs[FILTER2_OUTPUT].value = clip(b4, 1.0f) * 5.0f;
 
     lights[BLINK_LIGHT].value = b4;
 }
@@ -147,28 +143,27 @@ SimpleFilterWidget::SimpleFilterWidget() {
     // ***** SCREWS **********
 
     // ***** MAIN KNOBS ******
-    addParam(createParam<LRBasicKnobWhite>(Vec(12, 200), module, SimpleFilter::CUTOFF_PARAM, 0.f, 1.f, 0.f));
-    addParam(createParam<LRBasicKnobWhite>(Vec(100 - 32, 200), module, SimpleFilter::RESONANCE_PARAM, -0.f, 1.f, 0.0f));
+    addParam(createParam<LRBasicKnobWhite>(Vec(40, 200), module, SimpleFilter::CUTOFF_PARAM, 0.f, 1.f, 0.f));
+    addParam(createParam<LRBasicKnobWhite>(Vec(40, 250), module, SimpleFilter::RESONANCE_PARAM, -0.f, 1.f, 0.0f));
     // ***** MAIN KNOBS ******
 
     // ***** CV INPUTS *******
-    addParam(createParam<LRBasicKnobWhite>(Vec(12, 130), module, SimpleFilter::CUTOFF_CV_PARAM, 0.f, 1.f, 0.f));
-    addParam(createParam<LRBasicKnobWhite>(Vec(100 - 32, 130), module, SimpleFilter::RESONANCE_CV_PARAM, 0.f, 1.f, 0.f));
+    addParam(createParam<Davies1900hBlueKnob>(Vec(12, 130), module, SimpleFilter::CUTOFF_CV_PARAM, 0.f, 1.f, 0.f));
+    addParam(createParam<Davies1900hBlueKnob>(Vec(100 - 32, 130), module, SimpleFilter::RESONANCE_CV_PARAM, 0.f, 1.f, 0.f));
 
-    addInput(createInput<PJ301MPort>(Vec(20, 70), module, SimpleFilter::CUTOFF_CV_INPUT));
-    addInput(createInput<PJ301MPort>(Vec(100 - 24, 70), module, SimpleFilter::RESONANCE_CV_INPUT));
+    addInput(createInput<LRIOPort>(Vec(20, 70), module, SimpleFilter::CUTOFF_CV_INPUT));
+    addInput(createInput<LRIOPort>(Vec(100 - 24, 70), module, SimpleFilter::RESONANCE_CV_INPUT));
     // ***** CV INPUTS *******
 
     // ***** INPUTS **********
-    addInput(createInput<PJ301MPort>(Vec(60 - 12, 285), module, SimpleFilter::FILTER_INPUT));
+    addInput(createInput<LRIOPort>(Vec(20, 300), module, SimpleFilter::FILTER_INPUT));
     // ***** INPUTS **********
 
     // ***** OUTPUTS *********
-    addOutput(createOutput<PJ301MPort>(Vec(20, 255), module, SimpleFilter::FILTER_OUTPUT));
-    addOutput(createOutput<PJ301MPort>(Vec(100 - 24, 255), module, SimpleFilter::FILTER2_OUTPUT));
+    addOutput(createOutput<LRIOPort>(Vec(100-24, 300), module, SimpleFilter::FILTER_OUTPUT));
     // ***** OUTPUTS *********
 
     // ***** LED *************
-    addChild(createLight<MediumLight<RedLight>>(Vec(55, 200), module, SimpleFilter::BLINK_LIGHT));
+    addChild(createLight<MediumLight<RedLight>>(Vec(55, 300), module, SimpleFilter::BLINK_LIGHT));
     // ***** LED *************
 }
