@@ -1,6 +1,10 @@
 #include "rack.hpp"
 #include "asset.hpp"
 
+#define RACK_1U RACK_GRID_WIDTH
+#define LAYOUT_X_RASTER 15
+#define LAYOUT_Y_RASTER 15
+
 using namespace rack;
 
 extern Plugin *plugin;
