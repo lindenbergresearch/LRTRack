@@ -125,6 +125,12 @@ void SimpleFilter::step() {
 
 SimpleFilterWidget::SimpleFilterWidget() {
     SimpleFilter *module = new SimpleFilter();
+
+    Widget *screw1 = createScrew<ScrewBlack>(Vec(0, 0));
+    Widget *screw2 = createScrew<ScrewBlack>(Vec(0, 0));
+    Widget *screw3 = createScrew<ScrewBlack>(Vec(0, 0));
+    Widget *screw4 = createScrew<ScrewBlack>(Vec(0, 0));
+
     setModule(module);
     box.size = Vec(MODULE_WIDTH * RACK_GRID_WIDTH, RACK_GRID_HEIGHT);
 
@@ -136,11 +142,19 @@ SimpleFilterWidget::SimpleFilterWidget() {
     }
 
     // ***** SCREWS **********
-    addChild(createScrew<ScrewBlack>(Vec(15, 0)));
-    addChild(createScrew<ScrewBlack>(Vec(box.size.x - 30, 0)));
-    addChild(createScrew<ScrewBlack>(Vec(15, 365)));
-    addChild(createScrew<ScrewBlack>(Vec(box.size.x - 30, 365)));
+    addChild(screw1);
+    addChild(screw2);
+    addChild(screw3);
+    addChild(screw4);
     // ***** SCREWS **********
+
+
+    // ***** LAYOUT WIDGETS **
+    layoutWidget(screw1, box.size, 3, 12.15f);
+    layoutWidget(screw2, box.size, -3, 12.15f);
+    layoutWidget(screw3, box.size, 3, -12.15f);
+    layoutWidget(screw4, box.size, -3, -12.15f);
+    // ***** LAYOUT WIDGETS **
 
     // ***** MAIN KNOBS ******
     addParam(createParam<LRBasicKnobWhite>(Vec(40, 200), module, SimpleFilter::CUTOFF_PARAM, 0.f, 1.f, 0.f));
@@ -160,7 +174,7 @@ SimpleFilterWidget::SimpleFilterWidget() {
     // ***** INPUTS **********
 
     // ***** OUTPUTS *********
-    addOutput(createOutput<LRIOPort>(Vec(100-24, 300), module, SimpleFilter::FILTER_OUTPUT));
+    addOutput(createOutput<LRIOPort>(Vec(100 - 24, 300), module, SimpleFilter::FILTER_OUTPUT));
     // ***** OUTPUTS *********
 
     // ***** LED *************

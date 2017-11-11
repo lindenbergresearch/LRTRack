@@ -25,9 +25,9 @@ void init(rack::Plugin *p) {
  * @param yr Y raster position
  * @return New position
  */
-Vec layoutWidget(Widget *widget, float xr, float yr) {
-    Vec center = Vec(xr * LAYOUT_X_RASTER, yr * LAYOUT_Y_RASTER);
-    Vec root = Vec(center.x - widget->box.size.x / 2, center.y + widget->box.size.y / 2);
+Vec layoutWidget(Widget *widget, Vec panel, float xr, float yr) {
+    Vec center = Vec(panel.x / 2 - xr * LAYOUT_X_RASTER,panel.y / 2 - yr * LAYOUT_Y_RASTER);
+    Vec root = Vec(center.x - widget->box.size.x / 2, center.y - widget->box.size.y / 2);
 
     widget->box.pos = root;
 

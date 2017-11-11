@@ -39,3 +39,6 @@ struct LRIOPort : SVGPort {
         box.size = background->box.size;
     }
 };
+
+
+Vec layoutWidget(Widget *widget, Vec panel, float xr, float yr);
