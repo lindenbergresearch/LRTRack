@@ -22,8 +22,16 @@ struct LRBasicKnobWhite : LRBasicKnob {
     }
 };
 
-struct Davies1900hBlue : LRBasicKnob {
-    Davies1900hBlue() {
+struct Davies1900hBlueKnob : LRBasicKnob {
+    Davies1900hBlueKnob() {
         setSVG(SVG::load(assetPlugin(plugin, "res/Davies1900hBlue.svg")));
+    }
+};
+
+struct LRIOPort : SVGPort {
+    LRIOPort() {
+        background->svg = SVG::load(assetPlugin(plugin, "res/IOPort.svg"));
+        background->wrap();
+        box.size = background->box.size;
     }
 };
