@@ -4,6 +4,7 @@
 #define RACK_1U RACK_GRID_WIDTH
 #define LAYOUT_X_RASTER 15
 #define LAYOUT_Y_RASTER 15
+#define LAYOUT_CENTER Vec(0, 0)
 
 using namespace rack;
 
@@ -34,11 +35,17 @@ struct Davies1900hBlueKnob : LRBasicKnob {
 
 struct LRIOPort : SVGPort {
     LRIOPort() {
-        background->svg = SVG::load(assetPlugin(plugin, "res/IOPort.svg"));
+        background->svg = SVG::load(assetPlugin(plugin, "res/IOPortB.svg"));
         background->wrap();
         box.size = background->box.size;
     }
 };
 
+struct ScrewDarkA : SVGScrew {
+    ScrewBlack() {
+        sw->setSVG(SVG::load(assetGlobal("res/ComponentLibrary/ScrewDarkA.svg")));
+        box.size = sw->box.size;
+    }
+};
 
 Vec layoutWidget(Widget *widget, Vec panel, float xr, float yr);
