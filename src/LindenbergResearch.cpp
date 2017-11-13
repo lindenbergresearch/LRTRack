@@ -19,17 +19,16 @@ void init(rack::Plugin *p) {
 }
 
 /**
- * @brief Layouts a given Widget to raster from center
- * @param widget The widget to layout
- * @param xr X raster position
- * @param yr Y raster position
- * @return New position
+ * @brief Transform from standard coordinates to rastered layout coordinates
+ * @param panel The panel dimensions
+ * @param xr X-Raster
+ * @param yr Y-Raster
+ * @return Transformed vector
  */
-Vec layoutWidget(Widget *widget, Vec panel, float xr, float yr) {
+Vec transformLayout(Vec panel, float xr, float yr) {
     Vec center = Vec(panel.x / 2 - xr * LAYOUT_X_RASTER,panel.y / 2 - yr * LAYOUT_Y_RASTER);
     Vec root = Vec(center.x - widget->box.size.x / 2, center.y - widget->box.size.y / 2);
 
-    widget->box.pos = root;
-
     return root;
 }
+
