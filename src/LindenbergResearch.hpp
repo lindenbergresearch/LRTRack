@@ -1,8 +1,8 @@
 #include "rack.hpp"
 #include "asset.hpp"
 
-#define LAYOUT_X_RASTER 15
-#define LAYOUT_Y_RASTER 15
+#define LAYOUT_X_RASTER 7.5f
+#define LAYOUT_Y_RASTER 7.5f
 
 using namespace rack;
 
@@ -60,5 +60,3 @@ struct ScrewDarkA : SVGScrew {
         box.size = sw->box.size;
     }
 };
-
-Vec transformLayout(Vec panel, float xr, float yr);

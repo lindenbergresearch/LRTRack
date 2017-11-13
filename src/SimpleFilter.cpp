@@ -126,11 +126,6 @@ void SimpleFilter::step() {
 SimpleFilterWidget::SimpleFilterWidget() {
     SimpleFilter *module = new SimpleFilter();
 
-    Widget *screw1 = createScrew<ScrewBlack>(Vec(0, 0));
-    Widget *screw2 = createScrew<ScrewBlack>(Vec(0, 0));
-    Widget *screw3 = createScrew<ScrewBlack>(Vec(0, 0));
-    Widget *screw4 = createScrew<ScrewBlack>(Vec(0, 0));
-
     setModule(module);
     box.size = Vec(MODULE_WIDTH * RACK_GRID_WIDTH, RACK_GRID_HEIGHT);
 
@@ -141,20 +136,11 @@ SimpleFilterWidget::SimpleFilterWidget() {
         addChild(panel);
     }
 
-    // ***** SCREWS **********
-    addChild(screw1);
-    addChild(screw2);
-    addChild(screw3);
-    addChild(screw4);
-    // ***** SCREWS **********
+    addChild(createScrew<ScrewDarkA>(Vec(15, 0)));
+    addChild(createScrew<ScrewDarkA>(Vec(box.size.x - 30, 0)));
+    addChild(createScrew<ScrewDarkA>(Vec(15, 365)));
+    addChild(createScrew<ScrewDarkA>(Vec(box.size.x - 30, 365)));
 
-
-    // ***** LAYOUT WIDGETS **
-    layoutWidget(screw1, box.size, 3, 12.15f);
-    layoutWidget(screw2, box.size, -3, 12.15f);
-    layoutWidget(screw3, box.size, 3, -12.15f);
-    layoutWidget(screw4, box.size, -3, -12.15f);
-    // ***** LAYOUT WIDGETS **
 
     // ***** MAIN KNOBS ******
     addParam(createParam<LRBasicKnobWhite>(Vec(40, 200), module, SimpleFilter::CUTOFF_PARAM, 0.f, 1.f, 0.f));
@@ -165,16 +151,16 @@ SimpleFilterWidget::SimpleFilterWidget() {
     addParam(createParam<Davies1900hBlueKnob>(Vec(12, 130), module, SimpleFilter::CUTOFF_CV_PARAM, 0.f, 1.f, 0.f));
     addParam(createParam<Davies1900hBlueKnob>(Vec(100 - 32, 130), module, SimpleFilter::RESONANCE_CV_PARAM, 0.f, 1.f, 0.f));
 
-    addInput(createInput<LRIOPort>(Vec(20, 70), module, SimpleFilter::CUTOFF_CV_INPUT));
-    addInput(createInput<LRIOPort>(Vec(100 - 24, 70), module, SimpleFilter::RESONANCE_CV_INPUT));
+    addInput(createInput<IOPort>(Vec(20, 70), module, SimpleFilter::CUTOFF_CV_INPUT));
+    addInput(createInput<IOPort>(Vec(100 - 24, 70), module, SimpleFilter::RESONANCE_CV_INPUT));
     // ***** CV INPUTS *******
 
     // ***** INPUTS **********
-    addInput(createInput<LRIOPort>(Vec(20, 300), module, SimpleFilter::FILTER_INPUT));
+    addInput(createInput<IOPort>(Vec(20, 300), module, SimpleFilter::FILTER_INPUT));
     // ***** INPUTS **********
 
     // ***** OUTPUTS *********
-    addOutput(createOutput<LRIOPort>(Vec(100 - 24, 300), module, SimpleFilter::FILTER_OUTPUT));
+    addOutput(createOutput<IOPort>(Vec(100 - 24, 300), module, SimpleFilter::FILTER_OUTPUT));
     // ***** OUTPUTS *********
 
     // ***** LED *************

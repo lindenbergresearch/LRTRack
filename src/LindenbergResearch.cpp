@@ -12,7 +12,7 @@ void init(rack::Plugin *p) {
 #endif
 
     // For each module, specify the ModuleWidget subclass, manufacturer slug (for saving in patches), manufacturer human-readable name, module slug, and module name
-    p->addModel(createModel<SimpleFilterWidget>("Lindenberg Research", "Lindenberg Research", "SimpleFilter", "Simple LP Filter"));
+    p->addModel(createModel<SimpleFilterWidget>("Lindenberg Research", "SimpleFilter", "Simple LP Filter", FILTER_TAG));
 
     // Any other plugin initialization may go here.
     // As an alternative, consider lazy-loading assets and lookup tables when your module is created to reduce startup times of Rack.
@@ -25,9 +25,9 @@ void init(rack::Plugin *p) {
  * @param yr Y-Raster
  * @return Transformed vector
  */
-Vec transformLayout(Vec panel, float xr, float yr) {
+Vec transformLayout(Vec panel, Vec widget, float xr, float yr) {
     Vec center = Vec(panel.x / 2 - xr * LAYOUT_X_RASTER,panel.y / 2 - yr * LAYOUT_Y_RASTER);
-    Vec root = Vec(center.x - widget->box.size.x / 2, center.y - widget->box.size.y / 2);
+    Vec root = Vec(center.x - widget.x / 2, center.y - widget.y / 2);
 
     return root;
 }
