@@ -1,10 +1,8 @@
 #include "rack.hpp"
 #include "asset.hpp"
 
-#define RACK_1U RACK_GRID_WIDTH
 #define LAYOUT_X_RASTER 15
 #define LAYOUT_Y_RASTER 15
-#define LAYOUT_CENTER Vec(0, 0)
 
 using namespace rack;
 
@@ -14,6 +12,9 @@ struct SimpleFilterWidget : ModuleWidget {
     SimpleFilterWidget();
 };
 
+/**
+ * @brief Basic knob definition
+ */
 struct LRBasicKnob : SVGKnob {
     LRBasicKnob() {
         minAngle = -0.83f * (float) M_PI;
@@ -21,31 +22,43 @@ struct LRBasicKnob : SVGKnob {
     }
 };
 
+/**
+ * @brief Basic middle-sized knob
+ */
 struct LRBasicKnobWhite : LRBasicKnob {
     LRBasicKnobWhite() {
         setSVG(SVG::load(assetPlugin(plugin, "res/LRBasicKnobWhite.svg")));
     }
 };
 
+/**
+ * @brief Blue version of the Davies1900h
+ */
 struct Davies1900hBlueKnob : LRBasicKnob {
     Davies1900hBlueKnob() {
         setSVG(SVG::load(assetPlugin(plugin, "res/Davies1900hBlue.svg")));
     }
 };
 
-struct LRIOPort : SVGPort {
-    LRIOPort() {
+/**
+ * @brief Alternative IO Port
+ */
+struct IOPort : SVGPort {
+    IOPort() {
         background->svg = SVG::load(assetPlugin(plugin, "res/IOPortB.svg"));
         background->wrap();
         box.size = background->box.size;
     }
 };
 
+/**
+ * @brief Alternative screw head A
+ */
 struct ScrewDarkA : SVGScrew {
-    ScrewBlack() {
-        sw->setSVG(SVG::load(assetGlobal("res/ComponentLibrary/ScrewDarkA.svg")));
+    ScrewDarkA() {
+        sw->setSVG(SVG::load(assetPlugin(plugin, "res/ScrewDarkA.svg")));
         box.size = sw->box.size;
     }
 };
 
-Vec layoutWidget(Widget *widget, Vec panel, float xr, float yr);
+Vec transformLayout(Vec panel, float xr, float yr);
