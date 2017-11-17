@@ -18,17 +18,3 @@ void init(rack::Plugin *p) {
     // As an alternative, consider lazy-loading assets and lookup tables when your module is created to reduce startup times of Rack.
 }
 
-/**
- * @brief Transform from standard coordinates to rastered layout coordinates
- * @param panel The panel dimensions
- * @param xr X-Raster
- * @param yr Y-Raster
- * @return Transformed vector
- */
-Vec transformLayout(Vec panel, Vec widget, float xr, float yr) {
-    Vec center = Vec(panel.x / 2 - xr * LAYOUT_X_RASTER,panel.y / 2 - yr * LAYOUT_Y_RASTER);
-    Vec root = Vec(center.x - widget.x / 2, center.y - widget.y / 2);
-
-    return root;
-}
-
