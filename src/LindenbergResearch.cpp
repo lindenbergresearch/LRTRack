@@ -5,16 +5,10 @@ Plugin *plugin;
 
 void init(rack::Plugin *p) {
     plugin = p;
-    // This is the unique identifier for your plugin
-    p->slug = "Lindenberg Research";
-#ifdef VERSION
-    p->version = TOSTRING(VERSION);
-#endif
+    plugin->slug = "LRT Rack";
+    plugin->name = "LRT Rack";
+    plugin->homepageUrl = "https://github.com/lindenbergresearch/LRTRack";
 
-    // For each module, specify the ModuleWidget subclass, manufacturer slug (for saving in patches), manufacturer human-readable name, module slug, and module name
-    p->addModel(createModel<SimpleFilterWidget>("Lindenberg Research", "SimpleFilter", "Simple LP Filter", FILTER_TAG));
-
-    // Any other plugin initialization may go here.
-    // As an alternative, consider lazy-loading assets and lookup tables when your module is created to reduce startup times of Rack.
+    createModel<SimpleFilterWidget>(plugin, "LPFilter24dB", "24dB Lowpass Filter");
 }
 

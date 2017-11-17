@@ -55,7 +55,8 @@ struct IOPort : SVGPort {
  */
 struct ScrewDarkA : SVGScrew {
     ScrewDarkA() {
-        sw->setSVG(SVG::load(assetPlugin(plugin, "res/ScrewDarkA.svg")));
+        sw->svg = SVG::load(assetPlugin(plugin, "res/ScrewDarkA.svg"));
+        sw->wrap();
         box.size = sw->box.size;
     }
 };
