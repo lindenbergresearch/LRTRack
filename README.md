@@ -1,2 +1,2 @@
-# LRTRack
-LRT Audio-Modules for Rack
+# LRT Rack
+Lindenberg Research modules for VCVRack.
