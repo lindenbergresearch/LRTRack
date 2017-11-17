@@ -1,8 +1,7 @@
 #include "rack.hpp"
 #include "asset.hpp"
 
-#define LAYOUT_X_RASTER 7.5f
-#define LAYOUT_Y_RASTER 7.5f
+#define PANEL_MARGIN_X 20.0f
 
 using namespace rack;
 
@@ -25,18 +24,18 @@ struct LRBasicKnob : SVGKnob {
 /**
  * @brief Basic middle-sized knob
  */
-struct LRBasicKnobWhite : LRBasicKnob {
-    LRBasicKnobWhite() {
-        setSVG(SVG::load(assetPlugin(plugin, "res/LRBasicKnobWhite.svg")));
+struct LRBigKnobWhite : LRBasicKnob {
+    LRBigKnobWhite() {
+        setSVG(SVG::load(assetPlugin(plugin, "res/BigKnob.svg")));
     }
 };
 
 /**
  * @brief Blue version of the Davies1900h
  */
-struct Davies1900hBlueKnob : LRBasicKnob {
-    Davies1900hBlueKnob() {
-        setSVG(SVG::load(assetPlugin(plugin, "res/Davies1900hBlue.svg")));
+struct LRBasicKnobWhite : LRBasicKnob {
+    LRBasicKnobWhite() {
+        setSVG(SVG::load(assetPlugin(plugin, "res/LRBasicKnobWhite.svg")));
     }
 };
 
