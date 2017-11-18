@@ -11,6 +11,10 @@ struct SimpleFilterWidget : ModuleWidget {
     SimpleFilterWidget();
 };
 
+struct BlankPanelWidget : ModuleWidget {
+    BlankPanelWidget();
+};
+
 /**
  * @brief Basic knob definition
  */
