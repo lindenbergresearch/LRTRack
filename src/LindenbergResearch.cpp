@@ -5,10 +5,12 @@ Plugin *plugin;
 
 void init(rack::Plugin *p) {
     plugin = p;
-    plugin->slug = "LRT Rack";
-    plugin->name = "LRT Rack";
+    plugin->slug = "Lindenberg Research";
+    plugin->name = "Lindenberg Research";
     plugin->homepageUrl = "https://github.com/lindenbergresearch/LRTRack";
 
     createModel<SimpleFilterWidget>(plugin, "LPFilter24dB", "24dB Lowpass Filter");
+    createModel<BlankPanelWidget>(plugin, "BlankPanel", "Blank Panel 26TE");
+
 }
 
