@@ -15,6 +15,10 @@ struct BlankPanelWidget : ModuleWidget {
     BlankPanelWidget();
 };
 
+struct ReShaperWidget : ModuleWidget {
+    ReShaperWidget();
+};
+
 /**
  * @brief Basic knob definition
  */

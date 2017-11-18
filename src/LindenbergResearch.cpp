@@ -11,6 +11,7 @@ void init(rack::Plugin *p) {
 
     createModel<SimpleFilterWidget>(plugin, "LPFilter24dB", "24dB Lowpass Filter");
     createModel<BlankPanelWidget>(plugin, "BlankPanel", "Blank Panel 26TE");
+    createModel<ReShaperWidget>(plugin, "ReShaper", "ReShaper Wavefolder");
 
 }
 
