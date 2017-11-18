@@ -3,12 +3,11 @@
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <svg version="1.1"
 	 id="svg18800" sodipodi:docname="ScrewBlack.svg" inkscape:version="0.92.2 5c3e80d, 2017-08-06" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:svg="http://www.w3.org/2000/svg" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="13px" height="13px"
-	 viewBox="1 1 13 13" enable-background="new 1 1 13 13" xml:space="preserve">
+	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="14px" height="14px"
+	 viewBox="-0.5 -0.5 14 14" enable-background="new -0.5 -0.5 14 14" xml:space="preserve">
 <sodipodi:namedview  units="px" fit-margin-bottom="0" fit-margin-right="0" inkscape:window-maximized="0" inkscape:window-y="18" inkscape:window-x="0" inkscape:window-height="1422" inkscape:window-width="2560" inkscape:current-layer="layer1" inkscape:document-units="mm" inkscape:pageshadow="2" inkscape:pageopacity="0.0" id="base" pagecolor="#ffffff" bordercolor="#666666" borderopacity="1.0" inkscape:zoom="7.9195959" inkscape:cx="-60.109471" inkscape:cy="1.4049767" fit-margin-left="0" fit-margin-top="0" showgrid="false">
 	</sodipodi:namedview>
-<path fill="#474647" stroke="#3D3D3D" stroke-miterlimit="10" d="M10.499,2.304C7.631,0.647,3.961,1.63,2.304,4.5
-	C0.647,7.369,1.631,11.038,4.5,12.694c2.87,1.657,6.538,0.675,8.194-2.196C14.352,7.629,13.369,3.961,10.499,2.304z M7.812,8.667
-	l-1.253,2.171l-1.48-0.854l1.254-2.172L4.161,6.558l0.854-1.479l2.173,1.253L8.44,4.16l1.48,0.854L8.667,7.188l2.173,1.253
-	l-0.854,1.48L7.812,8.667z"/>
+<path fill="#474647" stroke="#3D3D3D" stroke-miterlimit="10" d="M6.5,0.501C3.188,0.5,0.501,3.187,0.501,6.5
+	c0,3.313,2.686,5.999,5.999,5.998c3.314,0.001,6-2.684,5.998-5.998C12.499,3.187,9.814,0.501,6.5,0.501z M7.355,7.354v2.507
+	L5.647,9.862V7.354H3.139V5.646l2.508-0.001L5.645,3.138l1.709,0l0.001,2.509l2.509,0l0.001,1.708L7.355,7.354z"/>
 </svg>
