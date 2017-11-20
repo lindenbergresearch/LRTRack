@@ -23,9 +23,8 @@ struct VCO : Module {
 
 
 float wrapTwoPI(float n) {
-    float b = 1 / TWO_PI;
-
-
+    float b = 1.f / TWOPI * n;
+    return (b-lround(b)) * TWOPI;
 }
 
 
