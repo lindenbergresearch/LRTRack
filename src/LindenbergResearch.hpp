@@ -1,7 +1,8 @@
 #include "rack.hpp"
 #include "asset.hpp"
 
-#define PANEL_MARGIN_X 20.0f
+#define PI 3.14159265359
+#define TWOPI 6.28318530718
 
 using namespace rack;
 
@@ -18,6 +19,11 @@ struct BlankPanelWidget : ModuleWidget {
 struct ReShaperWidget : ModuleWidget {
     ReShaperWidget();
 };
+
+struct VCOWidget : ModuleWidget {
+    VCOWidget();
+};
+
 
 /**
  * @brief Basic knob definition
