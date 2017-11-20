@@ -37,8 +37,9 @@
 		c-2.07,0-3.564-0.055-4.482-0.166c-1.12-0.13-1.924-0.384-2.412-0.762c-0.527-0.404-0.84-0.973-0.938-1.709
 		c-0.052-0.358-0.078-0.781-0.078-1.27V25.833z"/>
 </g>
-<line fill="none" stroke="#EFEFEF" stroke-width="2" stroke-miterlimit="10" x1="84.73" y1="74" x2="84.73" y2="136"/>
-<line fill="none" stroke="#EFEFEF" stroke-width="2" stroke-miterlimit="10" x1="35.069" y1="74" x2="35" y2="208.25"/>
+<polyline fill="none" stroke="#EFEFEF" stroke-width="2" stroke-miterlimit="10" points="60,136 84.73,136 84.803,127.875 84.73,74 
+	"/>
+<polyline fill="none" stroke="#EFEFEF" stroke-width="2" stroke-miterlimit="10" points="35.069,74 35,205 35,208.25 60.642,241 "/>
 <rect x="76.767" y="97.29" fill="#1B1B1C" width="16.474" height="11.71"/>
 <rect x="26.832" y="97" fill="#1B1B1C" width="16.474" height="11.71"/>
 <g>
@@ -213,10 +214,8 @@
 		C83.268,104.309,83.29,104.152,83.295,103.936z"/>
 	<path fill="#F3F4F4" d="M84.803,101.072h1.562l1.702,3.493h0.267l1.685-3.493h1.553l-2.277,4.666h-2.184L84.803,101.072z"/>
 </g>
-<line fill="none" stroke="#EFEFEF" stroke-width="2" stroke-miterlimit="10" x1="60" y1="136" x2="84.73" y2="136"/>
-<line fill="none" stroke="#EFEFEF" stroke-width="2" stroke-miterlimit="10" x1="60" y1="136" x2="60.642" y2="241"/>
-<line fill="none" stroke="#EFEFEF" stroke-width="2" stroke-miterlimit="10" x1="35" y1="208.25" x2="60.642" y2="241"/>
 <line fill="none" stroke="#EFEFEF" stroke-width="2" stroke-miterlimit="10" x1="60.642" y1="241" x2="60.744" y2="334"/>
+<line fill="none" stroke="#EFEFEF" stroke-width="2" stroke-miterlimit="10" x1="60.642" y1="241" x2="60.744" y2="136"/>
 <g>
 </g>
 <g>

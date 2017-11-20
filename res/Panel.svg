@@ -49,10 +49,10 @@
 <circle fill="#494949" cx="51.5" cy="524.5" r="15"/>
 <line fill="none" stroke="#EFEFEF" stroke-width="2" stroke-miterlimit="10" x1="51.5" y1="264.5" x2="51.5" y2="326.5"/>
 <line fill="none" stroke="#EFEFEF" stroke-width="2" stroke-miterlimit="10" x1="-20.5" y1="264.5" x2="-20.5" y2="326.5"/>
-<line fill="none" stroke="#EFEFEF" stroke-width="2" stroke-miterlimit="10" x1="-20.5" y1="326.5" x2="-20.5" y2="390.5"/>
-<line fill="none" stroke="#EFEFEF" stroke-width="2" stroke-miterlimit="10" x1="15.5" y1="390.5" x2="-20.5" y2="390.5"/>
-<line fill="none" stroke="#EFEFEF" stroke-width="2" stroke-miterlimit="10" x1="51.5" y1="326.5" x2="51.5" y2="465.5"/>
-<line fill="none" stroke="#EFEFEF" stroke-width="2" stroke-miterlimit="10" x1="15.5" y1="465.5" x2="51.5" y2="465.5"/>
+<polyline fill="none" stroke="#EFEFEF" stroke-width="2" stroke-miterlimit="10" points="15.5,390.5 -20.5,390.5 -20.5,387.5 
+	-20.5,326.5 "/>
+<polyline fill="none" stroke="#EFEFEF" stroke-width="2" stroke-miterlimit="10" points="15.5,465.5 51.5,465.5 51.5,461.833 
+	51.5,326.5 "/>
 <g>
 	<path fill="#F4F4F4" d="M-11.672,419.084h4.932v1.098h-3.51v0.885h3.339v1.07h-3.339v1.613h-1.422V419.084z"/>
 	<path fill="#F4F4F4" d="M-6.415,423.75v-4.666h3.435c0.811,0.003,1.29,0.011,1.436,0.024c0.167,0.016,0.317,0.062,0.453,0.146
