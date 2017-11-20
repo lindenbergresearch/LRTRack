@@ -1,8 +1,8 @@
 #include "rack.hpp"
 #include "asset.hpp"
 
-#define PI 3.14159265359
-#define TWOPI 6.28318530718
+#define PI 3.14159265359f
+#define TWOPI 6.28318530718f
 
 using namespace rack;
 
