@@ -1,6 +1,7 @@
 #include "helper.hpp"
 #include "engine.hpp"
 
+
 /**
  * Fast sin approximation
  * @param angle Angle
@@ -23,6 +24,7 @@ float fastSin(float angle) {
     return result;
 }
 
+
 /**
  * Fast sin approximation with input wrapping of -PI..PI
  * @param angle Angle
@@ -31,6 +33,7 @@ float fastSin(float angle) {
 float fastSinWrap(float angle) {
     return fastSin(wrapTWOPI(angle));
 }
+
 
 /**
  * Clip signal at bottom by value
@@ -43,6 +46,7 @@ float clipl(float in, float clip) {
     else return in;
 }
 
+
 /**
  * Clip signal at top by value
  * @param in Sample input
@@ -54,6 +58,7 @@ float cliph(float in, float clip) {
     else return in;
 }
 
+
 /**
  * Wrap input number between -PI..PI
  * @param n Input number
@@ -63,6 +68,7 @@ float wrapTWOPI(float n) {
     float b = 1.f / TWOPI * n;
     return (b - lround(b)) * TWOPI;
 }
+
 
 /**
  * Get PLL increment depending on frequency
