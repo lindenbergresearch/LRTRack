@@ -16,3 +16,7 @@ float getPhaseIncrement(float frq);
 float clipl(float in, float clip);
 
 float cliph(float in, float clip);
+
+float fastSinWrap(float angle);
+
+float fastSin(float angle);

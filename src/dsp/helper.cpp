@@ -3,8 +3,8 @@
 
 /**
  * Fast sin approximation
- * @param angle
- * @return
+ * @param angle Angle
+ * @return App. value
  */
 float fastSin(float angle) {
     float sqr = angle * angle;
@@ -21,6 +21,15 @@ float fastSin(float angle) {
     result += 1.0f;
     result *= angle;
     return result;
+}
+
+/**
+ * Fast sin approximation with input wrapping of -PI..PI
+ * @param angle Angle
+ * @return App. value
+ */
+float fastSinWrap(float angle) {
+    return fastSin(wrapTWOPI(angle));
 }
 
 /**
@@ -65,8 +74,8 @@ float getPhaseIncrement(float frq) {
 }
 
 
-float BLIT(float N, float phase, float inc) {
-    float tmp = sin((clipl(N - 1, 0.f) + 0.5f) * phase) * 1.f / sin(0.5f * phase) - 1.f;
+float BLIT(float N, float phase) {
+    float tmp = sin((clipl(N - 1, 0.f) + 0.5f) * phase) * 1.f / sin(0.5f * phase);
 
-    return tmp * 0.5f;
+    return (tmp - 1.f) * 0.5f;
 }
