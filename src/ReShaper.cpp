@@ -7,15 +7,18 @@ struct ReShaper : Module {
         RESHAPER_CV_AMOUNT,
         NUM_PARAMS
     };
+
     enum InputIds {
         RESHAPER_INPUT,
         RESHAPER_CV_INPUT,
         NUM_INPUTS
     };
+
     enum OutputIds {
         RESHAPER_OUTPUT,
         NUM_OUTPUTS
     };
+
     enum LightIds {
         NUM_LIGHTS
     };
