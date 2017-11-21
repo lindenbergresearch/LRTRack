@@ -3,10 +3,16 @@
 #include <cmath>
 #include "rack.hpp"
 
-namespace Rack {
-    #define PI 3.14159265359f
-    #define TWOPI 6.28318530718f
+using namespace rack;
 
-    float wrapTWOPI(float n);
-    float getPhaseIncrement(float frq);
-}
+#define PI 3.14159265359f
+#define TWOPI 6.28318530718f
+#define BLIT_CUTOFF 18000.0f
+
+float wrapTWOPI(float n);
+
+float getPhaseIncrement(float frq);
+
+float clipl(float in, float clip);
+
+float cliph(float in, float clip);
