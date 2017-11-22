@@ -1,4 +1,5 @@
 #include "VCO.hpp"
+#include "dsp/helper.hpp"
 #include "LindenbergResearch.hpp"
 
 struct VCO : Module {
@@ -22,14 +23,8 @@ struct VCO : Module {
 };
 
 
-float wrapTwoPI(float n) {
-    float b = 1.f / TWOPI * n;
-    return (b-lround(b)) * TWOPI;
-}
-
-
 void VCO::step() {
-
+    float inc = getPhaseIncrement(440.f);
 }
 
 
@@ -55,18 +50,18 @@ VCOWidget::VCOWidget() {
 
 
     // ***** MAIN KNOBS ******
-  //  addParam(createParam<LRBigKnobWhite>(Vec(35, 216), module, VCO::RESHAPER_AMOUNT, 1.f, 50.f, 1.f));
-  //  addParam(createParam<LRBasicKnobWhite>(Vec(44, 120), module, VCO::RESHAPER_CV_AMOUNT, 0.f, 5.f, 0.f));
+    //  addParam(createParam<LRBigKnobWhite>(Vec(35, 216), module, VCO::RESHAPER_AMOUNT, 1.f, 50.f, 1.f));
+    //  addParam(createParam<LRBasicKnobWhite>(Vec(44, 120), module, VCO::RESHAPER_CV_AMOUNT, 0.f, 5.f, 0.f));
     // ***** MAIN KNOBS ******
 
 
     // ***** INPUTS **********
-  //  addInput(createInput<IOPort>(Vec(21, 60), module, VCO::RESHAPER_INPUT));
-  //  addInput(createInput<IOPort>(Vec(71, 60), module, VCO::RESHAPER_CV_INPUT));
+    //  addInput(createInput<IOPort>(Vec(21, 60), module, VCO::RESHAPER_INPUT));
+    //  addInput(createInput<IOPort>(Vec(71, 60), module, VCO::RESHAPER_CV_INPUT));
     // ***** INPUTS **********
 
     // ***** OUTPUTS *********
-  //  addOutput(createOutput<IOPort>(Vec(46, 320), module, VCO::RESHAPER_OUTPUT));
+    //  addOutput(createOutput<IOPort>(Vec(46, 320), module, VCO::RESHAPER_OUTPUT));
     // ***** OUTPUTS *********
 
 }
