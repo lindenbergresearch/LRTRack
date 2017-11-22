@@ -3,7 +3,7 @@
 
 
 /**
- * Fast sin approximation
+ * @brief Fast sin approximation
  * @param angle Angle
  * @return App. value
  */
@@ -26,7 +26,7 @@ float fastSin(float angle) {
 
 
 /**
- * Fast sin approximation with input wrapping of -PI..PI
+ * @brief Fast sin approximation with input wrapping of -PI..PI
  * @param angle Angle
  * @return App. value
  */
@@ -36,7 +36,7 @@ float fastSinWrap(float angle) {
 
 
 /**
- * Clip signal at bottom by value
+ * @brief Clip signal at bottom by value
  * @param in Sample input
  * @param clip Clipping value
  * @return Clipped sample
@@ -48,7 +48,7 @@ float clipl(float in, float clip) {
 
 
 /**
- * Clip signal at top by value
+ * @brief Clip signal at top by value
  * @param in Sample input
  * @param clip Clipping value
  * @return Clipped sample
@@ -60,7 +60,7 @@ float cliph(float in, float clip) {
 
 
 /**
- * Wrap input number between -PI..PI
+ * @brief Wrap input number between -PI..PI
  * @param n Input number
  * @return Wrapped value
  */
@@ -71,7 +71,7 @@ float wrapTWOPI(float n) {
 
 
 /**
- * Get PLL increment depending on frequency
+ * @brief Get PLL increment depending on frequency
  * @param frq Frequency
  * @return  PLL increment
  */
@@ -80,8 +80,13 @@ float getPhaseIncrement(float frq) {
 }
 
 
+/**
+ * @brief
+ * @param N
+ * @param phase
+ * @return
+ */
 float BLIT(float N, float phase) {
     float tmp = sin((clipl(N - 1, 0.f) + 0.5f) * phase) * 1.f / sin(0.5f * phase);
-
     return (tmp - 1.f) * 0.5f;
 }
