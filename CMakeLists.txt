@@ -14,10 +14,12 @@ set(SOURCE_FILES
         src/BlankPanel.hpp
         src/VCO.cpp
         src/VCO.hpp
-        )
+        src/dsp/helper.cpp
+        src/dsp/helper.hpp src/Release.h)
 
 include_directories(.)
 include_directories(src)
+include_directories(src/dsp)
 include_directories(../../include)
 
-add_executable(LRT ${SOURCE_FILES})
+add_executable(LRT ${SOURCE_FILES} src/dsp/helper.cpp src/dsp/helper.hpp src/Release.h)
