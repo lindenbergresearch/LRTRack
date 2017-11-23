@@ -12,7 +12,7 @@ void init(rack::Plugin *p) {
     p->addModel(createModel<SimpleFilterWidget>("LindenbergResearch", "LPFilter24dB", "24dB Lowpass Filter", FILTER_TAG));
     p->addModel(createModel<BlankPanelWidget>("LindenbergResearch", "BlankPanel", "Blank Panel 20TE", UTILITY_TAG));
     p->addModel(createModel<ReShaperWidget>("LindenbergResearch", "ReShaper", "ReShaper Wavefolder", FILTER_TAG));
-    p->addModel(createModel<VCOWidget>("LindenbergResearch", "VCO", "Voltage Controlled Oscillator", OSCILLATOR_TAG));
+   // p->addModel(createModel<VCOWidget>("LindenbergResearch", "VCO", "Voltage Controlled Oscillator", OSCILLATOR_TAG));
 
 }
 

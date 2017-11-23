@@ -24,7 +24,7 @@ struct VCO : Module {
 
 
 void VCO::step() {
-    float inc = getPhaseIncrement(440.f);
+
 }
 
 
