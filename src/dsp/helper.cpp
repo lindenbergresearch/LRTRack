@@ -103,3 +103,15 @@ float BLIT(float N, float phase) {
     if (phase == 0.f) return 1.f;
     else return BLITcore(N, phase);
 }
+
+
+/**
+ * @brief Add value to integrator
+ * @param in Input
+ * @param Fn
+ * @return
+ */
+float Integrate::add(float in, float Fn) {
+    Integrate::value = (in - value) * (0.25f * Fn) + value;
+    return Integrate::value;
+}

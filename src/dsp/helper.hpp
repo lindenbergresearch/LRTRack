@@ -5,7 +5,16 @@
 
 using namespace rack;
 
-const float TWOPI = M_PI * 2;
+const float TWOPI = (float)M_PI * 2;
+
+/**
+ * @brief Basic integrator
+ */
+struct Integrate {
+    float value = 0.f;
+
+    float add(float in, float Fn);
+};
 
 float wrapTWOPI(float n);
 
