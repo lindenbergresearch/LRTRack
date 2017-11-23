@@ -2,6 +2,7 @@
 
 using namespace rack;
 
+
 /**
  * @brief Band-limited Oscillator class
  */
@@ -49,9 +50,12 @@ struct Oscillator {
     virtual void invalidate();
 
 
+    /**
+     * @brief Reset oscillator
+     */
     void reset();
 
-
+    /* common getter and setter */
     float getFreq() const;
     void setFreq(float freq);
     float getPw() const;
