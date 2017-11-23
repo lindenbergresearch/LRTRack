@@ -81,12 +81,25 @@ float getPhaseIncrement(float frq) {
 
 
 /**
- * @brief
- * @param N
- * @param phase
+ * @brief Actual BLIT core computation
+ * @param N Harmonics
+ * @param phase Current phase value
+ * @return
+ */
+float BLITcore(float N, float phase) {
+    float a = wrapTWOPI((clipl(N - 1, 0.f) + 0.5f) * phase);
+    float x = fastSin(a) * 1.f / fastSin(0.5f * phase);
+    return (x - 1.f) * 0.5f;
+}
+
+
+/**
+ * @brief BLIT generator based on current phase
+ * @param N Harmonics
+ * @param phase Current phase of PLL
  * @return
  */
 float BLIT(float N, float phase) {
-    float tmp = sin((clipl(N - 1, 0.f) + 0.5f) * phase) * 1.f / sin(0.5f * phase);
-    return (tmp - 1.f) * 0.5f;
+    if (phase == 0.f) return 1.f;
+    else return BLITcore(N, phase);
 }

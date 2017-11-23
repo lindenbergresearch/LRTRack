@@ -5,9 +5,7 @@
 
 using namespace rack;
 
-#define PI 3.14159265359f
-#define TWOPI 6.28318530718f
-#define BLIT_CUTOFF 18000.0f
+const float TWOPI = M_PI * 2;
 
 float wrapTWOPI(float n);
 
@@ -20,3 +18,5 @@ float cliph(float in, float clip);
 float fastSinWrap(float angle);
 
 float fastSin(float angle);
+
+float BLIT(float N, float phase);
