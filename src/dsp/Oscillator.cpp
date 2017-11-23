@@ -1,5 +1,7 @@
 #include "dsp/helper.hpp"
 
+using namespace rack;
+
 
 struct Oscillator {
     float freq = 440.f; // oscillator frequency
@@ -18,6 +20,7 @@ struct Oscillator {
      * @brief Proccess next sample for output
      */
     virtual void proccess();
+
 
     /**
      * @brief ReCompute states on change
@@ -47,6 +50,7 @@ struct Oscillator {
         invalidate();
     }
 
+
     /**
      * @brief Change frequency of oscillator
      * @param frq
@@ -55,6 +59,7 @@ struct Oscillator {
         this->freq = freq;
         invalidate();
     }
+
 
     /**
      * @brief Get current value of ramp waveform
