@@ -39,6 +39,51 @@ Oscillator::Oscillator() {
 }
 
 
+float Oscillator::getFreq() const {
+    return freq;
+}
+
+
+void Oscillator::setFreq(float freq) {
+    Oscillator::freq = freq;
+}
+
+
+float Oscillator::getPw() const {
+    return pw;
+}
+
+
+void Oscillator::setPw(float pw) {
+    Oscillator::pw = pw;
+}
+
+
+float Oscillator::getRamp() const {
+    return ramp;
+}
+
+
+float Oscillator::getSaw() const {
+    return saw;
+}
+
+
+float Oscillator::getPulse() const {
+    return pulse;
+}
+
+
+float Oscillator::getSawtri() const {
+    return sawtri;
+}
+
+
+float Oscillator::getTri() const {
+    return tri;
+}
+
+
 /**
  * @brief Process band-limited oscillator
  */
@@ -55,4 +100,15 @@ void BLITOscillator::proccess() {
  */
 void BLITOscillator::invalidate() {
     incr = getPhaseIncrement(this->freq);
+    N = floorf(harmonics / freq);
+}
+
+
+float BLITOscillator::getHarmonics() const {
+    return harmonics;
+}
+
+
+void BLITOscillator::setHarmonics(float harmonics) {
+    BLITOscillator::harmonics = harmonics;
 }

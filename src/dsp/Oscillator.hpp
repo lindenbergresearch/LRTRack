@@ -6,8 +6,14 @@ using namespace rack;
  * @brief Band-limited Oscillator class
  */
 struct BLITOscillator : Oscillator {
+    float harmonics = 18000.f;
+    int N = 0;
+
     void proccess() override;
     void invalidate() override;
+
+    float getHarmonics() const;
+    void setHarmonics(float harmonics);
 };
 
 
@@ -46,68 +52,15 @@ struct Oscillator {
     void reset();
 
 
-    /**
-     * @brief Change PulseWidth of oscillator
-     * @param pw
-     */
-    void setPW(float pw) {
-        this->pw = pw;
-        invalidate();
-    }
+    float getFreq() const;
+    void setFreq(float freq);
+    float getPw() const;
+    void setPw(float pw);
 
-
-    /**
-     * @brief Change frequency of oscillator
-     * @param frq
-     */
-    void setFrequency(float freq) {
-        this->freq = freq;
-        invalidate();
-    }
-
-
-    /**
-     * @brief Get current value of ramp waveform
-     * @return
-     */
-    float getRamp() {
-        return ramp;
-    }
-
-
-    /**
-     * @brief Get current value of saw waveform
-     * @return
-     */
-    float getSaw() {
-        return saw;
-    }
-
-
-    /**
-     * @brief Get current value of pulse waveform
-     * @return
-     */
-    float getPulse() {
-        return pulse;
-    }
-
-
-    /**
-     * @brief Get current value of triangle-saw waveform
-     * @return
-     */
-    float getSawTri() {
-        return sawtri;
-    }
-
-
-    /**
-     * @brief Get current value of triangle waveform
-     * @return
-     */
-    float getTri() {
-        return tri;
-    }
+    float getRamp() const;
+    float getSaw() const;
+    float getPulse() const;
+    float getSawtri() const;
+    float getTri() const;
 
 };
