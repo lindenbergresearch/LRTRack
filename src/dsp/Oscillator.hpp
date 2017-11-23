@@ -1,5 +1,19 @@
 #pragma once
 
+using namespace rack;
+
+/**
+ * @brief Band-limited Oscillator class
+ */
+struct BLITOscillator : Oscillator {
+    void proccess() override;
+    void invalidate() override;
+};
+
+
+/**
+ * @brief Oscillator base class
+ */
 struct Oscillator {
     float freq = 440.f; // oscillator frequency
     float pw = 0.5f;    // pulse-width value
@@ -13,6 +27,7 @@ struct Oscillator {
     float sawtri = 0.f;
     float tri = 0.f;
 
+    Oscillator();
     Oscillator(float freq, float pw);
     virtual ~Oscillator();
 
