@@ -9,7 +9,7 @@ CXXFLAGS +=
 LDFLAGS +=
 
 # Add .cpp and .c files to the build
-SOURCES = $(wildcard src/*.cpp)
+SOURCES = $(wildcard src/*.cpp src/dsp/*.cpp)
 
 
 # Must include the VCV plugin Makefile framework
@@ -17,7 +17,7 @@ include ../../plugin.mk
 
 
 # Convenience target for including files in the distributable release
-DIST_NAME = Template
+DIST_NAME = LindenbergResearch
 .PHONY: dist
 dist: all
 ifndef VERSION
