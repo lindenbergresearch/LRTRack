@@ -129,6 +129,13 @@ namespace rack {
         /* phase locked loop */
         phase = wrapTWOPI(incr + phase);
 
+        float blit = BLIT(N, phase);
+
+        /* compute RAMP waveform */
+        ramp = int1.add(blit, incr) - 0.1f;
+        /* compute SAW waveform */
+        saw = ramp * -1.f;
+
         // TODO: compute waveforms
     }
 

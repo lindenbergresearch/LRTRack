@@ -1,4 +1,5 @@
 #pragma once
+#include "helper.hpp"
 
 namespace rack {
 
@@ -20,6 +21,11 @@ namespace rack {
         float pulse = 0.f;
         float sawtri = 0.f;
         float tri = 0.f;
+
+        /* leaky integrators */
+        Integrator int1;
+        Integrator int2;
+        Integrator int3;
 
 
         BLITOscillator();
