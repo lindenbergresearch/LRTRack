@@ -2,22 +2,6 @@
 
 using namespace rack;
 
-
-/**
- * @brief Band-limited Oscillator class
- */
-struct BLITOscillator : Oscillator {
-    float harmonics = 18000.f;
-    int N = 0;
-
-    void proccess() override;
-    void invalidate() override;
-
-    float getHarmonics() const;
-    void setHarmonics(float harmonics);
-};
-
-
 /**
  * @brief Oscillator base class
  */
@@ -35,8 +19,7 @@ struct Oscillator {
     float tri = 0.f;
 
     Oscillator();
-    Oscillator(float freq, float pw);
-    virtual ~Oscillator();
+    ~Oscillator();
 
     /**
      * @brief Proccess next sample for output
@@ -67,4 +50,18 @@ struct Oscillator {
     float getSawtri() const;
     float getTri() const;
 
+};
+
+/**
+ * @brief Band-limited Oscillator class
+ */
+struct BLITOscillator : Oscillator {
+    float harmonics = 18000.f;
+    int N = 0;
+
+    void proccess() override;
+    void invalidate() override;
+
+    float getHarmonics() const;
+    void setHarmonics(float harmonics);
 };
