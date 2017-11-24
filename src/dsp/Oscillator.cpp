@@ -1,13 +1,11 @@
-#include "dsp/helper.hpp"
-#include "dsp/Oscillator.hpp"
+#include "helper.hpp"
+#include "Oscillator.hpp"
 
 namespace rack {
-
-
     /**
      * @brief Set oscillator state back
      */
-    void Oscillator::reset() {
+    void BLITOscillator::reset() {
         freq = 440.f;
         pw = 0.5f;
         phase = 0.f;
@@ -20,7 +18,7 @@ namespace rack {
     /**
      * @brief Default constructor
      */
-    Oscillator::Oscillator() {
+    BLITOscillator::BLITOscillator() {
         reset();
     }
 
@@ -28,14 +26,14 @@ namespace rack {
     /**
      * @brief Default destructor
      */
-    Oscillator::~Oscillator() {}
+    BLITOscillator::~BLITOscillator() {}
 
 
     /**
      * @brief Get current frequency
      * @return
      */
-    float Oscillator::getFreq() const {
+    float BLITOscillator::getFreq() const {
         return freq;
     }
 
@@ -44,8 +42,8 @@ namespace rack {
      * @brief Set frequency
      * @param freq
      */
-    void Oscillator::setFreq(float freq) {
-        Oscillator::freq = freq;
+    void BLITOscillator::setFreq(float freq) {
+        BLITOscillator::freq = freq;
         invalidate();
     }
 
@@ -54,7 +52,7 @@ namespace rack {
      * @brief Get current pulse-width
      * @return
      */
-    float Oscillator::getPw() const {
+    float BLITOscillator::getPw() const {
         return pw;
     }
 
@@ -63,8 +61,18 @@ namespace rack {
      * @brief Set current pulse-width
      * @param pw
      */
-    void Oscillator::setPw(float pw) {
-        Oscillator::pw = pw;
+    void BLITOscillator::setPw(float pw) {
+        if (pw < 0.f) {
+            BLITOscillator::pw = 0.f;
+            return;
+        }
+
+        if (pw > 1.f) {
+            BLITOscillator::pw = 1.f;
+            return;
+        }
+
+        BLITOscillator::pw = pw;
         invalidate();
     }
 
@@ -73,7 +81,7 @@ namespace rack {
      * @brief Ramp waveform current
      * @return
      */
-    float Oscillator::getRamp() const {
+    float BLITOscillator::getRamp() const {
         return ramp;
     }
 
@@ -82,7 +90,7 @@ namespace rack {
      * @brief Saw waveform current
      * @return
      */
-    float Oscillator::getSaw() const {
+    float BLITOscillator::getSaw() const {
         return saw;
     }
 
@@ -91,7 +99,7 @@ namespace rack {
      * @brief Pulse waveform current
      * @return
      */
-    float Oscillator::getPulse() const {
+    float BLITOscillator::getPulse() const {
         return pulse;
     }
 
@@ -100,7 +108,7 @@ namespace rack {
      * @brief SawTri waveform current
      * @return
      */
-    float Oscillator::getSawtri() const {
+    float BLITOscillator::getSawtri() const {
         return sawtri;
     }
 
@@ -109,7 +117,7 @@ namespace rack {
      * @brief Triangle waveform current
      * @return
      */
-    float Oscillator::getTri() const {
+    float BLITOscillator::getTri() const {
         return tri;
     }
 
@@ -121,7 +129,7 @@ namespace rack {
         /* phase locked loop */
         phase = wrapTWOPI(incr + phase);
 
-
+        // TODO: compute waveforms
     }
 
 
@@ -129,7 +137,7 @@ namespace rack {
      * @brief ReCompute basic parameter
      */
     void BLITOscillator::invalidate() {
-        incr = getPhaseIncrement(BLITOscillator::freq);
+        incr = getPhaseIncrement(freq);
         N = (int) floorf(harmonics / freq);
     }
 
