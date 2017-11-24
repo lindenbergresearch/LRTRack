@@ -111,7 +111,7 @@ float BLIT(float N, float phase) {
  * @param Fn
  * @return
  */
-float Integrate::add(float in, float Fn) {
-    Integrate::value = (in - value) * (0.25f * Fn) + value;
-    return Integrate::value;
+float Integrator::add(float in, float Fn) {
+    Integrator::value = (in - value) * (0.25f * Fn) + value;
+    return Integrator::value;
 }

@@ -10,7 +10,7 @@ const float TWOPI = (float)M_PI * 2;
 /**
  * @brief Basic integrator
  */
-struct Integrate {
+struct Integrator {
     float value = 0.f;
 
     float add(float in, float Fn);
