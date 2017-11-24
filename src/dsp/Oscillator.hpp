@@ -49,16 +49,16 @@ namespace rack {
         void reset();
 
         /* common getter and setter */
-        float getFreq() const;
-        void setFreq(float freq);
-        float getPw() const;
-        void setPw(float pw);
+        float getFrequency() const;
+        void setFrequency(float freq);
+        float getPulseWidth() const;
+        void setPulseWidth(float pw);
 
-        float getRamp() const;
-        float getSaw() const;
-        float getPulse() const;
-        float getSawtri() const;
-        float getTri() const;
+        float getRampWave() const;
+        float getSawWave() const;
+        float getPulseWave() const;
+        float getSawTriWave() const;
+        float getTriangleWave() const;
 
         float getHarmonics() const;
         void setHarmonics(float harmonics);

@@ -11,6 +11,7 @@ namespace rack {
         phase = 0.f;
         incr = 0.f;
 
+        /* force recalculation of variables */
         invalidate();
     }
 
@@ -33,7 +34,7 @@ namespace rack {
      * @brief Get current frequency
      * @return
      */
-    float BLITOscillator::getFreq() const {
+    float BLITOscillator::getFrequency() const {
         return freq;
     }
 
@@ -42,8 +43,10 @@ namespace rack {
      * @brief Set frequency
      * @param freq
      */
-    void BLITOscillator::setFreq(float freq) {
+    void BLITOscillator::setFrequency(float freq) {
         BLITOscillator::freq = freq;
+
+        /* force recalculation of variables */
         invalidate();
     }
 
@@ -52,7 +55,7 @@ namespace rack {
      * @brief Get current pulse-width
      * @return
      */
-    float BLITOscillator::getPw() const {
+    float BLITOscillator::getPulseWidth() const {
         return pw;
     }
 
@@ -61,7 +64,7 @@ namespace rack {
      * @brief Set current pulse-width
      * @param pw
      */
-    void BLITOscillator::setPw(float pw) {
+    void BLITOscillator::setPulseWidth(float pw) {
         if (pw < 0.f) {
             BLITOscillator::pw = 0.f;
             return;
@@ -73,6 +76,8 @@ namespace rack {
         }
 
         BLITOscillator::pw = pw;
+
+        /* force recalculation of variables */
         invalidate();
     }
 
@@ -81,7 +86,7 @@ namespace rack {
      * @brief Ramp waveform current
      * @return
      */
-    float BLITOscillator::getRamp() const {
+    float BLITOscillator::getRampWave() const {
         return ramp;
     }
 
@@ -90,7 +95,7 @@ namespace rack {
      * @brief Saw waveform current
      * @return
      */
-    float BLITOscillator::getSaw() const {
+    float BLITOscillator::getSawWave() const {
         return saw;
     }
 
@@ -99,7 +104,7 @@ namespace rack {
      * @brief Pulse waveform current
      * @return
      */
-    float BLITOscillator::getPulse() const {
+    float BLITOscillator::getPulseWave() const {
         return pulse;
     }
 
@@ -108,7 +113,7 @@ namespace rack {
      * @brief SawTri waveform current
      * @return
      */
-    float BLITOscillator::getSawtri() const {
+    float BLITOscillator::getSawTriWave() const {
         return sawtri;
     }
 
@@ -117,7 +122,7 @@ namespace rack {
      * @brief Triangle waveform current
      * @return
      */
-    float BLITOscillator::getTri() const {
+    float BLITOscillator::getTriangleWave() const {
         return tri;
     }
 
@@ -129,6 +134,7 @@ namespace rack {
         /* phase locked loop */
         phase = wrapTWOPI(incr + phase);
 
+        /* get impulse train */
         float blit = BLIT(N, phase);
 
         /* compute RAMP waveform */
@@ -164,6 +170,8 @@ namespace rack {
      */
     void BLITOscillator::setHarmonics(float harmonics) {
         BLITOscillator::harmonics = harmonics;
+
+        /* force recalculation of variables */
         invalidate();
     }
 
