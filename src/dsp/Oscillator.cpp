@@ -7,7 +7,7 @@ namespace rack {
      */
     void BLITOscillator::reset() {
         freq = 440.f;
-        pw = 0.5f;
+        pw = 1.f;
         phase = 0.f;
         incr = 0.f;
 
@@ -134,15 +134,33 @@ namespace rack {
         /* phase locked loop */
         phase = wrapTWOPI(incr + phase);
 
+        /* pulse width */
+        float w = pw * (float)M_PI;
+
         /* get impulse train */
-        float blit = BLIT(N, phase);
+        float blit1 = BLIT(N, phase);
+        float blit2 = BLIT(N, wrapTWOPI(w + phase));
+
+        /* feed integrator */
+        int1.add(blit1, incr);
+        int2.add(blit2, incr);
+
+        /* integrator delta */
+        float delta = int1.value - int2.value;
+
+        /* 3rd integrator */
+        float beta = int3.add(delta, incr) * 6.f;
 
         /* compute RAMP waveform */
-        ramp = int1.add(blit, incr) - 0.1f;
+        ramp = int1.value - 0.1f;
+        /* compute pulse waveform */
+        pulse = delta * 1.6f;
         /* compute SAW waveform */
         saw = ramp * -1.f;
-
-        // TODO: compute waveforms
+        /* compute triangle */
+        tri = (float)M_PI / w * beta;
+        /* compute sawtri */
+        sawtri = saw + beta;
     }
 
 
