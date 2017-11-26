@@ -6,7 +6,7 @@
 
 using namespace rack;
 
-#define LCD_FONT_DIG7 "res/digital7.ttf"
+#define LCD_FONT_DIG7 "res/digital-7.ttf"
 #define LCD_FONT_MAX "res/Maxter Board St.ttf"
 #define LCD_FONT_CALC "res/pocket_calcuatlor_tt.ttf"
 
@@ -36,6 +36,13 @@ struct VCOWidget : ModuleWidget {
 };
 
 
+struct LRTModule : Module {
+    long cnt = 0;
+
+    void step() override;
+};
+
+
 /**
  * @brief Emulation of an LCD monochrome display
  */
@@ -62,7 +69,7 @@ struct LCDWidget : Label {
         LCDWidget::length = length;
 
         LCDWidget::fg = fg;
-        LCDWidget::bg = nvgRGBA(r - 0x20, g - 0x20, b - 0x20, 0x20);
+        LCDWidget::bg = nvgRGBA(r - 0x20, g - 0x20, b - 0x20, 0x15);
     }
 
 
