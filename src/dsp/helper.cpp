@@ -112,6 +112,20 @@ float BLIT(float N, float phase) {
  * @return
  */
 float Integrator::add(float in, float Fn) {
-    Integrator::value = (in - value) * (0.25f * Fn) + value;
-    return Integrator::value;
+    value = (in - value) * (0.25f * Fn) + value;
+    return value;
+}
+
+
+/**
+ * @brief Filter function for DC block
+ * @param sample Input sample
+ * @return Filtered sample
+ */
+float DCBlocker::filter(float sample) {
+    float y = sample - xm1 + R * ym1;
+    xm1 = sample;
+    ym1 = y;
+
+    return y;
 }
