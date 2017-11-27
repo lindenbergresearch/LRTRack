@@ -15,7 +15,7 @@ set(SOURCE_FILES
         src/VCO.cpp
         src/VCO.hpp
         src/dsp/helper.cpp
-        src/dsp/helper.hpp src/Release.h)
+        src/dsp/helper.hpp src/Release.h src/dsp/Oscillator.cpp src/dsp/Oscillator.hpp)
 
 include_directories(.)
 include_directories(src)
