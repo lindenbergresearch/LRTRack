@@ -24,9 +24,9 @@ void init(rack::Plugin *p) {
  * @param vg
  */
 void LCDWidget::draw(NVGcontext *vg) {
-    nvgFontSize(vg, 18);
+    nvgFontSize(vg, LCD_FONTSIZE);
     nvgFontFaceId(vg, gLCDFont_DIG7->handle);
-    nvgTextLetterSpacing(vg, 0);
+    nvgTextLetterSpacing(vg, LCD_LETTER_SPACING);
 
     nvgFillColor(vg, bg);
 
@@ -38,11 +38,11 @@ void LCDWidget::draw(NVGcontext *vg) {
         s2.append(":");
     }
 
-    nvgTextBox(vg, 0, 0, 220, s1.c_str(), nullptr);
-    nvgTextBox(vg, 0, 0, 220, s2.c_str(), nullptr);
+    nvgTextBox(vg, 0, 0, width, s1.c_str(), nullptr);
+    nvgTextBox(vg, 0, 0, width, s2.c_str(), nullptr);
 
     nvgFillColor(vg, fg);
-    nvgTextBox(vg, 0, 0, 220, text.c_str(), nullptr);
+    nvgTextBox(vg, 0, 0, width, text.c_str(), nullptr);
 }
 
 /**

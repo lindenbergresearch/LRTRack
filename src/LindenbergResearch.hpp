@@ -7,12 +7,13 @@
 using namespace rack;
 
 #define LCD_FONT_DIG7 "res/digital-7.ttf"
-#define LCD_FONT_MAX "res/Maxter Board St.ttf"
-#define LCD_FONT_CALC "res/pocket_calcuatlor_tt.ttf"
 
 /* LCD default color */
 #define LCD_COLOR_FG nvgRGBA(0xFA, 0x10, 0x04, 0xFF)
 
+#define LCD_FONTSIZE 18
+#define LCD_LETTER_SPACING 0
+static const int width = 220;
 extern Plugin *plugin;
 
 
@@ -59,7 +60,7 @@ struct LRTModule : Module {
  * @brief Emulation of an LCD monochrome display
  */
 struct LCDWidget : Label {
-    std::shared_ptr<Font> gLCDFont_DIG7, gLCDFont_MAX, gLCDFont_CALC;
+    std::shared_ptr<Font> gLCDFont_DIG7;
     NVGcolor fg;
     NVGcolor bg;
     unsigned char length = 0;
@@ -71,8 +72,6 @@ struct LCDWidget : Label {
     LCDWidget(NVGcolor fg, unsigned char length) {
         /** load LCD ttf font */
         gLCDFont_DIG7 = Font::load(assetPlugin(plugin, LCD_FONT_DIG7));
-        gLCDFont_MAX = Font::load(assetPlugin(plugin, LCD_FONT_MAX));
-        gLCDFont_CALC = Font::load(assetPlugin(plugin, LCD_FONT_CALC));
 
         unsigned char r = (unsigned char) (fg.r * 255);
         unsigned char g = (unsigned char) (fg.g * 255);
