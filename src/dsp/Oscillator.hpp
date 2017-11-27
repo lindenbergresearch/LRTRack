@@ -32,7 +32,6 @@ struct BLITOscillator {
     /* dc blocker */
     DCBlocker dcb;
 
-
     BLITOscillator();
     ~BLITOscillator();
 
@@ -52,6 +51,8 @@ struct BLITOscillator {
      * @brief Reset oscillator
      */
     void reset();
+
+    void setPitch(float cv, float oct);
 
     /* common getter and setter */
     float getFrequency() const;

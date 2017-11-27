@@ -47,10 +47,11 @@ float BLITOscillator::getFrequency() const {
  * @param freq
  */
 void BLITOscillator::setFrequency(float freq) {
-    BLITOscillator::freq = freq;
+    if (BLITOscillator::freq != freq){
+        BLITOscillator::freq = freq;
 
-    /* force recalculation of variables */
-    invalidate();
+        /* force recalculation of variables */
+        invalidate();}
 }
 
 
@@ -168,7 +169,7 @@ void BLITOscillator::proccess() {
     /* adjust output levels */
     ramp *= 10;
     saw *= 10;
-    pulse *= 5;
+    pulse *=  5;
     sawtri = dcb.filter(sawtri) * 5;
     tri *= 6;
 }
@@ -204,3 +205,11 @@ void BLITOscillator::setSaturate(float saturate) {
 }
 
 
+/**
+ * @brief Translate from controlvoltage to frequency
+ * @param cv Controlvoltage
+ * @param oct Octave
+ */
+void BLITOscillator::setPitch(float cv, float oct) {
+    setFrequency(261.626f * powf(2.f, cv / 12.f) * oct);
+}
