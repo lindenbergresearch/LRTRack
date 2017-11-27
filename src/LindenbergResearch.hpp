@@ -9,9 +9,9 @@ using namespace rack;
 #define LCD_FONT_DIG7 "res/digital-7.ttf"
 
 /* LCD default color */
-#define LCD_COLOR_FG nvgRGBA(0xFA, 0x10, 0x04, 0xFF)
+#define LCD_COLOR_FG nvgRGBA(0x04, 0xFA, 0x04, 0xFF)
 
-#define LCD_FONTSIZE 18
+#define LCD_FONTSIZE 14
 #define LCD_LETTER_SPACING 0
 static const int width = 220;
 extern Plugin *plugin;
@@ -102,6 +102,23 @@ struct LRBasicKnob : SVGKnob {
     }
 };
 
+/**
+ * @brief Quantize position to odd numbers to simulate a toogle switch
+ */
+struct LRToggleKnob : SVGKnob {
+    LRToggleKnob(float length = 0.83) {
+        minAngle = -length * (float) M_PI;
+        maxAngle = length * (float) M_PI;
+
+        setSVG(SVG::load(assetPlugin(plugin, "res/BigKnob.svg")));
+    }
+
+    void onChange(EventChange &e) override {
+        value = round(value);
+        SVGKnob::onChange(e);
+    }
+};
+
 
 /**
  * @brief Basic middle-sized knob
@@ -144,4 +161,11 @@ struct ScrewDarkA : SVGScrew {
         sw->wrap();
         box.size = sw->box.size;
     }
+};
+
+struct LRLightWidget : TransparentWidget {
+    NVGcolor bgColor = nvgRGBf(0, 0, 0);
+    NVGcolor color = nvgRGBf(1, 1, 1);
+
+    void draw(NVGcontext *vg) override;
 };
