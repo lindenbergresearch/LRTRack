@@ -3,12 +3,13 @@
 #include "LindenbergResearch.hpp"
 
 
-struct VCO : Module {
+struct VCO : LRTModule {
     enum ParamIds {
         FREQUENCY_PARAM,
         OCTAVE_PARAM,
         HARMONICS_PARAM,
         SATURATE_PARAM,
+        PW_PARAM,
         NUM_PARAMS
     };
     enum InputIds {
@@ -29,10 +30,8 @@ struct VCO : Module {
 
     BLITOscillator osc;
     LCDWidget *label1 = new LCDWidget(LCD_COLOR_FG, 10);
-    long cnt = 0;
 
-
-    VCO() : Module(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS) {}
+    VCO() : LRTModule(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS) {}
 
 
     void step() override;
@@ -40,17 +39,21 @@ struct VCO : Module {
 
 
 void VCO::step() {
-
-    cnt++;
+    LRTModule::step();
 
     if (osc.freq != (params[FREQUENCY_PARAM].value * params[OCTAVE_PARAM].value)) {
         osc.setFrequency(params[FREQUENCY_PARAM].value * params[OCTAVE_PARAM].value);
     }
 
-    float harmonics = params[HARMONICS_PARAM].value * 18000.f;
+    float harmonics = params[HARMONICS_PARAM].value * BLIT_HARMONICS;
+    float pw = params[PW_PARAM].value;
 
     if (osc.harmonics != harmonics) {
         osc.setHarmonics(harmonics);
+    }
+
+    if (osc.pw != pw) {
+        osc.setPulseWidth(pw);
     }
 
     osc.proccess();
@@ -96,6 +99,8 @@ VCOWidget::VCOWidget() {
 
     addParam(createParam<LRBasicKnobWhite>(Vec(155, 216), module, VCO::HARMONICS_PARAM, 0.1f, 1.f, 1.f));
     addParam(createParam<LRBasicKnobWhite>(Vec(155, 130), module, VCO::SATURATE_PARAM, 0.f, 1.f, 1.f));
+    addParam(createParam<LRBasicKnobWhite>(Vec(155, 80), module, VCO::PW_PARAM, 0.1f, 1.f, 1.f));
+
 
     // ***** MAIN KNOBS ******
 
