@@ -13,7 +13,7 @@ struct VCO : LRTModule {
         NUM_PARAMS
     };
     enum InputIds {
-
+        VOCT_INPUT,
         NUM_INPUTS
     };
     enum OutputIds {
@@ -31,6 +31,7 @@ struct VCO : LRTModule {
     BLITOscillator osc;
     LCDWidget *label1 = new LCDWidget(LCD_COLOR_FG, 10);
 
+
     VCO() : LRTModule(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS) {}
 
 
@@ -41,15 +42,13 @@ struct VCO : LRTModule {
 void VCO::step() {
     LRTModule::step();
 
-    if (osc.freq != (params[FREQUENCY_PARAM].value * params[OCTAVE_PARAM].value)) {
-        osc.setFrequency(params[FREQUENCY_PARAM].value * params[OCTAVE_PARAM].value);
-    }
+    osc.setPitch(inputs[VOCT_INPUT].value * 12.f + params[FREQUENCY_PARAM].value * 2.f, params[OCTAVE_PARAM].value);
 
-    float harmonics = params[HARMONICS_PARAM].value * BLIT_HARMONICS;
+    float saturate = params[SATURATE_PARAM].value;
     float pw = params[PW_PARAM].value;
 
-    if (osc.harmonics != harmonics) {
-        osc.setHarmonics(harmonics);
+    if (osc.saturate != saturate) {
+        osc.setSaturate(saturate);
     }
 
     if (osc.pw != pw) {
@@ -90,12 +89,19 @@ VCOWidget::VCOWidget() {
     addChild(createScrew<ScrewDarkA>(Vec(box.size.x - 30, 2)));
     addChild(createScrew<ScrewDarkA>(Vec(15, 365)));
     addChild(createScrew<ScrewDarkA>(Vec(box.size.x - 30, 365)));
+
+    auto *lw = new LRLightWidget();
+    lw->box.pos = Vec(100, 100);
+    lw->box.size = Vec(2, 2);
+    addChild(lw);
+
     // ***** SCREWS **********
 
 
     // ***** MAIN KNOBS ******
-    addParam(createParam<LRBigKnobWhite>(Vec(35, 216), module, VCO::FREQUENCY_PARAM, 32.f, 165.f, 44.f));
-    addParam(createParam<LRBigKnobWhite>(Vec(35, 120), module, VCO::OCTAVE_PARAM, 1.f, 32.f, 0.f));
+    addParam(createParam<LRBigKnobWhite>(Vec(35, 166), module, VCO::FREQUENCY_PARAM, -1.f, 1.f, 0.f));
+
+    addParam(createParam<LRToggleKnob>(Vec(35, 120), module, VCO::OCTAVE_PARAM, 1.f, 3.f, 1.f));
 
     addParam(createParam<LRBasicKnobWhite>(Vec(155, 216), module, VCO::HARMONICS_PARAM, 0.1f, 1.f, 1.f));
     addParam(createParam<LRBasicKnobWhite>(Vec(155, 130), module, VCO::SATURATE_PARAM, 0.f, 1.f, 1.f));
@@ -106,7 +112,7 @@ VCOWidget::VCOWidget() {
 
 
     // ***** INPUTS **********
-    //  addInput(createInput<IOPort>(Vec(21, 60), module, VCO::RESHAPER_INPUT));
+    addInput(createInput<IOPort>(Vec(20, 260), module, VCO::VOCT_INPUT));
     //  addInput(createInput<IOPort>(Vec(71, 60), module, VCO::RESHAPER_CV_INPUT));
     // ***** INPUTS **********
 
