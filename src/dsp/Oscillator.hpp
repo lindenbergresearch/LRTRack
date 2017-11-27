@@ -14,7 +14,7 @@ struct BLITOscillator {
     float phase = 0.f;  // current phase
     float incr = 0.f;   // current phase increment for PLL
 
-    float harmonics = BLIT_HARMONICS;
+    float saturate = 1.f;
     int N = 0;
 
     /* currents of waveforms */
@@ -64,7 +64,6 @@ struct BLITOscillator {
     float getPulseWave() const;
     float getSawTriWave() const;
     float getTriangleWave() const;
-
-    float getHarmonics() const;
-    void setHarmonics(float harmonics);
+    float getSaturate() const;
+    void setSaturate(float saturate);
 };

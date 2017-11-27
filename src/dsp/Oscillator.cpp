@@ -12,7 +12,7 @@ void BLITOscillator::reset() {
     pw = 1.f;
     phase = 0.f;
     incr = 0.f;
-    harmonics = BLIT_HARMONICS;
+    saturate = 1.f;
 
     /* force recalculation of variables */
     invalidate();
@@ -179,26 +179,28 @@ void BLITOscillator::proccess() {
  */
 void BLITOscillator::invalidate() {
     incr = getPhaseIncrement(freq);
-    N = (int) floorf(harmonics / freq);
+    N = (int) floorf(BLIT_HARMONICS / freq);
 }
 
 
 /**
- * @brief Get current BLIT harmonics
+ * @brief Get saturation
  * @return
  */
-float BLITOscillator::getHarmonics() const {
-    return harmonics;
+float BLITOscillator::getSaturate() const {
+    return saturate;
 }
 
 
 /**
- * @brief Set BLIT harmonics
- * @param harmonics
+ * @brief Set saturation
+ * @param saturate
  */
-void BLITOscillator::setHarmonics(float harmonics) {
-    BLITOscillator::harmonics = harmonics;
+void BLITOscillator::setSaturate(float saturate) {
+    BLITOscillator::saturate = saturate;
 
     /* force recalculation of variables */
     invalidate();
 }
+
+
