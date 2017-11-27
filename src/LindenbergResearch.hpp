@@ -39,6 +39,18 @@ struct VCOWidget : ModuleWidget {
 struct LRTModule : Module {
     long cnt = 0;
 
+
+    /**
+     * @brief Overtake default constructor for module to be compatible
+     * @param numParams
+     * @param numInputs
+     * @param numOutputs
+     * @param numLights
+     */
+    LRTModule(int numParams, int numInputs, int numOutputs, int numLights = 0) :
+            Module(numParams, numInputs, numOutputs, numLights) {}
+
+
     void step() override;
 };
 
@@ -69,7 +81,7 @@ struct LCDWidget : Label {
         LCDWidget::length = length;
 
         LCDWidget::fg = fg;
-        LCDWidget::bg = nvgRGBA(r - 0x20, g - 0x20, b - 0x20, 0x15);
+        LCDWidget::bg = nvgRGBA(r - 0x20, g - 0x20, b - 0x20, 0x14);
     }
 
 
