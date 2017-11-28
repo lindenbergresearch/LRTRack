@@ -1,6 +1,6 @@
 #pragma once
 
-#include "helper.hpp"
+#include "DSPMath.hpp"
 
 using namespace rack;
 
@@ -9,20 +9,27 @@ using namespace rack;
  * @brief Oscillator base class
  */
 struct BLITOscillator {
-    float freq = 440.f; // oscillator frequency
-    float pw = 0.5f;    // pulse-width value
-    float phase = 0.f;  // current phase
-    float incr = 0.f;   // current phase increment for PLL
+    float freq;      // oscillator frequency
+    float pw;        // pulse-width value
+    float phase;     // current phase
+    float incr;      // current phase increment for PLL
+    float detune;    // analogue detune
+    float drift;     // oscillator drift
+    float warmup;    // oscillator warmup detune
+    Randomizer rand; // randomizer
 
-    float saturate = 1.f;
-    int N = 0;
+    float saturate;
+    int N;
 
     /* currents of waveforms */
-    float ramp = 0.f;
-    float saw = 0.f;
-    float pulse = 0.f;
-    float sawtri = 0.f;
-    float tri = 0.f;
+    float ramp;
+    float saw;
+    float pulse;
+    float sawtri;
+    float tri;
+
+    /* saved frequency states */
+    float _cv, _fm, _oct, _base, _coeff, _tune, _biqufm;
 
     /* leaky integrators */
     Integrator int1;
@@ -52,7 +59,8 @@ struct BLITOscillator {
      */
     void reset();
 
-    void setPitch(float cv, float oct);
+
+    void updatePitch(float cv, float fm, float tune, float oct);
 
     /* common getter and setter */
     float getFrequency() const;

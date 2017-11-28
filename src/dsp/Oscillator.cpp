@@ -1,4 +1,4 @@
-#include "helper.hpp"
+#include "DSPMath.hpp"
 #include "Oscillator.hpp"
 
 using namespace rack;
@@ -8,14 +8,35 @@ using namespace rack;
  * @brief Set oscillator state back
  */
 void BLITOscillator::reset() {
-    freq = 440.f;
+    freq = 0.f;
     pw = 1.f;
     phase = 0.f;
     incr = 0.f;
     saturate = 1.f;
+    detune = rand.nextFloat(-0.981273f, 0.8912846f);
+    drift = 0.f;
+    warmup = 0.f;
+
+    saw = 0.f;
+    ramp = 0.f;
+    pulse = 0.f;
+    sawtri = 0.f;
+    tri = 0.f;
+
+    saturate = 1.f;
+    N = 0;
+
+    _cv = 0.f;
+    _fm = 0.f;
+    _oct = 0.f;
+
+    _base = 1.f;
+    _coeff = 1.f;
+    _tune = 0.f;
+    _biqufm = 0.f;
 
     /* force recalculation of variables */
-    invalidate();
+    setFrequency(NOTE_C4);
 }
 
 
@@ -47,11 +68,13 @@ float BLITOscillator::getFrequency() const {
  * @param freq
  */
 void BLITOscillator::setFrequency(float freq) {
-    if (BLITOscillator::freq != freq){
+    /* just set if frequency differs from old value */
+    if (BLITOscillator::freq != freq) {
         BLITOscillator::freq = freq;
 
         /* force recalculation of variables */
-        invalidate();}
+        invalidate();
+    }
 }
 
 
@@ -169,7 +192,7 @@ void BLITOscillator::proccess() {
     /* adjust output levels */
     ramp *= 10;
     saw *= 10;
-    pulse *=  5;
+    pulse *= 5;
     sawtri = dcb.filter(sawtri) * 5;
     tri *= 6;
 }
@@ -206,10 +229,28 @@ void BLITOscillator::setSaturate(float saturate) {
 
 
 /**
- * @brief Translate from controlvoltage to frequency
- * @param cv Controlvoltage
+ * @brief Translate from control voltage to frequency
+ * @param cv ControlVoltage from MIDI2CV
+ * @param fm Frequency modulation
  * @param oct Octave
  */
-void BLITOscillator::setPitch(float cv, float oct) {
-    setFrequency(261.626f * powf(2.f, cv / 12.f) * oct);
+void BLITOscillator::updatePitch(float cv, float fm, float tune, float oct) {
+    // CV is at 1V/OCt, C0 = 16.3516Hz, C4 = 261.626Hz
+    // 10.3V = 20614.33hz
+
+    /* optimize the usage of expensive exp function and other computations */
+    float coeff = (_oct != oct) ? powf(2.f, oct) : _coeff;
+    float base = (_cv != cv) ? powf(2.f, cv) : _base;
+    float biqufm = (_tune != tune) ? quadraticBipolar(tune) : _biqufm;
+
+    setFrequency((NOTE_C4 + biqufm) * base * coeff + detune);
+
+    /* save states */
+    _cv = cv;
+    _fm = fm;
+    _oct = oct;
+    _base = base;
+    _coeff = coeff;
+    _tune = tune;
+    _biqufm = biqufm;
 }
