@@ -42,7 +42,7 @@ struct VCO : LRTModule {
 void VCO::step() {
     LRTModule::step();
 
-    osc.setPitch(inputs[VOCT_INPUT].value * 12.f + params[FREQUENCY_PARAM].value * 2.f, params[OCTAVE_PARAM].value);
+    osc.updatePitch(inputs[VOCT_INPUT].value, 0.f, params[FREQUENCY_PARAM].value, params[OCTAVE_PARAM].value);
 
     float saturate = params[SATURATE_PARAM].value;
     float pw = params[PW_PARAM].value;
@@ -65,7 +65,7 @@ void VCO::step() {
 
     outputs[TRI_OUTPUT].value = osc.tri;
 
-    if (cnt % 1000 == 0) {
+    if (cnt % 1200 == 0) {
         label1->text = stringf("%.2f Hz", osc.freq);
     }
 }
@@ -90,18 +90,18 @@ VCOWidget::VCOWidget() {
     addChild(createScrew<ScrewDarkA>(Vec(15, 365)));
     addChild(createScrew<ScrewDarkA>(Vec(box.size.x - 30, 365)));
 
-    auto *lw = new LRLightWidget();
+    /*auto *lw = new LRLightWidget();
     lw->box.pos = Vec(100, 100);
     lw->box.size = Vec(2, 2);
-    addChild(lw);
+    addChild(lw);*/
 
     // ***** SCREWS **********
 
 
     // ***** MAIN KNOBS ******
-    addParam(createParam<LRBigKnobWhite>(Vec(35, 166), module, VCO::FREQUENCY_PARAM, -1.f, 1.f, 0.f));
+    addParam(createParam<LRBigKnobWhite>(Vec(35, 176), module, VCO::FREQUENCY_PARAM, -15.f, 15.f, 0.f));
 
-    addParam(createParam<LRToggleKnob>(Vec(35, 120), module, VCO::OCTAVE_PARAM, 1.f, 3.f, 1.f));
+    addParam(createParam<LRToggleKnob>(Vec(35, 120), module, VCO::OCTAVE_PARAM, -3.f, 3.f, 0.f));
 
     addParam(createParam<LRBasicKnobWhite>(Vec(155, 216), module, VCO::HARMONICS_PARAM, 0.1f, 1.f, 1.f));
     addParam(createParam<LRBasicKnobWhite>(Vec(155, 130), module, VCO::SATURATE_PARAM, 0.f, 1.f, 1.f));
