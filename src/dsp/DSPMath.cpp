@@ -1,4 +1,4 @@
-#include "helper.hpp"
+#include "DSPMath.hpp"
 #include "engine.hpp"
 
 
@@ -128,4 +128,21 @@ float DCBlocker::filter(float sample) {
     ym1 = y;
 
     return y;
+}
+
+
+/**
+ * @brief Init randomizer
+ */
+Randomizer::Randomizer() {}
+
+
+/**
+ * @brief Return next random float in the range of 0.0 - 1.0
+ * @return Random number
+ */
+float Randomizer::nextFloat(float start, float stop) {
+    static std::default_random_engine e;
+    static std::uniform_real_distribution<> dis(start, stop); // rage 0 - 1
+    return (float) dis(e);
 }

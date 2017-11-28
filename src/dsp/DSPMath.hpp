@@ -1,12 +1,14 @@
 #pragma once
 
 #include <cmath>
+#include <random>
 #include "rack.hpp"
 
 using namespace rack;
 
 const static float TWOPI = (float) M_PI * 2;
 const static float BLIT_HARMONICS = 18000.f;
+const static float NOTE_C4 = 261.626f;
 
 
 /**
@@ -27,6 +29,16 @@ struct DCBlocker {
     float xm1 = 0.f, ym1 = 0.f;
 
     float filter(float sample);
+};
+
+/**
+ * @brief Simple ramdomizer
+ */
+struct Randomizer {
+
+    Randomizer();
+
+    float nextFloat(float start, float stop);
 };
 
 
