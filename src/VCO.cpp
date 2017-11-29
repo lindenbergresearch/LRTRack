@@ -7,18 +7,22 @@ struct VCO : LRTModule {
     enum ParamIds {
         FREQUENCY_PARAM,
         OCTAVE_PARAM,
-        HARMONICS_PARAM,
+        FM_PARAM,
         SATURATE_PARAM,
         PW_PARAM,
+        FOO_PARAM,
         NUM_PARAMS
     };
     enum InputIds {
         VOCT_INPUT,
+        FM_INPUT,
+        PW_INPUT,
+        SATURATE_INPUT,
         NUM_INPUTS
     };
     enum OutputIds {
         RAMP_OUTPUT,
-        SAW_OUTPUT,
+       // SAW_OUTPUT,
         PULSE_OUTPUT,
         SAWTRI_OUTPUT,
         TRI_OUTPUT,
@@ -58,7 +62,7 @@ void VCO::step() {
     osc.proccess();
 
     outputs[RAMP_OUTPUT].value = osc.ramp;
-    outputs[SAW_OUTPUT].value = osc.saw;
+ //   outputs[SAW_OUTPUT].value = osc.saw;
 
     outputs[PULSE_OUTPUT].value = osc.pulse;
     outputs[SAWTRI_OUTPUT].value = osc.sawtri;
@@ -99,34 +103,36 @@ VCOWidget::VCOWidget() {
 
 
     // ***** MAIN KNOBS ******
-    addParam(createParam<LRBigKnobWhite>(Vec(35, 176), module, VCO::FREQUENCY_PARAM, -15.f, 15.f, 0.f));
+    addParam(createParam<LRBigKnobWhite>(Vec(65.5, 173.0), module, VCO::FREQUENCY_PARAM, -15.f, 15.f, 0.f));
+    addParam(createParam<LRToggleKnob>(Vec(65.5, 243), module, VCO::OCTAVE_PARAM, -3.f, 3.f, 0.f));
 
-    addParam(createParam<LRToggleKnob>(Vec(35, 120), module, VCO::OCTAVE_PARAM, -3.f, 3.f, 0.f));
-
-    addParam(createParam<LRBasicKnobWhite>(Vec(155, 216), module, VCO::HARMONICS_PARAM, 0.1f, 1.f, 1.f));
-    addParam(createParam<LRBasicKnobWhite>(Vec(155, 130), module, VCO::SATURATE_PARAM, 0.f, 1.f, 1.f));
-    addParam(createParam<LRBasicKnobWhite>(Vec(155, 80), module, VCO::PW_PARAM, 0.1f, 1.f, 1.f));
+    addParam(createParam<LRBasicKnobWhite>(Vec(7.5, 111.5), module, VCO::SATURATE_PARAM, 0.1f, 1.f, 1.f));
+    addParam(createParam<LRBasicKnobWhite>(Vec(52.5, 111.5), module, VCO::FM_PARAM, 0.f, 1.f, 1.f));
+    addParam(createParam<LRBasicKnobWhite>(Vec(97.5, 111.5), module, VCO::PW_PARAM, 0.1f, 1.f, 1.f));
+    addParam(createParam<LRBasicKnobWhite>(Vec(142.5, 111.5), module, VCO::FOO_PARAM, 0.1f, 1.f, 1.f));
 
 
     // ***** MAIN KNOBS ******
 
 
     // ***** INPUTS **********
-    addInput(createInput<IOPort>(Vec(20, 260), module, VCO::VOCT_INPUT));
+    addInput(createInput<IOPort>(Vec(7.5, 59), module, VCO::VOCT_INPUT));
+    addInput(createInput<IOPort>(Vec(52.5, 59), module, VCO::FM_INPUT));
+    addInput(createInput<IOPort>(Vec(97.5, 59), module, VCO::PW_PARAM));
+    addInput(createInput<IOPort>(Vec(142.5, 59), module, VCO::FOO_PARAM));
+
     //  addInput(createInput<IOPort>(Vec(71, 60), module, VCO::RESHAPER_CV_INPUT));
     // ***** INPUTS **********
 
     // ***** OUTPUTS *********
-    addOutput(createOutput<IOPort>(Vec(20, 320), module, VCO::SAW_OUTPUT));
-    addOutput(createOutput<IOPort>(Vec(50, 320), module, VCO::RAMP_OUTPUT));
-
-    addOutput(createOutput<IOPort>(Vec(80, 320), module, VCO::PULSE_OUTPUT));
-    addOutput(createOutput<IOPort>(Vec(110, 320), module, VCO::SAWTRI_OUTPUT));
-
-    addOutput(createOutput<IOPort>(Vec(140, 320), module, VCO::TRI_OUTPUT));
+   // addOutput(createOutput<IOPort>(Vec(20, 320), module, VCO::SAW_OUTPUT));
+    addOutput(createOutput<IOPort>(Vec(7.5, 319), module, VCO::RAMP_OUTPUT));
+    addOutput(createOutput<IOPort>(Vec(52.5, 319), module, VCO::PULSE_OUTPUT));
+    addOutput(createOutput<IOPort>(Vec(97.5, 319), module, VCO::SAWTRI_OUTPUT));
+    addOutput(createOutput<IOPort>(Vec(142.5, 319), module, VCO::TRI_OUTPUT));
     // ***** OUTPUTS *********
 
-    module->label1->box.pos = Vec(10, 100);
+    module->label1->box.pos = Vec(30, 310);
 
     addChild(module->label1);
 }

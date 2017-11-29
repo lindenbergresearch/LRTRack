@@ -9,9 +9,9 @@ using namespace rack;
 #define LCD_FONT_DIG7 "res/digital-7.ttf"
 
 /* LCD default color */
-#define LCD_COLOR_FG nvgRGBA(0x04, 0xFA, 0x04, 0xFF)
+#define LCD_COLOR_FG nvgRGBA(0xFA, 0x0A, 0x04, 0xFF)
 
-#define LCD_FONTSIZE 14
+#define LCD_FONTSIZE 10
 #define LCD_LETTER_SPACING 0
 static const int width = 220;
 extern Plugin *plugin;

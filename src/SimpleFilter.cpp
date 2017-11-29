@@ -133,23 +133,23 @@ SimpleFilterWidget::SimpleFilterWidget() {
 
 
     // ***** MAIN KNOBS ******
-    addParam(createParam<LRBigKnobWhite>(Vec(75 - 25, 175), module, SimpleFilter::CUTOFF_PARAM, 0.f, 1.f, 0.f));
-    addParam(createParam<LRBigKnobWhite>(Vec(75 - 25, 250), module, SimpleFilter::RESONANCE_PARAM, -0.f, 1.f, 0.0f));
+    addParam(createParam<LRBigKnobWhite>(Vec(75 - 25.5, 175.5), module, SimpleFilter::CUTOFF_PARAM, 0.f, 1.f, 0.f));
+    addParam(createParam<LRBigKnobWhite>(Vec(75 - 25.5, 250.5), module, SimpleFilter::RESONANCE_PARAM, -0.f, 1.f, 0.0f));
     // ***** MAIN KNOBS ******
 
     // ***** CV INPUTS *******
-    addParam(createParam<LRBasicKnobWhite>(Vec(39 - 16, 120), module, SimpleFilter::CUTOFF_CV_PARAM, -1.f, 1.f, 0.f));
-    addParam(createParam<LRBasicKnobWhite>(Vec(111 - 16, 120), module, SimpleFilter::RESONANCE_CV_PARAM, -1.f, 1.f, 0.f));
+    addParam(createParam<LRBasicKnobWhite>(Vec(40 - 16, 121), module, SimpleFilter::CUTOFF_CV_PARAM, -1.f, 1.f, 0.f));
+    addParam(createParam<LRBasicKnobWhite>(Vec(112 - 16, 121), module, SimpleFilter::RESONANCE_CV_PARAM, -1.f, 1.f, 0.f));
 
-    addInput(createInput<IOPort>(Vec(39 - 14, 60), module, SimpleFilter::CUTOFF_CV_INPUT));
-    addInput(createInput<IOPort>(Vec(111 - 14, 60), module, SimpleFilter::RESONANCE_CV_INPUT));
+    addInput(createInput<IOPort>(Vec(38 - 14, 59), module, SimpleFilter::CUTOFF_CV_INPUT));
+    addInput(createInput<IOPort>(Vec(110 - 14, 59), module, SimpleFilter::RESONANCE_CV_INPUT));
     // ***** CV INPUTS *******
 
     // ***** INPUTS **********
-    addInput(createInput<IOPort>(Vec(39 - 14, 320), module, SimpleFilter::FILTER_INPUT));
+    addInput(createInput<IOPort>(Vec(38 - 14, 319), module, SimpleFilter::FILTER_INPUT));
     // ***** INPUTS **********
 
     // ***** OUTPUTS *********
-    addOutput(createOutput<IOPort>(Vec(111 - 14, 320), module, SimpleFilter::FILTER_OUTPUT));
+    addOutput(createOutput<IOPort>(Vec(110 - 14, 319), module, SimpleFilter::FILTER_OUTPUT));
     // ***** OUTPUTS *********
 }
