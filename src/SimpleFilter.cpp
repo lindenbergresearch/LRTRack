@@ -1,6 +1,7 @@
 #include "SimpleFilter.hpp"
 #include "LindenbergResearch.hpp"
 
+
 struct SimpleFilter : Module {
     enum ParamIds {
         CUTOFF_PARAM,
@@ -28,6 +29,7 @@ struct SimpleFilter : Module {
     float t1, t2;
     float frequency, resonance, in;
 
+
     SimpleFilter() : Module(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS) {
         f = 0;
         p = 0;
@@ -44,6 +46,7 @@ struct SimpleFilter : Module {
         in = 0;
     }
 
+
     void step() override;
 
 
@@ -53,19 +56,6 @@ struct SimpleFilter : Module {
     // - reset, randomize: implements special behavior when user clicks these from the context menu
 };
 
-float clip(float in, float level) {
-    // clipping high
-    if (in > level) {
-        in = level;
-    }
-
-    // clipping low
-    if (in < -level) {
-        in = -level;
-    }
-
-    return in;
-}
 
 void SimpleFilter::step() {
     // Moog 24 dB/oct resonant lowpass VCF
@@ -81,12 +71,12 @@ void SimpleFilter::step() {
 
     // translate frequency to logarithmic scale
     float freqHz = 20.f * powf(1000.f, params[CUTOFF_PARAM].value + cutoffCVValue);
-    frequency = clip(freqHz * (1.f / (engineGetSampleRate() / 2.0f)), 1.f);
-    resonance = clip(params[RESONANCE_PARAM].value + resonanceCVValue, 1.f);
+    frequency = clampf(freqHz * (1.f / (engineGetSampleRate() / 2.0f)), -1.f, 1.f);
+    resonance = clampf(params[RESONANCE_PARAM].value + resonanceCVValue, -1.f, 1.f);
 
     // normalize signal input to [-1.0...+1.0]
     // filter starts to be very unstable for input gain above 1.f and below 0.f
-    in = clip(inputs[FILTER_INPUT].value * 0.1f, 1.0f);
+    in = clampf(inputs[FILTER_INPUT].value * 0.1f, -1.f, 1.f);
 
     // Set coefficients given frequency & resonance [0.0...1.0]
     q = 1.0f - frequency;
@@ -94,7 +84,6 @@ void SimpleFilter::step() {
     f = p + p - 1.0f;
     q = resonance * (1.0f + 0.5f * q * (1.0f - q + 5.6f * q * q));
 
-    
 
     in -= q * b4;
 
@@ -118,7 +107,7 @@ void SimpleFilter::step() {
 
 
     // scale normalized output back to +/-5V
-    outputs[FILTER_OUTPUT].value = clip(b4, 1.0f) * 5.0f;
+    outputs[FILTER_OUTPUT].value = clampf(b4, -1.f, 1.0f) * 5.0f;
 }
 
 
@@ -149,18 +138,18 @@ SimpleFilterWidget::SimpleFilterWidget() {
     // ***** MAIN KNOBS ******
 
     // ***** CV INPUTS *******
-    addParam(createParam<LRBasicKnobWhite>(Vec(39-16, 120), module, SimpleFilter::CUTOFF_CV_PARAM, 0.f, 1.f, 0.f));
-    addParam(createParam<LRBasicKnobWhite>(Vec(111-16, 120), module, SimpleFilter::RESONANCE_CV_PARAM, 0.f, 1.f, 0.f));
+    addParam(createParam<LRBasicKnobWhite>(Vec(39 - 16, 120), module, SimpleFilter::CUTOFF_CV_PARAM, 0.f, 1.f, 0.f));
+    addParam(createParam<LRBasicKnobWhite>(Vec(111 - 16, 120), module, SimpleFilter::RESONANCE_CV_PARAM, 0.f, 1.f, 0.f));
 
-    addInput(createInput<IOPort>(Vec(39-14, 60), module, SimpleFilter::CUTOFF_CV_INPUT));
-    addInput(createInput<IOPort>(Vec(111-14, 60), module, SimpleFilter::RESONANCE_CV_INPUT));
+    addInput(createInput<IOPort>(Vec(39 - 14, 60), module, SimpleFilter::CUTOFF_CV_INPUT));
+    addInput(createInput<IOPort>(Vec(111 - 14, 60), module, SimpleFilter::RESONANCE_CV_INPUT));
     // ***** CV INPUTS *******
 
     // ***** INPUTS **********
-    addInput(createInput<IOPort>(Vec(39-14, 320), module, SimpleFilter::FILTER_INPUT));
+    addInput(createInput<IOPort>(Vec(39 - 14, 320), module, SimpleFilter::FILTER_INPUT));
     // ***** INPUTS **********
 
     // ***** OUTPUTS *********
-    addOutput(createOutput<IOPort>(Vec(111-14, 320), module, SimpleFilter::FILTER_OUTPUT));
+    addOutput(createOutput<IOPort>(Vec(111 - 14, 320), module, SimpleFilter::FILTER_OUTPUT));
     // ***** OUTPUTS *********
 }
