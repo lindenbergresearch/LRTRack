@@ -22,6 +22,58 @@ float fastSin(float angle) {
     result += 1.0f;
     result *= angle;
     return result;
+    // return sinf(angle);
+}
+
+
+/**
+ * @brief Quadratic sin approximation low precicion
+ * @param x
+ * @return
+ */
+float qsinlp(float x) {
+    if (x < -3.14159265f)
+        x += 6.28318531f;
+    else if (x > 3.14159265f)
+        x -= 6.28318531f;
+
+    if (x < 0)
+        return x * (1.27323954f + 0.405284735f * x);
+    else
+        return x * (1.27323954f - 0.405284735f * x);
+}
+
+
+/**
+ * @brief Quadratic sin approximation high precicion
+ * @param x
+ * @return
+ */
+float qsinhp(float x) {
+    float sin;
+
+    if (x < -3.14159265f)
+        x += 6.28318531f;
+    else if (x > 3.14159265f)
+        x -= 6.28318531f;
+
+    if (x < 0) {
+        sin = x * (1.27323954f + 0.405284735f * x);
+
+        if (sin < 0)
+            sin = sin * (-0.255f * (sin + 1) + 1);
+        else
+            sin = sin * (0.255f * (sin - 1) + 1);
+    } else {
+        sin = x * (1.27323954f - 0.405284735f * x);
+
+        if (sin < 0)
+            sin = sin * (-0.255f * (sin + 1) + 1);
+        else
+            sin = sin * (0.255f * (sin - 1) + 1);
+    }
+
+    return sin;
 }
 
 
@@ -31,7 +83,7 @@ float fastSin(float angle) {
  * @return App. value
  */
 float fastSinWrap(float angle) {
-    return fastSin(wrapTWOPI(angle));
+    return fastSin(angle);
 }
 
 
@@ -127,6 +179,18 @@ float DCBlocker::filter(float sample) {
     xm1 = sample;
     ym1 = y;
 
+    return y;
+}
+
+
+/**
+ * @brief Filter function for simple 6dB lowpass filter
+ * @param x Input sample
+ * @return
+ */
+float LP6DBFilter::filter(float x) {
+    float y = y0 + (alpha * (x - y0));
+    y0 = y;
     return y;
 }
 

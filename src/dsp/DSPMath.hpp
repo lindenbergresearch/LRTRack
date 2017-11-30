@@ -31,6 +31,21 @@ struct DCBlocker {
     float filter(float sample);
 };
 
+
+/**
+ * @brief Simple 6dB lowpass filter
+ */
+struct LP6DBFilter {
+    const float RC = 1.f / (80.f * 2.f * (float) M_PI);
+    const float dt = 1.f / engineGetSampleRate();
+    const float alpha = dt / (RC + dt);
+    float y0 = 0.f;
+
+
+    float filter(float x);
+};
+
+
 /**
  * @brief Simple ramdomizer
  */
@@ -53,5 +68,9 @@ float cliph(float in, float clip);
 float fastSinWrap(float angle);
 
 float fastSin(float angle);
+
+float qsinhp(float x);
+
+float qsinlp(float x);
 
 float BLIT(float N, float phase);
