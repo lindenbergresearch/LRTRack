@@ -7,8 +7,9 @@
 using namespace rack;
 
 const static float TWOPI = (float) M_PI * 2;
-const static float BLIT_HARMONICS = 18000.f;
+const static float BLIT_HARMONICS = 22000.f;
 const static float NOTE_C4 = 261.626f;
+const static float OSC_SHAPING = 0.678;
 
 
 /**
@@ -36,7 +37,7 @@ struct DCBlocker {
  * @brief Simple 6dB lowpass filter
  */
 struct LP6DBFilter {
-    const float RC = 1.f / (80.f * 2.f * (float) M_PI);
+    const float RC = 1.f / (100.f * 2.f * (float) M_PI);
     const float dt = 1.f / engineGetSampleRate();
     const float alpha = dt / (RC + dt);
     float y0 = 0.f;
@@ -74,3 +75,5 @@ float qsinhp(float x);
 float qsinlp(float x);
 
 float BLIT(float N, float phase);
+
+float shape1(float a, float x);

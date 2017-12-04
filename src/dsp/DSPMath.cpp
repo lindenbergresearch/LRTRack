@@ -210,3 +210,17 @@ float Randomizer::nextFloat(float start, float stop) {
     static std::uniform_real_distribution<> dis(start, stop); // rage 0 - 1
     return (float) dis(e);
 }
+
+
+/**
+ * @brief Shaper type 1
+ * @param a Amount from 0 - x
+ * @param x Input sample
+ * @return
+ */
+float shape1(float a, float x) {
+    float k = 2 * a / (1 - a);
+    float b = (1 + k) * (x * 0.1f) / (1 + k * abs(x * 0.1f));
+
+    return b * 10;
+}
