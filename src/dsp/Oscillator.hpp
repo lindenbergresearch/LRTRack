@@ -17,6 +17,7 @@ struct BLITOscillator {
     float drift;     // oscillator drift
     float warmup;    // oscillator warmup detune
     Randomizer rand; // randomizer
+    bool boost;
 
     float saturate;
     int N;
@@ -29,15 +30,14 @@ struct BLITOscillator {
     float tri;
 
     /* saved frequency states */
-    float _cv, _fm, _oct, _base, _coeff, _tune, _biqufm;
+    float _cv, _oct, _base, _coeff, _tune, _biqufm;
 
     /* leaky integrators */
     Integrator int1;
     Integrator int2;
     Integrator int3;
-
-    /* dc blocker */
-    DCBlocker dcb;
+    LP6DBFilter f1;
+    LP6DBFilter f2;
 
     BLITOscillator();
     ~BLITOscillator();

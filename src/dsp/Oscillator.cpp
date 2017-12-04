@@ -13,9 +13,11 @@ void BLITOscillator::reset() {
     phase = 0.f;
     incr = 0.f;
     saturate = 1.f;
-    detune = rand.nextFloat(-0.981273f, 0.8912846f);
+    detune = rand.nextFloat(-0.481273f, 0.5912846f);
     drift = 0.f;
     warmup = 0.f;
+
+    boost = false;
 
     saw = 0.f;
     ramp = 0.f;
@@ -27,7 +29,6 @@ void BLITOscillator::reset() {
     N = 0;
 
     _cv = 0.f;
-    _fm = 0.f;
     _oct = 0.f;
 
     _base = 1.f;
@@ -183,18 +184,27 @@ void BLITOscillator::proccess() {
     /* compute pulse waveform */
     pulse = delta * 1.6f;
     /* compute SAW waveform */
-    saw = ramp * -1.f;
+    saw = ramp * -1;
+
     /* compute triangle */
     tri = (float) M_PI / w * beta;
     /* compute sawtri */
     sawtri = saw + beta;
 
+    //TODO: warmup oscillator with: y(x)=1-e^-(x/n) and slope
+
     /* adjust output levels */
-    ramp *= 10;
-    saw *= 10;
-    pulse *= 5;
-    sawtri = dcb.filter(sawtri) * 5;
+    ramp *= 14;
+    saw *= 12;
+    pulse *= 6;
+    sawtri = sawtri * 5;
     tri *= 6;
+
+    /* reshape waveforms */
+    saw = shape1(OSC_SHAPING, saw);
+    pulse = shape1(OSC_SHAPING, pulse);
+    sawtri = shape1(OSC_SHAPING, sawtri);
+    tri = shape1(OSC_SHAPING, tri);
 }
 
 
@@ -243,11 +253,10 @@ void BLITOscillator::updatePitch(float cv, float fm, float tune, float oct) {
     float base = (_cv != cv) ? powf(2.f, cv) : _base;
     float biqufm = (_tune != tune) ? quadraticBipolar(tune) : _biqufm;
 
-    setFrequency((NOTE_C4 + biqufm) * base * coeff + detune);
+    setFrequency((NOTE_C4 + biqufm) * base * coeff + detune + fm);
 
     /* save states */
     _cv = cv;
-    _fm = fm;
     _oct = oct;
     _base = base;
     _coeff = coeff;
