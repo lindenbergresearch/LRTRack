@@ -106,7 +106,7 @@ struct LRBasicKnob : SVGKnob {
  * @brief Quantize position to odd numbers to simulate a toogle switch
  */
 struct LRToggleKnob : SVGKnob {
-    LRToggleKnob(float length = 0.83) {
+    LRToggleKnob(float length = 0.45) {
         minAngle = -length * (float) M_PI;
         maxAngle = length * (float) M_PI;
 
