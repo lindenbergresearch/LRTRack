@@ -26,6 +26,10 @@ struct BlankPanelWidget : ModuleWidget {
     BlankPanelWidget();
 };
 
+struct BlankPanelWidgetM1 : ModuleWidget {
+    BlankPanelWidgetM1();
+};
+
 
 struct ReShaperWidget : ModuleWidget {
     ReShaperWidget();
@@ -123,19 +127,27 @@ struct LRToggleKnob : SVGKnob {
 /**
  * @brief Basic middle-sized knob
  */
-struct LRBigKnobWhite : LRBasicKnob {
-    LRBigKnobWhite() {
+struct LRBigKnob : LRBasicKnob {
+    LRBigKnob() {
         setSVG(SVG::load(assetPlugin(plugin, "res/BigKnob.svg")));
     }
 };
 
+/**
+ * @brief Basic middle-sized knob
+ */
+struct LRMiddleKnob : LRBasicKnob {
+    LRMiddleKnob() {
+        setSVG(SVG::load(assetPlugin(plugin, "res/MiddleKnob.svg")));
+    }
+};
 
 /**
  * @brief Blue version of the Davies1900h
  */
-struct LRBasicKnobWhite : LRBasicKnob {
-    LRBasicKnobWhite() {
-        setSVG(SVG::load(assetPlugin(plugin, "res/LRBasicKnobWhite.svg")));
+struct LRSmallKnob : LRBasicKnob {
+    LRSmallKnob() {
+        setSVG(SVG::load(assetPlugin(plugin, "res/SmallKnob.svg")));
     }
 };
 
