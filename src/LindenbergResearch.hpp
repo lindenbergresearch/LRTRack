@@ -157,7 +157,7 @@ struct LRSmallKnob : LRBasicKnob {
  */
 struct IOPort : SVGPort {
     IOPort() {
-        background->svg = SVG::load(assetPlugin(plugin, "res/IOPortB.svg"));
+        background->svg = SVG::load(assetPlugin(plugin, "res/IOPort.svg"));
         background->wrap();
         box.size = background->box.size;
     }
@@ -169,7 +169,7 @@ struct IOPort : SVGPort {
  */
 struct ScrewDarkA : SVGScrew {
     ScrewDarkA() {
-        sw->svg = SVG::load(assetPlugin(plugin, "res/ScrewDarkA.svg"));
+        sw->svg = SVG::load(assetPlugin(plugin, "res/ScrewDark.svg"));
         sw->wrap();
         box.size = sw->box.size;
     }
