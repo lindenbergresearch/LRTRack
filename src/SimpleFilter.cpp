@@ -6,18 +6,24 @@ struct SimpleFilter : Module {
     enum ParamIds {
         CUTOFF_PARAM,
         RESONANCE_PARAM,
+        DRIVE_PARAM,
         CUTOFF_CV_PARAM,
         RESONANCE_CV_PARAM,
+        DRIVE_CV_PARAM,
+        DRIVE_CV,
         NUM_PARAMS
     };
     enum InputIds {
         FILTER_INPUT,
         CUTOFF_CV_INPUT,
         RESONANCE_CV_INPUT,
+        DRIVE_CV_INPUT,
         NUM_INPUTS
     };
     enum OutputIds {
-        FILTER_OUTPUT,
+        LP24_OUTPUT,
+        HP6_OUTPUT,
+        BP6_OUTPUT,
         NUM_OUTPUTS
     };
     enum LightIds {
@@ -107,7 +113,7 @@ void SimpleFilter::step() {
 
 
     // scale normalized output back to +/-5V
-    outputs[FILTER_OUTPUT].value = clampf(b4, -1.f, 1.0f) * 5.0f;
+    outputs[LP24_OUTPUT].value = clampf(b4, -1.f, 1.0f) * 10.0f;
 }
 
 
@@ -120,7 +126,7 @@ SimpleFilterWidget::SimpleFilterWidget() {
     {
         SVGPanel *panel = new SVGPanel();
         panel->box.size = box.size;
-        panel->setBackground(SVG::load(assetPlugin(plugin, "res/Panel.svg")));
+        panel->setBackground(SVG::load(assetPlugin(plugin, "res/VCF.svg")));
         addChild(panel);
     }
 
@@ -133,23 +139,28 @@ SimpleFilterWidget::SimpleFilterWidget() {
 
 
     // ***** MAIN KNOBS ******
-    addParam(createParam<LRBigKnobWhite>(Vec(75 - 25.5, 175.5), module, SimpleFilter::CUTOFF_PARAM, 0.f, 1.f, 0.f));
-    addParam(createParam<LRBigKnobWhite>(Vec(75 - 25.5, 250.5), module, SimpleFilter::RESONANCE_PARAM, -0.f, 1.f, 0.0f));
+    addParam(createParam<LRBigKnob>(Vec(62.5, 150.954), module, SimpleFilter::CUTOFF_PARAM, 0.f, 1.f, 0.f));
+    addParam(createParam<LRMiddleKnob>(Vec(32.69, 233.872), module, SimpleFilter::RESONANCE_PARAM, -0.f, 1.f, 0.0f));
+    addParam(createParam<LRMiddleKnob>(Vec(107.309, 233.872), module, SimpleFilter::DRIVE_PARAM, -0.f, 1.f, 0.0f));
     // ***** MAIN KNOBS ******
 
     // ***** CV INPUTS *******
-    addParam(createParam<LRBasicKnobWhite>(Vec(40 - 16, 121), module, SimpleFilter::CUTOFF_CV_PARAM, -1.f, 1.f, 0.f));
-    addParam(createParam<LRBasicKnobWhite>(Vec(112 - 16, 121), module, SimpleFilter::RESONANCE_CV_PARAM, -1.f, 1.f, 0.f));
+    addParam(createParam<LRSmallKnob>(Vec(27.874, 106.365), module, SimpleFilter::RESONANCE_CV_PARAM, -1.f, 1.f, 0.f));
+    addParam(createParam<LRSmallKnob>(Vec(78.5, 106.365), module, SimpleFilter::CUTOFF_CV_PARAM, -1.f, 1.f, 0.f));
+    addParam(createParam<LRSmallKnob>(Vec(127.647, 106.365), module, SimpleFilter::DRIVE_CV_PARAM, -1.f, 1.f, 0.f));
 
-    addInput(createInput<IOPort>(Vec(38 - 14, 59), module, SimpleFilter::CUTOFF_CV_INPUT));
-    addInput(createInput<IOPort>(Vec(110 - 14, 59), module, SimpleFilter::RESONANCE_CV_INPUT));
+    addInput(createInput<IOPort>(Vec(26.589, 51.821), module, SimpleFilter::RESONANCE_CV_INPUT));
+    addInput(createInput<IOPort>(Vec(76.5, 51.821), module, SimpleFilter::CUTOFF_CV_INPUT));
+    addInput(createInput<IOPort>(Vec(125.647, 51.821), module, SimpleFilter::DRIVE_CV_INPUT));
     // ***** CV INPUTS *******
 
     // ***** INPUTS **********
-    addInput(createInput<IOPort>(Vec(38 - 14, 319), module, SimpleFilter::FILTER_INPUT));
+    addInput(createInput<IOPort>(Vec(22.621, 326.252), module, SimpleFilter::FILTER_INPUT));
     // ***** INPUTS **********
 
     // ***** OUTPUTS *********
-    addOutput(createOutput<IOPort>(Vec(110 - 14, 319), module, SimpleFilter::FILTER_OUTPUT));
+    addOutput(createOutput<IOPort>(Vec(57.5, 326.252), module, SimpleFilter::LP24_OUTPUT));
+    addOutput(createOutput<IOPort>(Vec(95.141, 326.252), module, SimpleFilter::BP6_OUTPUT));
+    addOutput(createOutput<IOPort>(Vec(129.616, 326.252), module, SimpleFilter::HP6_OUTPUT));
     // ***** OUTPUTS *********
 }
