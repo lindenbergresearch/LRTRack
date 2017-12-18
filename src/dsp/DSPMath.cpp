@@ -52,6 +52,8 @@ float qsinlp(float x) {
 float qsinhp(float x) {
     float sin;
 
+    x = wrapTWOPI(x);
+
     if (x < -3.14159265f)
         x += 6.28318531f;
     else if (x > 3.14159265f)
@@ -140,8 +142,8 @@ float getPhaseIncrement(float frq) {
  */
 float BLITcore(float N, float phase) {
     float a = wrapTWOPI((clipl(N - 1, 0.f) + 0.5f) * phase);
-    float x = fastSin(a) * 1.f / fastSin(0.5f * phase);
-    return (x - 1.f) * 0.5f;
+    float x = sinf(a) * 1.f / sinf(0.5f * phase);
+    return (x - 1.f) * 2;
 }
 
 
@@ -164,7 +166,7 @@ float BLIT(float N, float phase) {
  * @return
  */
 float Integrator::add(float in, float Fn) {
-    value = (in - value) * (0.25f * Fn) + value;
+    value = (in - value) * (d * Fn) + value;
     return value;
 }
 
@@ -188,10 +190,23 @@ float DCBlocker::filter(float sample) {
  * @param x Input sample
  * @return
  */
-float LP6DBFilter::filter(float x) {
-    float y = y0 + (alpha * (x - y0));
+double LP6DBFilter::filter(double x) {
+    double y = y0 + (alpha * (x - y0));
     y0 = y;
+
     return y;
+}
+
+
+/**
+ * @brief Update filter parameter
+ * @param fc Cutoff frequency
+ */
+void LP6DBFilter::updateFrequency(sfloat fc) {
+    this->fc = fc;
+    RC = 1.f / (this->fc * TWOPI);
+    dt = 1.f / engineGetSampleRate();
+    alpha = dt / (RC + dt);
 }
 
 
@@ -213,14 +228,54 @@ float Randomizer::nextFloat(float start, float stop) {
 
 
 /**
- * @brief Shaper type 1
+ * @brief Shaper type 1 (Saturate)
  * @param a Amount from 0 - x
  * @param x Input sample
  * @return
  */
 float shape1(float a, float x) {
     float k = 2 * a / (1 - a);
-    float b = (1 + k) * (x * 0.1f) / (1 + k * abs(x * 0.1f));
+    float b = (1 + k) * (x * 0.5f) / (1 + k * abs(x * 0.5f));
 
-    return b * 10;
+    return b * 4;
+}
+
+
+/**
+ * @brief Soft saturating with a clip of a. Works only with positive values so use 'b' as helper here.
+ * @param x Input sample
+ * @param a Saturating threshold
+ * @return
+ */
+double saturate(double x, double a) {
+    double b = 1;
+
+    /* turn negative values positive and remind in b as coefficient */
+    if (x < 0) {
+        b = -1;
+        x *= -1;
+    }
+
+    // nothing to do
+    if (x <= a) return x * b;
+
+    double d = (a + (x - a) / (1 + pow((x - a) / (1 - a), 2)));
+
+    if (d > 1) {
+        return (a + 1) / 2 * b;
+    } else {
+        return d * b;
+    }
+}
+
+
+/**
+ * @brief
+ * @param input
+ * @return
+ */
+double overdrive(double input) {
+    const double x = input * 0.686306;
+    const double a = 1 + exp(sqrt(fabs(x)) * -0.75);
+    return (exp(x) - exp(-x * a)) / (exp(x) + exp(-x));
 }
