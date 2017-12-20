@@ -7,9 +7,6 @@
 using namespace rack;
 
 const static float TWOPI = (float) M_PI * 2;
-const static float BLIT_HARMONICS = 18000.f;
-const static float NOTE_C4 = 261.626f;
-const static float OSC_SHAPING = 0.778;
 
 /* standard precision */
 typedef double sfloat;
@@ -55,6 +52,7 @@ public:
         y0 = 0.f;
     }
 
+
     void updateFrequency(sfloat fc);
 
     double filter(double x);
@@ -72,13 +70,36 @@ struct Randomizer {
 };
 
 
+/**
+ * @brief Simple oversampling class
+ */
 struct Oversampler {
 private:
+    sfloat y0, y1;
+    sfloat []
 
+    /**
+     * @brief Returns a linear interpolated point out of two points
+     * @param x in the range of 0..1  where 0=y0 and 1=y1
+     * @return The interpolated point
+     */
+    sfloat linint2p(sfloat x) {
+        return y0 + x * (y1 - y0);
+    }
 
 public:
 
+    /** a x x b x x c
+     * @brief Step to next sample point
+     * @param y Next sample point
+     */
+    void next(sfloat y) {
+        y0 = y1;
+        y1 = y;
+    }
+
 };
+
 
 float wrapTWOPI(float n);
 

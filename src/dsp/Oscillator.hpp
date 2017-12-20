@@ -2,6 +2,10 @@
 
 #include "DSPMath.hpp"
 
+#define BLIT_HARMONICS = 18000.f;
+#define NOTE_C4 = 261.626f;
+#define OSC_SHAPING = 0.778;
+
 using namespace rack;
 
 
@@ -20,7 +24,7 @@ struct BLITOscillator {
     bool boost;
 
     float saturate;
-    int N;
+    int n;
 
     /* currents of waveforms */
     float ramp;
@@ -36,8 +40,9 @@ struct BLITOscillator {
     Integrator int1;
     Integrator int2;
     Integrator int3;
-    LP6DBFilter f1;
-    LP6DBFilter f2;
+    DCBlocker dcb1;
+    DCBlocker dcb2;
+    LP6DBFilter lp1 = LP6DBFilter(20000);
 
     BLITOscillator();
     ~BLITOscillator();
