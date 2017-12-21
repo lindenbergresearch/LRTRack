@@ -13,7 +13,7 @@ void BLITOscillator::reset() {
     phase = 0.f;
     incr = 0.f;
     saturate = 1.f;
-    detune = rand.nextFloat(-0.481273f, 0.5912846f);
+    detune = rand.nextFloat(-0.281273f, 0.2912846f);
     drift = 0.f;
     warmup = 0.f;
 
@@ -26,7 +26,7 @@ void BLITOscillator::reset() {
     tri = 0.f;
 
     saturate = 1.f;
-    N = 0;
+    n = 0;
 
     _cv = 0.f;
     _oct = 0.f;
@@ -166,8 +166,8 @@ void BLITOscillator::proccess() {
     float w = pw * (float) M_PI;
 
     /* get impulse train */
-    float blit1 = BLIT(N, phase);
-    float blit2 = BLIT(N, wrapTWOPI(w + phase));
+    float blit1 = BLIT(n, phase);
+    float blit2 = BLIT(n, wrapTWOPI(w + phase));
 
     /* feed integrator */
     int1.add(blit1, incr);
@@ -177,10 +177,10 @@ void BLITOscillator::proccess() {
     float delta = int1.value - int2.value;
 
     /* 3rd integrator */
-    float beta = int3.add(delta, incr) * 6.f;
+    float beta = int3.add(delta, incr) * 5.f;
 
     /* compute RAMP waveform */
-    ramp = int1.value - 0.1f;
+    ramp = int1.value; //lp1.filter(int1.value);
     /* compute pulse waveform */
     pulse = delta * 1.6f;
     /* compute SAW waveform */
@@ -194,11 +194,11 @@ void BLITOscillator::proccess() {
     //TODO: warmup oscillator with: y(x)=1-e^-(x/n) and slope
 
     /* adjust output levels */
-    ramp *= 14;
-    saw *= 12;
-    pulse *= 6;
-    sawtri = sawtri * 5;
-    tri *= 6;
+    ramp *= 3;
+    saw *= 3;
+
+    dcb1.filter(saw);
+    dcb2.filter(pulse);
 
     /* reshape waveforms */
     saw = shape1(OSC_SHAPING, saw);
@@ -213,7 +213,7 @@ void BLITOscillator::proccess() {
  */
 void BLITOscillator::invalidate() {
     incr = getPhaseIncrement(freq);
-    N = (int) floorf(BLIT_HARMONICS / freq);
+    n = (int) floorf(BLIT_HARMONICS / freq);
 }
 
 

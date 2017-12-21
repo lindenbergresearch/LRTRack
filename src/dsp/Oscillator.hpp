@@ -2,9 +2,9 @@
 
 #include "DSPMath.hpp"
 
-#define BLIT_HARMONICS = 18000.f;
-#define NOTE_C4 = 261.626f;
-#define OSC_SHAPING = 0.778;
+#define BLIT_HARMONICS 18000.f
+#define NOTE_C4 261.626f
+#define OSC_SHAPING 0.778
 
 using namespace rack;
 
