@@ -4,3 +4,4 @@ plugin.dylib
 .idea/
 build/
 cmake-build-debug/
+dist/
