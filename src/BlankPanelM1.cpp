@@ -15,12 +15,14 @@ struct BlankPanelM1 : Module {
         NUM_LIGHTS
     };
 
-    BlankPanel() : Module(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS) {}
+
+    BlankPanelM1() : Module(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS) {}
 
     void step() override;
 };
 
-void BlankPanel::step() {
+
+void BlankPanelM1::step() {
 }
 
 
