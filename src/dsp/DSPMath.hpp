@@ -19,18 +19,29 @@ struct Integrator {
     const float d = 0.25f;
     float value = 0.f;
 
-    float add(float in, float Fn);
+    /**
+     * @brief Add value to integrator
+     * @param x Input sample
+     * @param Fn
+     * @return Current integrator state
+     */
+    float add(float x, float Fn);
 };
 
 
 /**
- * @brief Filter out DC offset
+ * @brief Filter out DC offset / 1-Pole HP Filter
  */
 struct DCBlocker {
     const float R = 0.999;
     float xm1 = 0.f, ym1 = 0.f;
 
-    float filter(float sample);
+    /**
+     * @brief Filter signal
+     * @param x Input sample
+     * @return Filtered output
+     */
+    float filter(float x);
 };
 
 
@@ -47,14 +58,28 @@ private:
 
 public:
 
-    LP6DBFilter(sfloat fc) {
-        updateFrequency(fc);
+    /**
+     * @brief Create a new filter with a given cutoff frequency
+     * @param fc cutoff frequency
+     * @param factor Oversampling factor
+     */
+    LP6DBFilter(sfloat fc, int factor) {
+        updateFrequency(fc, factor);
         y0 = 0.f;
     }
 
 
-    void updateFrequency(sfloat fc);
+    /**
+     * @brief Set new cutoff frequency
+     * @param fc cutoff frequency
+     */
+    void updateFrequency(sfloat fc, int factor);
 
+    /**
+     * @brief Filter signal
+     * @param x Input sample
+     * @return Filtered output
+     */
     double filter(double x);
 };
 
@@ -74,30 +99,57 @@ struct Randomizer {
  * @brief Simple oversampling class
  */
 struct Oversampler {
-private:
-    sfloat y0, y1;
-    sfloat []
+    enum SampleFactor {
+        OVERSAMPLE_2X = 2,
+        OVERSAMPLE_4X = 4,
+        OVERSAMPLE_8X = 8,
+        OVERSAMPLE_16X = 16,
+        OVERSAMPLE_32X = 32
+    };
 
-    /**
-     * @brief Returns a linear interpolated point out of two points
-     * @param x in the range of 0..1  where 0=y0 and 1=y1
-     * @return The interpolated point
-     */
-    sfloat linint2p(sfloat x) {
-        return y0 + x * (y1 - y0);
+    sfloat y0, y1;
+    sfloat up[OVERSAMPLE_32X];
+    sfloat data[OVERSAMPLE_32X];
+    SampleFactor factor;
+    LP6DBFilter filter = LP6DBFilter(18000);
+
+
+    Oversampler(SampleFactor factor) : factor(factor) {
+        y0 = 0;
+        y1 = 0;
     }
 
-public:
 
-    /** a x x b x x c
+    /**
+     * @brief Return linear interpolated position
+     * @param point Point in oversampled data
+     * @return
+     */
+    sfloat interpolate(int point);
+
+
+    /**
+     * @brief Create up-sampled data out of two basic values
+     */
+    void upsample();
+
+    /**
+     * @brief Downsample data
+     * @return Downsampled point
+     */
+    sfloat downsample();
+
+    /**
+     * @brief Compute data for oversampled points
+     * @param transform Pointer to transform function
+     */
+    void compute(sfloat (*transform)(sfloat));
+
+    /**
      * @brief Step to next sample point
      * @param y Next sample point
      */
-    void next(sfloat y) {
-        y0 = y1;
-        y1 = y;
-    }
-
+    void next(sfloat y);
 };
 
 

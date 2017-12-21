@@ -161,24 +161,24 @@ float BLIT(float N, float phase) {
 
 /**
  * @brief Add value to integrator
- * @param in Input
+ * @param x Input
  * @param Fn
  * @return
  */
-float Integrator::add(float in, float Fn) {
-    value = (in - value) * (d * Fn) + value;
+float Integrator::add(float x, float Fn) {
+    value = (x - value) * (d * Fn) + value;
     return value;
 }
 
 
 /**
  * @brief Filter function for DC block
- * @param sample Input sample
+ * @param x Input sample
  * @return Filtered sample
  */
-float DCBlocker::filter(float sample) {
-    float y = sample - xm1 + R * ym1;
-    xm1 = sample;
+float DCBlocker::filter(float x) {
+    float y = x - xm1 + R * ym1;
+    xm1 = x;
     ym1 = y;
 
     return y;
@@ -202,10 +202,10 @@ double LP6DBFilter::filter(double x) {
  * @brief Update filter parameter
  * @param fc Cutoff frequency
  */
-void LP6DBFilter::updateFrequency(sfloat fc) {
+void LP6DBFilter::updateFrequency(sfloat fc, int factor) {
     this->fc = fc;
     RC = 1.f / (this->fc * TWOPI);
-    dt = 1.f / engineGetSampleRate();
+    dt = 1.f / engineGetSampleRate() * factor;
     alpha = dt / (RC + dt);
 }
 
@@ -238,6 +238,62 @@ float shape1(float a, float x) {
     float b = (1 + k) * (x * 0.5f) / (1 + k * abs(x * 0.5f));
 
     return b * 4;
+}
+
+
+/**
+     * @brief Return linear interpolated position
+     * @param point Point in oversampled data
+     * @return
+     */
+sfloat Oversampler::interpolate(int point) {
+    return y0 + (point / factor) * (y1 - y0);
+}
+
+
+/**
+ * @brief Create up-sampled data out of two basic values
+ */
+void Oversampler::upsample() {
+    for (int i = 0; i < factor; i++) {
+        up[i] = filter.filter(interpolate(i + 1));
+    }
+}
+
+
+/**
+ * @brief Step to next sample point
+ * @param y Next sample point
+ */
+void Oversampler::next(sfloat y) {
+    y0 = y1;
+    y1 = y;
+}
+
+
+/**
+ * @brief Compute data for oversampled points
+ * @param transform Pointer to transform function
+ */
+void Oversampler::compute(sfloat (*transform)(sfloat)) {
+    for (int i = 0; i < factor; i++) {
+        data[i] = transform(up[i]);
+    }
+}
+
+
+/**
+ * @brief Downsample data per average
+ * @return Downsampled point
+ */
+sfloat Oversampler::downsample() {
+    sfloat tmp = 0;
+
+    for (int i = 0; i < factor; i++) {
+        tmp += data[i];
+    }
+
+    return tmp / factor;
 }
 
 
