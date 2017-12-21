@@ -3,16 +3,15 @@
 #include "rack.hpp"
 #include "asset.hpp"
 #include "widgets.hpp"
+#include "SimpleFilter.hpp"
 
 using namespace rack;
 
 #define LCD_FONT_DIG7 "res/digital-7.ttf"
-
-/* LCD default color */
-#define LCD_COLOR_FG nvgRGBA(0xFA, 0x0A, 0x04, 0xFF)
-
-#define LCD_FONTSIZE 10
+#define LCD_COLOR_FG nvgRGBA(0x20, 0xA1, 0xE4, 0xFF)
+#define LCD_FONTSIZE 8
 #define LCD_LETTER_SPACING 0
+
 static const int width = 220;
 extern Plugin *plugin;
 
@@ -25,6 +24,7 @@ struct SimpleFilterWidget : ModuleWidget {
 struct BlankPanelWidget : ModuleWidget {
     BlankPanelWidget();
 };
+
 
 struct BlankPanelWidgetM1 : ModuleWidget {
     BlankPanelWidgetM1();
@@ -61,14 +61,13 @@ struct LRTModule : Module {
 
 
 /**
- * @brief Emulation of an LCD monochrome display
+ * @brief Emulation of a LCD monochrome display
  */
 struct LCDWidget : Label {
     std::shared_ptr<Font> gLCDFont_DIG7;
     NVGcolor fg;
     NVGcolor bg;
     unsigned char length = 0;
-
 
     /**
      * @brief Constructor
@@ -77,14 +76,14 @@ struct LCDWidget : Label {
         /** load LCD ttf font */
         gLCDFont_DIG7 = Font::load(assetPlugin(plugin, LCD_FONT_DIG7));
 
-        unsigned char r = (unsigned char) (fg.r * 255);
-        unsigned char g = (unsigned char) (fg.g * 255);
-        unsigned char b = (unsigned char) (fg.b * 255);
+        auto r = (unsigned char) (fg.r * 255);
+        auto g = (unsigned char) (fg.g * 255);
+        auto b = (unsigned char) (fg.b * 255);
 
         LCDWidget::length = length;
 
         LCDWidget::fg = fg;
-        LCDWidget::bg = nvgRGBA(r - 0x20, g - 0x20, b - 0x20, 0x14);
+        LCDWidget::bg = nvgRGBA(r - 0x30, g - 0x30, b - 0x30, 0x24);
     }
 
 
@@ -106,6 +105,7 @@ struct LRBasicKnob : SVGKnob {
     }
 };
 
+
 /**
  * @brief Quantize position to odd numbers to simulate a toogle switch
  */
@@ -116,6 +116,7 @@ struct LRToggleKnob : SVGKnob {
 
         setSVG(SVG::load(assetPlugin(plugin, "res/BigKnob.svg")));
     }
+
 
     void onChange(EventChange &e) override {
         value = round(value);
@@ -133,6 +134,7 @@ struct LRBigKnob : LRBasicKnob {
     }
 };
 
+
 /**
  * @brief Basic middle-sized knob
  */
@@ -141,6 +143,7 @@ struct LRMiddleKnob : LRBasicKnob {
         setSVG(SVG::load(assetPlugin(plugin, "res/MiddleKnob.svg")));
     }
 };
+
 
 /**
  * @brief Blue version of the Davies1900h
@@ -174,6 +177,7 @@ struct ScrewDarkA : SVGScrew {
         box.size = sw->box.size;
     }
 };
+
 
 struct LRLightWidget : TransparentWidget {
     NVGcolor bgColor = nvgRGBf(0, 0, 0);
