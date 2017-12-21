@@ -2,94 +2,39 @@
 
 #include "DSPEffect.hpp"
 #include "engine.hpp"
+#include "DSPMath.hpp"
 
 namespace rack {
 
     struct LadderFilter : DSPEffect {
 
-        Input audioIn;
-        Param cutoffParam, resonanceParam, driveParam;
-        Output lpOut, bpOut, hpOut;
+    private:
+        sfloat f, p, q;
+        sfloat b0, b1, b2, b3, b4;
+        sfloat t1, t2;
+        sfloat freqExp, freqHz, frequency, resExp, resonance, drive;
+        sfloat in, lpOut;
+        LP6DBFilter lpf2 = LP6DBFilter(18000);
 
+        void updateResExp();
 
-        void invalidate() override {
-            DSPEffect::invalidate();
-        }
+    public:
+        LadderFilter();
 
+        void invalidate() override;
 
-        double process() override {
-            return DSPEffect::process();
-        }
+        void process() override;
 
+        sfloat getFrequency() const;
+        void setFrequency(sfloat frequency);
+        sfloat getResonance() const;
+        void setResonance(sfloat resonance);
+        sfloat getDrive() const;
+        void setDrive(sfloat drive);
+        sfloat getFreqHz() const;
 
-        const Input &getAudioIn() const {
-            return audioIn;
-        }
-
-
-        void setAudioIn(const Input &audioIn) {
-            LadderFilter::audioIn = audioIn;
-        }
-
-
-        const Param &getCutoffParam() const {
-            return cutoffParam;
-        }
-
-
-        void setCutoffParam(const Param &cutoffParam) {
-            LadderFilter::cutoffParam = cutoffParam;
-        }
-
-
-        const Param &getResonanceParam() const {
-            return resonanceParam;
-        }
-
-
-        void setResonanceParam(const Param &resonanceParam) {
-            LadderFilter::resonanceParam = resonanceParam;
-        }
-
-
-        const Param &getDriveParam() const {
-            return driveParam;
-        }
-
-
-        void setDriveParam(const Param &driveParam) {
-            LadderFilter::driveParam = driveParam;
-        }
-
-
-        const Output &getLpOut() const {
-            return lpOut;
-        }
-
-
-        void setLpOut(const Output &lpOut) {
-            LadderFilter::lpOut = lpOut;
-        }
-
-
-        const Output &getBpOut() const {
-            return bpOut;
-        }
-
-
-        void setBpOut(const Output &bpOut) {
-            LadderFilter::bpOut = bpOut;
-        }
-
-
-        const Output &getHpOut() const {
-            return hpOut;
-        }
-
-
-        void setHpOut(const Output &hpOut) {
-            LadderFilter::hpOut = hpOut;
-        }
+        void setIn(sfloat in);
+        sfloat getLpOut();
 
     };
 }

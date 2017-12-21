@@ -1,8 +1,11 @@
+#include "dsp/LadderFilter.hpp"
 #include "SimpleFilter.hpp"
+#include "dsp/DSPMath.hpp"
 #include "LindenbergResearch.hpp"
 
 
-struct SimpleFilter : Module {
+struct SimpleFilter : LRTModule {
+
     enum ParamIds {
         CUTOFF_PARAM,
         RESONANCE_PARAM,
@@ -10,9 +13,9 @@ struct SimpleFilter : Module {
         CUTOFF_CV_PARAM,
         RESONANCE_CV_PARAM,
         DRIVE_CV_PARAM,
-        DRIVE_CV,
         NUM_PARAMS
     };
+
     enum InputIds {
         FILTER_INPUT,
         CUTOFF_CV_INPUT,
@@ -20,100 +23,118 @@ struct SimpleFilter : Module {
         DRIVE_CV_INPUT,
         NUM_INPUTS
     };
+
     enum OutputIds {
-        LP24_OUTPUT,
-        HP6_OUTPUT,
-        BP6_OUTPUT,
+        LP_OUTPUT,
+        HP_OUTPUT,
+        BP_OUTPUT,
         NUM_OUTPUTS
     };
+
     enum LightIds {
         NUM_LIGHTS
     };
 
-    float f, p, q;
-    float b0, b1, b2, b3, b4;
-    float t1, t2;
-    float frequency, resonance, in;
+    LCDWidget *label1 = new LCDWidget(LCD_COLOR_FG, 12);
+    LCDWidget *label2 = new LCDWidget(LCD_COLOR_FG, 12);
+
+    LadderFilter filter;
+    Oversampler os = Oversampler(Oversampler::OVERSAMPLE_8X);
 
 
-    SimpleFilter() : Module(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS) {
-        f = 0;
-        p = 0;
-        q = 0;
-        b0 = 0;
-        b1 = 0;
-        b2 = 0;
-        b3 = 0;
-        b4 = 0;
-        t1 = 0;
-        t2 = 0;
-        frequency = 0;
-        resonance = 0;
-        in = 0;
-    }
+    SimpleFilter() : LRTModule(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS) {}
 
 
     void step() override;
-
-
-    // For more advanced Module features, read Rack's engine.hpp header file
-    // - toJson, fromJson: serialization of internal data
-    // - onSampleRateChange: event triggered by a change of sample rate
-    // - reset, randomize: implements special behavior when user clicks these from the context menu
 };
 
 
 void SimpleFilter::step() {
-    // Moog 24 dB/oct resonant lowpass VCF
-    // References: CSound source code, Stilson/Smith CCRMA paper.
-    // Modified by paul.kellett@maxim.abel.co.uk July 2000
-    //
-    // Adapted for VCV Rack by Lindenberg Research
-    // http://musicdsp.org/showArchiveComment.php?ArchiveID=25
+    cnt++;
+    filter.setFrequency(params[CUTOFF_PARAM].value);
+    filter.setResonance(params[RESONANCE_PARAM].value);
+    filter.setDrive(params[DRIVE_PARAM].value * params[DRIVE_PARAM].value);
 
-    // calculate CV inputs
-    float cutoffCVValue = (inputs[CUTOFF_CV_INPUT].value * 0.05f * params[CUTOFF_CV_PARAM].value);
-    float resonanceCVValue = (inputs[RESONANCE_CV_INPUT].value * 0.1f * params[RESONANCE_CV_PARAM].value);
+    sfloat y = clampd(inputs[FILTER_INPUT].value / 50, -0.5, 0.5);
 
-    // translate frequency to logarithmic scale
-    float freqHz = 20.f * powf(1000.f, params[CUTOFF_PARAM].value + cutoffCVValue);
-    frequency = clampf(freqHz * (1.f / (engineGetSampleRate() / 2.0f)), -1.f, 1.f);
-    resonance = clampf(params[RESONANCE_PARAM].value + resonanceCVValue, -1.f, 1.f);
+    os.next(y);
+    os.upsample();
 
-    // normalize signal input to [-1.0...+1.0]
-    // filter starts to be very unstable for input gain above 1.f and below 0.f
-    in = clampf(inputs[FILTER_INPUT].value * 0.1f, -1.f, 1.f);
+    for (int i = 0; i < os.factor; i++) {
+        filter.setIn(os.up[i]);
+        filter.process();
 
-    // Set coefficients given frequency & resonance [0.0...1.0]
-    q = 1.0f - frequency;
-    p = frequency + 0.8f * frequency * q;
-    f = p + p - 1.0f;
-    q = resonance * (1.0f + 0.5f * q * (1.0f - q + 5.6f * q * q));
+        os.data[i] = filter.getLpOut();
+    }
 
+    if (cnt % 10000 == 0) {
+        label1->text = stringf("%f", filter.getFreqHz());
+        label2->text = stringf("%f", filter.getResonance());
+    }
 
-    in -= q * b4;
+    outputs[LP_OUTPUT].value = (float) os.downsample();
 
-    t1 = b1;
-    b1 = (in + b0) * p - b1 * f;
+    /*  double cut_cv = inputs[CUTOFF_CV_INPUT].value * 0.05;
+      double res_cv = inputs[RESONANCE_CV_INPUT].value * 0.05;
 
-    t2 = b2;
-    b2 = (b1 + t1) * p - b2 * f;
-
-    t1 = b3;
-    b3 = (b2 + t2) * p - b3 * f;
-
-    b4 = (b3 + t1) * p - b4 * f;
-
-    b4 = b4 - b4 * b4 * b4 * 0.166666667f;
-    b0 = in;
-
-    // Lowpass  output:  b4
-    // Highpass output:  in - b4;
-    // Bandpass output:  3.0f * (b3 - b4);
+      // compute CV inputs
+      double cutoff = (cut_cv * quadraticBipolar(params[CUTOFF_CV_PARAM].value));
+      double res = (res_cv * quadraticBipolar(params[RESONANCE_CV_PARAM].value));
 
 
-    // scale normalized output back to +/-5V
-    outputs[LP24_OUTPUT].value = clampf(b4, -1.f, 1.0f) * 10.0f;
+      // translate frequency to logarithmic scale
+      freqHz = 20. * pow(1000., params[CUTOFF_PARAM].value + cutoff);
+      frequency = clampd(freqHz * (1. / (engineGetSampleRate() / 2.0)), 0., 1.);
+
+      resonance = clampd(params[RESONANCE_PARAM].value + res, 0, 1.1);
+      // add some curve to resonance to avoid aliasing at high frequency
+      resonance *= (-0.3 * frequency + 1);
+
+      // stringf("%f", freqHz);
+      //  label2->text = stringf("%-.6f", resonance);
+
+      // normalize signal input to [-1.0...+1.0]
+      // filter starts to be very unstable for input gain above 1.f and below 0.f
+      //in = clampd(inputs[FILTER_INPUT].value / 15., -0.7, 0.7);
+
+      in = clip(inputs[FILTER_INPUT].value / 10, 0.8, -0.8);
+
+      // Set coefficients given frequency & resonance [0.0...1.0]
+      q = 1.0 - frequency;
+      p = frequency + 0.8 * frequency * q;
+      f = p + p - 1.0;
+      q = resonance * (1.0 + 0.5 * q * (1.0 - q + 5.6 * q * q));
+
+
+      in -= q * b4;
+
+      t1 = b1;
+      b1 = (in + b0) * p - b1 * f;
+
+      t2 = b2;
+      b2 = (b1 + t1) * p - b2 * f;
+
+      t1 = b3;
+      b3 = (b2 + t2) * p - b3 * f;
+
+      b4 = (b3 + t1) * p - b4 * f;
+
+      b4 = b4 - b4 * b4 * b4;
+      b0 = in;
+
+      double drv = params[DRIVE_PARAM].value;
+      double out = 0;
+
+      out = clip(b4, 0.8 + drv, -(drv + 0.8)) * 10;
+
+
+      if (outputs[LP_OUTPUT].active) {
+          outputs[LP_OUTPUT].value = out;
+      }*/
+
+    //   outputs[BP_OUTPUT].value = (float) clampd(((b3 - b4) * 60.0), -10, 10);
+    //  outputs[HP_OUTPUT].value = (float) clampd((((in - 3.0 * (b3 - b4)) - b4) * 15.0), -10, 10);
+
 }
 
 
@@ -131,17 +152,16 @@ SimpleFilterWidget::SimpleFilterWidget() {
     }
 
     // ***** SCREWS **********
-    addChild(createScrew<ScrewDarkA>(Vec(15, 2)));
-    addChild(createScrew<ScrewDarkA>(Vec(box.size.x - 30, 2)));
-    addChild(createScrew<ScrewDarkA>(Vec(15, 365)));
-    addChild(createScrew<ScrewDarkA>(Vec(box.size.x - 30, 365)));
+    addChild(createScrew<ScrewDarkA>(Vec(15, 1)));
+    addChild(createScrew<ScrewDarkA>(Vec(box.size.x - 30, 1)));
+    addChild(createScrew<ScrewDarkA>(Vec(15, 366)));
+    addChild(createScrew<ScrewDarkA>(Vec(box.size.x - 30, 366)));
     // ***** SCREWS **********
-
 
     // ***** MAIN KNOBS ******
     addParam(createParam<LRBigKnob>(Vec(62.5, 150.954), module, SimpleFilter::CUTOFF_PARAM, 0.f, 1.f, 0.f));
-    addParam(createParam<LRMiddleKnob>(Vec(32.69, 233.872), module, SimpleFilter::RESONANCE_PARAM, -0.f, 1.f, 0.0f));
-    addParam(createParam<LRMiddleKnob>(Vec(107.309, 233.872), module, SimpleFilter::DRIVE_PARAM, -0.f, 1.f, 0.0f));
+    addParam(createParam<LRMiddleKnob>(Vec(32.69, 233.872), module, SimpleFilter::RESONANCE_PARAM, -0.f, 1.4, 0.0f));
+    addParam(createParam<LRMiddleKnob>(Vec(107.309, 233.872), module, SimpleFilter::DRIVE_PARAM, 0.0f, 1.f, 0.0f));
     // ***** MAIN KNOBS ******
 
     // ***** CV INPUTS *******
@@ -159,8 +179,14 @@ SimpleFilterWidget::SimpleFilterWidget() {
     // ***** INPUTS **********
 
     // ***** OUTPUTS *********
-    addOutput(createOutput<IOPort>(Vec(57.5, 326.252), module, SimpleFilter::LP24_OUTPUT));
-    addOutput(createOutput<IOPort>(Vec(95.141, 326.252), module, SimpleFilter::BP6_OUTPUT));
-    addOutput(createOutput<IOPort>(Vec(129.616, 326.252), module, SimpleFilter::HP6_OUTPUT));
+    addOutput(createOutput<IOPort>(Vec(57.5, 326.252), module, SimpleFilter::HP_OUTPUT));
+    addOutput(createOutput<IOPort>(Vec(95.141, 326.252), module, SimpleFilter::BP_OUTPUT));
+    addOutput(createOutput<IOPort>(Vec(129.616, 326.252), module, SimpleFilter::LP_OUTPUT));
     // ***** OUTPUTS *********
+
+    module->label1->box.pos = Vec(56, 235);
+    addChild(module->label1);
+
+    module->label2->box.pos = Vec(23, 300);
+    addChild(module->label2);
 }
