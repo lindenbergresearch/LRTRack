@@ -42,7 +42,6 @@ struct BLITOscillator {
     Integrator int3;
     DCBlocker dcb1;
     DCBlocker dcb2;
-    LP6DBFilter lp1 = LP6DBFilter(20000);
 
     BLITOscillator();
     ~BLITOscillator();
