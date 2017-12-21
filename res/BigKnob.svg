@@ -2,21 +2,21 @@
 <!-- Generator: Adobe Illustrator 16.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <svg version="1.1"
-	 id="svg15246" inkscape:version="0.92.2 5c3e80d, 2017-08-06" sodipodi:docname="BefacoBigKnob.svg" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:svg="http://www.w3.org/2000/svg" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="50px" height="50px"
-	 viewBox="-34.5 215.5 50 50" enable-background="new -34.5 215.5 50 50" xml:space="preserve">
-<sodipodi:namedview  units="px" showgrid="false" borderopacity="1.0" id="base" inkscape:cx="87.773411" inkscape:cy="59.915557" fit-margin-left="0" bordercolor="#666666" pagecolor="#ffffff" inkscape:zoom="1.979899" fit-margin-top="0" inkscape:current-layer="layer1" inkscape:window-width="1274" inkscape:window-height="1434" inkscape:window-x="1280" inkscape:window-y="0" inkscape:window-maximized="0" inkscape:pageopacity="0.0" fit-margin-right="0" inkscape:pageshadow="2" fit-margin-bottom="0" inkscape:document-units="px">
-	</sodipodi:namedview>
-<g id="layer1" transform="translate(-35.482976,-90.654687)" inkscape:label="Layer 1" inkscape:groupmode="layer">
-	<circle fill="#232323" cx="25.483" cy="330.655" r="24.5"/>
-	<path id="path8603" inkscape:connector-curvature="0" fill="#EFEFEF" d="M45.593,319.641c-1.346-2.553-3.15-4.816-5.297-6.686
-		c-4.141,0.592-8.426-1.506-10.564-5.158c-1.376-0.266-2.797-0.408-4.249-0.408c-1.451,0-2.871,0.143-4.248,0.408
-		c-2.14,3.652-6.424,5.75-10.566,5.158c-2.146,1.869-3.952,4.133-5.296,6.686c1.533,4.032,0.439,8.845-2.681,11.784
-		c0.102,2.924,0.729,5.711,1.795,8.264c4.151,1.266,7.242,5.229,7.513,9.635c2.199,1.643,4.699,2.889,7.398,3.648
-		c3.575-2.562,8.596-2.562,12.168,0c2.699-0.76,5.201-2.006,7.402-3.648c0.269-4.404,3.356-8.369,7.512-9.635
-		c1.068-2.553,1.693-5.34,1.793-8.264C45.156,328.486,44.064,323.673,45.593,319.641"/>
-	<circle fill="#EFEFEF" stroke="#939393" stroke-miterlimit="10" cx="25.483" cy="330.656" r="15.384"/>
-	<path id="path8605" inkscape:connector-curvature="0" d="M27.192,310.534c0,0.994-0.772,1.794-1.712,1.794
-		c-0.941,0-1.706-0.8-1.706-1.794c0-0.995,0.765-1.795,1.706-1.795C26.419,308.74,27.192,309.539,27.192,310.534"/>
+	 xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" xmlns:svg="http://www.w3.org/2000/svg" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:xlink="http://www.w3.org/1999/xlink" id="BigKnob" inkscape:version="0.92.2 5c3e80d, 2017-08-06"
+	 sodipodi:docname="BefacoBigKnob.svg" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="55px" height="55px"
+	 viewBox="0 0 55 55" enable-background="new 0 0 55 55" xml:space="preserve">
+<g id="BigKnob_1_">
+	<rect y="0" display="none" width="50" height="50"/>
+	<circle fill="#232323" cx="27.5" cy="27.5" r="27.5"/>
+	<circle fill="#C1C1C1" cx="27.5" cy="27.5" r="25.255"/>
+	
+		<path id="path8603" inkscape:connector-curvature="0" fill="#EFEFEF" stroke="#353535" stroke-width="0.4" stroke-miterlimit="10" d="
+		M50.532,14.885c-1.54-2.924-3.606-5.517-6.065-7.657c-4.742,0.678-9.651-1.725-12.099-5.908c-1.575-0.304-3.204-0.468-4.867-0.468
+		s-3.288,0.164-4.866,0.468c-2.45,4.184-7.358,6.586-12.1,5.908c-2.459,2.14-4.527,4.732-6.066,7.657
+		c1.756,4.618,0.503,10.13-3.071,13.498c0.117,3.349,0.836,6.54,2.058,9.466c4.754,1.449,8.294,5.989,8.605,11.036
+		c2.519,1.881,5.382,3.308,8.473,4.178c4.094-2.934,9.846-2.934,13.937,0c3.092-0.872,5.958-2.298,8.478-4.178
+		c0.308-5.045,3.845-9.587,8.604-11.036c1.223-2.925,1.94-6.116,2.053-9.466C50.033,25.016,48.781,19.505,50.532,14.885"/>
+	<circle fill="#E0E0E0" stroke="#050404" stroke-width="0.3" stroke-miterlimit="10" cx="27.499" cy="27.5" r="16.837"/>
+	<circle fill="#020202" stroke="#050404" stroke-width="0.3" stroke-miterlimit="10" cx="27.5" cy="5.542" r="2.175"/>
 </g>
 </svg>
