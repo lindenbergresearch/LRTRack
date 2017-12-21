@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 16.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+	 xmlns:svg="http://www.w3.org/2000/svg" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="MiddleKnob_1_" inkscape:version="0.92.2 5c3e80d, 2017-08-06"
+	 sodipodi:docname="BefacoBigKnob.svg" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="40px" height="40px"
+	 viewBox="-24.5 65.5 40 40" enable-background="new -24.5 65.5 40 40" xml:space="preserve">
+<g id="MiddleKnob">
+	<circle fill="#232323" cx="-4.5" cy="85.5" r="20"/>
+	<circle fill="#C1C1C1" cx="-4.5" cy="85.5" r="18.367"/>
+	
+		<path id="path8603" inkscape:connector-curvature="0" fill="#EFEFEF" stroke="#353535" stroke-width="0.4" stroke-miterlimit="10" d="
+		M12.251,76.324c-1.12-2.127-2.623-4.012-4.411-5.568c-3.449,0.494-7.02-1.254-8.799-4.297c-1.146-0.222-2.331-0.34-3.54-0.34
+		c-1.21,0-2.392,0.118-3.54,0.34c-1.782,3.043-5.351,4.791-8.8,4.297c-1.789,1.557-3.292,3.441-4.411,5.568
+		c1.276,3.36,0.366,7.368-2.234,9.817c0.086,2.436,0.608,4.758,1.497,6.884c3.458,1.055,6.032,4.356,6.258,8.026
+		c1.832,1.369,3.914,2.407,6.162,3.039c2.978-2.135,7.161-2.135,10.136,0c2.249-0.634,4.333-1.672,6.166-3.039
+		c0.223-3.668,2.796-6.972,6.258-8.026c0.889-2.126,1.411-4.448,1.493-6.884C11.889,83.692,10.978,79.685,12.251,76.324"/>
+	<circle fill="#E0E0E0" stroke="#050404" stroke-width="0.3" stroke-miterlimit="10" cx="-4.501" cy="85.5" r="13.5"/>
+	<circle fill="#020202" stroke="#050404" stroke-width="0.3" stroke-miterlimit="10" cx="-4.5" cy="69.53" r="1.582"/>
+</g>
+</svg>
