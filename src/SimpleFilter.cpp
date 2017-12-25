@@ -39,11 +39,10 @@ struct SimpleFilter : LRTModule {
     LCDWidget *label2 = new LCDWidget(LCD_COLOR_FG, 12);
 
     LadderFilter filter;
-    Oversampler os = Oversampler(Oversampler::OVERSAMPLE_8X);
+    Oversampler<8> os;
 
 
     SimpleFilter() : LRTModule(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS) {}
-
 
     void step() override;
 };
@@ -55,10 +54,10 @@ void SimpleFilter::step() {
     filter.setResonance(params[RESONANCE_PARAM].value);
     filter.setDrive(params[DRIVE_PARAM].value * params[DRIVE_PARAM].value);
 
-    sfloat y = clampd(inputs[FILTER_INPUT].value / 50, -0.5, 0.5);
+    float y = clampf(inputs[FILTER_INPUT].value / 50, -0.6, 0.6);
 
-    os.next(y);
-    os.upsample();
+    os.doNext(y);
+    os.doUpsample();
 
     for (int i = 0; i < os.factor; i++) {
         filter.setIn(os.up[i]);
@@ -67,12 +66,12 @@ void SimpleFilter::step() {
         os.data[i] = filter.getLpOut();
     }
 
-    if (cnt % 10000 == 0) {
-        label1->text = stringf("%f", filter.getFreqHz());
-        label2->text = stringf("%f", filter.getResonance());
-    }
+    /* if (cnt % 10000 == 0) {
+         label1->text = stringf("%f", filter.getFreqHz());
+         label2->text = stringf("%f", filter.getResonance());
+     }*/
 
-    outputs[LP_OUTPUT].value = (float) os.downsample();
+    outputs[LP_OUTPUT].value = os.getDownsampled() * 50;
 
     /*  double cut_cv = inputs[CUTOFF_CV_INPUT].value * 0.05;
       double res_cv = inputs[RESONANCE_CV_INPUT].value * 0.05;
@@ -160,28 +159,28 @@ SimpleFilterWidget::SimpleFilterWidget() {
 
     // ***** MAIN KNOBS ******
     addParam(createParam<LRBigKnob>(Vec(62.5, 150.954), module, SimpleFilter::CUTOFF_PARAM, 0.f, 1.f, 0.f));
-    addParam(createParam<LRMiddleKnob>(Vec(32.69, 233.872), module, SimpleFilter::RESONANCE_PARAM, -0.f, 1.4, 0.0f));
+    addParam(createParam<LRMiddleKnob>(Vec(32.69, 233.872), module, SimpleFilter::RESONANCE_PARAM, -0.f, 1.5, 0.0f));
     addParam(createParam<LRMiddleKnob>(Vec(107.309, 233.872), module, SimpleFilter::DRIVE_PARAM, 0.0f, 1.f, 0.0f));
     // ***** MAIN KNOBS ******
 
     // ***** CV INPUTS *******
-    addParam(createParam<LRSmallKnob>(Vec(27.874, 106.365), module, SimpleFilter::RESONANCE_CV_PARAM, -1.f, 1.f, 0.f));
-    addParam(createParam<LRSmallKnob>(Vec(78.5, 106.365), module, SimpleFilter::CUTOFF_CV_PARAM, -1.f, 1.f, 0.f));
-    addParam(createParam<LRSmallKnob>(Vec(127.647, 106.365), module, SimpleFilter::DRIVE_CV_PARAM, -1.f, 1.f, 0.f));
+    addParam(createParam<LRSmallKnob>(Vec(27, 106), module, SimpleFilter::RESONANCE_CV_PARAM, -1.f, 1.5f, 0.f));
+    addParam(createParam<LRSmallKnob>(Vec(78, 106), module, SimpleFilter::CUTOFF_CV_PARAM, -1.f, 1.f, 0.f));
+    addParam(createParam<LRSmallKnob>(Vec(127, 106), module, SimpleFilter::DRIVE_CV_PARAM, -1.f, 1.f, 0.f));
 
-    addInput(createInput<IOPort>(Vec(26.589, 51.821), module, SimpleFilter::RESONANCE_CV_INPUT));
-    addInput(createInput<IOPort>(Vec(76.5, 51.821), module, SimpleFilter::CUTOFF_CV_INPUT));
-    addInput(createInput<IOPort>(Vec(125.647, 51.821), module, SimpleFilter::DRIVE_CV_INPUT));
+    addInput(createInput<IOPort>(Vec(24, 52), module, SimpleFilter::RESONANCE_CV_INPUT));
+    addInput(createInput<IOPort>(Vec(74, 52), module, SimpleFilter::CUTOFF_CV_INPUT));
+    addInput(createInput<IOPort>(Vec(123, 52), module, SimpleFilter::DRIVE_CV_INPUT));
     // ***** CV INPUTS *******
 
     // ***** INPUTS **********
-    addInput(createInput<IOPort>(Vec(22.621, 326.252), module, SimpleFilter::FILTER_INPUT));
+    addInput(createInput<IOPort>(Vec(23, 326), module, SimpleFilter::FILTER_INPUT));
     // ***** INPUTS **********
 
     // ***** OUTPUTS *********
-    addOutput(createOutput<IOPort>(Vec(57.5, 326.252), module, SimpleFilter::HP_OUTPUT));
-    addOutput(createOutput<IOPort>(Vec(95.141, 326.252), module, SimpleFilter::BP_OUTPUT));
-    addOutput(createOutput<IOPort>(Vec(129.616, 326.252), module, SimpleFilter::LP_OUTPUT));
+    addOutput(createOutput<IOPort>(Vec(57, 326), module, SimpleFilter::HP_OUTPUT));
+    addOutput(createOutput<IOPort>(Vec(94, 326), module, SimpleFilter::BP_OUTPUT));
+    addOutput(createOutput<IOPort>(Vec(129, 326), module, SimpleFilter::LP_OUTPUT));
     // ***** OUTPUTS *********
 
     module->label1->box.pos = Vec(56, 235);
