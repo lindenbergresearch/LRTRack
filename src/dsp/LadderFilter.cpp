@@ -1,5 +1,4 @@
 #include "LadderFilter.hpp"
-#include "DSPMath.hpp"
 
 using namespace rack;
 
@@ -15,10 +14,10 @@ LadderFilter::LadderFilter() {}
  */
 void LadderFilter::invalidate() {
     // Set coefficients given frequency & resonance [0.0...1.0]
-    q = 1.0 - freqExp;
-    p = freqExp + 0.8 * freqExp * q;
-    f = p + p - 1.0;
-    q = resExp * (1.0 + 0.5 * q * (1.0 - q + 5.6 * q * q));
+    q = 1.0f - freqExp;
+    p = freqExp + 0.8f * freqExp * q;
+    f = p + p - 1.0f;
+    q = resExp * (1.0f + 0.5f * q * (1.0f - q + 5.6f * q * q));
 }
 
 
@@ -40,10 +39,12 @@ void LadderFilter::process() {
 
     b4 = (b3 + t1) * p - b4 * f;
 
-    b4 = b4 - b4 * b4 * b4 * 1.66666;
+    b4 = clampf(b4 - b4 * b4 * b4 * b4 * b4 * 4, -1, 1) + rnd.nextFloat(-10e-8f, +10e-8f);
+    //  b4 = lpf.filter(tanh(b4)) + rnd.nextFloat(-10e-8f, +10e-8f);
+    //  b4 = (b4 - quadraticBipolar(b4)*0.1) + rnd.nextFloat(-10e-8f, +10e-8f);
     b0 = in;
 
-    lpOut = b4;// clip(b4, 0.9, -0.9);
+    lpOut = b4;
 }
 
 
@@ -51,7 +52,7 @@ void LadderFilter::process() {
  * @brief Return cutoff frequency in the range of 0..1
  * @return
  */
-sfloat LadderFilter::getFrequency() const {
+float LadderFilter::getFrequency() const {
     return frequency;
 }
 
@@ -60,12 +61,12 @@ sfloat LadderFilter::getFrequency() const {
  * @brief Update cutoff frequency in the range of 0..1
  * @param frequency
  */
-void LadderFilter::setFrequency(sfloat frequency) {
+void LadderFilter::setFrequency(float frequency) {
     if (LadderFilter::frequency != frequency) {
         LadderFilter::frequency = frequency;
         // translate frequency to logarithmic scale
-        freqHz = 19. * pow(1000., frequency);
-        freqExp = clampd(freqHz * (1. / (engineGetSampleRate() * 8 / 2)), 0., 1.);
+        freqHz = 20.f * powf(1000.f, frequency);
+        freqExp = clampf(freqHz * (1.f / (engineGetSampleRate() * 8 / 2.f)), 0.f, 1.f);
 
         updateResExp();
         invalidate();
@@ -77,9 +78,10 @@ void LadderFilter::setFrequency(sfloat frequency) {
  * @brief Update non-linear resonance factor
  */
 void LadderFilter::updateResExp() {
-    resExp = clampd(resonance, 0, 1.5);
+    resExp = clampf(resonance, 0, 1.5f);
+    resExp = resExp * (1 - (drive / 3));
     // add some curve to resonance to avoid aliasing at high frequency
-    // resExp *= (-0.33 * frequency + 1.0);
+    // resExp *= (-0.50 * frequency + 1.1);
 }
 
 
@@ -87,7 +89,7 @@ void LadderFilter::updateResExp() {
  * @brief Get resonance
  * @return
  */
-sfloat LadderFilter::getResonance() const {
+float LadderFilter::getResonance() const {
     return resExp;
 }
 
@@ -96,7 +98,7 @@ sfloat LadderFilter::getResonance() const {
  * @brief Set resonance
  * @param resonance
  */
-void LadderFilter::setResonance(sfloat resonance) {
+void LadderFilter::setResonance(float resonance) {
     if (LadderFilter::resonance != resonance) {
         LadderFilter::resonance = resonance;
 
@@ -110,7 +112,7 @@ void LadderFilter::setResonance(sfloat resonance) {
  * @brief Get overdrive
  * @return
  */
-sfloat LadderFilter::getDrive() const {
+float LadderFilter::getDrive() const {
     return drive;
 }
 
@@ -119,9 +121,12 @@ sfloat LadderFilter::getDrive() const {
  * @brief Set overdrive
  * @param drive
  */
-void LadderFilter::setDrive(sfloat drive) {
+void LadderFilter::setDrive(float drive) {
     if (LadderFilter::drive != drive) {
         LadderFilter::drive = drive;
+
+        updateResExp();
+        invalidate();
     }
 }
 
@@ -130,7 +135,7 @@ void LadderFilter::setDrive(sfloat drive) {
  * @brief Set input channel with sample
  * @param in
  */
-void LadderFilter::setIn(sfloat in) {
+void LadderFilter::setIn(float in) {
     LadderFilter::in = in;
 }
 
@@ -139,16 +144,17 @@ void LadderFilter::setIn(sfloat in) {
  * @brief Get lowpass output
  * @return
  */
-sfloat LadderFilter::getLpOut() {
-    sfloat out = clip(lpOut * (drive * 5 + 1), 1, -1) * 12;
+float LadderFilter::getLpOut() {
+    float out;// = clip(lpOut * (drive * 20 + 1), 0.7, -0.7) * (1/(drive+1)*12);
+    float d = quadraticBipolar(drive) * 50 + 1;
 
-    out = lpf2.filter(out);
+    out = lpOut * (abs(lpOut) + d) / (lpOut * lpOut + (d - 1) * abs(lpOut) + 1);
 
-    return out;
+    return out * 1 / (drive * 3 + 1);
 }
 
 
-sfloat LadderFilter::getFreqHz() const {
+float LadderFilter::getFreqHz() const {
     return freqHz;
 }
 
