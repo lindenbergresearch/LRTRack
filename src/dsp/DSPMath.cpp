@@ -202,7 +202,7 @@ double LP6DBFilter::filter(double x) {
  * @brief Update filter parameter
  * @param fc Cutoff frequency
  */
-void LP6DBFilter::updateFrequency(sfloat fc, int factor) {
+void LP6DBFilter::updateFrequency(float fc, int factor) {
     this->fc = fc;
     RC = 1.f / (this->fc * TWOPI);
     dt = 1.f / engineGetSampleRate() * factor;
@@ -240,61 +240,6 @@ float shape1(float a, float x) {
     return b * 4;
 }
 
-
-/**
-     * @brief Return linear interpolated position
-     * @param point Point in oversampled data
-     * @return
-     */
-sfloat Oversampler::interpolate(int point) {
-    return y0 + (point / factor) * (y1 - y0);
-}
-
-
-/**
- * @brief Create up-sampled data out of two basic values
- */
-void Oversampler::upsample() {
-    for (int i = 0; i < factor; i++) {
-        up[i] = filter.filter(interpolate(i + 1));
-    }
-}
-
-
-/**
- * @brief Step to next sample point
- * @param y Next sample point
- */
-void Oversampler::next(sfloat y) {
-    y0 = y1;
-    y1 = y;
-}
-
-
-/**
- * @brief Compute data for oversampled points
- * @param transform Pointer to transform function
- */
-void Oversampler::compute(sfloat (*transform)(sfloat)) {
-    for (int i = 0; i < factor; i++) {
-        data[i] = transform(up[i]);
-    }
-}
-
-
-/**
- * @brief Downsample data per average
- * @return Downsampled point
- */
-sfloat Oversampler::downsample() {
-    sfloat tmp = 0;
-
-    for (int i = 0; i < factor; i++) {
-        tmp += data[i];
-    }
-
-    return tmp / factor;
-}
 
 
 /**

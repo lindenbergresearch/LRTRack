@@ -3,13 +3,11 @@
 #include <cmath>
 #include <random>
 #include "rack.hpp"
+#include "dsp/decimator.hpp"
 
 using namespace rack;
 
 const static float TWOPI = (float) M_PI * 2;
-
-/* standard precision */
-typedef double sfloat;
 
 
 /**
@@ -50,11 +48,11 @@ struct DCBlocker {
  */
 struct LP6DBFilter {
 private:
-    sfloat RC;
-    sfloat dt;
-    sfloat alpha;
-    sfloat y0;
-    sfloat fc;
+    float RC;
+    float dt;
+    float alpha;
+    float y0;
+    float fc;
 
 public:
 
@@ -63,7 +61,7 @@ public:
      * @param fc cutoff frequency
      * @param factor Oversampling factor
      */
-    LP6DBFilter(sfloat fc, int factor) {
+    LP6DBFilter(float fc, int factor) {
         updateFrequency(fc, factor);
         y0 = 0.f;
     }
@@ -73,7 +71,7 @@ public:
      * @brief Set new cutoff frequency
      * @param fc cutoff frequency
      */
-    void updateFrequency(sfloat fc, int factor);
+    void updateFrequency(float fc, int factor);
 
     /**
      * @brief Filter signal
@@ -98,23 +96,20 @@ struct Randomizer {
 /**
  * @brief Simple oversampling class
  */
+template<int OVERSAMPLE>
 struct Oversampler {
-    enum SampleFactor {
-        OVERSAMPLE_2X = 2,
-        OVERSAMPLE_4X = 4,
-        OVERSAMPLE_8X = 8,
-        OVERSAMPLE_16X = 16,
-        OVERSAMPLE_32X = 32
-    };
-
-    sfloat y0, y1;
-    sfloat up[OVERSAMPLE_32X];
-    sfloat data[OVERSAMPLE_32X];
-    SampleFactor factor;
-    LP6DBFilter filter = LP6DBFilter(18000);
+    float y0, y1;
+    float up[OVERSAMPLE];
+    float data[OVERSAMPLE];
+    Decimator<OVERSAMPLE, OVERSAMPLE> decimator;
+    int factor = OVERSAMPLE;
 
 
-    Oversampler(SampleFactor factor) : factor(factor) {
+    /**
+     * @brief Constructor
+     * @param factor Oversampling factor
+     */
+    Oversampler() {
         y0 = 0;
         y1 = 0;
     }
@@ -125,31 +120,36 @@ struct Oversampler {
      * @param point Point in oversampled data
      * @return
      */
-    sfloat interpolate(int point);
+    float interpolate(int point) {
+        return y0 + (point / factor) * (y1 - y0);
+    }
 
 
     /**
      * @brief Create up-sampled data out of two basic values
      */
-    void upsample();
+    void doUpsample() {
+        for (int i = 0; i < factor; i++) {
+            up[i] = interpolate(i + 1);
+        }
+    }
 
     /**
      * @brief Downsample data
      * @return Downsampled point
      */
-    sfloat downsample();
-
-    /**
-     * @brief Compute data for oversampled points
-     * @param transform Pointer to transform function
-     */
-    void compute(sfloat (*transform)(sfloat));
+    float getDownsampled() {
+        return decimator.process(data);
+    }
 
     /**
      * @brief Step to next sample point
      * @param y Next sample point
      */
-    void next(sfloat y);
+    void doNext(float y) {
+        y0 = y1;
+        y1 = y;
+    }
 };
 
 
@@ -202,4 +202,17 @@ inline double clip(double x, double sat, double satinv) {
                  (x * satinv < -1 ? -1 :
                   x * satinv));
     return (sat * (v2 - (1. / 3.) * v2 * v2 * v2));
+}
+
+
+/**
+ * @brief Clamp without branching
+ * @param input Input sample
+ * @return
+ */
+inline double saturate2(double input) { //clamp without branching
+    const double _limit = 0.3;
+    double x1 = fabs(input + _limit);
+    double x2 = fabs(input - _limit);
+    return 0.5 * (x1 - x2);
 }
