@@ -96,11 +96,11 @@ struct Randomizer {
 /**
  * @brief Simple oversampling class
  */
-template<int OVERSAMPLE>
+template<int OVERSAMPLE, int CHANNELS>
 struct Oversampler {
     float y0, y1;
     float up[OVERSAMPLE];
-    float data[OVERSAMPLE];
+    float data[CHANNELS][OVERSAMPLE];
     Decimator<OVERSAMPLE, OVERSAMPLE> decimator;
     int factor = OVERSAMPLE;
 
@@ -134,12 +134,14 @@ struct Oversampler {
         }
     }
 
+
     /**
-     * @brief Downsample data
+     * @brief Downsample data from agiven channel
+     * @param channel Channel to proccess
      * @return Downsampled point
      */
-    float getDownsampled() {
-        return decimator.process(data);
+    float getDownsampled(int channel) {
+        return decimator.process(data[channel]);
     }
 
     /**
