@@ -5,6 +5,9 @@
 #include "engine.hpp"
 #include "DSPMath.hpp"
 
+#define LP_CHANNEL 0
+#define HP_CHANNEL 1
+#define BP_CHANNEL 2
 
 namespace rack {
 
@@ -14,8 +17,9 @@ namespace rack {
         float b0, b1, b2, b3, b4;
         float t1, t2;
         float freqExp, freqHz, frequency, resExp, resonance, drive;
-        float in, lpOut;
+        float in, lpOut, bpOut, hpOut;
 
+        Oversampler<8, 3> os;
         Randomizer rnd;
 
         void updateResExp();
@@ -37,6 +41,9 @@ namespace rack {
 
         void setIn(float in);
         float getLpOut();
+
+        float getBpOut() const;
+        float getHpOut() const;
 
     };
 }

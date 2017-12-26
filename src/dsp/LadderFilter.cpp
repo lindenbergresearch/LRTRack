@@ -26,25 +26,39 @@ void LadderFilter::invalidate() {
  * @return
  */
 void LadderFilter::process() {
-    in -= q * b4;
+    os.doNext(in);
+    os.doUpsample();
 
-    t1 = b1;
-    b1 = (in + b0) * p - b1 * f;
+    for (int i = 0; i < os.factor; i++) {
+        in = os.up[i];
 
-    t2 = b2;
-    b2 = (b1 + t1) * p - b2 * f;
+        in -= q * b4;
 
-    t1 = b3;
-    b3 = (b2 + t2) * p - b3 * f;
+        t1 = b1;
+        b1 = (in + b0) * p - b1 * f;
 
-    b4 = (b3 + t1) * p - b4 * f;
+        t2 = b2;
+        b2 = (b1 + t1) * p - b2 * f;
 
-    b4 = clampf(b4 - b4 * b4 * b4 * b4 * b4 * 4, -1, 1) + rnd.nextFloat(-10e-8f, +10e-8f);
-    //  b4 = lpf.filter(tanh(b4)) + rnd.nextFloat(-10e-8f, +10e-8f);
-    //  b4 = (b4 - quadraticBipolar(b4)*0.1) + rnd.nextFloat(-10e-8f, +10e-8f);
-    b0 = in;
+        t1 = b3;
+        b3 = (b2 + t2) * p - b3 * f;
 
-    lpOut = b4;
+        b4 = (b3 + t1) * p - b4 * f;
+
+        b4 = clampf(b4 - b4 * b4 * b4 * b4 * b4 * 4, -1, 1) + rnd.nextFloat(-10e-8f, +10e-8f);
+        //  b4 = lpf.filter(tanh(b4)) + rnd.nextFloat(-10e-8f, +10e-8f);
+        //  b4 = (b4 - quadraticBipolar(b4)*0.1) + rnd.nextFloat(-10e-8f, +10e-8f);
+        b0 = in;
+
+        os.data[LP_CHANNEL][i] = b4;
+        os.data[HP_CHANNEL][i] = ((b3 - b4) * 60.0f);
+        os.data[BP_CHANNEL][i] = (((in - 3.0f * (b3 - b4)) - b4) * 15.0f);
+    }
+
+    lpOut = os.getDownsampled(LP_CHANNEL);
+    hpOut = os.getDownsampled(HP_CHANNEL);
+    bpOut = os.getDownsampled(BP_CHANNEL);
+
 }
 
 
@@ -154,7 +168,29 @@ float LadderFilter::getLpOut() {
 }
 
 
+/**
+ * @brief Get frequency of cutoff in Hz
+ * @return
+ */
 float LadderFilter::getFreqHz() const {
     return freqHz;
+}
+
+
+/**
+ * @brief Bandpass output current
+ * @return
+ */
+float LadderFilter::getBpOut() const {
+    return bpOut;
+}
+
+
+/**
+ * @brief Highpass output current
+ * @return
+ */
+float LadderFilter::getHpOut() const {
+    return hpOut;
 }
 
