@@ -1,4 +1,3 @@
-#include "ReShaper.hpp"
 #include "LindenbergResearch.hpp"
 
 struct ReShaper : Module {
@@ -46,7 +45,7 @@ ReShaperWidget::ReShaperWidget() {
     ReShaper *module = new ReShaper();
 
     setModule(module);
-    box.size = Vec(MODULE_WIDTH * RACK_GRID_WIDTH, RACK_GRID_HEIGHT);
+    box.size = Vec(RESHAPER_WIDTH * RACK_GRID_WIDTH, RACK_GRID_HEIGHT);
 
     {
         SVGPanel *panel = new SVGPanel();

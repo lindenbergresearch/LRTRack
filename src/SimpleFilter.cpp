@@ -1,5 +1,4 @@
 #include "dsp/LadderFilter.hpp"
-#include "SimpleFilter.hpp"
 #include "dsp/DSPMath.hpp"
 #include "LindenbergResearch.hpp"
 
@@ -132,7 +131,7 @@ SimpleFilterWidget::SimpleFilterWidget() {
     SimpleFilter *module = new SimpleFilter();
 
     setModule(module);
-    box.size = Vec(MODULE_WIDTH * RACK_GRID_WIDTH, RACK_GRID_HEIGHT);
+    box.size = Vec(FILTER_WIDTH * RACK_GRID_WIDTH, RACK_GRID_HEIGHT);
 
     {
         SVGPanel *panel = new SVGPanel();

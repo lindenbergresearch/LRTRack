@@ -1,4 +1,3 @@
-#include "BlankPanel.hpp"
 #include "LindenbergResearch.hpp"
 
 struct BlankPanel : Module {
@@ -28,7 +27,7 @@ BlankPanelWidget::BlankPanelWidget() {
     BlankPanel *module = new BlankPanel();
 
     setModule(module);
-    box.size = Vec(MODULE_WIDTH * RACK_GRID_WIDTH, RACK_GRID_HEIGHT);
+    box.size = Vec(BLANKPANEL_WIDTH * RACK_GRID_WIDTH, RACK_GRID_HEIGHT);
 
     {
         SVGPanel *panel = new SVGPanel();

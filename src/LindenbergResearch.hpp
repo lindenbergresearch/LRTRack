@@ -3,7 +3,6 @@
 #include "rack.hpp"
 #include "asset.hpp"
 #include "widgets.hpp"
-#include "SimpleFilter.hpp"
 
 using namespace rack;
 
@@ -11,6 +10,13 @@ using namespace rack;
 #define LCD_COLOR_FG nvgRGBA(0x20, 0xA1, 0xE4, 0xFF)
 #define LCD_FONTSIZE 8
 #define LCD_LETTER_SPACING 0
+
+#define BLANKPANEL_WIDTH 18.f
+#define BLANKPANEL_MARK_I_WIDTH 12.f
+#define FILTER_WIDTH 12.f
+#define OSCILLATOR_WIDTH 11.f
+#define RESHAPER_WIDTH 8.f
+
 
 static const int width = 220;
 extern Plugin *plugin;

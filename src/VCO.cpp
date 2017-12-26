@@ -1,5 +1,4 @@
 #include "dsp/Oscillator.hpp"
-#include "VCO.hpp"
 #include "LindenbergResearch.hpp"
 
 
@@ -81,7 +80,7 @@ VCOWidget::VCOWidget() {
     VCO *module = new VCO();
 
     setModule(module);
-    box.size = Vec(MODULE_WIDTH * RACK_GRID_WIDTH, MODULE_HEIGHT);
+    box.size = Vec(OSCILLATOR_WIDTH * RACK_GRID_WIDTH, RACK_GRID_HEIGHT);
 
     {
         SVGPanel *panel = new SVGPanel();
