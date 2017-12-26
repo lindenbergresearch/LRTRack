@@ -39,10 +39,9 @@ struct SimpleFilter : LRTModule {
     LCDWidget *label2 = new LCDWidget(LCD_COLOR_FG, 12);
 
     LadderFilter filter;
-    Oversampler<8> os;
-
 
     SimpleFilter() : LRTModule(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS) {}
+
 
     void step() override;
 };
@@ -56,22 +55,14 @@ void SimpleFilter::step() {
 
     float y = clampf(inputs[FILTER_INPUT].value / 50, -0.6, 0.6);
 
-    os.doNext(y);
-    os.doUpsample();
+    filter.setIn(y);
 
-    for (int i = 0; i < os.factor; i++) {
-        filter.setIn(os.up[i]);
-        filter.process();
+    filter.process();
 
-        os.data[i] = filter.getLpOut();
-    }
+    outputs[LP_OUTPUT].value = filter.getLpOut() * 50;
+    outputs[HP_OUTPUT].value = filter.getHpOut() * 50;
+    outputs[BP_OUTPUT].value = filter.getBpOut() * 50;
 
-    /* if (cnt % 10000 == 0) {
-         label1->text = stringf("%f", filter.getFreqHz());
-         label2->text = stringf("%f", filter.getResonance());
-     }*/
-
-    outputs[LP_OUTPUT].value = os.getDownsampled() * 50;
 
     /*  double cut_cv = inputs[CUTOFF_CV_INPUT].value * 0.05;
       double res_cv = inputs[RESONANCE_CV_INPUT].value * 0.05;
