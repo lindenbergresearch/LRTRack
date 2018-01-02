@@ -101,7 +101,7 @@ struct Oversampler {
     float y0, y1;
     float up[OVERSAMPLE];
     float data[CHANNELS][OVERSAMPLE];
-    Decimator<OVERSAMPLE, OVERSAMPLE> decimator;
+    Decimator<OVERSAMPLE, OVERSAMPLE> decimator[CHANNELS];
     int factor = OVERSAMPLE;
 
 
@@ -136,13 +136,14 @@ struct Oversampler {
 
 
     /**
-     * @brief Downsample data from agiven channel
+     * @brief Downsample data from a given channel
      * @param channel Channel to proccess
      * @return Downsampled point
      */
     float getDownsampled(int channel) {
-        return decimator.process(data[channel]);
+        return decimator[channel].process(data[channel]);
     }
+
 
     /**
      * @brief Step to next sample point
