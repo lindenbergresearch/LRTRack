@@ -81,7 +81,7 @@ void SimpleFilter::step() {
 
     // translate frequency to logarithmic scale
     float freqHz = 20.f * powf(1000.f, params[CUTOFF_PARAM].value + cutoffCVValue);
-    frequency = clip(freqHz * (1.f / (gSampleRate / 2.0f)), 1.f);
+    frequency = clip(freqHz * (1.f / (engineGetSampleRate() / 2.0f)), 1.f);
     resonance = clip(params[RESONANCE_PARAM].value + resonanceCVValue, 1.f);
 
     // normalize signal input to [-1.0...+1.0]
