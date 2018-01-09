@@ -8,6 +8,7 @@ struct SimpleFilter : LRTModule {
         CUTOFF_PARAM,
         RESONANCE_PARAM,
         DRIVE_PARAM,
+        SLOPE_PARAM,
         CUTOFF_CV_PARAM,
         RESONANCE_CV_PARAM,
         DRIVE_CV_PARAM,
@@ -80,26 +81,27 @@ SimpleFilterWidget::SimpleFilterWidget() {
     // ***** SCREWS **********
 
     // ***** MAIN KNOBS ******
-    addParam(createParam<LRBigKnob>(Vec(62.5, 150.954), module, SimpleFilter::CUTOFF_PARAM, 0.f, 1.f, 0.f));
-    addParam(createParam<LRMiddleKnob>(Vec(32.69, 233.872), module, SimpleFilter::RESONANCE_PARAM, -0.f, 1.5, 0.0f));
-    addParam(createParam<LRMiddleKnob>(Vec(107.309, 233.872), module, SimpleFilter::DRIVE_PARAM, 0.0f, 1.f, 0.0f));
+    addParam(createParam<LRBigKnob>(Vec(62.5, 151.5), module, SimpleFilter::CUTOFF_PARAM, 0.f, 1.f, 0.f));
+    addParam(createParam<LRMiddleKnob>(Vec(33, 232.5), module, SimpleFilter::RESONANCE_PARAM, -0.f, 1.5, 0.0f));
+    addParam(createParam<LRMiddleKnob>(Vec(107, 232.5), module, SimpleFilter::DRIVE_PARAM, 0.0f, 1.f, 0.0f));
+    addParam(createParam<LRMiddleKnob>(Vec(69.5, 293), module, SimpleFilter::SLOPE_PARAM, 0.0f, 1.f, 0.0f));
     // ***** MAIN KNOBS ******
 
     // ***** CV INPUTS *******
-    addParam(createParam<LRSmallKnob>(Vec(27, 106), module, SimpleFilter::RESONANCE_CV_PARAM, -1.f, 1.0f, 0.f));
-    addParam(createParam<LRSmallKnob>(Vec(78, 106), module, SimpleFilter::CUTOFF_CV_PARAM, -1.f, 1.f, 0.f));
-    addParam(createParam<LRSmallKnob>(Vec(127, 106), module, SimpleFilter::DRIVE_CV_PARAM, -1.f, 1.f, 0.f));
+    addParam(createParam<LRSmallKnob>(Vec(28, 106.5), module, SimpleFilter::RESONANCE_CV_PARAM, -1.f, 1.0f, 0.f));
+    addParam(createParam<LRSmallKnob>(Vec(78.5, 106.5), module, SimpleFilter::CUTOFF_CV_PARAM, -1.f, 1.f, 0.f));
+    addParam(createParam<LRSmallKnob>(Vec(127.6, 106.5), module, SimpleFilter::DRIVE_CV_PARAM, -1.f, 1.f, 0.f));
 
-    addInput(createInput<IOPort>(Vec(24, 52), module, SimpleFilter::RESONANCE_CV_INPUT));
-    addInput(createInput<IOPort>(Vec(74, 52), module, SimpleFilter::CUTOFF_CV_INPUT));
-    addInput(createInput<IOPort>(Vec(123, 52), module, SimpleFilter::DRIVE_CV_INPUT));
+    addInput(createInput<IOPort>(Vec(26, 52), module, SimpleFilter::RESONANCE_CV_INPUT));
+    addInput(createInput<IOPort>(Vec(76, 52), module, SimpleFilter::CUTOFF_CV_INPUT));
+    addInput(createInput<IOPort>(Vec(125, 52), module, SimpleFilter::DRIVE_CV_INPUT));
     // ***** CV INPUTS *******
 
     // ***** INPUTS **********
-    addInput(createInput<IOPort>(Vec(23, 326), module, SimpleFilter::FILTER_INPUT));
+    addInput(createInput<IOPort>(Vec(26, 326.5), module, SimpleFilter::FILTER_INPUT));
     // ***** INPUTS **********
 
     // ***** OUTPUTS *********
-    addOutput(createOutput<IOPort>(Vec(129, 326), module, SimpleFilter::LP_OUTPUT));
+    addOutput(createOutput<IOPort>(Vec(125, 326.5), module, SimpleFilter::LP_OUTPUT));
     // ***** OUTPUTS *********
 }
