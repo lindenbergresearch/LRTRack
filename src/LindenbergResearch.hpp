@@ -11,42 +11,59 @@ using namespace rack;
 #define LCD_FONTSIZE 8
 #define LCD_LETTER_SPACING 0
 
+/* panel dimensions */
 #define BLANKPANEL_WIDTH 18.f
 #define BLANKPANEL_MARK_I_WIDTH 12.f
 #define FILTER_WIDTH 12.f
 #define OSCILLATOR_WIDTH 11.f
 #define RESHAPER_WIDTH 8.f
 
-
-static const int width = 220;
 extern Plugin *plugin;
 
 
+/**
+ * @brief ALMA filter
+ */
 struct SimpleFilterWidget : ModuleWidget {
     SimpleFilterWidget();
 };
 
 
+/**
+ * @brief Blank Panel with Logo
+ */
 struct BlankPanelWidget : ModuleWidget {
     BlankPanelWidget();
 };
 
 
+/**
+ * @brief Blank Panel Mark I
+ */
 struct BlankPanelWidgetM1 : ModuleWidget {
     BlankPanelWidgetM1();
 };
 
 
+/**
+ * @brief Reshaper Panel
+ */
 struct ReShaperWidget : ModuleWidget {
     ReShaperWidget();
 };
 
 
+/**
+ * @brief Woldemar VCO
+ */
 struct VCOWidget : ModuleWidget {
     VCOWidget();
 };
 
 
+/**
+ * @brief
+ */
 struct LRTModule : Module {
     long cnt = 0;
 
@@ -62,7 +79,12 @@ struct LRTModule : Module {
             Module(numParams, numInputs, numOutputs, numLights) {}
 
 
-    void step() override;
+    void step() override {
+        Module::step();
+
+        // increment counter
+        cnt++;
+    }
 };
 
 
@@ -74,6 +96,7 @@ struct LCDWidget : Label {
     NVGcolor fg;
     NVGcolor bg;
     unsigned char length = 0;
+
 
     /**
      * @brief Constructor

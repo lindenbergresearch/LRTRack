@@ -14,11 +14,12 @@ void init(rack::Plugin *p) {
     p->slug = "Lindenberg Research";
     p->website = "https://github.com/lindenbergresearch/LRTRack";
 
-    p->addModel(createModel<SimpleFilterWidget>("Lindenberg Research", "LPFilter24dB", "24dB Lowpass Filter", FILTER_TAG));
-    p->addModel(createModel<BlankPanelWidget>("Lindenberg Research", "BlankPanel", "Blank Panel 20TE", UTILITY_TAG));
-    p->addModel(createModel<BlankPanelWidgetM1>("Lindenberg Research", "BlankPanel Mark I", "Blank Panel 12TE", UTILITY_TAG));
+    p->addModel(createModel<SimpleFilterWidget>("Lindenberg Research", "VCF", "ALMA Lowpass Filter", FILTER_TAG));
+    p->addModel(createModel<BlankPanelWidget>("Lindenberg Research", "BlankPanel 01", "Blank Panel 20TE", UTILITY_TAG));
+    p->addModel(createModel<BlankPanelWidgetM1>("Lindenberg Research", "BlankPanel 02", "Blank Panel 12TE", UTILITY_TAG));
     p->addModel(createModel<ReShaperWidget>("Lindenberg Research", "ReShaper", "ReShaper Wavefolder", FILTER_TAG));
-    p->addModel(createModel<VCOWidget>("Lindenberg Research", "VCO", "Voltage Controlled Oscillator", OSCILLATOR_TAG));
+    // not ready jet
+    //p->addModel(createModel<VCOWidget>("Lindenberg Research", "VCO", "Voltage Controlled Oscillator", OSCILLATOR_TAG));
 }
 
 
@@ -41,23 +42,13 @@ void LCDWidget::draw(NVGcontext *vg) {
         s2.append(":");
     }
 
-    nvgTextBox(vg, 0, 0, width, s1.c_str(), nullptr);
-    nvgTextBox(vg, 0, 0, width, s2.c_str(), nullptr);
+    nvgTextBox(vg, 0, 0, 220, s1.c_str(), nullptr);
+    nvgTextBox(vg, 0, 0, 220, s2.c_str(), nullptr);
 
     nvgFillColor(vg, fg);
-    nvgTextBox(vg, 0, 0, width, text.c_str(), nullptr);
+    nvgTextBox(vg, 0, 0, 220, text.c_str(), nullptr);
 }
 
-
-/**
- * @brief Custom step implementation for LRT Modules
- */
-void LRTModule::step() {
-    Module::step();
-
-    // increment counter
-    cnt++;
-}
 
 
 /**
