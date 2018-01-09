@@ -83,13 +83,20 @@ public:
 
 
 /**
- * @brief Simple randomizer
+ * @brief Simple noise generator
  */
-struct Randomizer {
+struct Noise {
 
-    Randomizer();
+    Noise() {
 
-    float nextFloat(float start, float stop);
+    }
+
+
+    float nextFloat(float gain) {
+        static std::default_random_engine e;
+        static std::uniform_real_distribution<> dis(0, 1); // rage 0 - 1
+        return (float) dis(e) * gain;
+    }
 };
 
 
@@ -97,10 +104,10 @@ struct Randomizer {
  * @brief Simple oversampling class
  */
 template<int OVERSAMPLE, int CHANNELS>
-struct Oversampler {
+struct OverSampler {
     float y0, y1;
-    float up[OVERSAMPLE];
-    float data[CHANNELS][OVERSAMPLE];
+    float up[OVERSAMPLE] = {};
+    float data[CHANNELS][OVERSAMPLE] = {};
     Decimator<OVERSAMPLE, OVERSAMPLE> decimator[CHANNELS];
     int factor = OVERSAMPLE;
 
@@ -109,7 +116,7 @@ struct Oversampler {
      * @brief Constructor
      * @param factor Oversampling factor
      */
-    Oversampler() {
+    OverSampler() {
         y0 = 0;
         y1 = 0;
     }
@@ -149,12 +156,34 @@ struct Oversampler {
      * @brief Step to next sample point
      * @param y Next sample point
      */
-    void doNext(float y) {
+    void next(float y) {
         y0 = y1;
         y1 = y;
     }
 };
 
+
+/**
+ * @brief Fast sin approximation
+ * @param angle Angle
+ * @return App. value
+ */
+inline float fastSin(float angle) {
+    float sqr = angle * angle;
+    float result = -2.39e-08f;
+    result *= sqr;
+    result += 2.7526e-06f;
+    result *= sqr;
+    result -= 1.98409e-04f;
+    result *= sqr;
+    result += 8.3333315e-03f;
+    result *= sqr;
+    result -= 1.666666664e-01f;
+    result *= sqr;
+    result += 1.0f;
+    result *= angle;
+    return result;
+}
 
 float wrapTWOPI(float n);
 
@@ -163,14 +192,6 @@ float getPhaseIncrement(float frq);
 float clipl(float in, float clip);
 
 float cliph(float in, float clip);
-
-float fastSinWrap(float angle);
-
-float fastSin(float angle);
-
-float qsinhp(float x);
-
-float qsinlp(float x);
 
 float BLIT(float N, float phase);
 
@@ -200,11 +221,11 @@ inline double clampd(double x, double min, double max) {
  * @param satinv
  * @return
  */
-inline double clip(double x, double sat, double satinv) {
-    double v2 = (x * satinv > 1 ? 1 :
-                 (x * satinv < -1 ? -1 :
-                  x * satinv));
-    return (sat * (v2 - (1. / 3.) * v2 * v2 * v2));
+inline float clip(float x, float sat, float satinv) {
+    float v2 = (x * satinv > 1 ? 1 :
+                (x * satinv < -1 ? -1 :
+                 x * satinv));
+    return (sat * (v2 - (1.f / 3.f) * v2 * v2 * v2));
 }
 
 
@@ -219,3 +240,14 @@ inline double saturate2(double input) { //clamp without branching
     double x2 = fabs(input - _limit);
     return 0.5 * (x1 - x2);
 }
+
+
+/**
+ * @brief Fast arctan approximation, corresponds to tanhf() but decreases y to infinity
+ * @param x
+ * @return
+ */
+inline float fastatan(float x) {
+    return (x / (1.0f + 0.28f * (x * x)));
+}
+
