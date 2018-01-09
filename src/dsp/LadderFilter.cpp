@@ -33,7 +33,7 @@ void LadderFilter::process() {
         float x = os.up[i];
 
         // non linear feedback with nice saturation
-        x -= fastatan(b5 * q);
+        x -= fastatan(bx * q);
 
         t1 = b1;
         b1 = ((x + b0) * p - b1 * f);
@@ -49,11 +49,14 @@ void LadderFilter::process() {
 
         b5 = ((b4 + t2) * p - b5 * f);
 
+        // fade over filter poles from 3dB/oct (1P) => 48dB/oct (5P)
+        bx = fade5(b1, b2, b3, b4, b5, slope);
+
         // saturate and add very low noise to have self oscillation with no input and high res
         b0 = fastatan(x + noise.nextFloat(NOISE_GAIN));
 
         // overdrive with fastatan, which folds back the waves at high input and creates a noisy bright sound
-        os.data[LOWPASS][i] = fastatan(b5 * (1 + drive * 50));
+        os.data[LOWPASS][i] = fastatan(bx * (1 + drive * 50));
     }
 
     lpOut = os.getDownsampled(LOWPASS);
@@ -164,4 +167,24 @@ float LadderFilter::getLpOut() {
  */
 float LadderFilter::getFreqHz() const {
     return freqHz;
+}
+
+
+/**
+ * @brief Get filter slope
+ * @return
+ */
+float LadderFilter::getSlope() const {
+    return slope;
+}
+
+
+/**
+ * @brief Set filter slope
+ * @param slope
+ */
+void LadderFilter::setSlope(float slope) {
+    if (LadderFilter::slope != slope) {
+        LadderFilter::slope = clampf(slope, 0, 4);
+    }
 }

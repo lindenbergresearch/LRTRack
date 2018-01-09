@@ -18,9 +18,9 @@ namespace rack {
 
     private:
         float f, p, q;
-        float b0, b1, b2, b3, b4, b5;
+        float b0, b1, b2, b3, b4, b5, bx;
         float t1, t2;
-        float freqExp, freqHz, frequency, resExp, resonance, drive;
+        float freqExp, freqHz, frequency, resExp, resonance, drive, slope;
         float in, lpOut;
 
         OverSampler<OVERSAMPLE, 1> os;
@@ -43,6 +43,8 @@ namespace rack {
         void setDrive(float drive);
         float getFreqHz() const;
 
+        float getSlope() const;
+        void setSlope(float slope);
         void setIn(float in);
         float getLpOut();
     };
