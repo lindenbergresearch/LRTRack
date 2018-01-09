@@ -1,93 +1,4 @@
 #include "DSPMath.hpp"
-#include "engine.hpp"
-
-
-/**
- * @brief Fast sin approximation
- * @param angle Angle
- * @return App. value
- */
-float fastSin(float angle) {
-    float sqr = angle * angle;
-    float result = -2.39e-08f;
-    result *= sqr;
-    result += 2.7526e-06f;
-    result *= sqr;
-    result -= 1.98409e-04f;
-    result *= sqr;
-    result += 8.3333315e-03f;
-    result *= sqr;
-    result -= 1.666666664e-01f;
-    result *= sqr;
-    result += 1.0f;
-    result *= angle;
-    return result;
-    // return sinf(angle);
-}
-
-
-/**
- * @brief Quadratic sin approximation low precicion
- * @param x
- * @return
- */
-float qsinlp(float x) {
-    if (x < -3.14159265f)
-        x += 6.28318531f;
-    else if (x > 3.14159265f)
-        x -= 6.28318531f;
-
-    if (x < 0)
-        return x * (1.27323954f + 0.405284735f * x);
-    else
-        return x * (1.27323954f - 0.405284735f * x);
-}
-
-
-/**
- * @brief Quadratic sin approximation high precicion
- * @param x
- * @return
- */
-float qsinhp(float x) {
-    float sin;
-
-    x = wrapTWOPI(x);
-
-    if (x < -3.14159265f)
-        x += 6.28318531f;
-    else if (x > 3.14159265f)
-        x -= 6.28318531f;
-
-    if (x < 0) {
-        sin = x * (1.27323954f + 0.405284735f * x);
-
-        if (sin < 0)
-            sin = sin * (-0.255f * (sin + 1) + 1);
-        else
-            sin = sin * (0.255f * (sin - 1) + 1);
-    } else {
-        sin = x * (1.27323954f - 0.405284735f * x);
-
-        if (sin < 0)
-            sin = sin * (-0.255f * (sin + 1) + 1);
-        else
-            sin = sin * (0.255f * (sin - 1) + 1);
-    }
-
-    return sin;
-}
-
-
-/**
- * @brief Fast sin approximation with input wrapping of -PI..PI
- * @param angle Angle
- * @return App. value
- */
-float fastSinWrap(float angle) {
-    return fastSin(angle);
-}
-
 
 /**
  * @brief Clip signal at bottom by value
@@ -211,23 +122,6 @@ void LP6DBFilter::updateFrequency(float fc, int factor) {
 
 
 /**
- * @brief Init randomizer
- */
-Randomizer::Randomizer() {}
-
-
-/**
- * @brief Return next random float in the range of 0.0 - 1.0
- * @return Random number
- */
-float Randomizer::nextFloat(float start, float stop) {
-    static std::default_random_engine e;
-    static std::uniform_real_distribution<> dis(start, stop); // rage 0 - 1
-    return (float) dis(e);
-}
-
-
-/**
  * @brief Shaper type 1 (Saturate)
  * @param a Amount from 0 - x
  * @param x Input sample
@@ -235,7 +129,7 @@ float Randomizer::nextFloat(float start, float stop) {
  */
 float shape1(float a, float x) {
     float k = 2 * a / (1 - a);
-    float b = (1 + k) * (x * 0.5f) / (1 + k * abs(x * 0.5f));
+    float b = (1 + k) * (x * 0.5f) / (1 + k * fabsf(x * 0.5f));
 
     return b * 4;
 }
