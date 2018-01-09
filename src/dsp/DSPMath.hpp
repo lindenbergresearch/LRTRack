@@ -185,6 +185,7 @@ inline float fastSin(float angle) {
     return result;
 }
 
+
 float wrapTWOPI(float n);
 
 float getPhaseIncrement(float frq);
@@ -251,3 +252,39 @@ inline float fastatan(float x) {
     return (x / (1.0f + 0.28f * (x * x)));
 }
 
+
+/**
+ * @brief Linear fade of two points
+ * @param a Point 1
+ * @param b Point 2
+ * @param n Fade value
+ * @return
+ */
+inline float fade2(float a, float b, float n) {
+    return (1 - n) * a + n * b;
+}
+
+
+/**
+ * @brief Linear fade of five points
+ * @param a Point 1
+ * @param b Point 2
+ * @param c Point 3
+ * @param d Point 4
+ * @param e Point 5
+ * @param n Fade value
+ * @return
+ */
+inline float fade5(float a, float b, float c, float d, float e, float n) {
+    if (n >= 0 && n < a) {
+        fade2(a, b, n);
+    } else if (n >= 1 && n < b) {
+        fade2(b, c, n - 1);
+    } else if (n >= 2 && n < c) {
+        fade2(c, d, n - 2);
+    } else if (n >= 3 && n < d) {
+        fade2(d, e, n - 3);
+    }
+
+    return e;
+}
