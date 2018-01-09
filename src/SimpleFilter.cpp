@@ -1,5 +1,4 @@
 #include "dsp/LadderFilter.hpp"
-#include "dsp/DSPMath.hpp"
 #include "LindenbergResearch.hpp"
 
 
@@ -32,10 +31,8 @@ struct SimpleFilter : LRTModule {
         NUM_LIGHTS
     };
 
-    LCDWidget *label1 = new LCDWidget(LCD_COLOR_FG, 12);
-    LCDWidget *label2 = new LCDWidget(LCD_COLOR_FG, 12);
-
     LadderFilter filter;
+
 
     SimpleFilter() : LRTModule(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS) {}
 
@@ -105,10 +102,4 @@ SimpleFilterWidget::SimpleFilterWidget() {
     // ***** OUTPUTS *********
     addOutput(createOutput<IOPort>(Vec(129, 326), module, SimpleFilter::LP_OUTPUT));
     // ***** OUTPUTS *********
-
-    /* module->label1->box.pos = Vec(56, 235);
-     addChild(module->label1);
-
-     module->label2->box.pos = Vec(23, 300);
-     addChild(module->label2);*/
 }
