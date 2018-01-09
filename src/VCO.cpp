@@ -70,9 +70,9 @@ void VCO::step() {
 
     outputs[TRI_OUTPUT].value = osc.tri;
 
-    if (cnt % 1200 == 0) {
+    /*if (cnt % 1200 == 0) {
         label1->text = stringf("%.2f Hz", osc.freq);
-    }
+    }*/
 }
 
 
@@ -134,7 +134,7 @@ VCOWidget::VCOWidget() {
     addOutput(createOutput<IOPort>(Vec(124, 319), module, VCO::TRI_OUTPUT));
     // ***** OUTPUTS *********
 
-    module->label1->box.pos = Vec(30, 310);
+    //module->label1->box.pos = Vec(30, 310);
 
-    addChild(module->label1);
+    //addChild(module->label1);
 }
