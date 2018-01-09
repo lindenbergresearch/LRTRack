@@ -276,14 +276,14 @@ inline float fade2(float a, float b, float n) {
  * @return
  */
 inline float fade5(float a, float b, float c, float d, float e, float n) {
-    if (n >= 0 && n < a) {
-        fade2(a, b, n);
-    } else if (n >= 1 && n < b) {
-        fade2(b, c, n - 1);
-    } else if (n >= 2 && n < c) {
-        fade2(c, d, n - 2);
-    } else if (n >= 3 && n < d) {
-        fade2(d, e, n - 3);
+    if (n >= 0 && n < 1) {
+        return fade2(a, b, n);
+    } else if (n >= 1 && n < 2) {
+        return fade2(b, c, n - 1);
+    } else if (n >= 2 && n < 3) {
+        return fade2(c, d, n - 2);
+    } else if (n >= 3 && n < 4) {
+        return fade2(d, e, n - 3);
     }
 
     return e;
