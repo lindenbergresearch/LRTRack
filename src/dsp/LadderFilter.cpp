@@ -26,38 +26,42 @@ void LadderFilter::invalidate() {
  * @return
  */
 void LadderFilter::process() {
-    os.doNext(in);
+    os.next(in);
     os.doUpsample();
 
     for (int i = 0; i < os.factor; i++) {
-        in = os.up[i];
+        float x = os.up[i];
 
-        in -= q * b4;
+        x -= fastatan(b5 * q);
 
         t1 = b1;
-        b1 = (in + b0) * p - b1 * f;
+        b1 = ((x + b0) * p - b1 * f);
 
         t2 = b2;
-        b2 = (b1 + t1) * p - b2 * f;
+        b2 = ((b1 + t1) * p - b2 * f);
 
         t1 = b3;
-        b3 = (b2 + t2) * p - b3 * f;
+        b3 = ((b2 + t2) * p - b3 * f);
 
-        b4 = (b3 + t1) * p - b4 * f;
+        t2 = b4;
+        b4 = ((b3 + t1) * p - b4 * f);
 
-        b4 = clampf(b4 - b4 * b4 * b4 * b4 * b4 * 4, -1, 1) + rnd.nextFloat(-10e-8f, +10e-8f);
+        b5 = ((b4 + t2) * p - b5 * f);
+
+
+        // b4 = clampf(b4 - b4 * b4 * b4 * 0.16666667f, -0.9f, 0.9f);// + rnd.nextFloat(-10e-8f, +10e-8f);
         //  b4 = lpf.filter(tanh(b4)) + rnd.nextFloat(-10e-8f, +10e-8f);
         //  b4 = (b4 - quadraticBipolar(b4)*0.1) + rnd.nextFloat(-10e-8f, +10e-8f);
-        b0 = in;
 
-        os.data[LP_CHANNEL][i] = b4;
-        os.data[HP_CHANNEL][i] = ((b3 - b4) * 60.0f);
-        os.data[BP_CHANNEL][i] = (((in - 3.0f * (b3 - b4)) - b4) * 15.0f);
+        // b4 = clampf(b4 - (b4 * b4 * b4 / 6.f), -0.4f, 0.4f);// + rnd.nextFloat(-10e-8f, +10e-8f);
+
+
+        b0 = fastatan(x + noise.nextFloat(NOISE_GAIN));
+
+        os.data[LOWPASS][i] = fastatan(b5 * (1 + drive * 50));
     }
 
-    lpOut = os.getDownsampled(LP_CHANNEL);
-    hpOut = os.getDownsampled(HP_CHANNEL);
-    bpOut = os.getDownsampled(BP_CHANNEL);
+    lpOut = os.getDownsampled(LOWPASS);
 
 }
 
@@ -80,7 +84,7 @@ void LadderFilter::setFrequency(float frequency) {
         LadderFilter::frequency = frequency;
         // translate frequency to logarithmic scale
         freqHz = 20.f * powf(1000.f, frequency);
-        freqExp = clampf(freqHz * (1.f / (engineGetSampleRate() * 8 / 2.f)), 0.f, 1.f);
+        freqExp = clampf(freqHz * (1.f / (engineGetSampleRate() * OVERSAMPLE / 2.f)), 0.f, 1.f);
 
         updateResExp();
         invalidate();
@@ -93,7 +97,7 @@ void LadderFilter::setFrequency(float frequency) {
  */
 void LadderFilter::updateResExp() {
     resExp = clampf(resonance, 0, 1.5f);
-    resExp = resExp * (1 - (drive / 3));
+    // resExp = resExp * (1 - (drive / 3));
     // add some curve to resonance to avoid aliasing at high frequency
     // resExp *= (-0.50 * frequency + 1.1);
 }
@@ -137,7 +141,7 @@ float LadderFilter::getDrive() const {
  */
 void LadderFilter::setDrive(float drive) {
     if (LadderFilter::drive != drive) {
-        LadderFilter::drive = drive;
+        LadderFilter::drive = clampf(drive, 0, 1);
 
         updateResExp();
         invalidate();
@@ -159,12 +163,7 @@ void LadderFilter::setIn(float in) {
  * @return
  */
 float LadderFilter::getLpOut() {
-    float out;// = clip(lpOut * (drive * 20 + 1), 0.7, -0.7) * (1/(drive+1)*12);
-    float d = quadraticBipolar(drive) * 50 + 1;
-
-    out = lpOut * (abs(lpOut) + d) / (lpOut * lpOut + (d - 1) * abs(lpOut) + 1);
-
-    return out * 1 / (drive * 3 + 1);
+    return lpOut;
 }
 
 
@@ -175,22 +174,3 @@ float LadderFilter::getLpOut() {
 float LadderFilter::getFreqHz() const {
     return freqHz;
 }
-
-
-/**
- * @brief Bandpass output current
- * @return
- */
-float LadderFilter::getBpOut() const {
-    return bpOut;
-}
-
-
-/**
- * @brief Highpass output current
- * @return
- */
-float LadderFilter::getHpOut() const {
-    return hpOut;
-}
-
