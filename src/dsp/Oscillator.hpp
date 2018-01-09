@@ -20,7 +20,7 @@ struct BLITOscillator {
     float detune;    // analogue detune
     float drift;     // oscillator drift
     float warmup;    // oscillator warmup detune
-    Randomizer rand; // randomizer
+    Noise noise; // randomizer
     bool boost;
 
     float saturate;

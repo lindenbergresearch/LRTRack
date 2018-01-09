@@ -13,7 +13,7 @@ void BLITOscillator::reset() {
     phase = 0.f;
     incr = 0.f;
     saturate = 1.f;
-    detune = rand.nextFloat(-0.281273f, 0.2912846f);
+    detune = noise.nextFloat(0.32);
     drift = 0.f;
     warmup = 0.f;
 
