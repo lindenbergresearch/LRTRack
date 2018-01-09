@@ -1,21 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Generator: Adobe Illustrator 16.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-	 xmlns:svg="http://www.w3.org/2000/svg" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="SmallKnob_1_" inkscape:version="0.92.2 5c3e80d, 2017-08-06"
-	 sodipodi:docname="BefacoBigKnob.svg" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="24px" height="24px"
+<svg xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+	 xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:svg="http://www.w3.org/2000/svg" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="SmallKnob_1_" sodipodi:docname="BefacoBigKnob.svg"
+	 inkscape:version="0.92.2 5c3e80d, 2017-08-06" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="24px" height="24px"
 	 viewBox="-24.5 65.5 24 24" enable-background="new -24.5 65.5 24 24" xml:space="preserve">
 <g id="SmallKnob">
-	<circle fill="#C1C1C1" stroke="#141414" stroke-miterlimit="10" cx="-12.501" cy="77.739" r="10.384"/>
+	<circle fill="#C1C1C1" stroke="#141414" stroke-miterlimit="10" cx="-13" cy="77.24" r="10.38"/>
 	
 		<path id="path8603" inkscape:connector-curvature="0" fill="#E5E5E5" stroke="#353535" stroke-width="0.3" stroke-miterlimit="10" d="
-		M-2.354,72.182c-0.678-1.288-1.588-2.43-2.672-3.373c-2.089,0.299-4.252-0.76-5.33-2.604C-11.05,66.072-11.768,66-12.5,66
-		s-1.449,0.072-2.144,0.205c-1.08,1.844-3.242,2.902-5.331,2.604c-1.084,0.943-1.995,2.085-2.673,3.373
-		c0.773,2.035,0.223,4.463-1.353,5.946c0.051,1.476,0.368,2.882,0.906,4.17c2.095,0.639,3.653,2.639,3.791,4.862
-		c1.109,0.828,2.371,1.457,3.732,1.84c1.804-1.292,4.338-1.292,6.14,0c1.362-0.383,2.625-1.012,3.735-1.84
-		c0.136-2.223,1.693-4.224,3.79-4.862C-1.366,81.01-1.05,79.604-1,78.128C-2.574,76.645-3.125,74.217-2.354,72.182"/>
-	<circle fill="#EFEFEF" cx="-12.501" cy="77.739" r="10.302"/>
-	<circle fill="#BFBFBF" stroke="#050404" stroke-width="0.3" stroke-miterlimit="10" cx="-12.501" cy="77.739" r="8.653"/>
-	<rect x="-13.582" y="66" fill="#282828" width="2.225" height="3.223"/>
+		M-2.85,71.68c-0.68-1.29-1.59-2.43-2.67-3.37c-2.09,0.3-4.25-0.76-5.33-2.6c-0.69-0.13-1.41-0.21-2.14-0.21s-1.45,0.07-2.14,0.21
+		c-1.08,1.84-3.24,2.9-5.33,2.6c-1.08,0.94-2,2.08-2.67,3.37c0.77,2.04,0.22,4.46-1.35,5.95c0.05,1.48,0.37,2.88,0.91,4.17
+		c2.09,0.64,3.65,2.64,3.79,4.86c1.11,0.83,2.37,1.46,3.73,1.84c1.8-1.29,4.34-1.29,6.14,0c1.36-0.38,2.62-1.01,3.74-1.84
+		c0.14-2.22,1.69-4.22,3.79-4.86c0.54-1.29,0.86-2.69,0.91-4.17C-3.07,76.14-3.62,73.72-2.85,71.68"/>
+	<circle fill="#EFEFEF" cx="-13" cy="77.24" r="10.3"/>
+	<circle fill="#BFBFBF" stroke="#050404" stroke-width="0.3" stroke-miterlimit="10" cx="-13" cy="77.24" r="8.65"/>
+	<rect x="-14.08" y="65.5" fill="#282828" width="2.22" height="3.22"/>
 </g>
 </svg>
