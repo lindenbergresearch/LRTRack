@@ -184,7 +184,5 @@ float LadderFilter::getSlope() const {
  * @param slope
  */
 void LadderFilter::setSlope(float slope) {
-    if (LadderFilter::slope != slope) {
         LadderFilter::slope = clampf(slope, 0, 4);
-    }
 }
