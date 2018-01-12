@@ -61,7 +61,7 @@ void SimpleFilter::step() {
     outputs[LP_OUTPUT].value = filter.getLpOut();
 
 
-    lights[OVERLOAD_LIGHT].value = filter.getLpOut() / 20.f;
+    lights[OVERLOAD_LIGHT].value = filter.getLightValue();
 }
 
 
@@ -89,17 +89,17 @@ SimpleFilterWidget::SimpleFilterWidget() {
     addParam(createParam<LRBigKnob>(Vec(62, 150), module, SimpleFilter::CUTOFF_PARAM, 0.f, 1.f, 0.8f));
     addParam(createParam<LRMiddleKnob>(Vec(24, 229), module, SimpleFilter::RESONANCE_PARAM, -0.f, 1.5, 0.0f));
     addParam(createParam<LRMiddleKnob>(Vec(116, 228), module, SimpleFilter::DRIVE_PARAM, 0.0f, 1.f, 0.0f));
-    addParam(createParam<LRMiddleKnob>(Vec(70, 283), module, SimpleFilter::SLOPE_PARAM, 0.0f, 4.f, 2.0f));
+    addParam(createParam<LRMiddleKnob>(Vec(70, 288), module, SimpleFilter::SLOPE_PARAM, 0.0f, 4.f, 2.0f));
     // ***** MAIN KNOBS ******
 
     // ***** CV INPUTS *******
-    addParam(createParam<LRSmallKnob>(Vec(28, 106.5), module, SimpleFilter::RESONANCE_CV_PARAM, -1.f, 1.0f, 0.f));
-    addParam(createParam<LRSmallKnob>(Vec(78.5, 106.5), module, SimpleFilter::CUTOFF_CV_PARAM, -1.f, 1.f, 0.f));
-    addParam(createParam<LRSmallKnob>(Vec(127.6, 106.5), module, SimpleFilter::DRIVE_CV_PARAM, -1.f, 1.f, 0.f));
+    addParam(createParam<LRSmallKnob>(Vec(28, 106.7), module, SimpleFilter::RESONANCE_CV_PARAM, -1.f, 1.0f, 0.f));
+    addParam(createParam<LRSmallKnob>(Vec(78, 106.7), module, SimpleFilter::CUTOFF_CV_PARAM, -1.f, 1.f, 0.f));
+    addParam(createParam<LRSmallKnob>(Vec(127.6, 106.7), module, SimpleFilter::DRIVE_CV_PARAM, -1.f, 1.f, 0.f));
 
-    addInput(createInput<IOPort>(Vec(26, 52), module, SimpleFilter::RESONANCE_CV_INPUT));
-    addInput(createInput<IOPort>(Vec(76, 52), module, SimpleFilter::CUTOFF_CV_INPUT));
-    addInput(createInput<IOPort>(Vec(125, 52), module, SimpleFilter::DRIVE_CV_INPUT));
+    addInput(createInput<IOPort>(Vec(26, 50), module, SimpleFilter::RESONANCE_CV_INPUT));
+    addInput(createInput<IOPort>(Vec(76, 50), module, SimpleFilter::CUTOFF_CV_INPUT));
+    addInput(createInput<IOPort>(Vec(125, 50), module, SimpleFilter::DRIVE_CV_INPUT));
     // ***** CV INPUTS *******
 
     // ***** INPUTS **********
@@ -111,7 +111,7 @@ SimpleFilterWidget::SimpleFilterWidget() {
     // ***** OUTPUTS *********
 
     // ***** LIGHTS **********
-    addChild(createLight<LRBlueLight>(Vec(85, 250), module, SimpleFilter::OVERLOAD_LIGHT));
+    addChild(createLight<LRRedLight>(Vec(85, 247), module, SimpleFilter::OVERLOAD_LIGHT));
     // ***** LIGHTS **********
 
 }
