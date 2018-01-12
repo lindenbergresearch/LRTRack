@@ -208,9 +208,10 @@ struct ScrewDarkA : SVGScrew {
 };
 
 
-struct LRLightWidget : TransparentWidget {
-    NVGcolor bgColor = nvgRGBf(0, 0, 0);
-    NVGcolor color = nvgRGBf(1, 1, 1);
+struct LRBlueLight : SmallLight<ModuleLightWidget> {
+
+    LRBlueLight();
 
     void draw(NVGcontext *vg) override;
+
 };

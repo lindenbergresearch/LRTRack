@@ -50,19 +50,18 @@ void LCDWidget::draw(NVGcontext *vg) {
 }
 
 
-
 /**
- * @brief
+ * @brief    --- TO BE REMOVED IN FUTURE ---
  * @param vg
- */
-void LRLightWidget::draw(NVGcontext *vg) {
-    float radius = box.size.x / 2.0;
-    float oradius = radius + 15.0;
 
-    color.r = clampf(color.r, 0.0, 1.0);
-    color.g = clampf(color.g, 0.0, 1.0);
-    color.b = clampf(color.b, 0.0, 1.0);
-    color.a = clampf(color.a, 0.0, 1.0);
+void LRLightWidget::draw(NVGcontext *vg) {
+    float radius = box.size.x / 2.0f;
+    float oradius = radius + 15.0f;
+
+    color.r = clampf(color.r, 0.0f, 1.0f);
+    color.g = clampf(color.g, 0.0f, 1.0f);
+    color.b = clampf(color.b, 0.0f, 1.0f);
+    color.a = clampf(color.a, 0.0f, 1.0f);
 
     // Solid
     nvgBeginPath(vg);
@@ -71,9 +70,9 @@ void LRLightWidget::draw(NVGcontext *vg) {
     nvgFill(vg);
 
     // Border
-    nvgStrokeWidth(vg, 1.0);
+    nvgStrokeWidth(vg, 1.0f);
     NVGcolor borderColor = bgColor;
-    borderColor.a *= 0.5;
+    borderColor.a *= 0.5f;
     nvgStrokeColor(vg, borderColor);
     nvgStroke(vg);
 
@@ -87,10 +86,61 @@ void LRLightWidget::draw(NVGcontext *vg) {
     nvgRect(vg, radius - oradius, radius - oradius, 2 * oradius, 2 * oradius);
     NVGpaint paint;
     NVGcolor icol = color;
-    icol.a *= 0.10;
+    icol.a *= 0.10f;
     NVGcolor ocol = color;
-    ocol.a = 0.0;
+    ocol.a = 0.05f;
     paint = nvgRadialGradient(vg, radius, radius, radius, oradius, icol, ocol);
     nvgFillPaint(vg, paint);
     nvgFill(vg);
+}*/
+
+
+void LRBlueLight::draw(NVGcontext *vg) {
+    //LightWidget::draw(vg);
+
+    float radius = box.size.x / 1.5f;
+    float oradius = radius + 10.0f;
+
+    /* color.r = clampf(color.r, 0.0f, 1.0f);
+     color.g = clampf(color.g, 0.0f, 1.0f);
+     color.b = clampf(color.b, 0.0f, 1.0f);
+     color.a = clampf(color.a, 0.0f, 1.0f);*/
+
+    // Solid
+    nvgBeginPath(vg);
+    nvgCircle(vg, radius, radius, radius);
+    nvgFillColor(vg, bgColor);
+    nvgFill(vg);
+
+    // Border
+    nvgStrokeWidth(vg, 1.0f);
+    NVGcolor borderColor = bgColor;
+    borderColor.a *= 0.5f;
+    nvgStrokeColor(vg, borderColor);
+    nvgStroke(vg);
+
+    // Inner glow
+    nvgGlobalCompositeOperation(vg, NVG_LIGHTER);
+    nvgFillColor(vg, color);
+    nvgFill(vg);
+
+    // Outer glow
+    nvgBeginPath(vg);
+    nvgRect(vg, radius - oradius, radius - oradius, 2 * oradius, 2 * oradius);
+    NVGpaint paint;
+    NVGcolor icol = color;
+    icol.a *= 0.40f;
+    NVGcolor ocol = color;
+    ocol.a = 0.00f;
+    paint = nvgRadialGradient(vg, radius, radius, radius, oradius, icol, ocol);
+    nvgFillPaint(vg, paint);
+    nvgFill(vg);
+}
+
+
+/**
+ * @brief
+ */
+LRBlueLight::LRBlueLight() {
+    addBaseColor(COLOR_BLUE);
 }
