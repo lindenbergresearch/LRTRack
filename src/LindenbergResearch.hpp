@@ -208,9 +208,9 @@ struct ScrewDarkA : SVGScrew {
 };
 
 
-struct LRBlueLight : SmallLight<ModuleLightWidget> {
+struct LRRedLight : SmallLight<ModuleLightWidget> {
 
-    LRBlueLight();
+    LRRedLight();
 
     void draw(NVGcontext *vg) override;
 

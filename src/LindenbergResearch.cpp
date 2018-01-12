@@ -95,7 +95,7 @@ void LRLightWidget::draw(NVGcontext *vg) {
 }*/
 
 
-void LRBlueLight::draw(NVGcontext *vg) {
+void LRRedLight::draw(NVGcontext *vg) {
     //LightWidget::draw(vg);
 
     float radius = box.size.x / 1.5f;
@@ -141,6 +141,6 @@ void LRBlueLight::draw(NVGcontext *vg) {
 /**
  * @brief
  */
-LRBlueLight::LRBlueLight() {
-    addBaseColor(COLOR_BLUE);
+LRRedLight::LRRedLight() {
+    addBaseColor(COLOR_RED);
 }
