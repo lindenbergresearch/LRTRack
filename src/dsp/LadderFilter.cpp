@@ -59,7 +59,7 @@ void LadderFilter::process() {
         os.data[LOWPASS][i] = fastatan(bx * (1 + drive * 40));
     }
 
-    lpOut = os.getDownsampled(LOWPASS) * (INPUT_GAIN / (drive * 8 + 1));
+    lpOut = os.getDownsampled(LOWPASS) * (INPUT_GAIN / (drive * 15 + 1));
 }
 
 
