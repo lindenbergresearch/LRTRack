@@ -9,8 +9,9 @@ namespace rack {
 
     struct LadderFilter : DSPEffect {
 
-        static const int OVERSAMPLE = 8;       // factor of internal oversampling
-        static constexpr float NOISE_GAIN = 10e-10f; // internal noise gain used for self-oscillation
+        static const int OVERSAMPLE = 8;                // factor of internal oversampling
+        static constexpr float NOISE_GAIN = 10e-10f;    // internal noise gain used for self-oscillation
+        static constexpr float INPUT_GAIN = 20.f;            // input level
 
         enum FXChannel {
             LOWPASS

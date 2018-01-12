@@ -56,10 +56,10 @@ void LadderFilter::process() {
         b0 = fastatan(x + noise.nextFloat(NOISE_GAIN));
 
         // overdrive with fastatan, which folds back the waves at high input and creates a noisy bright sound
-        os.data[LOWPASS][i] = fastatan(bx * (1 + drive * 50));
+        os.data[LOWPASS][i] = fastatan(bx * (1 + drive * 40));
     }
 
-    lpOut = os.getDownsampled(LOWPASS);
+    lpOut = os.getDownsampled(LOWPASS) * (INPUT_GAIN / (drive * 8 + 1));
 }
 
 
@@ -148,7 +148,9 @@ void LadderFilter::setDrive(float drive) {
  * @param in
  */
 void LadderFilter::setIn(float in) {
-    LadderFilter::in = in;
+    float x = clampf(in / INPUT_GAIN, -0.8f, 0.8f);
+
+    LadderFilter::in = x;
 }
 
 
@@ -184,5 +186,5 @@ float LadderFilter::getSlope() const {
  * @param slope
  */
 void LadderFilter::setSlope(float slope) {
-        LadderFilter::slope = clampf(slope, 0, 4);
+    LadderFilter::slope = clampf(slope, 0, 4);
 }
