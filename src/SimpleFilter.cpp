@@ -29,6 +29,7 @@ struct SimpleFilter : LRTModule {
     };
 
     enum LightIds {
+        OVERLOAD_LIGHT,
         NUM_LIGHTS
     };
 
@@ -50,6 +51,7 @@ void SimpleFilter::step() {
     filter.setFrequency(params[CUTOFF_PARAM].value + frqcv);
     filter.setResonance(params[RESONANCE_PARAM].value + rescv);
     filter.setDrive(params[DRIVE_PARAM].value + drvcv);
+    filter.setSlope(params[SLOPE_PARAM].value);
 
     float y = fastatan(inputs[FILTER_INPUT].value / 20.f);
 
@@ -57,6 +59,8 @@ void SimpleFilter::step() {
     filter.process();
 
     outputs[LP_OUTPUT].value = filter.getLpOut() * 20.f;
+
+    lights[OVERLOAD_LIGHT].value = filter.getLpOut() / 1.f;
 }
 
 
@@ -81,10 +85,10 @@ SimpleFilterWidget::SimpleFilterWidget() {
     // ***** SCREWS **********
 
     // ***** MAIN KNOBS ******
-    addParam(createParam<LRBigKnob>(Vec(62.5, 151.5), module, SimpleFilter::CUTOFF_PARAM, 0.f, 1.f, 0.f));
-    addParam(createParam<LRMiddleKnob>(Vec(33, 232.5), module, SimpleFilter::RESONANCE_PARAM, -0.f, 1.5, 0.0f));
-    addParam(createParam<LRMiddleKnob>(Vec(107, 232.5), module, SimpleFilter::DRIVE_PARAM, 0.0f, 1.f, 0.0f));
-    addParam(createParam<LRMiddleKnob>(Vec(69.5, 293), module, SimpleFilter::SLOPE_PARAM, 0.0f, 1.f, 0.0f));
+    addParam(createParam<LRBigKnob>(Vec(62, 150), module, SimpleFilter::CUTOFF_PARAM, 0.f, 1.f, 0.8f));
+    addParam(createParam<LRMiddleKnob>(Vec(24, 229), module, SimpleFilter::RESONANCE_PARAM, -0.f, 1.5, 0.0f));
+    addParam(createParam<LRMiddleKnob>(Vec(116, 228), module, SimpleFilter::DRIVE_PARAM, 0.0f, 1.f, 0.0f));
+    addParam(createParam<LRMiddleKnob>(Vec(70, 283), module, SimpleFilter::SLOPE_PARAM, 0.0f, 4.f, 2.0f));
     // ***** MAIN KNOBS ******
 
     // ***** CV INPUTS *******
@@ -104,4 +108,9 @@ SimpleFilterWidget::SimpleFilterWidget() {
     // ***** OUTPUTS *********
     addOutput(createOutput<IOPort>(Vec(125, 326.5), module, SimpleFilter::LP_OUTPUT));
     // ***** OUTPUTS *********
+
+    // ***** LIGHTS **********
+    addChild(createLight<LRBlueLight>(Vec(85, 250), module, SimpleFilter::OVERLOAD_LIGHT));
+    // ***** LIGHTS **********
+
 }
