@@ -23,6 +23,7 @@ namespace rack {
         float t1, t2;
         float freqExp, freqHz, frequency, resExp, resonance, drive, slope;
         float in, lpOut;
+        float lightValue;
 
         OverSampler<OVERSAMPLE, 1> os;
         Noise noise;
@@ -48,5 +49,7 @@ namespace rack {
         void setSlope(float slope);
         void setIn(float in);
         float getLpOut();
+        float getLightValue() const;
+        void setLightValue(float lightValue);
     };
 }

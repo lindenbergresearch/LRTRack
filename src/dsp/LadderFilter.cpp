@@ -55,11 +55,20 @@ void LadderFilter::process() {
         // saturate and add very low noise to have self oscillation with no input and high res
         b0 = fastatan(x + noise.nextFloat(NOISE_GAIN));
 
-        // overdrive with fastatan, which folds back the waves at high input and creates a noisy bright sound
-        os.data[LOWPASS][i] = fastatan(bx * (1 + drive * 40));
+        float y = bx * (1 + drive * 40);
+
+        if (abs(y) > 1) {
+            lightValue = (lightValue + abs(y) / 5) / 2;
+        } else {
+            lightValue *= 0.99;
+        }
+
+
+        // overdrive with fast atan, which folds back the waves at high input and creates a noisy bright sound
+        os.data[LOWPASS][i] = fastatan(y);
     }
 
-    lpOut = os.getDownsampled(LOWPASS) * (INPUT_GAIN / (drive * 15 + 1));
+    lpOut = os.getDownsampled(LOWPASS) * (INPUT_GAIN / (drive * 20 + 1) * (quadraticBipolar(drive * 3) + 1));
 }
 
 
@@ -187,4 +196,22 @@ float LadderFilter::getSlope() const {
  */
 void LadderFilter::setSlope(float slope) {
     LadderFilter::slope = clampf(slope, 0, 4);
+}
+
+
+/**
+ * @brief Get the current light value for overload
+ * @return
+ */
+float LadderFilter::getLightValue() const {
+    return lightValue;
+}
+
+
+/**
+ * @brief Set value for overload
+ * @param lightValue
+ */
+void LadderFilter::setLightValue(float lightValue) {
+    LadderFilter::lightValue = lightValue;
 }
