@@ -53,14 +53,15 @@ void SimpleFilter::step() {
     filter.setDrive(params[DRIVE_PARAM].value + drvcv);
     filter.setSlope(params[SLOPE_PARAM].value);
 
-    float y = fastatan(inputs[FILTER_INPUT].value / 20.f);
+    float y = inputs[FILTER_INPUT].value;
 
     filter.setIn(y);
     filter.process();
 
-    outputs[LP_OUTPUT].value = filter.getLpOut() * 20.f;
+    outputs[LP_OUTPUT].value = filter.getLpOut();
 
-    lights[OVERLOAD_LIGHT].value = filter.getLpOut() / 1.f;
+
+    lights[OVERLOAD_LIGHT].value = filter.getLpOut() / 20.f;
 }
 
 
