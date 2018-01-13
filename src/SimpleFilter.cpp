@@ -93,9 +93,9 @@ SimpleFilterWidget::SimpleFilterWidget() {
     // ***** MAIN KNOBS ******
 
     // ***** CV INPUTS *******
-    addParam(createParam<LRSmallKnob>(Vec(28, 106.7), module, SimpleFilter::RESONANCE_CV_PARAM, -1.f, 1.0f, 0.f));
-    addParam(createParam<LRSmallKnob>(Vec(78, 106.7), module, SimpleFilter::CUTOFF_CV_PARAM, -1.f, 1.f, 0.f));
-    addParam(createParam<LRSmallKnob>(Vec(127.6, 106.7), module, SimpleFilter::DRIVE_CV_PARAM, -1.f, 1.f, 0.f));
+    addParam(createParam<LRSmallKnob>(Vec(27.5, 106), module, SimpleFilter::RESONANCE_CV_PARAM, -1.f, 1.0f, 0.f));
+    addParam(createParam<LRSmallKnob>(Vec(78, 106), module, SimpleFilter::CUTOFF_CV_PARAM, -1.f, 1.f, 0.f));
+    addParam(createParam<LRSmallKnob>(Vec(127.1, 106), module, SimpleFilter::DRIVE_CV_PARAM, -1.f, 1.f, 0.f));
 
     addInput(createInput<IOPort>(Vec(26, 50), module, SimpleFilter::RESONANCE_CV_INPUT));
     addInput(createInput<IOPort>(Vec(76, 50), module, SimpleFilter::CUTOFF_CV_INPUT));
