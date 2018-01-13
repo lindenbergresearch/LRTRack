@@ -12,6 +12,9 @@ Plugin *plugin;
 void init(rack::Plugin *p) {
     plugin = p;
     p->slug = "Lindenberg Research";
+#ifdef VERSION
+    p->version = TOSTRING(VERSION);
+#endif
     p->website = "https://github.com/lindenbergresearch/LRTRack";
 
     p->addModel(createModel<SimpleFilterWidget>("Lindenberg Research", "VCF", "ALMA Lowpass Filter", FILTER_TAG));

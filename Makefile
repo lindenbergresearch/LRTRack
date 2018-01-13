@@ -1,3 +1,5 @@
+SLUG = LindenbergResearch
+VERSION = 0.5.185
 
 # FLAGS will be passed to both the C and C++ compiler
 FLAGS +=
