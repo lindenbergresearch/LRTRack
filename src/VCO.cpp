@@ -63,7 +63,6 @@ void VCO::step() {
     osc.proccess();
 
     outputs[SAW_OUTPUT].value = osc.saw;
-    //   outputs[SAW_OUTPUT].value = osc.saw;
 
     outputs[PULSE_OUTPUT].value = osc.pulse;
     outputs[SAWTRI_OUTPUT].value = osc.sawtri;
@@ -128,10 +127,10 @@ VCOWidget::VCOWidget() {
 
     // ***** OUTPUTS *********
     // addOutput(createOutput<IOPort>(Vec(20, 320), module, VCO::SAW_OUTPUT));
-    addOutput(createOutput<IOPort>(Vec(11, 319), module, VCO::SAW_OUTPUT));
-    addOutput(createOutput<IOPort>(Vec(49, 319), module, VCO::PULSE_OUTPUT));
-    addOutput(createOutput<IOPort>(Vec(86, 319), module, VCO::SAWTRI_OUTPUT));
-    addOutput(createOutput<IOPort>(Vec(124, 319), module, VCO::TRI_OUTPUT));
+    addOutput(createOutput<IOPort>(Vec(20.8, 304.5), module, VCO::SAW_OUTPUT));
+    addOutput(createOutput<IOPort>(Vec(57.2, 304.5), module, VCO::PULSE_OUTPUT));
+    addOutput(createOutput<IOPort>(Vec(96.1, 304.5), module, VCO::SAWTRI_OUTPUT));
+    addOutput(createOutput<IOPort>(Vec(132, 304.5), module, VCO::TRI_OUTPUT));
     // ***** OUTPUTS *********
 
     //module->label1->box.pos = Vec(30, 310);

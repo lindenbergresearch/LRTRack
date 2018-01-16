@@ -15,7 +15,7 @@ using namespace rack;
 #define BLANKPANEL_WIDTH 18.f
 #define BLANKPANEL_MARK_I_WIDTH 12.f
 #define FILTER_WIDTH 12.f
-#define OSCILLATOR_WIDTH 11.f
+#define OSCILLATOR_WIDTH 12.f
 #define RESHAPER_WIDTH 8.f
 
 extern Plugin *plugin;
