@@ -30,7 +30,7 @@ struct BLITOscillator {
     float ramp;
     float saw;
     float pulse;
-    float sawtri;
+    float sinw;
     float tri;
 
     /* saved frequency states */
