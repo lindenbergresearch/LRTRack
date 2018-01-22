@@ -22,7 +22,7 @@ void BLITOscillator::reset() {
     saw = 0.f;
     ramp = 0.f;
     pulse = 0.f;
-    sawtri = 0.f;
+    sinw = 0.f;
     tri = 0.f;
 
     saturate = 1.f;
@@ -142,7 +142,7 @@ float BLITOscillator::getPulseWave() const {
  * @return
  */
 float BLITOscillator::getSawTriWave() const {
-    return sawtri;
+    return sinw;
 }
 
 
@@ -177,34 +177,36 @@ void BLITOscillator::proccess() {
     float delta = int1.value - int2.value;
 
     /* 3rd integrator */
-    float beta = int3.add(delta, incr) * 5.f;
+    float beta = int3.add(delta, incr) * 1.8f;
 
     /* compute RAMP waveform */
-    ramp = int1.value; //lp1.filter(int1.value);
+    ramp = int1.value * 0.5f;
     /* compute pulse waveform */
-    pulse = delta * 1.6f;
+    pulse = delta * 0.4f;
     /* compute SAW waveform */
     saw = ramp * -1;
 
     /* compute triangle */
     tri = (float) M_PI / w * beta;
-    /* compute sawtri */
-    sawtri = saw + beta;
+    /* compute sinw */
+    sinw = fastSin(phase);
 
     //TODO: warmup oscillator with: y(x)=1-e^-(x/n) and slope
 
     /* adjust output levels */
-    ramp *= 3;
-    saw *= 3;
+    //  ramp *= 3;
+    //  saw *= 3;
+
+    saw = saw;
 
     dcb1.filter(saw);
     dcb2.filter(pulse);
 
-    /* reshape waveforms */
+    /* reshape waveforms
     saw = shape1(OSC_SHAPING, saw);
     pulse = shape1(OSC_SHAPING, pulse);
-    sawtri = shape1(OSC_SHAPING, sawtri);
-    tri = shape1(OSC_SHAPING, tri);
+    sinw = shape1(OSC_SHAPING, sinw);
+    tri = shape1(OSC_SHAPING, tri);*/
 }
 
 
