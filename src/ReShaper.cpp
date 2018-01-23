@@ -63,8 +63,8 @@ ReShaperWidget::ReShaperWidget() {
 
 
     // ***** MAIN KNOBS ******
-    addParam(createParam<LRBigKnob>(Vec(35, 216), module, ReShaper::RESHAPER_AMOUNT, 1.f, 50.f, 1.f));
-    addParam(createParam<LRSmallKnob>(Vec(44, 120), module, ReShaper::RESHAPER_CV_AMOUNT, 0.f, 5.f, 0.f));
+    addParam(createParam<LRBigKnob>(Vec(32, 216), module, ReShaper::RESHAPER_AMOUNT, 1.f, 50.f, 1.f));
+    addParam(createParam<LRSmallKnob>(Vec(48, 126), module, ReShaper::RESHAPER_CV_AMOUNT, 0.f, 5.f, 0.f));
     // ***** MAIN KNOBS ******
 
 
