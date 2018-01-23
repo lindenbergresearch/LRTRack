@@ -2,7 +2,7 @@
 #include "LindenbergResearch.hpp"
 
 
-struct SimpleFilter : LRTModule {
+struct AlmaFilter : LRTModule {
 
     enum ParamIds {
         CUTOFF_PARAM,
@@ -36,14 +36,14 @@ struct SimpleFilter : LRTModule {
     LadderFilter filter;
 
 
-    SimpleFilter() : LRTModule(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS) {}
+    AlmaFilter() : LRTModule(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS) {}
 
 
     void step() override;
 };
 
 
-void SimpleFilter::step() {
+void AlmaFilter::step() {
     float frqcv = inputs[CUTOFF_CV_INPUT].value * 0.1f * quadraticBipolar(params[CUTOFF_CV_PARAM].value);
     float rescv = inputs[RESONANCE_CV_INPUT].value * 0.1f * quadraticBipolar(params[RESONANCE_CV_PARAM].value);
     float drvcv = inputs[DRIVE_CV_INPUT].value * 0.1f * quadraticBipolar(params[DRIVE_CV_PARAM].value);
@@ -65,8 +65,8 @@ void SimpleFilter::step() {
 }
 
 
-SimpleFilterWidget::SimpleFilterWidget() {
-    SimpleFilter *module = new SimpleFilter();
+AlmaFilterWidget::AlmaFilterWidget() {
+    AlmaFilter *module = new AlmaFilter();
 
     setModule(module);
     box.size = Vec(FILTER_WIDTH * RACK_GRID_WIDTH, RACK_GRID_HEIGHT);
@@ -86,32 +86,32 @@ SimpleFilterWidget::SimpleFilterWidget() {
     // ***** SCREWS **********
 
     // ***** MAIN KNOBS ******
-    addParam(createParam<LRBigKnob>(Vec(62, 150), module, SimpleFilter::CUTOFF_PARAM, 0.f, 1.f, 0.8f));
-    addParam(createParam<LRMiddleKnob>(Vec(24, 229), module, SimpleFilter::RESONANCE_PARAM, -0.f, 1.5, 0.0f));
-    addParam(createParam<LRMiddleKnob>(Vec(116, 228), module, SimpleFilter::DRIVE_PARAM, 0.0f, 1.f, 0.0f));
-    addParam(createParam<LRMiddleKnob>(Vec(70, 288), module, SimpleFilter::SLOPE_PARAM, 0.0f, 4.f, 2.0f));
+    addParam(createParam<LRBigKnob>(Vec(62, 150), module, AlmaFilter::CUTOFF_PARAM, 0.f, 1.f, 0.8f));
+    addParam(createParam<LRMiddleKnob>(Vec(24, 229), module, AlmaFilter::RESONANCE_PARAM, -0.f, 1.5, 0.0f));
+    addParam(createParam<LRMiddleKnob>(Vec(116, 228), module, AlmaFilter::DRIVE_PARAM, 0.0f, 1.f, 0.0f));
+    addParam(createParam<LRMiddleKnob>(Vec(70, 288), module, AlmaFilter::SLOPE_PARAM, 0.0f, 4.f, 2.0f));
     // ***** MAIN KNOBS ******
 
     // ***** CV INPUTS *******
-    addParam(createParam<LRSmallKnob>(Vec(27.5, 106), module, SimpleFilter::RESONANCE_CV_PARAM, -1.f, 1.0f, 0.f));
-    addParam(createParam<LRSmallKnob>(Vec(78, 106), module, SimpleFilter::CUTOFF_CV_PARAM, -1.f, 1.f, 0.f));
-    addParam(createParam<LRSmallKnob>(Vec(127.1, 106), module, SimpleFilter::DRIVE_CV_PARAM, -1.f, 1.f, 0.f));
+    addParam(createParam<LRSmallKnob>(Vec(27.5, 106), module, AlmaFilter::RESONANCE_CV_PARAM, -1.f, 1.0f, 0.f));
+    addParam(createParam<LRSmallKnob>(Vec(78, 106), module, AlmaFilter::CUTOFF_CV_PARAM, -1.f, 1.f, 0.f));
+    addParam(createParam<LRSmallKnob>(Vec(127.1, 106), module, AlmaFilter::DRIVE_CV_PARAM, -1.f, 1.f, 0.f));
 
-    addInput(createInput<IOPort>(Vec(26, 50), module, SimpleFilter::RESONANCE_CV_INPUT));
-    addInput(createInput<IOPort>(Vec(76, 50), module, SimpleFilter::CUTOFF_CV_INPUT));
-    addInput(createInput<IOPort>(Vec(125, 50), module, SimpleFilter::DRIVE_CV_INPUT));
+    addInput(createInput<IOPort>(Vec(26, 50), module, AlmaFilter::RESONANCE_CV_INPUT));
+    addInput(createInput<IOPort>(Vec(76, 50), module, AlmaFilter::CUTOFF_CV_INPUT));
+    addInput(createInput<IOPort>(Vec(125, 50), module, AlmaFilter::DRIVE_CV_INPUT));
     // ***** CV INPUTS *******
 
     // ***** INPUTS **********
-    addInput(createInput<IOPort>(Vec(26, 326.5), module, SimpleFilter::FILTER_INPUT));
+    addInput(createInput<IOPort>(Vec(26, 326.5), module, AlmaFilter::FILTER_INPUT));
     // ***** INPUTS **********
 
     // ***** OUTPUTS *********
-    addOutput(createOutput<IOPort>(Vec(125, 326.5), module, SimpleFilter::LP_OUTPUT));
+    addOutput(createOutput<IOPort>(Vec(125, 326.5), module, AlmaFilter::LP_OUTPUT));
     // ***** OUTPUTS *********
 
     // ***** LIGHTS **********
-    addChild(createLight<LRRedLight>(Vec(85, 247), module, SimpleFilter::OVERLOAD_LIGHT));
+    addChild(createLight<LRRedLight>(Vec(85, 247), module, AlmaFilter::OVERLOAD_LIGHT));
     // ***** LIGHTS **********
 
 }

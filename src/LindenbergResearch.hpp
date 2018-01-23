@@ -24,8 +24,8 @@ extern Plugin *plugin;
 /**
  * @brief ALMA filter
  */
-struct SimpleFilterWidget : ModuleWidget {
-    SimpleFilterWidget();
+struct AlmaFilterWidget : ModuleWidget {
+    AlmaFilterWidget();
 };
 
 
@@ -143,7 +143,7 @@ struct LRToggleKnob : SVGKnob {
         minAngle = -length * (float) M_PI;
         maxAngle = length * (float) M_PI;
 
-        setSVG(SVG::load(assetPlugin(plugin, "res/BigKnob.svg")));
+        setSVG(SVG::load(assetPlugin(plugin, "res/MiddleKnob.svg")));
     }
 
 

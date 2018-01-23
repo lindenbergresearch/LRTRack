@@ -17,7 +17,7 @@ void init(rack::Plugin *p) {
 #endif
     p->website = "https://github.com/lindenbergresearch/LRTRack";
 
-    p->addModel(createModel<SimpleFilterWidget>("Lindenberg Research", "VCF", "ALMA Lowpass Filter", FILTER_TAG));
+    p->addModel(createModel<AlmaFilterWidget>("Lindenberg Research", "VCF", "ALMA Lowpass Filter", FILTER_TAG));
     p->addModel(createModel<BlankPanelWidget>("Lindenberg Research", "BlankPanel 01", "Blank Panel 20TE", UTILITY_TAG));
     p->addModel(createModel<BlankPanelWidgetM1>("Lindenberg Research", "BlankPanel 02", "Blank Panel 12TE", UTILITY_TAG));
     p->addModel(createModel<ReShaperWidget>("Lindenberg Research", "ReShaper", "ReShaper Wavefolder", FILTER_TAG));
