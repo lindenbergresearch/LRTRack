@@ -135,6 +135,15 @@ float shape1(float a, float x) {
 }
 
 
+/**
+ * @brief Waveshaper as used in ReShaper. Input should be in the range -1..+1
+ * @param a Shaping factor
+ * @param x Input sample
+ * @return
+ */
+float shape2(float a, float x) {
+    return x * (abs(x) + a) / (x * x + (a - 1) * abs(x) + 1);
+}
 
 /**
  * @brief Soft saturating with a clip of a. Works only with positive values so use 'b' as helper here.
