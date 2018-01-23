@@ -140,12 +140,11 @@ SimpleFilterWidget::SimpleFilterWidget() {
     }
 
     // ***** SCREWS **********
-    addChild(createScrew<ScrewDarkA>(Vec(15, 2)));
-    addChild(createScrew<ScrewDarkA>(Vec(box.size.x - 30, 2)));
-    addChild(createScrew<ScrewDarkA>(Vec(15, 365)));
-    addChild(createScrew<ScrewDarkA>(Vec(box.size.x - 30, 365)));
+    addChild(createScrew<ScrewDarkA>(Vec(15, 1)));
+    addChild(createScrew<ScrewDarkA>(Vec(box.size.x - 30, 1)));
+    addChild(createScrew<ScrewDarkA>(Vec(15, 366)));
+    addChild(createScrew<ScrewDarkA>(Vec(box.size.x - 30, 366)));
     // ***** SCREWS **********
-
 
     // ***** MAIN KNOBS ******
     addParam(createParam<LRBigKnob>(Vec(75 - 28, 167), module, SimpleFilter::CUTOFF_PARAM, 0.f, 1.f, 0.f));
