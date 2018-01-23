@@ -22,6 +22,13 @@ extern Plugin *plugin;
 
 
 /**
+ * @brief Recover of old filer
+ */
+struct SimpleFilterWidget : ModuleWidget {
+    SimpleFilterWidget();
+};
+
+/**
  * @brief ALMA filter
  */
 struct AlmaFilterWidget : ModuleWidget {
