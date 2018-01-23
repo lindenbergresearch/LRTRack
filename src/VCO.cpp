@@ -49,11 +49,11 @@ void VCO::step() {
 
     osc.updatePitch(inputs[VOCT_INPUT].value, clampf(fm, 0.f, 20.000f), params[FREQUENCY_PARAM].value, params[OCTAVE_PARAM].value);
 
-    float saturate = params[SHAPE_PARAM].value;
+    float saturate = quadraticBipolar(params[SHAPE_PARAM].value);
     float pw = params[PW_CV_PARAM].value;
 
-    if (osc.saturate != saturate) {
-        osc.setSaturate(quadraticBipolar(saturate));
+    if (osc.getSaturate() != saturate) {
+        osc.setSaturate(saturate);
     }
 
     if (osc.pw != pw) {
@@ -65,7 +65,7 @@ void VCO::step() {
     outputs[SAW_OUTPUT].value = osc.saw;
 
     outputs[PULSE_OUTPUT].value = osc.pulse;
-    outputs[SAWTRI_OUTPUT].value = osc.sawtri;
+    outputs[SAWTRI_OUTPUT].value = osc.sine;
 
     outputs[TRI_OUTPUT].value = osc.tri;
 
@@ -89,28 +89,22 @@ VCOWidget::VCOWidget() {
     }
 
     // ***** SCREWS **********
-    addChild(createScrew<ScrewDarkA>(Vec(15, 2)));
-    addChild(createScrew<ScrewDarkA>(Vec(box.size.x - 30, 2)));
-    addChild(createScrew<ScrewDarkA>(Vec(15, 365)));
-    addChild(createScrew<ScrewDarkA>(Vec(box.size.x - 30, 365)));
-
-    /*auto *lw = new LRLightWidget();
-    lw->box.pos = Vec(100, 100);
-    lw->box.size = Vec(2, 2);
-    addChild(lw);*/
-
+    addChild(createScrew<ScrewDarkA>(Vec(15, 1)));
+    addChild(createScrew<ScrewDarkA>(Vec(box.size.x - 30, 1)));
+    addChild(createScrew<ScrewDarkA>(Vec(15, 366)));
+    addChild(createScrew<ScrewDarkA>(Vec(box.size.x - 30, 366)));
     // ***** SCREWS **********
 
 
     // ***** MAIN KNOBS ******
-    addParam(createParam<LRBigKnob>(Vec(83, 172.0), module, VCO::FREQUENCY_PARAM, -15.f, 15.f, 0.f));
+    addParam(createParam<LRMiddleKnob>(Vec(83, 172.0), module, VCO::FREQUENCY_PARAM, -15.f, 15.f, 0.f));
     addParam(createParam<LRToggleKnob>(Vec(85, 240), module, VCO::OCTAVE_PARAM, -3.f, 3.f, 0.f));
 
     addParam(createParam<LRSmallKnob>(Vec(118, 111.5), module, VCO::PW_PARAM, -.1f, 1.f, 1.f));
     addParam(createParam<LRSmallKnob>(Vec(65, 60), module, VCO::SHAPE_CV_PARAM, -1.f, 1.f, 0.f));
     addParam(createParam<LRSmallKnob>(Vec(15, 267), module, VCO::FM_CV_PARAM, -1.f, 1.f, 0.f));
     addParam(createParam<LRSmallKnob>(Vec(65, 111.5), module, VCO::PW_CV_PARAM, 0.02f, 1.f, 1.f));
-    addParam(createParam<LRSmallKnob>(Vec(118, 59), module, VCO::SHAPE_PARAM, 0.4f, 1.f, 1.f));
+    addParam(createParam<LRSmallKnob>(Vec(118, 59), module, VCO::SHAPE_PARAM, 1.f, 5, 1.f));
 
 
     // ***** MAIN KNOBS ******

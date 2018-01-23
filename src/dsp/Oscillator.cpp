@@ -12,7 +12,7 @@ void BLITOscillator::reset() {
     pw = 1.f;
     phase = 0.f;
     incr = 0.f;
-    saturate = 1.f;
+    shape = 1.f;
     detune = noise.nextFloat(0.32);
     drift = 0.f;
     warmup = 0.f;
@@ -22,10 +22,10 @@ void BLITOscillator::reset() {
     saw = 0.f;
     ramp = 0.f;
     pulse = 0.f;
-    sinw = 0.f;
+    sine = 0.f;
     tri = 0.f;
 
-    saturate = 1.f;
+    shape = 1.f;
     n = 0;
 
     _cv = 0.f;
@@ -142,7 +142,7 @@ float BLITOscillator::getPulseWave() const {
  * @return
  */
 float BLITOscillator::getSawTriWave() const {
-    return sinw;
+    return sine;
 }
 
 
@@ -188,25 +188,16 @@ void BLITOscillator::proccess() {
 
     /* compute triangle */
     tri = (float) M_PI / w * beta;
-    /* compute sinw */
-    sinw = fastSin(phase);
+    /* compute sine */
+    sine = fastSin(phase);
 
     //TODO: warmup oscillator with: y(x)=1-e^-(x/n) and slope
 
-    /* adjust output levels */
-    //  ramp *= 3;
-    //  saw *= 3;
+    saw = fastatan(saw * shape);
+    sine = fastatan(sine * shape);
+    tri = fastatan(tri * shape);
+    pulse = fastatan(pulse * shape);
 
-    saw = saw;
-
-    dcb1.filter(saw);
-    dcb2.filter(pulse);
-
-    /* reshape waveforms
-    saw = shape1(OSC_SHAPING, saw);
-    pulse = shape1(OSC_SHAPING, pulse);
-    sinw = shape1(OSC_SHAPING, sinw);
-    tri = shape1(OSC_SHAPING, tri);*/
 }
 
 
@@ -224,7 +215,7 @@ void BLITOscillator::invalidate() {
  * @return
  */
 float BLITOscillator::getSaturate() const {
-    return saturate;
+    return shape;
 }
 
 
@@ -233,10 +224,7 @@ float BLITOscillator::getSaturate() const {
  * @param saturate
  */
 void BLITOscillator::setSaturate(float saturate) {
-    BLITOscillator::saturate = saturate;
-
-    /* force recalculation of variables */
-    invalidate();
+    BLITOscillator::shape = saturate;
 }
 
 

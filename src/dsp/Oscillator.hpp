@@ -23,14 +23,14 @@ struct BLITOscillator {
     Noise noise; // randomizer
     bool boost;
 
-    float saturate;
+    float shape;
     int n;
 
     /* currents of waveforms */
     float ramp;
     float saw;
     float pulse;
-    float sinw;
+    float sine;
     float tri;
 
     /* saved frequency states */
@@ -40,8 +40,6 @@ struct BLITOscillator {
     Integrator int1;
     Integrator int2;
     Integrator int3;
-    DCBlocker dcb1;
-    DCBlocker dcb2;
 
     BLITOscillator();
     ~BLITOscillator();
