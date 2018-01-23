@@ -6,6 +6,7 @@ set(CMAKE_CXX_STANDARD 11)
 set(SOURCE_FILES
         src/LindenbergResearch.cpp
         src/LindenbergResearch.hpp
+        src/AlmaFilter.cpp
         src/SimpleFilter.cpp
         src/ReShaper.cpp
         src/BlankPanel.cpp
