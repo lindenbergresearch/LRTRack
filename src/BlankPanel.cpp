@@ -37,9 +37,9 @@ BlankPanelWidget::BlankPanelWidget() {
     }
 
     // ***** SCREWS **********
-    addChild(createScrew<ScrewDarkA>(Vec(15, 2)));
-    addChild(createScrew<ScrewDarkA>(Vec(box.size.x - 30, 2)));
-    addChild(createScrew<ScrewDarkA>(Vec(15, 365)));
-    addChild(createScrew<ScrewDarkA>(Vec(box.size.x - 30, 365)));
+    addChild(createScrew<ScrewDarkA>(Vec(15, 1)));
+    addChild(createScrew<ScrewDarkA>(Vec(box.size.x - 30, 1)));
+    addChild(createScrew<ScrewDarkA>(Vec(15, 366)));
+    addChild(createScrew<ScrewDarkA>(Vec(box.size.x - 30, 366)));
     // ***** SCREWS **********
 }
