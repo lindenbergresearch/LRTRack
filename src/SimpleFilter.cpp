@@ -86,7 +86,7 @@ void SimpleFilter::step() {
 
     // translate frequency to logarithmic scale
     float freqHz = 20.f * powf(1000.f, params[CUTOFF_PARAM].value + cutoffCVValue);
-    frequency = clip(freqHz * (1.f / (gSampleRate / 2.0f)), 1.f);
+    frequency = clip(freqHz * (1.f / (engineGetSampleRate() / 2.0f)), 1.f);
     resonance = clip(params[RESONANCE_PARAM].value + resonanceCVValue, 1.f);
 
     // normalize signal input to [-1.0...+1.0]
@@ -135,7 +135,7 @@ SimpleFilterWidget::SimpleFilterWidget() {
     {
         SVGPanel *panel = new SVGPanel();
         panel->box.size = box.size;
-        panel->setBackground(SVG::load(assetPlugin(plugin, "res/Panel.svg")));
+        panel->setBackground(SVG::load(assetPlugin(plugin, "res/SimpleFilter.svg")));
         addChild(panel);
     }
 
@@ -148,13 +148,13 @@ SimpleFilterWidget::SimpleFilterWidget() {
 
 
     // ***** MAIN KNOBS ******
-    addParam(createParam<LRBigKnobWhite>(Vec(75 - 25, 175), module, SimpleFilter::CUTOFF_PARAM, 0.f, 1.f, 0.f));
-    addParam(createParam<LRBigKnobWhite>(Vec(75 - 25, 250), module, SimpleFilter::RESONANCE_PARAM, -0.f, 1.f, 0.0f));
+    addParam(createParam<LRBigKnob>(Vec(75 - 28, 167), module, SimpleFilter::CUTOFF_PARAM, 0.f, 1.f, 0.f));
+    addParam(createParam<LRMiddleKnob>(Vec(75 - 21, 252), module, SimpleFilter::RESONANCE_PARAM, -0.f, 1.f, 0.0f));
     // ***** MAIN KNOBS ******
 
     // ***** CV INPUTS *******
-    addParam(createParam<LRBasicKnobWhite>(Vec(39 - 16, 120), module, SimpleFilter::CUTOFF_CV_PARAM, 0.f, 1.f, 0.f));
-    addParam(createParam<LRBasicKnobWhite>(Vec(111 - 16, 120), module, SimpleFilter::RESONANCE_CV_PARAM, 0.f, 1.f, 0.f));
+    addParam(createParam<LRSmallKnob>(Vec(39 - 12, 120), module, SimpleFilter::CUTOFF_CV_PARAM, 0.f, 1.f, 0.f));
+    addParam(createParam<LRSmallKnob>(Vec(111 - 12, 120), module, SimpleFilter::RESONANCE_CV_PARAM, 0.f, 1.f, 0.f));
 
     addInput(createInput<IOPort>(Vec(39 - 14, 60), module, SimpleFilter::CUTOFF_CV_INPUT));
     addInput(createInput<IOPort>(Vec(111 - 14, 60), module, SimpleFilter::RESONANCE_CV_INPUT));
