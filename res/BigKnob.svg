@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Generator: Adobe Illustrator 16.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" [
-		<!ENTITY ns_extend "http://ns.adobe.com/Extensibility/1.0/">
-		<!ENTITY ns_ai "http://ns.adobe.com/AdobeIllustrator/10.0/">
-		<!ENTITY ns_graphs "http://ns.adobe.com/Graphs/1.0/">
-		<!ENTITY ns_vars "http://ns.adobe.com/Variables/1.0/">
-		<!ENTITY ns_imrep "http://ns.adobe.com/ImageReplacement/1.0/">
-		<!ENTITY ns_sfw "http://ns.adobe.com/SaveForWeb/1.0/">
-		<!ENTITY ns_custom "http://ns.adobe.com/GenericCustomNamespace/1.0/">
-		<!ENTITY ns_adobe_xpath "http://ns.adobe.com/XPath/1.0/">
-		]>
+        <!ENTITY ns_extend "http://ns.adobe.com/Extensibility/1.0/">
+        <!ENTITY ns_ai "http://ns.adobe.com/AdobeIllustrator/10.0/">
+        <!ENTITY ns_graphs "http://ns.adobe.com/Graphs/1.0/">
+        <!ENTITY ns_vars "http://ns.adobe.com/Variables/1.0/">
+        <!ENTITY ns_imrep "http://ns.adobe.com/ImageReplacement/1.0/">
+        <!ENTITY ns_sfw "http://ns.adobe.com/SaveForWeb/1.0/">
+        <!ENTITY ns_custom "http://ns.adobe.com/GenericCustomNamespace/1.0/">
+        <!ENTITY ns_adobe_xpath "http://ns.adobe.com/XPath/1.0/">
+        ]>
 <svg version="1.1"
-	 xmlns:x="&ns_extend;" xmlns:i="&ns_ai;" xmlns:graph="&ns_graphs;" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:svg="http://www.w3.org/2000/svg" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" xmlns:xlink="http://www.w3.org/1999/xlink" id="BigKnob" sodipodi:docname="BigKnob.svg"
-	 inkscape:version="0.92.2 5c3e80d, 2017-08-06" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="56px" height="56px"
+	 xmlns:x="&ns_extend;" xmlns:i="&ns_ai;" xmlns:graph="&ns_graphs;" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:svg="http://www.w3.org/2000/svg" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" xmlns:xlink="http://www.w3.org/1999/xlink" id="BigKnob" inkscape:version="0.92.2 5c3e80d, 2017-08-06"
+	 sodipodi:docname="BefacoBigKnob.svg" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="56px" height="56px"
 	 viewBox="0 0 56 56" enable-background="new 0 0 56 56" xml:space="preserve">
 <metadata>
 	<sfw  xmlns="&ns_sfw;">
@@ -22,7 +22,7 @@
 </metadata>
 <g id="BigKnob_1_">
 	<circle fill="#232323" cx="28" cy="28" r="28"/>
-	<circle fill="#C1C1C1" cx="28" cy="28" r="25.714"/>
+	<circle fill="#707070" cx="28" cy="28" r="25.714"/>
 	
 		<path id="path8603" inkscape:connector-curvature="0" fill="#EFEFEF" stroke="#353535" stroke-width="0.4" stroke-miterlimit="10" d="
 		M51.451,15.156c-1.568-2.978-3.672-5.617-6.176-7.796c-4.828,0.69-9.827-1.756-12.318-6.016c-1.604-0.31-3.263-0.477-4.956-0.477
@@ -30,7 +30,7 @@
 		c1.788,4.702,0.513,10.314-3.127,13.743c0.119,3.41,0.851,6.659,2.095,9.639c4.841,1.476,8.444,6.098,8.761,11.236
 		c2.564,1.915,5.48,3.368,8.627,4.254c4.168-2.987,10.025-2.987,14.19,0c3.147-0.888,6.066-2.34,8.632-4.254
 		c0.312-5.137,3.914-9.761,8.761-11.236c1.245-2.979,1.976-6.228,2.09-9.639C50.943,25.47,49.668,19.859,51.451,15.156"/>
-	<circle fill="#E0E0E0" stroke="#050404" stroke-width="0.3" stroke-miterlimit="10" cx="27.999" cy="28" r="17.143"/>
+	<circle fill="#E0E0E0" stroke="#050404" stroke-width="0.4" stroke-miterlimit="10" cx="27.999" cy="28" r="17.143"/>
 	<circle fill="#020202" stroke="#050404" stroke-width="0.3" stroke-miterlimit="10" cx="28" cy="5.643" r="2.214"/>
 </g>
 </svg>
