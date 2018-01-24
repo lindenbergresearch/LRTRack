@@ -119,7 +119,7 @@ struct LCDWidget : Label {
         LCDWidget::length = length;
 
         LCDWidget::fg = fg;
-        LCDWidget::bg = nvgRGBA(r - 0x30, g - 0x30, b - 0x30, 0x24);
+        LCDWidget::bg = nvgRGBA(r - 0x40, g - 0x40, b - 0x40, 0x40);
     }
 
 
