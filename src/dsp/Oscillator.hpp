@@ -4,7 +4,6 @@
 
 #define BLIT_HARMONICS 18000.f
 #define NOTE_C4 261.626f
-#define OSC_SHAPING 0.778
 
 using namespace rack;
 
@@ -13,6 +12,17 @@ using namespace rack;
  * @brief Oscillator base class
  */
 struct BLITOscillator {
+
+    static const int OVERSAMPLE = 32;                // factor of internal oversampling
+
+    enum SIGNAL {
+        SAW,
+        PULSE,
+        SINE,
+        TRI
+    };
+
+
     float freq;      // oscillator frequency
     float pw;        // pulse-width value
     float phase;     // current phase
@@ -40,6 +50,9 @@ struct BLITOscillator {
     Integrator int1;
     Integrator int2;
     Integrator int3;
+
+    OverSampler<OVERSAMPLE, 4> os;
+
 
     BLITOscillator();
     ~BLITOscillator();

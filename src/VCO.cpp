@@ -104,7 +104,7 @@ VCOWidget::VCOWidget() {
     addParam(createParam<LRSmallKnob>(Vec(65, 60), module, VCO::SHAPE_CV_PARAM, -1.f, 1.f, 0.f));
     addParam(createParam<LRSmallKnob>(Vec(15, 267), module, VCO::FM_CV_PARAM, -1.f, 1.f, 0.f));
     addParam(createParam<LRSmallKnob>(Vec(65, 111.5), module, VCO::PW_CV_PARAM, 0.02f, 1.f, 1.f));
-    addParam(createParam<LRSmallKnob>(Vec(118, 59), module, VCO::SHAPE_PARAM, 1.f, 5, 1.f));
+    addParam(createParam<LRSmallKnob>(Vec(118, 59), module, VCO::SHAPE_PARAM, 1.f, 5.f, 1.f));
 
 
     // ***** MAIN KNOBS ******
