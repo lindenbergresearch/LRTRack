@@ -142,7 +142,7 @@ float shape1(float a, float x) {
  * @return
  */
 float shape2(float a, float x) {
-    return x * (abs(x) + a) / (x * x + (a - 1) * abs(x) + 1);
+    return atanf(x * a);//x * (fabs(x) + a) / (x * x + (a - 1) * fabs(x) + 1);
 }
 
 /**

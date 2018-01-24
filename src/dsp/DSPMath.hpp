@@ -105,8 +105,13 @@ struct Noise {
  */
 template<int OVERSAMPLE, int CHANNELS>
 struct OverSampler {
-    float y0, y1;
-    float up[OVERSAMPLE] = {};
+
+    struct Vector {
+        float y0, y1;
+    };
+
+    Vector y[CHANNELS] = {};
+    float up[CHANNELS][OVERSAMPLE] = {};
     float data[CHANNELS][OVERSAMPLE] = {};
     Decimator<OVERSAMPLE, OVERSAMPLE> decimator[CHANNELS];
     int factor = OVERSAMPLE;
@@ -116,10 +121,7 @@ struct OverSampler {
      * @brief Constructor
      * @param factor Oversampling factor
      */
-    OverSampler() {
-        y0 = 0;
-        y1 = 0;
-    }
+    OverSampler() {}
 
 
     /**
@@ -127,17 +129,17 @@ struct OverSampler {
      * @param point Point in oversampled data
      * @return
      */
-    float interpolate(int point) {
-        return y0 + (point / factor) * (y1 - y0);
+    float interpolate(int channel, int point) {
+        return y[channel].y0 + (point / factor) * (y[channel].y1 - y[channel].y0);
     }
 
 
     /**
      * @brief Create up-sampled data out of two basic values
      */
-    void doUpsample() {
+    void doUpsample(int channel) {
         for (int i = 0; i < factor; i++) {
-            up[i] = interpolate(i + 1);
+            up[channel][i] = interpolate(channel, i + 1);
         }
     }
 
@@ -156,9 +158,9 @@ struct OverSampler {
      * @brief Step to next sample point
      * @param y Next sample point
      */
-    void next(float y) {
-        y0 = y1;
-        y1 = y;
+    void next(int channel, float n) {
+        y[channel].y0 = y[channel].y1;
+        y[channel].y1 = n;
     }
 };
 
@@ -201,6 +203,8 @@ float shape1(float a, float x);
 double saturate(double x, double a);
 
 double overdrive(double input);
+
+float shape2(float a, float x);
 
 
 /**
