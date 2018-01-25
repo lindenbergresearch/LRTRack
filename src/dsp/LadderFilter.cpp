@@ -57,8 +57,8 @@ void LadderFilter::process() {
 
         float y = bx * (1 + drive * 40);
 
-        if (abs(y) > 1) {
-            lightValue = (lightValue + abs(y) / 5) / 2;
+        if (fabs(y) > 1) {
+            lightValue = (lightValue + fabs(y) / 5) / 2;
         } else {
             lightValue *= 0.99;
         }

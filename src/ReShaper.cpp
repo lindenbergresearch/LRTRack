@@ -35,7 +35,7 @@ void ReShaper::step() {
     float a = clampf(params[RESHAPER_AMOUNT].value + cv, 1.f, 50.f);
 
     // do the acid!
-    float out = x * (abs(x) + a) / (x * x + (a - 1) * abs(x) + 1);
+    float out = x * (fabs(x) + a) / (x * x + (a - 1) * fabs(x) + 1);
   
     outputs[RESHAPER_OUTPUT].value = out * 5.0f;
 }
