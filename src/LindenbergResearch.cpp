@@ -22,6 +22,7 @@ void init(rack::Plugin *p) {
     p->addModel(createModel<BlankPanelWidgetM1>("Lindenberg Research", "BlankPanel 02", "Blank Panel 12TE", BLANK_TAG));
     p->addModel(createModel<ReShaperWidget>("Lindenberg Research", "ReShaper", "ReShaper Wavefolder", WAVESHAPER_TAG));
     p->addModel(createModel<SimpleFilterWidget>("Lindenberg Research", "LPFilter24dB", "24dB Lowpass Filter", FILTER_TAG));
+    p->addModel(createModel<MS20FilterWidget>("Lindenberg Research", "MS20 Filter", "MS20 Filter", FILTER_TAG));
 
     // createModel<SimpleFilterWidget>(plugin, "LPFilter24dB", "24dB Lowpass Filter");
     // not ready jet

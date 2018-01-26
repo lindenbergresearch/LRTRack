@@ -15,6 +15,7 @@ using namespace rack;
 #define BLANKPANEL_WIDTH 18.f
 #define BLANKPANEL_MARK_I_WIDTH 12.f
 #define FILTER_WIDTH 12.f
+#define MS20_WIDTH 12.f
 #define OSCILLATOR_WIDTH 12.f
 #define RESHAPER_WIDTH 8.f
 #define SIMPLEFILTER_WIDTH 10.f
@@ -28,6 +29,14 @@ extern Plugin *plugin;
  */
 struct SimpleFilterWidget : ModuleWidget {
     SimpleFilterWidget();
+};
+
+
+/**
+ * @brief ALMA filter
+ */
+struct MS20FilterWidget : ModuleWidget {
+    MS20FilterWidget();
 };
 
 /**
