@@ -1,13 +1,13 @@
 # Lindenberg Research Tec. - VCV Rack modules
+LRT Rack modules is a collection of modules made for [VCV Rack](https://vcvrack.com) virtual modular system.
 
 ![SCREENSHOT](doc/LRTRackModules_0.5.210.png)
 
-LRT Rack modules is a collection of modules made for [VCV Rack](https://vcvrack.com) virtual modular system.
 
 ## 1. Installation
 
-Download the current version of VCV Rack and the latest release: https://github.com/lindenbergresearch/LRTRack/releases
-and unzip in your _*Rack*_ folder located in your documents.
+You can find the latest release here: https://github.com/lindenbergresearch/LRTRack/releases
+Just download fpr you architecture and unzip in your _**Rack**_ folder located in your documents.
 
 
 ## 2. Build from source
