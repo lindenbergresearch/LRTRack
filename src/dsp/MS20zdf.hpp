@@ -58,6 +58,8 @@ namespace rack {
      * @brief MS20 Filter class
      */
     struct MS20zdf : DSPEffect {
+        static const int OVERSAMPLE = 8;    // factor of internal oversampling
+
     private:
         // cutoff frequency and peak
         float frequency, peak;
@@ -65,6 +67,7 @@ namespace rack {
         float in;
         float g, g2, b, k;
         float ky, y;
+        float freqHz, freqExp;
 
         ZDF zdf1, zdf2;
 

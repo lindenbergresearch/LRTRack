@@ -50,7 +50,11 @@ void rack::MS20zdf::setPeak(float peak) {
  * @brief Calculate prewarped vars on parameter change
  */
 void MS20zdf::invalidate() {
-    b = tanf(frequency * (float) M_PI / engineGetSampleRate());
+    // translate frequency to logarithmic scale
+    freqHz = 20.f * powf(1000.f, frequency);
+    freqExp = clampf(freqHz * (1.f / (engineGetSampleRate() * OVERSAMPLE / 2.f)), 0.f, 1.f);
+
+    b = tanf(freqExp * (float) M_PI / engineGetSampleRate());
     g = b / (1 + b);
     k = 2 * peak;
     g2 = g * g;
