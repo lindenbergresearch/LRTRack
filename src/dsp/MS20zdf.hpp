@@ -57,11 +57,17 @@ namespace rack {
     struct MS20zdf : DSPEffect {
     private:
         // cutoff frequency and peak
-        float frq, peak;
+        float frequency, peak;
 
 
     public:
+        float getFrequency() const;
+        void setFrequency(float frequency);
+        float getPeak() const;
+        void setPeak(float peak);
 
+        void invalidate() override;
+        void process() override;
     };
 
 
