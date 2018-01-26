@@ -75,6 +75,7 @@ namespace rack {
         void setFrequency(float frequency);
         float getPeak() const;
         void setPeak(float peak);
+        void setIn(float in);
 
         void invalidate() override;
         void process() override;

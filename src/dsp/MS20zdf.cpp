@@ -94,3 +94,12 @@ float MS20zdf::getLpOut() const {
 float MS20zdf::getHpOut() const {
     return hpOut;
 }
+
+
+/**
+ * @brief Set filter input
+ * @param in
+ */
+void MS20zdf::setIn(float in) {
+    MS20zdf::in = in;
+}
