@@ -17,6 +17,8 @@ using namespace rack;
 #define FILTER_WIDTH 12.f
 #define OSCILLATOR_WIDTH 12.f
 #define RESHAPER_WIDTH 8.f
+#define SIMPLEFILTER_WIDTH 10.f
+
 
 extern Plugin *plugin;
 

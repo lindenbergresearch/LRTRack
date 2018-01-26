@@ -1,4 +1,3 @@
-#include "SimpleFilter.hpp"
 #include "LindenbergResearch.hpp"
 
 
@@ -130,7 +129,7 @@ SimpleFilterWidget::SimpleFilterWidget() {
     SimpleFilter *module = new SimpleFilter();
 
     setModule(module);
-    box.size = Vec(MODULE_WIDTH * RACK_GRID_WIDTH, RACK_GRID_HEIGHT);
+    box.size = Vec(SIMPLEFILTER_WIDTH * RACK_GRID_WIDTH, RACK_GRID_HEIGHT);
 
     {
         SVGPanel *panel = new SVGPanel();
