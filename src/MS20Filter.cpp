@@ -1,3 +1,4 @@
+#include <src/dsp/MS20zdf.hpp>
 #include "dsp/LadderFilter.hpp"
 #include "LindenbergResearch.hpp"
 
@@ -26,7 +27,7 @@ struct MS20Filter : LRTModule {
         NUM_LIGHTS
     };
 
-    LadderFilter filter;
+    MS20zdf ms20zdf;
 
 
     MS20Filter() : LRTModule(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS) {}
@@ -53,8 +54,16 @@ void MS20Filter::step() {
 
       outputs[LP_OUTPUT].value = filter.getLpOut();
 
-
       lights[OVERLOAD_LIGHT].value = filter.getLightValue();*/
+
+    ms20zdf.setFrequency(params[FREQUENCY_PARAM].value);
+    ms20zdf.setPeak(params[PEAK_PARAM].value);
+
+    ms20zdf.setIn(inputs[FILTER_INPUT].value);
+    ms20zdf.process();
+
+    outputs[LP_OUTPUT].value = ms20zdf.getLpOut();
+    outputs[HP_OUTPUT].value = ms20zdf.getHpOut();
 }
 
 
