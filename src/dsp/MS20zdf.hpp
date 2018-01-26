@@ -54,11 +54,21 @@ namespace rack {
     };
 
 
+    /**
+     * @brief MS20 Filter class
+     */
     struct MS20zdf : DSPEffect {
     private:
         // cutoff frequency and peak
         float frequency, peak;
 
+        float in;
+        float g, g2, b, k;
+        float ky, y;
+
+        ZDF zdf1, zdf2;
+
+        float lpOut, hpOut;
 
     public:
         float getFrequency() const;
@@ -68,6 +78,9 @@ namespace rack {
 
         void invalidate() override;
         void process() override;
+
+        float getLpOut() const;
+        float getHpOut() const;
     };
 
 

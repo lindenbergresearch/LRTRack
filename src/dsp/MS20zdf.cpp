@@ -50,7 +50,10 @@ void rack::MS20zdf::setPeak(float peak) {
  * @brief Calculate prewarped vars on parameter change
  */
 void MS20zdf::invalidate() {
-    DSPEffect::invalidate();
+    b = tanf(frequency * (float) M_PI / engineGetSampleRate());
+    g = b / (1 + b);
+    k = 2 * peak;
+    g2 = g * g;
 }
 
 
@@ -58,5 +61,33 @@ void MS20zdf::invalidate() {
  * @brief Proccess one sample of filter
  */
 void MS20zdf::process() {
-    DSPEffect::process();
+    float s1, s2;
+
+    zdf1.compute(in - ky, g);
+    s1 = zdf1.s;
+
+    zdf2.compute(zdf1.y + ky, g);
+    s2 = zdf2.s;
+
+    y = 1 / (g2 * k - g * k + 1) * (g2 * in + g * s1 + s2);
+
+    ky = k * y;
+}
+
+
+/**
+ * @brief Current Lowpass out
+ * @return
+ */
+float MS20zdf::getLpOut() const {
+    return lpOut;
+}
+
+
+/**
+ * @brief Current Highpass out
+ * @return
+ */
+float MS20zdf::getHpOut() const {
+    return hpOut;
 }
