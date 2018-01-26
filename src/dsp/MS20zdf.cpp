@@ -72,6 +72,9 @@ void MS20zdf::process() {
     y = 1 / (g2 * k - g * k + 1) * (g2 * in + g * s1 + s2);
 
     ky = k * y;
+
+    lpOut = y;
+    hpOut = in - y;
 }
 
 
