@@ -29,7 +29,17 @@ namespace dsp {
      */
     template<int NUM_IN, int NUM_OUT, int NUM_PARAM>
     struct DSPSystem {
-    private:
+
+        enum Inputs {
+        };
+
+        enum Outputs {
+        };
+
+        enum Params {
+        };
+
+    protected:
         DSPPort input[NUM_IN];
         DSPPort output[NUM_OUT];
         DSPParam param[NUM_PARAM];
@@ -54,7 +64,7 @@ namespace dsp {
 
 
         /**
-         * @brief Update samplerate on change
+         * @brief Update sample rate on change
          * @param sr
          */
         void updateSampleRate(float sr) {
@@ -83,6 +93,16 @@ namespace dsp {
 
 
         /**
+         * @brief Get the current parameter value by ID
+         * @param id Parameter ID
+         * @return current value
+         */
+        float getParam(int id) {
+            return param[id].value;
+        }
+
+
+        /**
          * @brief Set input port to new value
          * @param id Port ID
          * @param value
@@ -104,6 +124,7 @@ namespace dsp {
         float getOut(int id) {
             return output[id].value;
         }
+
 
         /**
          * @brief Method for mark parameters as invalidate to trigger recalculation
