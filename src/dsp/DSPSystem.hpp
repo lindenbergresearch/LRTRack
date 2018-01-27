@@ -1,11 +1,21 @@
 #pragma once
 
-namespace rack {
+/**
+ * @brief Basic DSP types
+ */
+namespace dsp {
+
+    /**
+     * @brief Represents an IOPort of an DSP system
+     */
+    struct DSPPort {
+        float value;
+    };
 
     /**
      * @brief Base class for all signal processors
      */
-    struct DSPEffect {
+    struct DSPSystem {
 
         /**
          * @brief Method for mark parameters as invalidate to trigger recalculation

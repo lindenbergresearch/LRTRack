@@ -17,7 +17,7 @@ set(SOURCE_FILES
         src/Release.h
         src/dsp/Oscillator.cpp
         src/dsp/Oscillator.hpp
-        src/dsp/DSPEffect.hpp
+        src/dsp/DSPSystem.hpp
         src/dsp/LadderFilter.hpp
         src/dsp/LadderFilter.cpp
         src/dsp/DSPEffect.cpp
