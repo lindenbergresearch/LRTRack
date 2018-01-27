@@ -11,7 +11,7 @@ namespace rack {
      * @brief MS20 Topology Preserving Transform
      */
     struct TPT {
-        float y0, y;
+        float s;
 
 
         /**
@@ -20,13 +20,10 @@ namespace rack {
          * @param g
          * @return
          */
-        float getY(float x, float g) {
+        void compute(float x, float g) {
             float gx = g * x;
-            y0 = y;
 
-            y = gx + y0 + gx;
-
-            return y0;
+            s = gx + s + gx;
         }
     };
 
@@ -35,7 +32,7 @@ namespace rack {
      * @brief Zero Delay Feedback
      */
     struct ZDF {
-        float y0, y;
+        float y;
         float s;
         TPT tpt;
 
@@ -46,8 +43,8 @@ namespace rack {
          * @param g
          */
         void compute(float x, float g) {
-            y0 = y;
-            s = tpt.getY(x - y0, g);
+            tpt.compute(x - y, g);
+            s = tpt.s;
             y = g * x + s;
         }
 
@@ -58,7 +55,7 @@ namespace rack {
      * @brief MS20 Filter class
      */
     struct MS20zdf : DSPEffect {
-        static const int OVERSAMPLE = 8;    // factor of internal oversampling
+        static const int OVERSAMPLE = 1;    // factor of internal oversampling
 
     private:
         // cutoff frequency and peak
@@ -67,7 +64,7 @@ namespace rack {
         float in;
         float g, g2, b, k;
         float ky, y;
-        float freqHz, freqExp;
+        float freqHz;
 
         ZDF zdf1, zdf2;
 
@@ -76,9 +73,11 @@ namespace rack {
     public:
         float getFrequency() const;
         void setFrequency(float frequency);
+        float getFreqHz() const;
         float getPeak() const;
         void setPeak(float peak);
         void setIn(float in);
+
 
         void invalidate() override;
         void process() override;

@@ -39,7 +39,7 @@ float rack::MS20zdf::getPeak() const {
  */
 void rack::MS20zdf::setPeak(float peak) {
     if (MS20zdf::peak != peak) {
-        MS20zdf::peak != peak;
+        MS20zdf::peak = peak;
 
         invalidate();
     }
@@ -51,10 +51,9 @@ void rack::MS20zdf::setPeak(float peak) {
  */
 void MS20zdf::invalidate() {
     // translate frequency to logarithmic scale
-    freqHz = 20.f * powf(1000.f, frequency);
-    freqExp = clampf(freqHz * (1.f / (engineGetSampleRate() * OVERSAMPLE / 2.f)), 0.f, 1.f);
+    freqHz = 8.f * powf(1500.f, frequency);
 
-    b = tanf(freqExp * (float) M_PI / engineGetSampleRate());
+    b = tanf(freqHz * (float) M_PI / engineGetSampleRate() * OVERSAMPLE);
     g = b / (1 + b);
     k = 2 * peak;
     g2 = g * g;
@@ -106,4 +105,13 @@ float MS20zdf::getHpOut() const {
  */
 void MS20zdf::setIn(float in) {
     MS20zdf::in = in;
+}
+
+
+/**
+ * @brief Get cutoff frequency in Hz
+ * @return
+ */
+float MS20zdf::getFreqHz() const {
+    return freqHz;
 }
