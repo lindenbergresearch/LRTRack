@@ -58,36 +58,68 @@ namespace dsp {
     struct MS20zdf : DSPSystem<1, 2, 2> {
         static const int OVERSAMPLE = 1;    // factor of internal oversampling
 
-    private:
-        // cutoff frequency and peak
-        float frequency, peak;
+        enum Inputs {
+            IN
+        };
 
-        float in;
+        enum Params {
+            FREQUENCY,
+            PEAK
+        };
+
+        enum Outputs {
+            LOWPASS,
+            HIGHPASS
+        };
+
+    private:
         float g, g2, b, k;
         float ky, y;
         float freqHz;
 
         ZDF zdf1, zdf2;
 
-        float lpOut, hpOut;
-
     public:
-
         MS20zdf(float sr);
 
-        float getFrequency() const;
-        void setFrequency(float frequency);
-        float getFreqHz() const;
-        float getPeak() const;
-        void setPeak(float peak);
-        void setIn(float in);
+
+        float getFrequency() const {
+            return param[FREQUENCY].value;
+        }
+
+
+        void setFrequency(float frequency) {
+            param[FREQUENCY].value = frequency;
+        }
+
+
+        float getPeak() {
+            return param[PEAK].value;
+        }
+
+
+        void setPeak(float value) {
+            param[PEAK].value = value;
+        }
+
+
+        void setIn(float value) {
+            input[IN].value = value;
+        }
+
+
+        float getHPOut() {
+            return output[HIGHPASS].value;
+        }
+
+
+        float getLPOut() {
+            return output[LOWPASS].value;
+        }
 
 
         void invalidate() override;
         void process() override;
-
-        float getLpOut() const;
-        float getHpOut() const;
     };
 
 
