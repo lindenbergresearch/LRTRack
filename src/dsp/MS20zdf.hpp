@@ -1,11 +1,12 @@
 #pragma once
 
 
-#include "DSPEffect.hpp"
+#include "DSPSystem.hpp"
 #include "engine.hpp"
 #include "DSPMath.hpp"
+#include "DSPEffect.hpp"
 
-namespace rack {
+namespace dsp {
 
     /**
      * @brief MS20 Topology Preserving Transform
@@ -54,7 +55,7 @@ namespace rack {
     /**
      * @brief MS20 Filter class
      */
-    struct MS20zdf : DSPEffect {
+    struct MS20zdf : DSPSystem<1, 2, 2> {
         static const int OVERSAMPLE = 1;    // factor of internal oversampling
 
     private:
@@ -71,6 +72,9 @@ namespace rack {
         float lpOut, hpOut;
 
     public:
+
+        MS20zdf(float sr);
+
         float getFrequency() const;
         void setFrequency(float frequency);
         float getFreqHz() const;

@@ -6,7 +6,7 @@
  * @brief Get current filter cutoff frequency
  * @return
  */
-float rack::MS20zdf::getFrequency() const {
+float dsp::MS20zdf::getFrequency() const {
     return frequency;
 }
 
@@ -15,7 +15,7 @@ float rack::MS20zdf::getFrequency() const {
  * @brief Set filter cutoff frequency and trigger recalculation of prewarped vars
  * @param frequency
  */
-void rack::MS20zdf::setFrequency(float frequency) {
+void dsp::MS20zdf::setFrequency(float frequency) {
     if (MS20zdf::frequency != frequency) {
         MS20zdf::frequency = frequency;
 
@@ -28,7 +28,7 @@ void rack::MS20zdf::setFrequency(float frequency) {
  * @brief Get filter peak (resonance)
  * @return
  */
-float rack::MS20zdf::getPeak() const {
+float dsp::MS20zdf::getPeak() const {
     return peak;
 }
 
@@ -37,7 +37,7 @@ float rack::MS20zdf::getPeak() const {
  * @brief Set filter peak (resonance) and trigger recalculation of prewarped vars
  * @param peak
  */
-void rack::MS20zdf::setPeak(float peak) {
+void dsp::MS20zdf::setPeak(float peak) {
     if (MS20zdf::peak != peak) {
         MS20zdf::peak = peak;
 
@@ -49,9 +49,9 @@ void rack::MS20zdf::setPeak(float peak) {
 /**
  * @brief Calculate prewarped vars on parameter change
  */
-void MS20zdf::invalidate() {
+void dsp::MS20zdf::invalidate() {
     // translate frequency to logarithmic scale
-    freqHz = 8.f * powf(1500.f, frequency);
+    freqHz = 8.f * powf(2500.f, frequency);
 
     b = tanf(freqHz * (float) M_PI / engineGetSampleRate() * OVERSAMPLE);
     g = b / (1 + b);
@@ -63,7 +63,7 @@ void MS20zdf::invalidate() {
 /**
  * @brief Proccess one sample of filter
  */
-void MS20zdf::process() {
+void dsp::MS20zdf::process() {
     float s1, s2;
 
     zdf1.compute(in - ky, g);
@@ -85,7 +85,7 @@ void MS20zdf::process() {
  * @brief Current Lowpass out
  * @return
  */
-float MS20zdf::getLpOut() const {
+float dsp::MS20zdf::getLpOut() const {
     return lpOut;
 }
 
@@ -94,7 +94,7 @@ float MS20zdf::getLpOut() const {
  * @brief Current Highpass out
  * @return
  */
-float MS20zdf::getHpOut() const {
+float dsp::MS20zdf::getHpOut() const {
     return hpOut;
 }
 
@@ -103,7 +103,7 @@ float MS20zdf::getHpOut() const {
  * @brief Set filter input
  * @param in
  */
-void MS20zdf::setIn(float in) {
+void dsp::MS20zdf::setIn(float in) {
     MS20zdf::in = in;
 }
 
@@ -112,6 +112,9 @@ void MS20zdf::setIn(float in) {
  * @brief Get cutoff frequency in Hz
  * @return
  */
-float MS20zdf::getFreqHz() const {
+float dsp::MS20zdf::getFreqHz() const {
     return freqHz;
 }
+
+
+dsp::MS20zdf::MS20zdf(float sr) : DSPSystem(sr) {}
