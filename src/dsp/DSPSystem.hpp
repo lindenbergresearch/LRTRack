@@ -7,7 +7,7 @@
 namespace dsp {
 
     /**
-     * @brief Represents an IOPort of an DSP system
+     * @brief Represents an IOPort of a DSP system
      */
     struct DSPPort {
         float value;
@@ -32,21 +32,28 @@ namespace dsp {
         DSPPort output[NUM_OUT];
         DSPParam param[NUM_PARAM];
 
-        int sr;
+        float sr;
 
     public:
+
         /**
-         * @brief Init system with samplerate
+         * @brief Default constructor
+         */
+        DSPSystem() {}
+
+
+        /**
+         * @brief Init system with sample rate
          * @param sr
          */
-        DSPSystem(int sr) : sr(sr) {}
+        DSPSystem(float sr) : sr(sr) {}
 
 
         /**
          * @brief Update samplerate on change
          * @param sr
          */
-        void updateSampleRate(int sr) {
+        void updateSampleRate(float sr) {
             DSPSystem::sr = sr;
             invalidate();
         }
@@ -84,6 +91,15 @@ namespace dsp {
             }
         }
 
+
+        /**
+         * @brief Get current output value
+         * @param id Output ID
+         * @return
+         */
+        float getOut(int id) {
+            return output[id].value;
+        }
 
         /**
          * @brief Method for mark parameters as invalidate to trigger recalculation
