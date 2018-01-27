@@ -1,5 +1,4 @@
-#include <src/dsp/MS20zdf.hpp>
-#include "dsp/LadderFilter.hpp"
+#include "dsp/MS20zdf.hpp"
 #include "LindenbergResearch.hpp"
 
 
@@ -27,13 +26,15 @@ struct MS20Filter : LRTModule {
         NUM_LIGHTS
     };
 
-    MS20zdf ms20zdf;
+    dsp::MS20zdf *ms20zdf = new dsp::MS20zdf(engineGetSampleRate());
+    LCDWidget *lcd1 = new LCDWidget(LCD_COLOR_FG, 15);
 
 
     MS20Filter() : LRTModule(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS) {}
 
 
     void step() override;
+    void onSampleRateChange() override;
 };
 
 
@@ -56,14 +57,23 @@ void MS20Filter::step() {
 
       lights[OVERLOAD_LIGHT].value = filter.getLightValue();*/
 
-    ms20zdf.setFrequency(params[FREQUENCY_PARAM].value);
-    ms20zdf.setPeak(params[PEAK_PARAM].value);
+    ms20zdf->setFrequency(params[FREQUENCY_PARAM].value);
+    ms20zdf->setPeak(params[PEAK_PARAM].value);
 
-    ms20zdf.setIn(inputs[FILTER_INPUT].value);
-    ms20zdf.process();
+    lcd1->text = stringf("%f", ms20zdf->getFrequency());
 
-    outputs[LP_OUTPUT].value = ms20zdf.getLpOut();
-    outputs[HP_OUTPUT].value = ms20zdf.getHpOut();
+    ms20zdf->setIn(inputs[FILTER_INPUT].value);
+
+    ms20zdf->process();
+
+    outputs[LP_OUTPUT].value = ms20zdf->getLPOut();
+    outputs[HP_OUTPUT].value = ms20zdf->getHPOut();
+}
+
+
+void MS20Filter::onSampleRateChange() {
+    Module::onSampleRateChange();
+    ms20zdf->updateSampleRate(engineGetSampleRate());
 }
 
 
@@ -89,7 +99,7 @@ MS20FilterWidget::MS20FilterWidget() {
 
     // ***** MAIN KNOBS ******
     addParam(createParam<LRBigKnob>(Vec(62, 150), module, MS20Filter::FREQUENCY_PARAM, 0.f, 1.f, 0.8f));
-    addParam(createParam<LRMiddleKnob>(Vec(24, 229), module, MS20Filter::PEAK_PARAM, -0.f, 1.5, 0.0f));
+    addParam(createParam<LRMiddleKnob>(Vec(24, 229), module, MS20Filter::PEAK_PARAM, 0.f, 1.0, 0.0f));
     // ***** MAIN KNOBS ******
 
     // ***** CV INPUTS *******
@@ -114,5 +124,10 @@ MS20FilterWidget::MS20FilterWidget() {
     // ***** LIGHTS **********
     // addChild(createLight<LRRedLight>(Vec(85, 247), module, AlmaFilter::OVERLOAD_LIGHT));
     // ***** LIGHTS **********
+
+    // ***** LCD *************
+    module->lcd1->box.pos = Vec(34, 115);
+    addChild(module->lcd1);
+    // ***** LCD *************
 
 }
