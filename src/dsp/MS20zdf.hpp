@@ -83,38 +83,43 @@ namespace dsp {
         MS20zdf(float sr);
 
 
-        float getFrequency() const {
-            return param[FREQUENCY].value;
+        float getFrequency() {
+            return getParam(FREQUENCY);
         }
 
 
-        void setFrequency(float frequency) {
-            param[FREQUENCY].value = frequency;
+        float getFrequencyHz() const {
+            return freqHz;
+        }
+
+
+        void setFrequency(float value) {
+            setParam(FREQUENCY, value);
         }
 
 
         float getPeak() {
-            return param[PEAK].value;
+            return getParam(PEAK);
         }
 
 
         void setPeak(float value) {
-            param[PEAK].value = value;
+            setParam(PEAK, value);
         }
 
 
         void setIn(float value) {
-            input[IN].value = value;
+            setInput(IN, value);
         }
 
 
         float getHPOut() {
-            return output[HIGHPASS].value;
+            return getOutput(HIGHPASS);
         }
 
 
         float getLPOut() {
-            return output[LOWPASS].value;
+            return getOutput(LOWPASS);
         }
 
 
