@@ -20,7 +20,6 @@ set(SOURCE_FILES
         src/dsp/DSPSystem.hpp
         src/dsp/LadderFilter.hpp
         src/dsp/LadderFilter.cpp
-        src/dsp/DSPEffect.cpp
         src/dsp/MS20zdf.hpp src/dsp/MS20zdf.cpp src/MS20Filter.cpp)
 
 include_directories(.)
