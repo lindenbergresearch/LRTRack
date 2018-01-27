@@ -103,6 +103,15 @@ namespace dsp {
 
 
         /**
+         * @brief Get the current value of the output by ID
+         * @param id
+         * @return
+         */
+        float getOutput(int id) {
+            return output[id].value;
+        }
+
+        /**
          * @brief Set input port to new value
          * @param id Port ID
          * @param value
