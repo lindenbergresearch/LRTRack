@@ -6,11 +6,11 @@
  */
 void dsp::MS20zdf::invalidate() {
     // translate frequency to logarithmic scale
-    freqHz = 8.f * powf(2500.f, frequency);
+    freqHz = 8.f * powf(2500.f, param[FREQUENCY].value);
 
     b = tanf(freqHz * (float) M_PI / engineGetSampleRate() * OVERSAMPLE);
     g = b / (1 + b);
-    k = 2 * peak;
+    k = 2 * param[PEAK].value;
     g2 = g * g;
 }
 
@@ -21,18 +21,18 @@ void dsp::MS20zdf::invalidate() {
 void dsp::MS20zdf::process() {
     float s1, s2;
 
-    zdf1.compute(in - ky, g);
+    zdf1.compute(input[IN].value - ky, g);
     s1 = zdf1.s;
 
     zdf2.compute(zdf1.y + ky, g);
     s2 = zdf2.s;
 
-    y = 1 / (g2 * k - g * k + 1) * (g2 * in + g * s1 + s2);
+    y = 1 / (g2 * k - g * k + 1) * (g2 * input[IN].value + g * s1 + s2);
 
     ky = k * y;
 
-    lpOut = y;
-    hpOut = in - y;
+    output[LOWPASS].value = y;
+    output[HIGHPASS].value = input[IN].value - y;
 }
 
 
