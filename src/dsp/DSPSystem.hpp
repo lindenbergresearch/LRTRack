@@ -1,5 +1,7 @@
 #pragma once
 
+#define DEFAULT_SR 44100.0f
+
 /**
  * @brief Basic DSP types
  */
@@ -39,7 +41,9 @@ namespace dsp {
         /**
          * @brief Default constructor
          */
-        DSPSystem() {}
+        DSPSystem() {
+            sr = DEFAULT_SR;
+        }
 
 
         /**
