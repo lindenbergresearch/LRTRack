@@ -1,6 +1,7 @@
 #pragma once
 
 #define DEFAULT_SR 44100.0f
+#define TRIGGER_PROCESSING true
 
 /**
  * @brief Basic DSP types
@@ -33,19 +34,19 @@ namespace dsp {
         /**
          * @brief Enumerate all Inputs
          */
-        enum Inputs {
+        virtual enum Inputs {
         };
 
         /**
          * @brief Enumerate all Outputs
          */
-        enum Outputs {
+        virtual enum Outputs {
         };
 
         /**
          * @brief Enumerate all Parameters
          */
-        enum Params {
+        virtual enum Params {
         };
 
     protected:
@@ -158,4 +159,70 @@ namespace dsp {
         virtual void process() {};
     };
 
+
+    /**
+     * @brief Delayed signal model
+     * @tparam SIZE
+     */
+    template<int SIZE>
+    struct DSPDelay : DSPSystem<1, 1, 0> {
+
+        enum Inputs {
+            IN
+        };
+
+        enum Outputs {
+            OUT
+        };
+
+        enum Params {
+
+        };
+
+    private:
+        float buffer[SIZE] = {};
+
+
+        void shift() {
+            for (int i = 0; i < SIZE - 1; i++) {
+                buffer[i] = buffer[i + 1];
+            }
+        }
+
+
+    public:
+        /**
+         * @brief Get the delayed sample from signal, to processing are triggered
+         * @return
+         */
+        float get() {
+            return output[OUT].value;
+        }
+
+
+        /**
+         * @brief Set new value to Input and trigger processing
+         * @param value
+         */
+        void set(float value) {
+            setInput(IN, value, TRIGGER_PROCESSING);
+        }
+
+
+        /**
+         * @brief Proccess the Delay
+         */
+        void process() override {
+            /* shift all elements left */
+            shift();
+            /* set last element to current input */
+            buffer[SIZE - 1] = input[IN].value;
+        }
+    };
+
+
+    /**
+     * @brief Shortcut for a classic z^-1 delay (1-Sample)
+     */
+    typedef DSPDelay<1> DSPDelay1S;
 }
