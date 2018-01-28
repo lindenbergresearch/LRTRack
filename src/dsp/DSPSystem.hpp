@@ -49,9 +49,9 @@ namespace dsp {
         };
 
     protected:
-        DSPPort input[NUM_IN];
-        DSPPort output[NUM_OUT];
-        DSPParam param[NUM_PARAM];
+        DSPPort input[NUM_IN] = {};
+        DSPPort output[NUM_OUT] = {};
+        DSPParam param[NUM_PARAM] = {};
 
         float sr;
 
@@ -69,7 +69,7 @@ namespace dsp {
          * @brief Init system with sample rate
          * @param sr
          */
-        DSPSystem(float sr) : sr(sr) {}
+        explicit DSPSystem(float sr) : sr(sr) {}
 
 
         /**
