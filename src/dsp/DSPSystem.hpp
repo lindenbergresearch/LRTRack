@@ -17,7 +17,7 @@ namespace dsp {
 
 
     /**
-     * @brief System parameter
+     * @brief Represents a parameter of a DSP system
      */
     struct DSPParam {
         float value;
@@ -30,12 +30,21 @@ namespace dsp {
     template<int NUM_IN, int NUM_OUT, int NUM_PARAM>
     struct DSPSystem {
 
+        /**
+         * @brief Enumerate all Inputs
+         */
         enum Inputs {
         };
 
+        /**
+         * @brief Enumerate all Outputs
+         */
         enum Outputs {
         };
 
+        /**
+         * @brief Enumerate all Parameters
+         */
         enum Params {
         };
 
@@ -110,6 +119,7 @@ namespace dsp {
         float getOutput(int id) {
             return output[id].value;
         }
+
 
         /**
          * @brief Set input port to new value
