@@ -34,19 +34,19 @@ namespace dsp {
         /**
          * @brief Enumerate all Inputs
          */
-        virtual enum Inputs {
+        enum Inputs {
         };
 
         /**
          * @brief Enumerate all Outputs
          */
-        virtual enum Outputs {
+        enum Outputs {
         };
 
         /**
          * @brief Enumerate all Parameters
          */
-        virtual enum Params {
+        enum Params {
         };
 
     protected:
@@ -160,6 +160,20 @@ namespace dsp {
     };
 
 
+    struct DSPSystem1x1 : DSPSystem<1, 1, 0> {
+        enum Inputs {
+            IN
+        };
+
+        enum Outputs {
+            OUT
+        };
+
+
+        virtual float get();
+    };
+
+
     /**
      * @brief Delayed signal model
      * @tparam SIZE
@@ -183,6 +197,9 @@ namespace dsp {
         float buffer[SIZE] = {};
 
 
+        /**
+         * @brief Shift left all elements
+         */
         void shift() {
             for (int i = 0; i < SIZE - 1; i++) {
                 buffer[i] = buffer[i + 1];
@@ -196,7 +213,8 @@ namespace dsp {
          * @return
          */
         float get() {
-            return output[OUT].value;
+            return output[OUT].value = buffer[0];
+            // output[OUT].value;
         }
 
 
