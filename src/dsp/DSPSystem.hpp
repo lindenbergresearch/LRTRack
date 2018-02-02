@@ -1,5 +1,4 @@
 #pragma once
-
 #define DEFAULT_SR 44100.0f
 #define TRIGGER_PROCESSING true
 
@@ -160,6 +159,9 @@ namespace dsp {
     };
 
 
+    /**
+     * @brief Basic 1 in and 1 out system definiton
+     */
     struct DSPSystem1x1 : DSPSystem<1, 1, 0> {
         enum Inputs {
             IN
@@ -171,6 +173,7 @@ namespace dsp {
 
 
         virtual float get();
+        virtual void set(float value);
     };
 
 
@@ -189,9 +192,6 @@ namespace dsp {
             OUT
         };
 
-        enum Params {
-
-        };
 
     private:
         float buffer[SIZE] = {};
@@ -213,8 +213,7 @@ namespace dsp {
          * @return
          */
         float get() {
-            return output[OUT].value = buffer[0];
-            // output[OUT].value;
+            return output[OUT].value;
         }
 
 
@@ -235,6 +234,8 @@ namespace dsp {
             shift();
             /* set last element to current input */
             buffer[SIZE - 1] = input[IN].value;
+            /* set output */
+            output[OUT].value = buffer[0];
         }
     };
 
@@ -242,5 +243,5 @@ namespace dsp {
     /**
      * @brief Shortcut for a classic z^-1 delay (1-Sample)
      */
-    typedef DSPDelay<1> DSPDelay1S;
+    typedef DSPDelay<1> DSPDelay1;
 }
