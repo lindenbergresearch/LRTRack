@@ -1,10 +1,7 @@
 #pragma once
 
-
 #include "DSPSystem.hpp"
-#include "engine.hpp"
 #include "DSPMath.hpp"
-#include "DSPEffect.hpp"
 
 namespace dsp {
 
@@ -13,6 +10,7 @@ namespace dsp {
      */
     struct TPT {
         float s;
+        DSPDelay1 z;
 
 
         /**
@@ -24,7 +22,8 @@ namespace dsp {
         void compute(float x, float g) {
             float gx = g * x;
 
-            s = gx + s + gx;
+            z.set(gx + z.get() + gx);
+            s = z.get();
         }
     };
 
@@ -44,9 +43,10 @@ namespace dsp {
          * @param g
          */
         void compute(float x, float g) {
+            y = g * x + s;
+
             tpt.compute(x - y, g);
             s = tpt.s;
-            y = g * x + s;
         }
 
     };
@@ -80,7 +80,7 @@ namespace dsp {
         ZDF zdf1, zdf2;
 
     public:
-        MS20zdf(float sr);
+        explicit MS20zdf(float sr);
 
 
         float getFrequency() {
