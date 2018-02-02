@@ -1,14 +1,16 @@
 #include "MS20zdf.hpp"
 
+using namespace dsp;
+
 
 /**
  * @brief Calculate prewarped vars on parameter change
  */
-void dsp::MS20zdf::invalidate() {
+void MS20zdf::invalidate() {
     // translate frequency to logarithmic scale
-    freqHz = 8.f * powf(2500.f, param[FREQUENCY].value);
+    freqHz = 4.f * powf(3600.f, param[FREQUENCY].value);
 
-    b = tanf(freqHz * (float) M_PI / engineGetSampleRate() * OVERSAMPLE);
+    b = tanf(freqHz * (float) M_PI / sr * OVERSAMPLE);
     g = b / (1 + b);
     k = 2 * param[PEAK].value;
     g2 = g * g;
@@ -18,7 +20,7 @@ void dsp::MS20zdf::invalidate() {
 /**
  * @brief Proccess one sample of filter
  */
-void dsp::MS20zdf::process() {
+void MS20zdf::process() {
     float s1, s2;
 
     zdf1.compute(input[IN].value - ky, g);
@@ -40,5 +42,5 @@ void dsp::MS20zdf::process() {
  * @brief Inherit constructor
  * @param sr sample rate
  */
-dsp::MS20zdf::MS20zdf(float sr) : DSPSystem(sr) {}
+MS20zdf::MS20zdf(float sr) : DSPSystem(sr) {}
 
