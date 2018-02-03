@@ -160,7 +160,7 @@ namespace dsp {
 
 
     /**
-     * @brief Basic 1 in and 1 out system definiton
+     * @brief Basic 1 in and 1 out system definition
      */
     struct DSPSystem1x1 : DSPSystem<1, 1, 0> {
         enum Inputs {
@@ -172,8 +172,57 @@ namespace dsp {
         };
 
 
-        virtual float get();
-        virtual void set(float value);
+        /**
+          * @brief Get the delayed sample from signal, to processing are triggered
+          * @return
+          */
+        float get() {
+            return output[OUT].value;
+        }
+
+
+        /**
+         * @brief Set new value to Input and trigger processing
+         * @param value
+         */
+        void set(float value) {
+            setInput(IN, value, TRIGGER_PROCESSING);
+        }
+    };
+
+
+/**
+ * @brief Basic 1 in and 1 out system definition
+ */
+    struct DSPSystem2x1 : DSPSystem<2, 1, 0> {
+        enum Inputs {
+            IN1,
+            IN2
+        };
+
+        enum Outputs {
+            OUT
+        };
+
+
+        /**
+          * @brief Get the delayed sample from signal, to processing are triggered
+          * @return
+          */
+        float get() {
+            return output[OUT].value;
+        }
+
+
+        /**
+         * @brief Set new value to Input and trigger processing
+         * @param value
+         */
+        void set(float in1, float in2, bool proccess = true) {
+            setInput(IN1, in1);
+            setInput(IN2, in2, proccess);
+
+        }
     };
 
 
@@ -182,16 +231,7 @@ namespace dsp {
      * @tparam SIZE
      */
     template<int SIZE>
-    struct DSPDelay : DSPSystem<1, 1, 0> {
-
-        enum Inputs {
-            IN
-        };
-
-        enum Outputs {
-            OUT
-        };
-
+    struct DSPDelay : DSPSystem1x1 {
 
     private:
         float buffer[SIZE] = {};
@@ -208,23 +248,6 @@ namespace dsp {
 
 
     public:
-        /**
-         * @brief Get the delayed sample from signal, to processing are triggered
-         * @return
-         */
-        float get() {
-            return output[OUT].value;
-        }
-
-
-        /**
-         * @brief Set new value to Input and trigger processing
-         * @param value
-         */
-        void set(float value) {
-            setInput(IN, value, TRIGGER_PROCESSING);
-        }
-
 
         /**
          * @brief Proccess the Delay
