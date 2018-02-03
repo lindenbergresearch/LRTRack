@@ -25,21 +25,16 @@ namespace dsp {
     /**
      * @brief Zero Delay Feedback
      */
-    struct ZDF {
+    struct MS20ZDF : DSPSystem2x2 {
         float y;
         float s;
         MS20TPT tpt;
 
 
-        /**
-         * @brief Compute ZDF
-         * @param x
-         * @param g
-         */
-        void compute(float x, float g) {
-            y = g * x + s;
+        void process() override {
+            y = input[IN1].value * input[IN2].value + s;
 
-            tpt.set(x - y, g);
+            tpt.set(input[IN1].value - y, input[IN2].value);
             s = tpt.s;
         }
 
@@ -71,7 +66,8 @@ namespace dsp {
         float ky, y;
         float freqHz;
 
-        ZDF zdf1, zdf2;
+        MS20ZDF zdf1, zdf2;
+        OverSampler<OVERSAMPLE, 1> os;
 
     public:
         explicit MS20zdf(float sr);
