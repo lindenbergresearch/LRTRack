@@ -8,9 +8,9 @@ using namespace dsp;
  */
 void MS20zdf::invalidate() {
     // translate frequency to logarithmic scale
-    freqHz = 2.f * powf(9000.f, param[FREQUENCY].value);
+    freqHz = 10.f * powf(1600.f, param[FREQUENCY].value);
 
-    b = tanf(freqHz * (float) M_PI / sr * OVERSAMPLE);
+    b = tanf(freqHz * (float) M_PI / sr / OVERSAMPLE);
     g = b / (1 + b);
     k = 2 * param[PEAK].value * 0.99f;
     g2 = g * g;
@@ -21,20 +21,31 @@ void MS20zdf::invalidate() {
  * @brief Proccess one sample of filter
  */
 void MS20zdf::process() {
+    os.next(IN, input[IN].value);
+    os.doUpsample(IN);
+
     float s1, s2;
 
-    zdf1.compute(input[IN].value - ky, g);
-    s1 = zdf1.s;
+    for (int i = 0; i < os.factor; i++) {
+        float x = os.up[IN][i];
 
-    zdf2.compute(zdf1.y + ky, g);
-    s2 = zdf2.s;
+        zdf1.set(x - ky, g);
+        s1 = zdf1.s;
 
-    y = 1 / (g2 * k - g * k + 1) * (g2 * input[IN].value + g * s1 + s2);
+        zdf2.set(zdf1.y + ky, g);
+        s2 = zdf2.s;
 
-    ky = k * y;
+        y = 1 / (g2 * k - g * k + 1) * (g2 * x + g * s1 + s2);
 
-    output[LOWPASS].value = y;
-    output[HIGHPASS].value = y - input[IN].value;
+        ky = k * y;
+
+        os.data[IN][i] = y;
+    }
+
+    float out = os.getDownsampled(IN);
+
+    output[LOWPASS].value = out;
+    output[HIGHPASS].value = out - input[IN].value;
 }
 
 
