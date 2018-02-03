@@ -29,12 +29,28 @@ namespace dsp {
 
 
     /**
+     * @brief
+     */
+    struct MS20TPT : DSPSystem2x1 {
+        float s;
+        DSPDelay1 z;
+
+
+        void process() override {
+            float gx = input[IN1].value * input[IN2].value;
+
+            z.set(gx + z.get() + gx);
+            s = z.get();
+        }
+    };
+
+    /**
      * @brief Zero Delay Feedback
      */
     struct ZDF {
         float y;
         float s;
-        TPT tpt;
+        MS20TPT tpt;
 
 
         /**
@@ -45,7 +61,7 @@ namespace dsp {
         void compute(float x, float g) {
             y = g * x + s;
 
-            tpt.compute(x - y, g);
+            tpt.set(x - y, g);
             s = tpt.s;
         }
 
