@@ -60,7 +60,7 @@ void MS20Filter::step() {
     ms20zdf->setFrequency(params[FREQUENCY_PARAM].value);
     ms20zdf->setPeak(params[PEAK_PARAM].value);
 
-    lcd1->text = stringf("%f", ms20zdf->getFrequency());
+    // lcd1->text = stringf("%f", ms20zdf->getFrequencyHz());
 
     ms20zdf->setIn(inputs[FILTER_INPUT].value);
 
