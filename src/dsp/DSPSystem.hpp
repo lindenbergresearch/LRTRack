@@ -226,6 +226,40 @@ namespace dsp {
     };
 
 
+/**
+ * @brief Basic 1 in and 1 out system definition
+ */
+    struct DSPSystem2x2 : DSPSystem<2, 2, 0> {
+        enum Inputs {
+            IN1,
+            IN2
+        };
+
+        enum Outputs {
+            OUT1,
+            OUT2
+        };
+
+
+        /**
+          * @brief Get the delayed sample from signal, to processing are triggered
+          * @return
+          */
+        float get(int out = 0) {
+            return output[out].value;
+        }
+
+
+        /**
+         * @brief Set new value to Input and trigger processing
+         * @param value
+         */
+        void set(float in1, float in2, bool proccess = true) {
+            setInput(IN1, in1);
+            setInput(IN2, in2, proccess);
+
+        }
+    };
     /**
      * @brief Delayed signal model
      * @tparam SIZE
