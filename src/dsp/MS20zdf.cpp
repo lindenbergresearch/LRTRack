@@ -8,11 +8,11 @@ using namespace dsp;
  */
 void MS20zdf::invalidate() {
     // translate frequency to logarithmic scale
-    freqHz = 4.f * powf(3600.f, param[FREQUENCY].value);
+    freqHz = 2.f * powf(9000.f, param[FREQUENCY].value);
 
     b = tanf(freqHz * (float) M_PI / sr * OVERSAMPLE);
     g = b / (1 + b);
-    k = 2 * param[PEAK].value;
+    k = 2 * param[PEAK].value * 0.99f;
     g2 = g * g;
 }
 
@@ -34,7 +34,7 @@ void MS20zdf::process() {
     ky = k * y;
 
     output[LOWPASS].value = y;
-    output[HIGHPASS].value = input[IN].value - y;
+    output[HIGHPASS].value = y - input[IN].value;
 }
 
 
