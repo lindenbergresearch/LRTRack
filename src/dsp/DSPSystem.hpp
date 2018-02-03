@@ -254,9 +254,9 @@ namespace dsp {
          * @brief Set new value to Input and trigger processing
          * @param value
          */
-        void set(float in1, float in2, bool proccess = true) {
+        void set(float in1, float in2, bool process = true) {
             setInput(IN1, in1);
-            setInput(IN2, in2, proccess);
+            setInput(IN2, in2, process);
 
         }
     };
