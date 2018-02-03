@@ -5,28 +5,6 @@
 
 namespace dsp {
 
-    /**
-     * @brief MS20 Topology Preserving Transform
-     */
-    struct TPT {
-        float s;
-        DSPDelay1 z;
-
-
-        /**
-         * @brief Get current Y value
-         * @param x
-         * @param g
-         * @return
-         */
-        void compute(float x, float g) {
-            float gx = g * x;
-
-            z.set(gx + z.get() + gx);
-            s = z.get();
-        }
-    };
-
 
     /**
      * @brief
