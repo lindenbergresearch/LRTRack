@@ -47,6 +47,7 @@ namespace dsp {
      */
     struct MS20zdf : DSPSystem<1, 2, 3> {
         static const int OVERSAMPLE = 4;    // factor of internal oversampling
+        static constexpr float DRIVE_GAIN = 20.f;
 
         enum Inputs {
             IN
