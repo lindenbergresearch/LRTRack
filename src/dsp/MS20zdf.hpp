@@ -22,6 +22,7 @@ namespace dsp {
         }
     };
 
+
     /**
      * @brief Zero Delay Feedback
      */
@@ -44,8 +45,8 @@ namespace dsp {
     /**
      * @brief MS20 Filter class
      */
-    struct MS20zdf : DSPSystem<1, 2, 2> {
-        static const int OVERSAMPLE = 1;    // factor of internal oversampling
+    struct MS20zdf : DSPSystem<1, 2, 3> {
+        static const int OVERSAMPLE = 4;    // factor of internal oversampling
 
         enum Inputs {
             IN
@@ -53,7 +54,8 @@ namespace dsp {
 
         enum Params {
             FREQUENCY,
-            PEAK
+            PEAK,
+            DRIVE
         };
 
         enum Outputs {
@@ -85,6 +87,16 @@ namespace dsp {
 
         void setFrequency(float value) {
             setParam(FREQUENCY, value);
+        }
+
+
+        void setDrive(float value) {
+            setParam(DRIVE, value);
+        }
+
+
+        float getDrive() {
+            return getParam(DRIVE);
         }
 
 
