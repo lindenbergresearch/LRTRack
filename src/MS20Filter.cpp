@@ -7,17 +7,23 @@ struct MS20Filter : LRTModule {
     enum ParamIds {
         FREQUENCY_PARAM,
         PEAK_PARAM,
+        DRIVE_PARAM,
+        CUTOFF_CV_PARAM,
+        PEAK_CV_PARAM,
+        GAIN_CV_PARAM,
         NUM_PARAMS
     };
 
     enum InputIds {
         FILTER_INPUT,
+        CUTOFF_CV_INPUT,
+        PEAK_CV_INPUT,
+        GAIN_CV_INPUT,
         NUM_INPUTS
     };
 
     enum OutputIds {
-        LP_OUTPUT,
-        HP_OUTPUT,
+        FILTER_OUTPUT,
         NUM_OUTPUTS
     };
 
@@ -57,17 +63,24 @@ void MS20Filter::step() {
 
       lights[OVERLOAD_LIGHT].value = filter.getLightValue();*/
 
-    ms20zdf->setFrequency(params[FREQUENCY_PARAM].value);
-    ms20zdf->setPeak(params[PEAK_PARAM].value);
 
-    // lcd1->text = stringf("%f", ms20zdf->getFrequencyHz());
+    float frqcv = inputs[CUTOFF_CV_INPUT].value * 0.1f * quadraticBipolar(params[CUTOFF_CV_PARAM].value);
+    float peakcv = inputs[PEAK_CV_INPUT].value * 0.1f * quadraticBipolar(params[PEAK_CV_PARAM].value);
+    float gaincv = inputs[GAIN_CV_INPUT].value * 0.1f * quadraticBipolar(params[GAIN_CV_PARAM].value);
+
+    ms20zdf->setFrequency(params[FREQUENCY_PARAM].value + frqcv);
+    ms20zdf->setPeak(params[PEAK_PARAM].value + peakcv);
+    ms20zdf->setDrive(params[DRIVE_PARAM].value + gaincv);
+
+
+    // lcd1->text = stringf("%.1f %.4f", ms20zdf->getFrequencyHz(), ms20zdf->getPeak());
 
     ms20zdf->setIn(inputs[FILTER_INPUT].value);
 
     ms20zdf->process();
 
-    outputs[LP_OUTPUT].value = ms20zdf->getLPOut();
-    outputs[HP_OUTPUT].value = ms20zdf->getHPOut();
+    outputs[FILTER_OUTPUT].value = ms20zdf->getLPOut();
+    //outputs[HP_OUTPUT].value = ms20zdf->getHPOut();
 }
 
 
@@ -98,18 +111,19 @@ MS20FilterWidget::MS20FilterWidget() {
     // ***** SCREWS **********
 
     // ***** MAIN KNOBS ******
-    addParam(createParam<LRBigKnob>(Vec(62, 150), module, MS20Filter::FREQUENCY_PARAM, 0.f, 1.f, 0.8f));
-    addParam(createParam<LRMiddleKnob>(Vec(24, 229), module, MS20Filter::PEAK_PARAM, 0.f, 1.0, 0.0f));
+    addParam(createParam<LRBigKnob>(Vec(102, 80), module, MS20Filter::FREQUENCY_PARAM, 0.f, 1.f, 0.8f));
+    addParam(createParam<LRMiddleKnob>(Vec(110, 171), module, MS20Filter::PEAK_PARAM, 0.f, 1.0, 0.0f));
+    addParam(createParam<LRMiddleKnob>(Vec(110, 240.7), module, MS20Filter::DRIVE_PARAM, 0.f, 1.0, 0.0f));
     // ***** MAIN KNOBS ******
 
     // ***** CV INPUTS *******
-    /* addParam(createParam<LRSmallKnob>(Vec(27.5, 106), module, AlmaFilter::RESONANCE_CV_PARAM, -1.f, 1.0f, 0.f));
-     addParam(createParam<LRSmallKnob>(Vec(78, 106), module, AlmaFilter::CUTOFF_CV_PARAM, -1.f, 1.f, 0.f));
-     addParam(createParam<LRSmallKnob>(Vec(127.1, 106), module, AlmaFilter::DRIVE_CV_PARAM, -1.f, 1.f, 0.f));
+    addParam(createParam<LRSmallKnob>(Vec(63, 180.755), module, MS20Filter::PEAK_CV_PARAM, -1.f, 1.0f, 0.f));
+    addParam(createParam<LRSmallKnob>(Vec(63, 96), module, MS20Filter::CUTOFF_CV_PARAM, -1.f, 1.f, 0.f));
+    addParam(createParam<LRSmallKnob>(Vec(63, 250.555), module, MS20Filter::GAIN_CV_PARAM, -1.f, 1.f, 0.f));
 
-     addInput(createInput<IOPort>(Vec(26, 50), module, AlmaFilter::RESONANCE_CV_INPUT));
-     addInput(createInput<IOPort>(Vec(76, 50), module, AlmaFilter::CUTOFF_CV_INPUT));
-     addInput(createInput<IOPort>(Vec(125, 50), module, AlmaFilter::DRIVE_CV_INPUT));*/
+    addInput(createInput<IOPort>(Vec(26, 181), module, MS20Filter::PEAK_CV_INPUT));
+    addInput(createInput<IOPort>(Vec(26, 96.31), module, MS20Filter::CUTOFF_CV_INPUT));
+    addInput(createInput<IOPort>(Vec(26, 250.86), module, MS20Filter::GAIN_CV_INPUT));
     // ***** CV INPUTS *******
 
     // ***** INPUTS **********
@@ -117,8 +131,7 @@ MS20FilterWidget::MS20FilterWidget() {
     // ***** INPUTS **********
 
     // ***** OUTPUTS *********
-    addOutput(createOutput<IOPort>(Vec(125, 326.5), module, MS20Filter::LP_OUTPUT));
-    addOutput(createOutput<IOPort>(Vec(60, 326.5), module, MS20Filter::HP_OUTPUT));
+    addOutput(createOutput<IOPort>(Vec(125, 326.5), module, MS20Filter::FILTER_OUTPUT));
     // ***** OUTPUTS *********
 
     // ***** LIGHTS **********
