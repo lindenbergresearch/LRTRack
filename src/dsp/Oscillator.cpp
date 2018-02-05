@@ -193,18 +193,12 @@ void BLITOscillator::proccess() {
 
     //TODO: warmup oscillator with: y(x)=1-e^-(x/n) and slope
 
-    os.next(SAW, saw);
-    os.doUpsample(SAW);
+    saw *= 5;
 
-    for (int i = 0; i < OVERSAMPLE; i++) {
-        os.data[SAW][i] = shape2(shape, os.up[SAW][i]);
-    }
 
-    saw = os.getDownsampled(SAW);
-
-    sine = shape2(shape, sine);
+/*    sine = shape2(shape, sine);
     tri = shape2(shape, tri);
-    pulse = shape2(shape, pulse);
+    pulse = shape2(shape, pulse);*/
 
 }
 

@@ -13,8 +13,6 @@ using namespace rack;
  */
 struct BLITOscillator {
 
-    static const int OVERSAMPLE = 32;                // factor of internal oversampling
-
     enum SIGNAL {
         SAW,
         PULSE,
@@ -50,9 +48,6 @@ struct BLITOscillator {
     Integrator int1;
     Integrator int2;
     Integrator int3;
-
-    OverSampler<OVERSAMPLE, 4> os;
-
 
     BLITOscillator();
     ~BLITOscillator();
