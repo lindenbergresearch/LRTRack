@@ -17,16 +17,15 @@ void init(rack::Plugin *p) {
 #endif
     p->website = "https://github.com/lindenbergresearch/LRTRack";
 
-    p->addModel(createModel<AlmaFilterWidget>("Lindenberg Research", "VCF", "ALMA Lowpass Filter", FILTER_TAG));
-    p->addModel(createModel<BlankPanelWidget>("Lindenberg Research", "BlankPanel 01", "Blank Panel 20TE", BLANK_TAG));
-    p->addModel(createModel<BlankPanelWidgetM1>("Lindenberg Research", "BlankPanel 02", "Blank Panel 12TE", BLANK_TAG));
+    p->addModel(createModel<AlmaFilterWidget>("Lindenberg Research", "VCF", "Alma Ladder Filter", FILTER_TAG));
+    p->addModel(createModel<MS20FilterWidget>("Lindenberg Research", "MS20 VCF", "Valerie MS20 Filter", FILTER_TAG));
     p->addModel(createModel<ReShaperWidget>("Lindenberg Research", "ReShaper", "ReShaper Wavefolder", WAVESHAPER_TAG));
     p->addModel(createModel<SimpleFilterWidget>("Lindenberg Research", "LPFilter24dB", "24dB Lowpass Filter", FILTER_TAG));
-    p->addModel(createModel<MS20FilterWidget>("Lindenberg Research", "MS20 Filter", "MS20 Filter", FILTER_TAG));
-
+    p->addModel(createModel<BlankPanelWidget>("Lindenberg Research", "BlankPanel 01", "Blank Panel 20TE", BLANK_TAG));
+    p->addModel(createModel<BlankPanelWidgetM1>("Lindenberg Research", "BlankPanel 02", "Blank Panel 12TE", BLANK_TAG));
     // createModel<SimpleFilterWidget>(plugin, "LPFilter24dB", "24dB Lowpass Filter");
     // not ready jet
-    //p->addModel(createModel<VCOWidget>("Lindenberg Research", "VCO", "Voltage Controlled Oscillator", OSCILLATOR_TAG));
+    p->addModel(createModel<VCOWidget>("Lindenberg Research", "VCO", "Voltage Controlled Oscillator", OSCILLATOR_TAG));
 }
 
 
