@@ -80,7 +80,6 @@ void MS20Filter::step() {
     ms20zdf->process();
 
     outputs[FILTER_OUTPUT].value = ms20zdf->getLPOut();
-    //outputs[HP_OUTPUT].value = ms20zdf->getHPOut();
 }
 
 
@@ -112,7 +111,7 @@ MS20FilterWidget::MS20FilterWidget() {
 
     // ***** MAIN KNOBS ******
     addParam(createParam<LRBigKnob>(Vec(102, 80), module, MS20Filter::FREQUENCY_PARAM, 0.f, 1.f, 0.8f));
-    addParam(createParam<LRMiddleKnob>(Vec(110, 171), module, MS20Filter::PEAK_PARAM, 0.f, 1.0, 0.0f));
+    addParam(createParam<LRMiddleKnob>(Vec(110, 171), module, MS20Filter::PEAK_PARAM, 0.0f, 1.0, 0.0f));
     addParam(createParam<LRMiddleKnob>(Vec(110, 240.7), module, MS20Filter::DRIVE_PARAM, 0.f, 1.0, 0.0f));
     // ***** MAIN KNOBS ******
 
@@ -139,8 +138,8 @@ MS20FilterWidget::MS20FilterWidget() {
     // ***** LIGHTS **********
 
     // ***** LCD *************
-    module->lcd1->box.pos = Vec(34, 115);
-    addChild(module->lcd1);
+    //module->lcd1->box.pos = Vec(34, 115);
+    //addChild(module->lcd1);
     // ***** LCD *************
 
 }
