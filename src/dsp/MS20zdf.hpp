@@ -115,11 +115,6 @@ namespace dsp {
         }
 
 
-        float getHPOut() {
-            return getOutput(HIGHPASS);
-        }
-
-
         float getLPOut() {
             return getOutput(OUT);
         }
