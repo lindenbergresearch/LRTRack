@@ -12,7 +12,7 @@ void MS20zdf::invalidate() {
 
     b = tanf(freqHz * (float) M_PI / sr / OVERSAMPLE);
     g = b / (1 + b);
-    k = 2.f * param[PEAK].value * 1.01;
+    k = 2.f * cubicshape(param[PEAK].value) * 1.01f;
     g2 = g * g;
 }
 
@@ -38,7 +38,7 @@ void MS20zdf::process() {
 
         y = 1.f / (g2 * k - g * k + 1.f) * (g2 * x + g * s1 + s2);
 
-        ky = k * atanf(y / 30.f) * 30.f;
+        ky = k * atanf(y / 50.f) * 50.f;
 
         os.data[IN][i] = atanf(gain * y / 10.f) * 10.f;
     }

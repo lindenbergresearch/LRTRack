@@ -46,7 +46,7 @@ namespace dsp {
      * @brief MS20 Filter class
      */
     struct MS20zdf : DSPSystem<1, 2, 3> {
-        static const int OVERSAMPLE = 4;                // factor of internal oversampling
+        static const int OVERSAMPLE = 8;                // factor of internal oversampling
         static constexpr float DRIVE_GAIN = 20.f;       // max drive gain
 
         enum Inputs {
