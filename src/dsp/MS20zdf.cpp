@@ -45,8 +45,7 @@ void MS20zdf::process() {
 
     float out = os.getDownsampled(IN);
 
-    output[LOWPASS].value = out;
-    output[HIGHPASS].value = out - input[IN].value;
+    output[OUT].value = out;
 }
 
 

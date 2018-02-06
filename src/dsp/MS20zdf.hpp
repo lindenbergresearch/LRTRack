@@ -60,8 +60,7 @@ namespace dsp {
         };
 
         enum Outputs {
-            LOWPASS,
-            HIGHPASS
+            OUT,
         };
 
     private:
@@ -122,7 +121,7 @@ namespace dsp {
 
 
         float getLPOut() {
-            return getOutput(LOWPASS);
+            return getOutput(OUT);
         }
 
 
