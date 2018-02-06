@@ -292,3 +292,13 @@ inline float fade5(float a, float b, float c, float d, float e, float n) {
 
     return e;
 }
+
+
+/**
+* @brief Shapes between 0..1 with a log type courve
+* @param x
+* @return
+*/
+inline float cubicshape(float x) {
+    return (x - 1.f) * (x - 1.f) * (x - 1.f) + 1.f;
+}
