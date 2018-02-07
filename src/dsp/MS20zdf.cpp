@@ -8,11 +8,14 @@ using namespace dsp;
  */
 void MS20zdf::invalidate() {
     // translate frequency to logarithmic scale
-    freqHz = 20.f * powf(860.f, param[FREQUENCY].value) - 20.f;
+    //  freqHz = 20.f * powf(860.f, param[FREQUENCY].value) - 20.f;
+    freqHz = 20.f * powf(950.f, param[FREQUENCY].value) - 20.f;
 
     b = tanf(freqHz * (float) M_PI / sr / OVERSAMPLE);
     g = b / (1 + b);
-    k = 2.f * cubicshape(param[PEAK].value) * 1.01f;
+
+    /* use shifted negative cubic shape for logarithmic like shaping of the peak parameter */
+    k = 2.f * cubicShape(param[PEAK].value) * 1.0001f;
     g2 = g * g;
 }
 
@@ -26,9 +29,10 @@ void MS20zdf::process() {
 
     float s1, s2;
     float gain = quadraticBipolar(param[DRIVE].value) * DRIVE_GAIN + 1.f;
+    float x = 0;
 
     for (int i = 0; i < os.factor; i++) {
-        float x = os.up[IN][i];
+        x = os.up[IN][i];
 
         zdf1.set(x - ky, g);
         s1 = zdf1.s;
@@ -38,7 +42,7 @@ void MS20zdf::process() {
 
         y = 1.f / (g2 * k - g * k + 1.f) * (g2 * x + g * s1 + s2);
 
-        ky = k * atanf(y / 50.f) * 50.f;
+        ky = k * atanf(y / 70.f) * 70.f;
 
         os.data[IN][i] = atanf(gain * y / 10.f) * 10.f;
     }
