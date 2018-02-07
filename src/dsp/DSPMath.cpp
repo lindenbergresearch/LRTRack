@@ -101,8 +101,8 @@ float DCBlocker::filter(float x) {
  * @param x Input sample
  * @return
  */
-double LP6DBFilter::filter(double x) {
-    double y = y0 + (alpha * (x - y0));
+float LP6DBFilter::filter(float x) {
+    float y = y0 + (alpha * (x - y0));
     y0 = y;
 
     return y;
@@ -114,8 +114,8 @@ double LP6DBFilter::filter(double x) {
  * @param fc Cutoff frequency
  */
 void LP6DBFilter::updateFrequency(float fc, int factor) {
-    this->fc = fc;
-    RC = 1.f / (this->fc * TWOPI);
+    LP6DBFilter::fc = fc;
+    RC = 1.f / (LP6DBFilter::fc * TWOPI);
     dt = 1.f / engineGetSampleRate() * factor;
     alpha = dt / (RC + dt);
 }

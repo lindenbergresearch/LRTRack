@@ -78,7 +78,7 @@ public:
      * @param x Input sample
      * @return Filtered output
      */
-    double filter(double x);
+    float filter(float x);
 };
 
 
@@ -299,6 +299,6 @@ inline float fade5(float a, float b, float c, float d, float e, float n) {
 * @param x
 * @return
 */
-inline float cubicshape(float x) {
+inline float cubicShape(float x) {
     return (x - 1.f) * (x - 1.f) * (x - 1.f) + 1.f;
 }
