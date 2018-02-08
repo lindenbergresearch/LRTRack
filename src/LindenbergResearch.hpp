@@ -226,6 +226,14 @@ struct ScrewDarkA : SVGScrew {
 };
 
 
+struct LRTSwitch : SVGSwitch, ToggleSwitch {
+    LRTSwitch() {
+        addFrame(SVG::load(assetPlugin(plugin, "res/Switch0.svg")));
+        addFrame(SVG::load(assetPlugin(plugin, "res/Switch1.svg")));
+    }
+};
+
+
 struct LRRedLight : SmallLight<ModuleLightWidget> {
 
     LRRedLight();
