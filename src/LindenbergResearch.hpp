@@ -7,7 +7,7 @@
 using namespace rack;
 
 #define LCD_FONT_DIG7 "res/digital-7.ttf"
-#define LCD_COLOR_FG nvgRGBA(0x20, 0xA1, 0xE4, 0xFF)
+#define LCD_COLOR_FG nvgRGBA(0x10, 0xE1, 0xE4, 0xFF)
 #define LCD_FONTSIZE 8
 #define LCD_LETTER_SPACING 0
 

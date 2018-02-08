@@ -103,11 +103,11 @@ AlmaFilterWidget::AlmaFilterWidget() {
     // ***** CV INPUTS *******
 
     // ***** INPUTS **********
-    addInput(createInput<IOPort>(Vec(26, 326.5), module, AlmaFilter::FILTER_INPUT));
+    addInput(createInput<IOPort>(Vec(25, 326.5), module, AlmaFilter::FILTER_INPUT));
     // ***** INPUTS **********
 
     // ***** OUTPUTS *********
-    addOutput(createOutput<IOPort>(Vec(125, 326.5), module, AlmaFilter::LP_OUTPUT));
+    addOutput(createOutput<IOPort>(Vec(124.5, 326.5), module, AlmaFilter::LP_OUTPUT));
     // ***** OUTPUTS *********
 
     // ***** LIGHTS **********

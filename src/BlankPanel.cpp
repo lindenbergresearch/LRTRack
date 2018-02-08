@@ -51,7 +51,7 @@ BlankPanelWidget::BlankPanelWidget() {
     // ***** SCREWS **********
 
     // ***** LCD *************
-    module->lcd1->box.pos = Vec(34, 365);
+    module->lcd1->box.pos = Vec(34, 355);
     addChild(module->lcd1);
     module->lcd1->text = VERSION_STR;
     // ***** LCD *************

@@ -114,26 +114,26 @@ MS20FilterWidget::MS20FilterWidget() {
 
     // ***** MAIN KNOBS ******
     addParam(createParam<LRBigKnob>(Vec(102, 65), module, MS20Filter::FREQUENCY_PARAM, 0.f, 1.f, 1.f));
-    addParam(createParam<LRMiddleKnob>(Vec(110, 171), module, MS20Filter::PEAK_PARAM, 0.0f, 1.0, 0.0f));
-    addParam(createParam<LRMiddleKnob>(Vec(110, 240.7), module, MS20Filter::DRIVE_PARAM, 0.f, 1.0, 0.0f));
+    addParam(createParam<LRMiddleKnob>(Vec(110, 161), module, MS20Filter::PEAK_PARAM, 0.0f, 1.0, 0.0f));
+    addParam(createParam<LRMiddleKnob>(Vec(110, 230.7), module, MS20Filter::DRIVE_PARAM, 0.f, 1.0, 0.0f));
     // ***** MAIN KNOBS ******
 
     // ***** CV INPUTS *******
-    addParam(createParam<LRSmallKnob>(Vec(61, 179), module, MS20Filter::PEAK_CV_PARAM, -1.f, 1.0f, 0.f));
+    addParam(createParam<LRSmallKnob>(Vec(61, 169), module, MS20Filter::PEAK_CV_PARAM, -1.f, 1.0f, 0.f));
     addParam(createParam<LRSmallKnob>(Vec(61, 82), module, MS20Filter::CUTOFF_CV_PARAM, -1.f, 1.f, 0.f));
-    addParam(createParam<LRSmallKnob>(Vec(61, 248.555), module, MS20Filter::GAIN_CV_PARAM, -1.f, 1.f, 0.f));
+    addParam(createParam<LRSmallKnob>(Vec(61, 238.555), module, MS20Filter::GAIN_CV_PARAM, -1.f, 1.f, 0.f));
 
-    addInput(createInput<IOPort>(Vec(18, 177), module, MS20Filter::PEAK_CV_INPUT));
-    addInput(createInput<IOPort>(Vec(18, 80), module, MS20Filter::CUTOFF_CV_INPUT));
-    addInput(createInput<IOPort>(Vec(18, 246.754), module, MS20Filter::GAIN_CV_INPUT));
+    addInput(createInput<IOPort>(Vec(18, 168.5), module, MS20Filter::PEAK_CV_INPUT));
+    addInput(createInput<IOPort>(Vec(18, 81.5), module, MS20Filter::CUTOFF_CV_INPUT));
+    addInput(createInput<IOPort>(Vec(18, 239), module, MS20Filter::GAIN_CV_INPUT));
     // ***** CV INPUTS *******
 
     // ***** INPUTS **********
-    addInput(createInput<IOPort>(Vec(17.999, 324.07), module, MS20Filter::FILTER_INPUT));
+    addInput(createInput<IOPort>(Vec(17.999, 326.05), module, MS20Filter::FILTER_INPUT));
     // ***** INPUTS **********
 
     // ***** OUTPUTS *********
-    addOutput(createOutput<IOPort>(Vec(58.544, 324.07), module, MS20Filter::FILTER_OUTPUT));
+    addOutput(createOutput<IOPort>(Vec(58.544, 326.05), module, MS20Filter::FILTER_OUTPUT));
     // ***** OUTPUTS *********
 
     // ***** SWITCH  *********
