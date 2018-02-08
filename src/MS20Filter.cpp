@@ -113,7 +113,7 @@ MS20FilterWidget::MS20FilterWidget() {
     // ***** SCREWS **********
 
     // ***** MAIN KNOBS ******
-    addParam(createParam<LRBigKnob>(Vec(102, 65), module, MS20Filter::FREQUENCY_PARAM, 0.f, 1.f, 0.8f));
+    addParam(createParam<LRBigKnob>(Vec(102, 65), module, MS20Filter::FREQUENCY_PARAM, 0.f, 1.f, 1.f));
     addParam(createParam<LRMiddleKnob>(Vec(110, 171), module, MS20Filter::PEAK_PARAM, 0.0f, 1.0, 0.0f));
     addParam(createParam<LRMiddleKnob>(Vec(110, 240.7), module, MS20Filter::DRIVE_PARAM, 0.f, 1.0, 0.0f));
     // ***** MAIN KNOBS ******
@@ -137,7 +137,7 @@ MS20FilterWidget::MS20FilterWidget() {
     // ***** OUTPUTS *********
 
     // ***** SWITCH  *********
-    addParam(createParam<CKSS>(Vec(85, 315), module, MS20Filter::MODE_SWITCH_PARAM, 0.0, 1.0, 1.0));
+    addParam(createParam<LRTSwitch>(Vec(79, 305), module, MS20Filter::MODE_SWITCH_PARAM, 0.0, 1.0, 1.0));
     // ***** SWITCH  *********
 
     // ***** LIGHTS **********
