@@ -129,15 +129,15 @@ MS20FilterWidget::MS20FilterWidget() {
     // ***** CV INPUTS *******
 
     // ***** INPUTS **********
-    addInput(createInput<IOPort>(Vec(32.24, 327.129), module, MS20Filter::FILTER_INPUT));
+    addInput(createInput<IOPort>(Vec(17.999, 324.07), module, MS20Filter::FILTER_INPUT));
     // ***** INPUTS **********
 
     // ***** OUTPUTS *********
-    addOutput(createOutput<IOPort>(Vec(118.544, 326.5), module, MS20Filter::FILTER_OUTPUT));
+    addOutput(createOutput<IOPort>(Vec(58.544, 324.07), module, MS20Filter::FILTER_OUTPUT));
     // ***** OUTPUTS *********
 
     // ***** SWITCH  *********
-    addParam(createParam<LRTSwitch>(Vec(79, 305), module, MS20Filter::MODE_SWITCH_PARAM, 0.0, 1.0, 1.0));
+    addParam(createParam<LRTSwitch>(Vec(119, 331), module, MS20Filter::MODE_SWITCH_PARAM, 0.0, 1.0, 1.0));
     // ***** SWITCH  *********
 
     // ***** LIGHTS **********
