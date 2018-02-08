@@ -226,6 +226,9 @@ struct ScrewDarkA : SVGScrew {
 };
 
 
+/**
+ * @brief Custom switch based on original Rack files
+ */
 struct LRTSwitch : SVGSwitch, ToggleSwitch {
     LRTSwitch() {
         addFrame(SVG::load(assetPlugin(plugin, "res/Switch0.svg")));
