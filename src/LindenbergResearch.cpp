@@ -25,7 +25,7 @@ void init(rack::Plugin *p) {
     p->addModel(createModel<BlankPanelWidgetM1>("Lindenberg Research", "BlankPanel 02", "Blank Panel 12TE", BLANK_TAG));
     // createModel<SimpleFilterWidget>(plugin, "LPFilter24dB", "24dB Lowpass Filter");
     // not ready jet
-    p->addModel(createModel<VCOWidget>("Lindenberg Research", "VCO", "Voltage Controlled Oscillator", OSCILLATOR_TAG));
+    //  p->addModel(createModel<VCOWidget>("Lindenberg Research", "VCO", "Voltage Controlled Oscillator", OSCILLATOR_TAG));
 }
 
 
