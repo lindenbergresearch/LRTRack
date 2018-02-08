@@ -29,6 +29,7 @@ void MS20zdf::process() {
 
     float s1, s2;
     float gain = quadraticBipolar(param[DRIVE].value) * DRIVE_GAIN + 1.f;
+    float type = param[TYPE].value;
     float x = 0;
 
     for (int i = 0; i < os.factor; i++) {
@@ -44,7 +45,12 @@ void MS20zdf::process() {
 
         ky = k * atanf(y / 70.f) * 70.f;
 
-        os.data[IN][i] = atanf(gain * y / 10.f) * 10.f;
+        if (type > 0) {
+            os.data[IN][i] = atanShaper(gain * y / 10.f) * 10.f;
+        } else {
+            os.data[IN][i] = atanf(gain * y / 10.f) * 10.f;
+
+        }
     }
 
     float out = os.getDownsampled(IN);

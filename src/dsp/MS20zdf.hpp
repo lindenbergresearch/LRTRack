@@ -94,8 +94,8 @@ namespace dsp {
     /**
      * @brief MS20 Filter class
      */
-    struct MS20zdf : DSPSystem<1, 2, 3> {
-        static const int OVERSAMPLE = 4;                // factor of internal oversampling
+    struct MS20zdf : DSPSystem<1, 2, 4> {
+        static const int OVERSAMPLE = 8;                // factor of internal oversampling
         static constexpr float DRIVE_GAIN = 20.f;       // max drive gain
 
         enum Inputs {
@@ -105,7 +105,8 @@ namespace dsp {
         enum Params {
             FREQUENCY,
             PEAK,
-            DRIVE
+            DRIVE,
+            TYPE
         };
 
         enum Outputs {
@@ -168,6 +169,15 @@ namespace dsp {
             return getOutput(OUT);
         }
 
+
+        float getType() {
+            return getParam(TYPE);
+        }
+
+
+        void setType(float value) {
+            setParam(TYPE, value);
+        }
 
         void invalidate() override;
         void process() override;
