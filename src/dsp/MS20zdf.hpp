@@ -43,55 +43,6 @@ namespace dsp {
 
 
     /**
-     * @brief High quality oversampled drive using arctan
-
-    template<int OVERSAMPLE>
-    struct HQOverdrive : DSPSystem1x1<2> {
-        enum Params {
-            LEVEL,
-            GAIN
-        };
-
-    private:
-        OverSampler<OVERSAMPLE, 1> os;
-
-    public:
-
-        HQOverdrive(float level, float gain) {
-            setLevel(level);
-            setGain(gain);
-        }
-
-
-        void setLevel(float value) {
-            param[LEVEL].value = value;
-        }
-
-
-        void setGain(float value) {
-            param[GAIN].value = value;
-        }
-
-
-        void process() override {
-            float level = getParam(LEVEL);
-            float gain = getParam(GAIN);
-            float x = input[IN].value;
-
-            os.next(IN, x);
-            os.doUpsample(IN);
-
-            for (int i = 0; i < os.factor; i++) {
-                os.data[IN][i] = atanf(gain * os.up[IN][i] / level) * level;
-            }
-
-            output[OUT].value = os.getDownsampled(IN);
-        }
-
-    };*/
-
-
-    /**
      * @brief MS20 Filter class
      */
     struct MS20zdf : DSPSystem<1, 2, 4> {

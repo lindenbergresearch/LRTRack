@@ -29,14 +29,10 @@ struct MS20Filter : LRTModule {
     };
 
     enum LightIds {
-        OVERLOAD_LIGHT,
         NUM_LIGHTS
     };
 
     dsp::MS20zdf *ms20zdf = new dsp::MS20zdf(engineGetSampleRate());
-    LCDWidget *lcd1 = new LCDWidget(LCD_COLOR_FG, 15);
-
-
     MS20Filter() : LRTModule(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS) {}
 
 
@@ -46,25 +42,6 @@ struct MS20Filter : LRTModule {
 
 
 void MS20Filter::step() {
-    /*  float frqcv = inputs[CUTOFF_CV_INPUT].value * 0.1f * quadraticBipolar(params[CUTOFF_CV_PARAM].value);
-      float rescv = inputs[RESONANCE_CV_INPUT].value * 0.1f * quadraticBipolar(params[RESONANCE_CV_PARAM].value);
-      float drvcv = inputs[DRIVE_CV_INPUT].value * 0.1f * quadraticBipolar(params[DRIVE_CV_PARAM].value);
-
-      filter.setFrequency(params[CUTOFF_PARAM].value + frqcv);
-      filter.setResonance(params[RESONANCE_PARAM].value + rescv);
-      filter.setDrive(params[DRIVE_PARAM].value + drvcv);
-      filter.setSlope(params[SLOPE_PARAM].value);
-
-      float y = inputs[FILTER_INPUT].value;
-
-      filter.setIn(y);
-      filter.process();
-
-      outputs[LP_OUTPUT].value = filter.getLpOut();
-
-      lights[OVERLOAD_LIGHT].value = filter.getLightValue();*/
-
-
     float frqcv = inputs[CUTOFF_CV_INPUT].value * 0.1f * quadraticBipolar(params[CUTOFF_CV_PARAM].value);
     float peakcv = inputs[PEAK_CV_INPUT].value * 0.1f * quadraticBipolar(params[PEAK_CV_PARAM].value);
     float gaincv = inputs[GAIN_CV_INPUT].value * 0.1f * quadraticBipolar(params[GAIN_CV_PARAM].value);
@@ -75,14 +52,11 @@ void MS20Filter::step() {
 
     ms20zdf->setType(params[MODE_SWITCH_PARAM].value);
 
-    // lcd1->text = stringf("%.1f %.4f", ms20zdf->getFrequencyHz(), ms20zdf->getPeak());
-
     ms20zdf->setIn(inputs[FILTER_INPUT].value);
 
     ms20zdf->process();
 
     outputs[FILTER_OUTPUT].value = ms20zdf->getLPOut();
-    //lights[OVERLOAD_LIGHT].value = ms20zdf->getLPOut() / 100.f;
 }
 
 
@@ -139,14 +113,4 @@ MS20FilterWidget::MS20FilterWidget() {
     // ***** SWITCH  *********
     addParam(createParam<LRTSwitch>(Vec(119, 331), module, MS20Filter::MODE_SWITCH_PARAM, 0.0, 1.0, 1.0));
     // ***** SWITCH  *********
-
-    // ***** LIGHTS **********
-    //  addChild(createLight<LRRedLight>(Vec(85, 300), module, MS20Filter::OVERLOAD_LIGHT));
-    // ***** LIGHTS **********
-
-    // ***** LCD *************
-    // module->lcd1->box.pos = Vec(34, 55);
-    // addChild(module->lcd1);
-    // ***** LCD *************
-
 }
