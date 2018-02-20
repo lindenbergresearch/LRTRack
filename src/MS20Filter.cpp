@@ -93,9 +93,9 @@ void MS20Filter::onSampleRateChange() {
 
 
 MS20FilterWidget::MS20FilterWidget() {
-    MS20Filter *module = new MS20Filter();
-
+    auto *module = new MS20Filter();
     setModule(module);
+
     box.size = Vec(MS20_WIDTH * RACK_GRID_WIDTH, RACK_GRID_HEIGHT);
 
     {
