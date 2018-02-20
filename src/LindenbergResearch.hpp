@@ -25,6 +25,40 @@ extern Plugin *plugin;
 
 
 /**
+ * @brief Standard LRT module
+ */
+struct LRTModule : Module {
+    long cnt = 0;
+
+
+    /**
+     * @brief Overtake default constructor for module to be compatible
+     * @param numParams
+     * @param numInputs
+     * @param numOutputs
+     * @param numLights
+     */
+    LRTModule(int numParams, int numInputs, int numOutputs, int numLights = 0) :
+            Module(numParams, numInputs, numOutputs, numLights) {}
+
+
+    void step() override {
+        Module::step();
+
+        // increment counter
+        cnt++;
+    }
+};
+
+
+/**
+ * @brief Standard ModuleWidget definition
+ */
+struct LRTModuleWidget : ModuleWidget {
+    LRTModule *module = NULL;
+};
+
+/**
  * @brief Recover of old filer
  */
 struct SimpleFilterWidget : ModuleWidget {
@@ -35,7 +69,7 @@ struct SimpleFilterWidget : ModuleWidget {
 /**
  * @brief ALMA filter
  */
-struct MS20FilterWidget : ModuleWidget {
+struct MS20FilterWidget : LRTModuleWidget {
     MS20FilterWidget();
 };
 
@@ -76,33 +110,6 @@ struct ReShaperWidget : ModuleWidget {
  */
 struct VCOWidget : ModuleWidget {
     VCOWidget();
-};
-
-
-/**
- * @brief
- */
-struct LRTModule : Module {
-    long cnt = 0;
-
-
-    /**
-     * @brief Overtake default constructor for module to be compatible
-     * @param numParams
-     * @param numInputs
-     * @param numOutputs
-     * @param numLights
-     */
-    LRTModule(int numParams, int numInputs, int numOutputs, int numLights = 0) :
-            Module(numParams, numInputs, numOutputs, numLights) {}
-
-
-    void step() override {
-        Module::step();
-
-        // increment counter
-        cnt++;
-    }
 };
 
 
