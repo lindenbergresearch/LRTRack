@@ -2,7 +2,7 @@
 #include "LindenbergResearch.hpp"
 
 
-struct VCO : LRTModule {
+struct VCO : LRModule {
     enum ParamIds {
         FREQUENCY_PARAM,
         OCTAVE_PARAM,
@@ -35,7 +35,7 @@ struct VCO : LRTModule {
     LCDWidget *label1 = new LCDWidget(LCD_COLOR_FG, 10);
 
 
-    VCO() : LRTModule(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS) {}
+    VCO() : LRModule(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS) {}
 
 
     void step() override;
@@ -43,7 +43,7 @@ struct VCO : LRTModule {
 
 
 void VCO::step() {
-    LRTModule::step();
+    LRModule::step();
 
     float fm = clampf(inputs[FM_CV_INPUT].value, -10.f, 10.f) * 400.f * quadraticBipolar(params[FM_CV_PARAM].value);
 

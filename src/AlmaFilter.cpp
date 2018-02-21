@@ -2,7 +2,7 @@
 #include "LindenbergResearch.hpp"
 
 
-struct AlmaFilter : LRTModule {
+struct AlmaFilter : LRModule {
 
     enum ParamIds {
         CUTOFF_PARAM,
@@ -36,7 +36,7 @@ struct AlmaFilter : LRTModule {
     LadderFilter filter;
 
 
-    AlmaFilter() : LRTModule(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS) {}
+    AlmaFilter() : LRModule(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS) {}
 
 
     void step() override;

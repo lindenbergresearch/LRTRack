@@ -2,7 +2,7 @@
 #include "LindenbergResearch.hpp"
 
 
-struct MS20Filter : LRTModule {
+struct MS20Filter : LRModule {
 
     enum ParamIds {
         FREQUENCY_PARAM,
@@ -33,7 +33,13 @@ struct MS20Filter : LRTModule {
     };
 
     dsp::MS20zdf *ms20zdf = new dsp::MS20zdf(engineGetSampleRate());
-    MS20Filter() : LRTModule(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS) {}
+
+    LRBigKnob *frqKnob;
+    LRMiddleKnob *peakKnob;
+    LRMiddleKnob *driveKnob;
+
+
+    MS20Filter() : LRModule(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS) {}
 
 
     void step() override;
@@ -49,6 +55,10 @@ void MS20Filter::step() {
     ms20zdf->setFrequency(params[FREQUENCY_PARAM].value + frqcv);
     ms20zdf->setPeak(params[PEAK_PARAM].value + peakcv);
     ms20zdf->setDrive(params[DRIVE_PARAM].value + gaincv);
+
+    frqKnob->cv = params[FREQUENCY_PARAM].value + frqcv;
+    peakKnob->cv = params[PEAK_PARAM].value + peakcv;
+    driveKnob->cv = params[DRIVE_PARAM].value + gaincv;
 
     ms20zdf->setType(params[MODE_SWITCH_PARAM].value);
 
@@ -73,7 +83,7 @@ MS20FilterWidget::MS20FilterWidget() {
     box.size = Vec(MS20_WIDTH * RACK_GRID_WIDTH, RACK_GRID_HEIGHT);
 
     {
-        SVGPanel *panel = new SVGPanel();
+        auto *panel = new SVGPanel();
         panel->box.size = box.size;
         panel->setBackground(SVG::load(assetPlugin(plugin, "res/MS20.svg")));
         addChild(panel);
@@ -87,9 +97,17 @@ MS20FilterWidget::MS20FilterWidget() {
     // ***** SCREWS **********
 
     // ***** MAIN KNOBS ******
-    addParam(createParam<LRBigKnob>(Vec(102, 65), module, MS20Filter::FREQUENCY_PARAM, 0.f, 1.f, 1.f));
-    addParam(createParam<LRMiddleKnob>(Vec(110, 161), module, MS20Filter::PEAK_PARAM, 0.0f, 1.0, 0.0f));
-    addParam(createParam<LRMiddleKnob>(Vec(110, 230.7), module, MS20Filter::DRIVE_PARAM, 0.f, 1.0, 0.0f));
+    auto *frqKnob = LRKnob::create<LRBigKnob>(Vec(102, 65), module, MS20Filter::FREQUENCY_PARAM, 0.f, 1.f, 1.f);
+    auto *peakKnob = LRKnob::create<LRMiddleKnob>(Vec(110, 161), module, MS20Filter::PEAK_PARAM, 0.0f, 1.0, 0.0f);
+    auto *driveKnob = LRKnob::create<LRMiddleKnob>(Vec(110, 230.7), module, MS20Filter::DRIVE_PARAM, 0.f, 1.0, 0.0f);
+
+    addParam(frqKnob);
+    addParam(peakKnob);
+    addParam(driveKnob);
+
+    module->frqKnob = frqKnob;
+    module->peakKnob = peakKnob;
+    module->driveKnob = driveKnob;
     // ***** MAIN KNOBS ******
 
     // ***** CV INPUTS *******
@@ -111,6 +129,6 @@ MS20FilterWidget::MS20FilterWidget() {
     // ***** OUTPUTS *********
 
     // ***** SWITCH  *********
-    addParam(createParam<LRTSwitch>(Vec(119, 331), module, MS20Filter::MODE_SWITCH_PARAM, 0.0, 1.0, 1.0));
+    addParam(createParam<LRSwitch>(Vec(119, 331), module, MS20Filter::MODE_SWITCH_PARAM, 0.0, 1.0, 1.0));
     // ***** SWITCH  *********
 }
