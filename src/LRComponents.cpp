@@ -1,4 +1,5 @@
 #include "LRComponents.hpp"
+#include "LindenbergResearch.hpp"
 
 
 /**
@@ -20,23 +21,78 @@ LCDWidget::LCDWidget(NVGcolor fg, unsigned char length) {
 
 
 /**
- * @brief Creates a new instance of a LRKnob child
- * @tparam TParamWidget Subclass of LRKnob
- * @param pos Position
- * @param module Module pointer
- * @param paramId Parameter ID
- * @param minValue Min
- * @param maxValue Max
- * @param defaultValue Default
- * @return Pointer to new subclass of LRKnob
+ * @brief Draw method of custom LCD widget
+ * @param vg
  */
-template<class TParamWidget>
-static TParamWidget *LRKnob::create(Vec pos, Module *module, int paramId, float minValue, float maxValue, float defaultValue) {
-    auto *param = new TParamWidget();
-    param->box.pos = pos;
-    param->module = module;
-    param->paramId = paramId;
-    param->setLimits(minValue, maxValue);
-    param->setDefaultValue(defaultValue);
-    return param;
+void LCDWidget::draw(NVGcontext *vg) {
+    nvgFontSize(vg, LCD_FONTSIZE);
+    nvgFontFaceId(vg, gLCDFont_DIG7->handle);
+    nvgTextLetterSpacing(vg, LCD_LETTER_SPACING);
+
+    nvgFillColor(vg, bg);
+
+    std::string s1;
+    std::string s2;
+
+    for (int i = 0; i < LCDWidget::length; ++i) {
+        s1.append("8");
+        s2.append(":");
+    }
+
+    nvgTextBox(vg, 0, 0, 220, s1.c_str(), nullptr);
+    nvgTextBox(vg, 0, 0, 220, s2.c_str(), nullptr);
+
+    nvgFillColor(vg, fg);
+    nvgTextBox(vg, 0, 0, 220, text.c_str(), nullptr);
+}
+
+
+void LRRedLight::draw(NVGcontext *vg) {
+    //LightWidget::draw(vg);
+
+    float radius = box.size.x / 1.5f;
+    float oradius = radius + 10.0f;
+
+    /* color.r = clampf(color.r, 0.0f, 1.0f);
+     color.g = clampf(color.g, 0.0f, 1.0f);
+     color.b = clampf(color.b, 0.0f, 1.0f);
+     color.a = clampf(color.a, 0.0f, 1.0f);*/
+
+    // Solid
+    nvgBeginPath(vg);
+    nvgCircle(vg, radius, radius, radius);
+    nvgFillColor(vg, bgColor);
+    nvgFill(vg);
+
+    // Border
+    nvgStrokeWidth(vg, 1.0f);
+    NVGcolor borderColor = bgColor;
+    borderColor.a *= 0.5f;
+    nvgStrokeColor(vg, borderColor);
+    nvgStroke(vg);
+
+    // Inner glow
+    nvgGlobalCompositeOperation(vg, NVG_LIGHTER);
+    nvgFillColor(vg, color);
+    nvgFill(vg);
+
+    // Outer glow
+    nvgBeginPath(vg);
+    nvgRect(vg, radius - oradius, radius - oradius, 2 * oradius, 2 * oradius);
+    NVGpaint paint;
+    NVGcolor icol = color;
+    icol.a *= 0.40f;
+    NVGcolor ocol = color;
+    ocol.a = 0.00f;
+    paint = nvgRadialGradient(vg, radius, radius, radius, oradius, icol, ocol);
+    nvgFillPaint(vg, paint);
+    nvgFill(vg);
+}
+
+
+/**
+ * @brief
+ */
+LRRedLight::LRRedLight() {
+    addBaseColor(COLOR_RED);
 }
