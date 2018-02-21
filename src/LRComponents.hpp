@@ -3,7 +3,6 @@
 #include "rack.hpp"
 #include "asset.hpp"
 #include "widgets.hpp"
-#include "LindenbergResearch.hpp"
 
 #define LCD_FONT_DIG7 "res/digital-7.ttf"
 #define LCD_COLOR_FG nvgRGBA(0x10, 0xE1, 0xE4, 0xFF)
@@ -75,19 +74,41 @@ struct LCDWidget : Label {
  * @brief Basic knob definition
  */
 struct LRKnob : SVGKnob {
+
+private:
     /** control voltage, used for drawing the indicator */
     float cv = 0;
 
     /** flag if cv indicator should be drawn */
-    bool drawCV = false;
+    bool visibleCV = false;
 
-
+public:
     /**
      * @brief Default constructor
      */
     LRKnob() {
         minAngle = -0.83f * (float) M_PI;
         maxAngle = 0.83f * (float) M_PI;
+    }
+
+
+    float getCV() const {
+        return cv;
+    }
+
+
+    void setCV(float cv) {
+        LRKnob::cv = cv;
+    }
+
+
+    bool isVisibleCV() const {
+        return visibleCV;
+    }
+
+
+    void setVisibleCV(bool visibleCV) {
+        LRKnob::visibleCV = visibleCV;
     }
 
 
@@ -103,98 +124,22 @@ struct LRKnob : SVGKnob {
      * @return Pointer to new subclass of LRKnob
      */
     template<class TParamWidget>
-    static TParamWidget *create(Vec pos, Module *module, int paramId, float minValue, float maxValue, float defaultValue);
-};
-
-
-/**
- * @brief Quantize position to odd numbers to simulate a toogle switch
- */
-struct LRToggleKnob : SVGKnob {
-    LRToggleKnob(float length = 0.45) {
-        minAngle = -length * (float) M_PI;
-        maxAngle = length * (float) M_PI;
-
-        setSVG(SVG::load(assetPlugin(plugin, "res/MiddleKnob.svg")));
+    static TParamWidget *create(Vec pos, Module *module, int paramId, float minValue, float maxValue, float defaultValue) {
+        auto *param = new TParamWidget();
+        param->box.pos = pos;
+        param->module = module;
+        param->paramId = paramId;
+        param->setLimits(minValue, maxValue);
+        param->setDefaultValue(defaultValue);
+        return param;
     }
 
 
-    void onChange(EventChange &e) override {
-        value = round(value);
-        SVGKnob::onChange(e);
+    void draw(NVGcontext *vg) override {
+        FramebufferWidget::draw(vg);
+
+
     }
 };
 
 
-/**
- * @brief Basic middle-sized knob
- */
-struct LRBigKnob : LRKnob {
-    LRBigKnob() {
-        setSVG(SVG::load(assetPlugin(plugin, "res/BigKnob.svg")));
-    }
-};
-
-
-/**
- * @brief Basic middle-sized knob
- */
-struct LRMiddleKnob : LRKnob {
-    LRMiddleKnob() {
-        setSVG(SVG::load(assetPlugin(plugin, "res/MiddleKnob.svg")));
-    }
-};
-
-
-/**
- * @brief Blue version of the Davies1900h
- */
-struct LRSmallKnob : LRKnob {
-    LRSmallKnob() {
-        setSVG(SVG::load(assetPlugin(plugin, "res/SmallKnob.svg")));
-    }
-};
-
-
-/**
- * @brief Alternative IO Port
- */
-struct IOPort : SVGPort {
-    IOPort() {
-        background->svg = SVG::load(assetPlugin(plugin, "res/IOPortB.svg"));
-        background->wrap();
-        box.size = background->box.size;
-    }
-};
-
-
-/**
- * @brief Alternative screw head A
- */
-struct ScrewDarkA : SVGScrew {
-    ScrewDarkA() {
-        sw->svg = SVG::load(assetPlugin(plugin, "res/ScrewDark.svg"));
-        sw->wrap();
-        box.size = sw->box.size;
-    }
-};
-
-
-/**
- * @brief Custom switch based on original Rack files
- */
-struct LRSwitch : SVGSwitch, ToggleSwitch {
-    LRSwitch() {
-        addFrame(SVG::load(assetPlugin(plugin, "res/Switch0.svg")));
-        addFrame(SVG::load(assetPlugin(plugin, "res/Switch1.svg")));
-    }
-};
-
-
-struct LRRedLight : SmallLight<ModuleLightWidget> {
-
-    LRRedLight();
-
-    void draw(NVGcontext *vg) override;
-
-};
