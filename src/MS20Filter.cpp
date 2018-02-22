@@ -34,9 +34,9 @@ struct MS20Filter : LRModule {
 
     dsp::MS20zdf *ms20zdf = new dsp::MS20zdf(engineGetSampleRate());
 
-    LRBigKnob *frqKnob;
-    LRMiddleKnob *peakKnob;
-    LRMiddleKnob *driveKnob;
+    LRBigKnob *frqKnob = NULL;
+    LRMiddleKnob *peakKnob = NULL;
+    LRMiddleKnob *driveKnob = NULL;
 
 
     MS20Filter() : LRModule(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS) {}
@@ -48,22 +48,28 @@ struct MS20Filter : LRModule {
 
 
 void MS20Filter::step() {
+    /* compute control voltages */
     float frqcv = inputs[CUTOFF_CV_INPUT].value * 0.1f * quadraticBipolar(params[CUTOFF_CV_PARAM].value);
     float peakcv = inputs[PEAK_CV_INPUT].value * 0.1f * quadraticBipolar(params[PEAK_CV_PARAM].value);
     float gaincv = inputs[GAIN_CV_INPUT].value * 0.1f * quadraticBipolar(params[GAIN_CV_PARAM].value);
 
+    /* set cv modulated parameters */
     ms20zdf->setFrequency(params[FREQUENCY_PARAM].value + frqcv);
     ms20zdf->setPeak(params[PEAK_PARAM].value + peakcv);
     ms20zdf->setDrive(params[DRIVE_PARAM].value + gaincv);
 
-    frqKnob->cv = params[FREQUENCY_PARAM].value + frqcv;
-    peakKnob->cv = params[PEAK_PARAM].value + peakcv;
-    driveKnob->cv = params[DRIVE_PARAM].value + gaincv;
+    /* pass modulated parameter to knob widget for cv indicator */
+    if (frqKnob != NULL && peakKnob != NULL && driveKnob != NULL) {
+        frqKnob->setIndicatorActive(inputs[CUTOFF_CV_INPUT].active);
 
+        frqKnob->setIndicatorValue(params[FREQUENCY_PARAM].value + frqcv);
+        peakKnob->setIndicatorValue(params[PEAK_PARAM].value + peakcv);
+        driveKnob->setIndicatorValue(params[DRIVE_PARAM].value + gaincv);
+    }
+
+    /* process signal */
     ms20zdf->setType(params[MODE_SWITCH_PARAM].value);
-
     ms20zdf->setIn(inputs[FILTER_INPUT].value);
-
     ms20zdf->process();
 
     outputs[FILTER_OUTPUT].value = ms20zdf->getLPOut();
