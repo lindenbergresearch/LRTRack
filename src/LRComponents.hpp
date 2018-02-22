@@ -71,44 +71,80 @@ struct LCDWidget : Label {
 
 
 /**
- * @brief Basic knob definition
+ * @brief Indicator for control voltages on knobs
+ */
+struct Indicator {
+    /** flag to control drawing */
+    bool active = false;
+
+    /** color of indicator */
+    NVGcolor color = nvgRGBA(0x34, 0x78, 0xAB, 0xAA);
+
+    /** radius from middle */
+    float radius;
+
+    /** normalized control voltage. must between [0..1] */
+    float cv = 0.f;
+
+    /** draw angle */
+    float angle;
+
+
+    /**
+     * @brief Init indicator
+     * @param radius Radius viewed from the middle
+     * @param angle Angle of active knob area
+     */
+    void Indicator(float radius, float angle) {
+        Indicator::radius = radius;
+        Indicator::angle = angle;
+    }
+
+
+    /**
+     * @brief Draw routine for cv indicator
+     * @param vg
+     */
+    void draw(NVGcontext *vg);
+
+};
+
+
+/**
+ * @brief Standard LR Knob
  */
 struct LRKnob : SVGKnob {
-
 private:
-    /** control voltage, used for drawing the indicator */
-    float cv = 0;
+    static const float ANGLE = 0.83f;
 
-    /** flag if cv indicator should be drawn */
-    bool visibleCV = false;
+    /** setup indicator with default values */
+    Indicator idc = Indicator(10.f, ANGLE);
 
 public:
     /**
      * @brief Default constructor
      */
     LRKnob() {
-        minAngle = -0.83f * (float) M_PI;
-        maxAngle = 0.83f * (float) M_PI;
+        minAngle = -ANGLE * (float) M_PI;
+        maxAngle = ANGLE * (float) M_PI;
     }
 
 
-    float getCV() const {
-        return cv;
+    /**
+     * @brief Set the value of the indicator
+     * @param value
+     */
+    void setIndicatorValue(float value) {
+        idc.cv = value;
     }
 
 
-    void setCV(float cv) {
-        LRKnob::cv = cv;
-    }
-
-
-    bool isVisibleCV() const {
-        return visibleCV;
-    }
-
-
-    void setVisibleCV(bool visibleCV) {
-        LRKnob::visibleCV = visibleCV;
+    /**
+     * @brief Switch indicator on/off
+     * @param active
+     */
+    void setIndicatorActive(bool active) {
+        idc.active = active;
     }
 
 
@@ -135,10 +171,12 @@ public:
     }
 
 
+    /**
+     * @brief Draw knob
+     * @param vg
+     */
     void draw(NVGcontext *vg) override {
         FramebufferWidget::draw(vg);
-
-
     }
 };
 

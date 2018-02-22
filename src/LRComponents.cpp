@@ -91,8 +91,25 @@ void LRRedLight::draw(NVGcontext *vg) {
 
 
 /**
- * @brief
+ * @brief Constructor
  */
 LRRedLight::LRRedLight() {
     addBaseColor(COLOR_RED);
+}
+
+
+/**
+ * @brief Draw routine for cv indicator
+ * @param vg
+ */
+void Indicator::draw(NVGcontext *vg) {
+    if (active) {
+        float a = -angle + cv * (angle * 2);
+        Vec p = Vec(15 - cos(a * M_PI) * radius, 15 - sin(a * M_PI) * radius);
+
+        nvgBeginPath(vg);
+        nvgCircle(vg, p.x, p.y, 2);
+        nvgFillColor(vg, color);
+        nvgFill(vg);
+    }
 }
