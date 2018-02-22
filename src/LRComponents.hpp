@@ -81,7 +81,7 @@ struct Indicator {
     NVGcolor color = nvgRGBA(0x34, 0x38, 0xFF, 0xBB);
 
     /** radius from middle */
-    float radius;
+    float distance;
 
     /** normalized control voltage. must between [0..1] */
     float cv = 0.f;
@@ -96,11 +96,11 @@ struct Indicator {
 
     /**
      * @brief Init indicator
-     * @param radius Radius viewed from the middle
+     * @param distance Radius viewed from the middle
      * @param angle Angle of active knob area
      */
-    Indicator(float radius, float angle) {
-        Indicator::radius = radius;
+    Indicator(float distance, float angle) {
+        Indicator::distance = distance;
         Indicator::angle = angle;
 
         /** for optimization */
@@ -152,6 +152,24 @@ public:
      */
     void setIndicatorActive(bool active) {
         idc.active = active;
+    }
+
+
+    /**
+     * @brief Get indicator state
+     * @return
+     */
+    bool isIndicatorActive() {
+        return idc.active;
+    }
+
+
+    /**
+     * @brief Setup distance of indicator from middle
+     * @param distance
+     */
+    void setIndicatorDistance(float distance) {
+        idc.distance = distance;
     }
 
 

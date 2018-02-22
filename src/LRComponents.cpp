@@ -108,8 +108,8 @@ void Indicator::draw(NVGcontext *vg) {
         Vec p = Vec(0, 0);
 
         /** compute correct point of indicator on circle */
-        p.x = middle.x - sin(-a * (float) M_PI) * radius;
-        p.y = middle.y - cos(-a * (float) M_PI) * radius;
+        p.x = middle.x - sin(-a * (float) M_PI) * distance;
+        p.y = middle.y - cos(-a * (float) M_PI) * distance;
 
         nvgBeginPath(vg);
         nvgCircle(vg, p.x, p.y, 3);
