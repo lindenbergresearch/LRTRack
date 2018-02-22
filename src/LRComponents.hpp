@@ -78,7 +78,7 @@ struct Indicator {
     bool active = false;
 
     /** color of indicator */
-    NVGcolor color = nvgRGBA(0x34, 0x78, 0xAB, 0xAA);
+    NVGcolor color = nvgRGBA(0x34, 0x38, 0xFF, 0xBB);
 
     /** radius from middle */
     float radius;
@@ -88,6 +88,10 @@ struct Indicator {
 
     /** draw angle */
     float angle;
+    float angle2;
+
+    /** middle of parent */
+    Vec middle;
 
 
     /**
@@ -95,9 +99,12 @@ struct Indicator {
      * @param radius Radius viewed from the middle
      * @param angle Angle of active knob area
      */
-    void Indicator(float radius, float angle) {
+    Indicator(float radius, float angle) {
         Indicator::radius = radius;
         Indicator::angle = angle;
+
+        /** for optimization */
+        angle2 = 2 * angle;
     }
 
 
@@ -115,10 +122,10 @@ struct Indicator {
  */
 struct LRKnob : SVGKnob {
 private:
-    static const float ANGLE = 0.83f;
+    static constexpr float ANGLE = 0.83f;
 
     /** setup indicator with default values */
-    Indicator idc = Indicator(10.f, ANGLE);
+    Indicator idc = Indicator(15.f, ANGLE);
 
 public:
     /**
@@ -145,6 +152,16 @@ public:
      */
     void setIndicatorActive(bool active) {
         idc.active = active;
+    }
+
+
+    /**
+     * @brief Hook into setSVG() method to setup box dimensions correct for indicator
+     * @param svg
+     */
+    void setSVG(std::shared_ptr<SVG> svg) {
+        SVGKnob::setSVG(svg);
+        idc.middle = Vec(box.size.x / 2, box.size.y / 2);
     }
 
 
@@ -177,6 +194,7 @@ public:
      */
     void draw(NVGcontext *vg) override {
         FramebufferWidget::draw(vg);
+        idc.draw(vg);
     }
 };
 
