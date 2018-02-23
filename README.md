@@ -23,8 +23,8 @@ Clone git to local machine:
         git clone https://github.com/lindenbergresearch/LRTRack.git
 
 After that you should have the latest sources. If you want to build some release, you **HAVE**
-to switch to the corresponding TAG! For every released version a TAG exists, if you check out the current master it could be
-possible that it contains errors or unfinished modules... it is a current workstate.
+to switch to the corresponding TAG! For every released version a TAG exists, **be aware that if you check out the current master it could be
+possible that it contains errors or unfinished modules... it is a current workstate!**
 
 To view all tags use:
 
