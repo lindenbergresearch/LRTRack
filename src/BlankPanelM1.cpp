@@ -35,7 +35,7 @@ struct BlankPanelWidgetM1 : LRModuleWidget {
 };
 
 
-BlankPanelWidgetM1::BlankPanelWidgetM1(BlankPanelM1 *module) : ModuleWidget(module) {
+BlankPanelWidgetM1::BlankPanelWidgetM1(BlankPanelM1 *module) : LRModuleWidget(module) {
     box.size = Vec(BLANKPANEL_MARK_I_WIDTH * RACK_GRID_WIDTH, RACK_GRID_HEIGHT);
 
     {

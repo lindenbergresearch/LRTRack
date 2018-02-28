@@ -52,7 +52,7 @@ struct ReShaperWidget : LRModuleWidget {
 };
 
 
-ReShaperWidget::ReShaperWidget(ReShaper *module) : ModuleWidget(module) {
+ReShaperWidget::ReShaperWidget(ReShaper *module) : LRModuleWidget(module) {
     box.size = Vec(RESHAPER_WIDTH * RACK_GRID_WIDTH, RACK_GRID_HEIGHT);
 
     {

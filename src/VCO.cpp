@@ -83,7 +83,7 @@ struct VCOWidget : LRModuleWidget {
 };
 
 
-VCOWidget::VCOWidget(VCO *module) : ModuleWidget(module) {
+VCOWidget::VCOWidget(VCO *module) : LRModuleWidget(module) {
     box.size = Vec(OSCILLATOR_WIDTH * RACK_GRID_WIDTH, RACK_GRID_HEIGHT);
 
     {

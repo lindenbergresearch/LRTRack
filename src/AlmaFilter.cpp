@@ -72,7 +72,7 @@ struct AlmaFilterWidget : LRModuleWidget {
 };
 
 
-AlmaFilterWidget::AlmaFilterWidget(AlmaFilter *module) : ModuleWidget(module) {
+AlmaFilterWidget::AlmaFilterWidget(AlmaFilter *module) : LRModuleWidget(module) {
     box.size = Vec(FILTER_WIDTH * RACK_GRID_WIDTH, RACK_GRID_HEIGHT);
 
     {

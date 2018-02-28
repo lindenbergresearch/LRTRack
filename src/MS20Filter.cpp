@@ -90,7 +90,7 @@ struct MS20FilterWidget : LRModuleWidget {
 };
 
 
-MS20FilterWidget::MS20FilterWidget(MS20Filter *module) : ModuleWidget(module) {
+MS20FilterWidget::MS20FilterWidget(MS20Filter *module) : LRModuleWidget(module) {
     box.size = Vec(MS20_WIDTH * RACK_GRID_WIDTH, RACK_GRID_HEIGHT);
 
     {

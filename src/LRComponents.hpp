@@ -43,7 +43,7 @@ struct LRModule : Module {
  * @brief Standard LRT ModuleWidget definition
  */
 struct LRModuleWidget : ModuleWidget {
-    LRModuleWidget(Module *module);
+    explicit LRModuleWidget(Module *module);
 };
 
 

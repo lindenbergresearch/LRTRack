@@ -133,7 +133,7 @@ struct SimpleFilterWidget : LRModuleWidget {
 };
 
 
-SimpleFilterWidget::SimpleFilterWidget(SimpleFilter *module) : ModuleWidget(module) {
+SimpleFilterWidget::SimpleFilterWidget(SimpleFilter *module) : LRModuleWidget(module) {
     box.size = Vec(SIMPLEFILTER_WIDTH * RACK_GRID_WIDTH, RACK_GRID_HEIGHT);
 
     {
