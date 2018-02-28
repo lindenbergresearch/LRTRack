@@ -105,14 +105,27 @@ LRRedLight::LRRedLight() {
 void Indicator::draw(NVGcontext *vg) {
     if (active) {
         float a = -angle + cv * angle2;
-        Vec p = Vec(0, 0);
+        float d = distance - 5;
+        Vec p1, p2, p3;
+
 
         /** compute correct point of indicator on circle */
-        p.x = middle.x - sin(-a * (float) M_PI) * distance;
-        p.y = middle.y - cos(-a * (float) M_PI) * distance;
+        p1.x = middle.x - sin(-a * (float) M_PI) * distance;
+        p1.y = middle.y - cos(-a * (float) M_PI) * distance;
+
+        p2.x = middle.x - sin(-(a + 0.1f) * (float) M_PI) * d;
+        p2.y = middle.y - cos(-(a + 0.1f) * (float) M_PI) * d;
+
+        p3.x = middle.x - sin(-(a - 0.1f) * (float) M_PI) * d;
+        p3.y = middle.y - cos(-(a - 0.1f) * (float) M_PI) * d;
 
         nvgBeginPath(vg);
-        nvgCircle(vg, p.x, p.y, 3);
+        nvgMoveTo(vg, p1.x, p1.y);
+        nvgLineTo(vg, p2.x, p2.y);
+        nvgLineTo(vg, p3.x, p3.y);
+        nvgLineTo(vg, p1.x, p1.y);
+        nvgClosePath(vg);
+
         nvgFillColor(vg, color);
         nvgFill(vg);
     }
