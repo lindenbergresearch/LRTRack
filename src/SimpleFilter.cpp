@@ -125,10 +125,15 @@ void SimpleFilter::step() {
 }
 
 
-SimpleFilterWidget::SimpleFilterWidget() {
-    SimpleFilter *module = new SimpleFilter();
+/**
+ * @brief Recover of old filer
+ */
+struct SimpleFilterWidget : LRModuleWidget {
+    SimpleFilterWidget(SimpleFilter *module);
+};
 
-    setModule(module);
+
+SimpleFilterWidget::SimpleFilterWidget(SimpleFilter *module) : ModuleWidget(module) {
     box.size = Vec(SIMPLEFILTER_WIDTH * RACK_GRID_WIDTH, RACK_GRID_HEIGHT);
 
     {

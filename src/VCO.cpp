@@ -75,10 +75,15 @@ void VCO::step() {
 }
 
 
-VCOWidget::VCOWidget() {
-    VCO *module = new VCO();
+/**
+ * @brief Woldemar VCO
+ */
+struct VCOWidget : LRModuleWidget {
+    VCOWidget(VCO *module);
+};
 
-    setModule(module);
+
+VCOWidget::VCOWidget(VCO *module) : ModuleWidget(module) {
     box.size = Vec(OSCILLATOR_WIDTH * RACK_GRID_WIDTH, RACK_GRID_HEIGHT);
 
     {

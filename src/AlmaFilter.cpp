@@ -64,11 +64,15 @@ void AlmaFilter::step() {
     lights[OVERLOAD_LIGHT].value = filter.getLightValue();
 }
 
+/**
+ * @brief ALMA filter
+ */
+struct AlmaFilterWidget : LRModuleWidget {
+    AlmaFilterWidget(AlmaFilter *module);
+};
 
-AlmaFilterWidget::AlmaFilterWidget() {
-    AlmaFilter *module = new AlmaFilter();
 
-    setModule(module);
+AlmaFilterWidget::AlmaFilterWidget(AlmaFilter *module) : ModuleWidget(module) {
     box.size = Vec(FILTER_WIDTH * RACK_GRID_WIDTH, RACK_GRID_HEIGHT);
 
     {

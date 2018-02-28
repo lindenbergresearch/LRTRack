@@ -1,5 +1,6 @@
 #include "LindenbergResearch.hpp"
 
+
 struct ReShaper : Module {
     enum ParamIds {
         RESHAPER_AMOUNT,
@@ -22,7 +23,9 @@ struct ReShaper : Module {
         NUM_LIGHTS
     };
 
+
     ReShaper() : Module(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS) {}
+
 
     void step() override;
 };
@@ -36,15 +39,20 @@ void ReShaper::step() {
 
     // do the acid!
     float out = x * (fabs(x) + a) / (x * x + (a - 1) * fabs(x) + 1);
-  
+
     outputs[RESHAPER_OUTPUT].value = out * 5.0f;
 }
 
 
-ReShaperWidget::ReShaperWidget() {
-    ReShaper *module = new ReShaper();
+/**
+ * @brief Reshaper Panel
+ */
+struct ReShaperWidget : LRModuleWidget {
+    ReShaperWidget(ReShaper *module);
+};
 
-    setModule(module);
+
+ReShaperWidget::ReShaperWidget(ReShaper *module) : ModuleWidget(module) {
     box.size = Vec(RESHAPER_WIDTH * RACK_GRID_WIDTH, RACK_GRID_HEIGHT);
 
     {
@@ -70,7 +78,7 @@ ReShaperWidget::ReShaperWidget() {
 
     // ***** INPUTS **********
     addInput(createInput<IOPort>(Vec(21, 60), module, ReShaper::RESHAPER_INPUT));
-    addInput(createInput<IOPort>(Vec(71, 60), module, ReShaper::RESHAPER_CV_INPUT));   
+    addInput(createInput<IOPort>(Vec(71, 60), module, ReShaper::RESHAPER_CV_INPUT));
     // ***** INPUTS **********
 
     // ***** OUTPUTS *********

@@ -20,60 +20,13 @@ using namespace rack;
 extern Plugin *plugin;
 
 
-/**
- * @brief Recover of old filer
- */
-struct SimpleFilterWidget : LRModuleWidget {
-    SimpleFilterWidget();
-};
-
-
-/**
- * @brief Valerie MS20 filter
- */
-struct MS20FilterWidget : LRModuleWidget {
-    MS20FilterWidget();
-};
-
-
-/**
- * @brief ALMA filter
- */
-struct AlmaFilterWidget : LRModuleWidget {
-    AlmaFilterWidget();
-};
-
-
-/**
- * @brief Blank Panel with Logo
- */
-struct BlankPanelWidget : LRModuleWidget {
-    BlankPanelWidget();
-};
-
-
-/**
- * @brief Blank Panel Mark I
- */
-struct BlankPanelWidgetM1 : LRModuleWidget {
-    BlankPanelWidgetM1();
-};
-
-
-/**
- * @brief Reshaper Panel
- */
-struct ReShaperWidget : LRModuleWidget {
-    ReShaperWidget();
-};
-
-
-/**
- * @brief Woldemar VCO
- */
-struct VCOWidget : LRModuleWidget {
-    VCOWidget();
-};
+extern Model *modelSimpleFilter;
+extern Model *modelMS20Filter;
+extern Model *modelAlmaFilter;
+extern Model *modelReShaper;
+extern Model *modelVCO;
+extern Model *modelBlankPanel;
+extern Model *modelBlankPanelM1;
 
 
 /**
@@ -165,6 +118,6 @@ struct LRRedLight : SmallLight<ModuleLightWidget> {
 
     LRRedLight();
 
-    void draw(NVGcontext *vg) override;
+    //  void draw(NVGcontext *vg) override;
 
 };

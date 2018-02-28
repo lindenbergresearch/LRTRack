@@ -30,10 +30,15 @@ void BlankPanel::step() {
 }
 
 
-BlankPanelWidget::BlankPanelWidget() {
-    BlankPanel *module = new BlankPanel();
+/**
+ * @brief Blank Panel with Logo
+ */
+struct BlankPanelWidget : LRModuleWidget {
+    BlankPanelWidget(BlankPanel *module);
+};
 
-    setModule(module);
+
+BlankPanelWidget::BlankPanelWidget(BlankPanel *module) : ModuleWidget(module) {
     box.size = Vec(BLANKPANEL_WIDTH * RACK_GRID_WIDTH, RACK_GRID_HEIGHT);
 
     {

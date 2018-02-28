@@ -81,11 +81,14 @@ void MS20Filter::onSampleRateChange() {
     ms20zdf->updateSampleRate(engineGetSampleRate());
 }
 
+/**
+ * @brief Valerie MS20 filter
+ */
+struct MS20FilterWidget : LRModuleWidget {
+    MS20FilterWidget(MS20Filter *module);
+};
 
-MS20FilterWidget::MS20FilterWidget() {
-    auto *module = new MS20Filter();
-    setModule(module);
-
+MS20FilterWidget::MS20FilterWidget(MS20Filter *module) : ModuleWidget(module) {
     box.size = Vec(MS20_WIDTH * RACK_GRID_WIDTH, RACK_GRID_HEIGHT);
 
     {

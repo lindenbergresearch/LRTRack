@@ -1,5 +1,6 @@
 #include "LindenbergResearch.hpp"
 
+
 struct BlankPanelM1 : Module {
     enum ParamIds {
         NUM_PARAMS
@@ -17,6 +18,7 @@ struct BlankPanelM1 : Module {
 
     BlankPanelM1() : Module(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS) {}
 
+
     void step() override;
 };
 
@@ -25,10 +27,15 @@ void BlankPanelM1::step() {
 }
 
 
-BlankPanelWidgetM1::BlankPanelWidgetM1() {
-    BlankPanelM1 *module = new BlankPanelM1();
+/**
+ * @brief Blank Panel Mark I
+ */
+struct BlankPanelWidgetM1 : LRModuleWidget {
+    BlankPanelWidgetM1(BlankPanelM1 *module);
+};
 
-    setModule(module);
+
+BlankPanelWidgetM1::BlankPanelWidgetM1(BlankPanelM1 *module) : ModuleWidget(module) {
     box.size = Vec(BLANKPANEL_MARK_I_WIDTH * RACK_GRID_WIDTH, RACK_GRID_HEIGHT);
 
     {
