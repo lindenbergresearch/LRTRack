@@ -5,7 +5,7 @@
 #include "widgets.hpp"
 
 #define LCD_FONT_DIG7 "res/digital-7.ttf"
-#define LCD_COLOR_FG nvgRGBA(0x10, 0xE1, 0xE4, 0xFF)
+#define LCD_COLOR_FG nvgRGBA(0x00, 0xE1, 0xE4, 0xFF)
 #define LCD_FONTSIZE 8
 #define LCD_LETTER_SPACING 0
 
@@ -78,7 +78,7 @@ struct Indicator {
     bool active = false;
 
     /** color of indicator */
-    NVGcolor color = nvgRGBA(0x34, 0x38, 0xFF, 0xBB);
+    NVGcolor color = nvgRGBA(0x00, 0x00, 0x00, 0xBB);
 
     /** radius from middle */
     float distance;
@@ -118,7 +118,7 @@ struct Indicator {
 
 
 /**
- * @brief Standard LR Knob
+ * @brief The base of all knobs used in LR panels, includes a indicator
  */
 struct LRKnob : SVGKnob {
 private:
