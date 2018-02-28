@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cmath>
 #include "rack.hpp"
 #include "asset.hpp"
 #include "widgets.hpp"
@@ -100,6 +101,7 @@ struct LRToggleKnob : SVGKnob {
 struct LRBigKnob : LRKnob {
     LRBigKnob() {
         setSVG(SVG::load(assetPlugin(plugin, "res/BigKnob.svg")));
+        setIndicatorDistance(15);
     }
 };
 
