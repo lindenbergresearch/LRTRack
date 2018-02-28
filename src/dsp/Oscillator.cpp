@@ -1,7 +1,7 @@
 #include "DSPMath.hpp"
 #include "Oscillator.hpp"
 
-using namespace rack;
+using namespace dsp;
 
 
 /**
@@ -92,7 +92,7 @@ float BLITOscillator::getPulseWidth() const {
  * @brief Set current pulse-width
  * @param pw
  */
-void BLITOscillator::setPulseWidth(float pw) {
+void dsp::BLITOscillator::setPulseWidth(float pw) {
     if (pw < 0.1f) {
         BLITOscillator::pw = 0.1f;
         return;
@@ -158,7 +158,7 @@ float BLITOscillator::getTriangleWave() const {
 /**
  * @brief Process band-limited oscillator
  */
-void BLITOscillator::proccess() {
+void dsp::BLITOscillator::proccess() {
     /* phase locked loop */
     phase = wrapTWOPI(incr + phase);
 
@@ -236,7 +236,7 @@ void BLITOscillator::setSaturate(float saturate) {
  * @param fm Frequency modulation
  * @param oct Octave
  */
-void BLITOscillator::updatePitch(float cv, float fm, float tune, float oct) {
+void dsp::BLITOscillator::updatePitch(float cv, float fm, float tune, float oct) {
     // CV is at 1V/OCt, C0 = 16.3516Hz, C4 = 261.626Hz
     // 10.3V = 20614.33hz
 
