@@ -84,15 +84,15 @@ VCOWidget::VCOWidget() {
     {
         SVGPanel *panel = new SVGPanel();
         panel->box.size = box.size;
-        panel->setBackground(SVG::load(assetPlugin(plugin, "res/VCO.svg")));
+        panel->setBackground(SVG::load(assetPlugin(plugin, "res/VCO1.svg")));
         addChild(panel);
     }
 
     // ***** SCREWS **********
-    addChild(createScrew<ScrewDarkA>(Vec(15, 1)));
+    /*addChild(createScrew<ScrewDarkA>(Vec(15, 1)));
     addChild(createScrew<ScrewDarkA>(Vec(box.size.x - 30, 1)));
     addChild(createScrew<ScrewDarkA>(Vec(15, 366)));
-    addChild(createScrew<ScrewDarkA>(Vec(box.size.x - 30, 366)));
+    addChild(createScrew<ScrewDarkA>(Vec(box.size.x - 30, 366)));*/
     // ***** SCREWS **********
 
 
