@@ -81,12 +81,14 @@ void MS20Filter::onSampleRateChange() {
     ms20zdf->updateSampleRate(engineGetSampleRate());
 }
 
+
 /**
  * @brief Valerie MS20 filter
  */
 struct MS20FilterWidget : LRModuleWidget {
     MS20FilterWidget(MS20Filter *module);
 };
+
 
 MS20FilterWidget::MS20FilterWidget(MS20Filter *module) : ModuleWidget(module) {
     box.size = Vec(MS20_WIDTH * RACK_GRID_WIDTH, RACK_GRID_HEIGHT);
@@ -141,3 +143,6 @@ MS20FilterWidget::MS20FilterWidget(MS20Filter *module) : ModuleWidget(module) {
     addParam(createParam<LRSwitch>(Vec(119, 331), module, MS20Filter::MODE_SWITCH_PARAM, 0.0, 1.0, 1.0));
     // ***** SWITCH  *********
 }
+
+
+Model *modelMS20Filter = Model::create<MS20Filter, MS20FilterWidget>("Lindenberg Research", "MS20 VCF", "Valerie MS20 Filter", FILTER_TAG);

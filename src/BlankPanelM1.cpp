@@ -52,3 +52,7 @@ BlankPanelWidgetM1::BlankPanelWidgetM1(BlankPanelM1 *module) : ModuleWidget(modu
     addChild(createScrew<ScrewDarkA>(Vec(box.size.x - 30, 366)));
     // ***** SCREWS **********
 }
+
+
+Model *modelBlankPanelM1 = Model::create<BlankPanelM1, BlankPanelWidgetM1>("Lindenberg Research", "BlankPanel 02", "Blank Panel 12TE",
+                                                                           BLANK_TAG);

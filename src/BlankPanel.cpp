@@ -61,3 +61,6 @@ BlankPanelWidget::BlankPanelWidget(BlankPanel *module) : ModuleWidget(module) {
     module->lcd1->text = VERSION_STR;
     // ***** LCD *************
 }
+
+
+Model *modelBlankPanel = Model::create<BlankPanel, BlankPanelWidget>("Lindenberg Research", "BlankPanel 01", "Blank Panel 20TE", BLANK_TAG);

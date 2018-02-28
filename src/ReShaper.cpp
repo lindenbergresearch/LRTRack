@@ -85,3 +85,6 @@ ReShaperWidget::ReShaperWidget(ReShaper *module) : ModuleWidget(module) {
     addOutput(createOutput<IOPort>(Vec(46, 320), module, ReShaper::RESHAPER_OUTPUT));
     // ***** OUTPUTS *********
 }
+
+
+Model *modelReShaper = Model::create<ReShaper, ReShaperWidget>("Lindenberg Research", "ReShaper", "ReShaper Wavefolder", WAVESHAPER_TAG);

@@ -117,5 +117,6 @@ AlmaFilterWidget::AlmaFilterWidget(AlmaFilter *module) : ModuleWidget(module) {
     // ***** LIGHTS **********
     addChild(createLight<LRRedLight>(Vec(85, 247), module, AlmaFilter::OVERLOAD_LIGHT));
     // ***** LIGHTS **********
-
 }
+
+Model *modelAlmaFilter = Model::create<AlmaFilter, AlmaFilterWidget>("Lindenberg Research", "VCF", "Alma Ladder Filter", FILTER_TAG);

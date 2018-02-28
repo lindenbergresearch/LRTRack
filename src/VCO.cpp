@@ -136,3 +136,6 @@ VCOWidget::VCOWidget(VCO *module) : ModuleWidget(module) {
 
     //addChild(module->label1);
 }
+
+
+Model *modelVCO = Model::create<VCO, VCOWidget>("Lindenberg Research", "VCO", "Voltage Controlled Oscillator", OSCILLATOR_TAG);

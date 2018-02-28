@@ -171,3 +171,7 @@ SimpleFilterWidget::SimpleFilterWidget(SimpleFilter *module) : ModuleWidget(modu
     addOutput(createOutput<IOPort>(Vec(111 - 14, 320), module, SimpleFilter::FILTER_OUTPUT));
     // ***** OUTPUTS *********
 }
+
+
+Model *modelSimpleFilter = Model::create<SimpleFilter, SimpleFilterWidget>("Lindenberg Research", "LPFilter24dB", "24dB Lowpass Filter",
+                                                                           FILTER_TAG);

@@ -20,6 +20,9 @@ LCDWidget::LCDWidget(NVGcolor fg, unsigned char length) {
 }
 
 
+LRModuleWidget::LRModuleWidget(Module *module) : ModuleWidget(module) {
+}
+
 /**
  * @brief Draw method of custom LCD widget
  * @param vg
