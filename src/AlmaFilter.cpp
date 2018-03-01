@@ -35,6 +35,9 @@ struct AlmaFilter : LRModule {
 
     LadderFilter filter;
 
+    LRBigKnob *frqKnob = NULL;
+    LRMiddleKnob *peakKnob = NULL;
+    LRMiddleKnob *driveKnob = NULL;
 
     AlmaFilter() : LRModule(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS) {}
 
@@ -52,6 +55,19 @@ void AlmaFilter::step() {
     filter.setResonance(params[RESONANCE_PARAM].value + rescv);
     filter.setDrive(params[DRIVE_PARAM].value + drvcv);
     filter.setSlope(params[SLOPE_PARAM].value);
+
+
+    /* pass modulated parameter to knob widget for cv indicator */
+    if (frqKnob != NULL && peakKnob != NULL && driveKnob != NULL) {
+        frqKnob->setIndicatorActive(inputs[CUTOFF_CV_INPUT].active);
+        peakKnob->setIndicatorActive(inputs[RESONANCE_CV_INPUT].active);
+        driveKnob->setIndicatorActive(inputs[DRIVE_CV_INPUT].active);
+
+        frqKnob->setIndicatorValue(params[CUTOFF_PARAM].value + frqcv);
+        peakKnob->setIndicatorValue(params[RESONANCE_PARAM].value + rescv);
+        driveKnob->setIndicatorValue(params[DRIVE_PARAM].value + drvcv);
+    }
+
 
     float y = inputs[FILTER_INPUT].value;
 
@@ -84,9 +100,14 @@ AlmaFilterWidget::AlmaFilterWidget(AlmaFilter *module) : LRModuleWidget(module) 
     // ***** SCREWS **********
 
     // ***** MAIN KNOBS ******
-    addParam(ParamWidget::create<LRBigKnob>(Vec(62, 150), module, AlmaFilter::CUTOFF_PARAM, 0.f, 1.f, 0.8f));
-    addParam(ParamWidget::create<LRMiddleKnob>(Vec(24, 229), module, AlmaFilter::RESONANCE_PARAM, -0.f, 1.5, 0.0f));
-    addParam(ParamWidget::create<LRMiddleKnob>(Vec(116, 228), module, AlmaFilter::DRIVE_PARAM, 0.0f, 1.f, 0.0f));
+    module->frqKnob = LRKnob::create<LRBigKnob>(Vec(62, 150), module, AlmaFilter::CUTOFF_PARAM, 0.f, 1.f, 0.8f);
+    module->peakKnob = LRKnob::create<LRMiddleKnob>(Vec(24, 229), module, AlmaFilter::RESONANCE_PARAM, -0.f, 1.5, 0.0f);
+    module->driveKnob = LRKnob::create<LRMiddleKnob>(Vec(116, 228), module, AlmaFilter::DRIVE_PARAM, 0.0f, 1.f, 0.0f);
+
+    addParam(module->frqKnob);
+    addParam(module->peakKnob);
+    addParam(module->driveKnob);
+
     addParam(ParamWidget::create<LRMiddleKnob>(Vec(70, 288), module, AlmaFilter::SLOPE_PARAM, 0.0f, 4.f, 2.0f));
     // ***** MAIN KNOBS ******
 
