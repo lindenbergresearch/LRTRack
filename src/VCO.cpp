@@ -82,14 +82,7 @@ struct VCOWidget : LRModuleWidget {
 
 
 VCOWidget::VCOWidget(VCO *module) : LRModuleWidget(module) {
-    box.size = Vec(OSCILLATOR_WIDTH * RACK_GRID_WIDTH, RACK_GRID_HEIGHT);
-
-    {
-        SVGPanel *panel = new SVGPanel();
-        panel->box.size = box.size;
-        panel->setBackground(SVG::load(assetPlugin(plugin, "res/VCO1.svg")));
-        addChild(panel);
-    }
+    setPanel(SVG::load(assetPlugin(plugin, "res/VCO.svg")));
 
     // ***** SCREWS **********
     /*addChild(createScrew<ScrewDarkA>(Vec(15, 1)));

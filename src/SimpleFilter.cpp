@@ -134,14 +134,7 @@ struct SimpleFilterWidget : LRModuleWidget {
 
 
 SimpleFilterWidget::SimpleFilterWidget(SimpleFilter *module) : LRModuleWidget(module) {
-    box.size = Vec(SIMPLEFILTER_WIDTH * RACK_GRID_WIDTH, RACK_GRID_HEIGHT);
-
-    {
-        SVGPanel *panel = new SVGPanel();
-        panel->box.size = box.size;
-        panel->setBackground(SVG::load(assetPlugin(plugin, "res/SimpleFilter.svg")));
-        addChild(panel);
-    }
+    setPanel(SVG::load(assetPlugin(plugin, "res/SimpleFilter.svg")));
 
     // ***** SCREWS **********
     addChild(Widget::create<ScrewDarkA>(Vec(15, 1)));

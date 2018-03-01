@@ -91,14 +91,7 @@ struct MS20FilterWidget : LRModuleWidget {
 
 
 MS20FilterWidget::MS20FilterWidget(MS20Filter *module) : LRModuleWidget(module) {
-    box.size = Vec(MS20_WIDTH * RACK_GRID_WIDTH, RACK_GRID_HEIGHT);
-
-    {
-        auto *panel = new SVGPanel();
-        panel->box.size = box.size;
-        panel->setBackground(SVG::load(assetPlugin(plugin, "res/MS20.svg")));
-        addChild(panel);
-    }
+    setPanel(SVG::load(assetPlugin(plugin, "res/MS20.svg")));
 
     // ***** SCREWS **********
     addChild(Widget::create<ScrewDarkA>(Vec(15, 1)));

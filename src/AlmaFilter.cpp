@@ -74,14 +74,7 @@ struct AlmaFilterWidget : LRModuleWidget {
 
 
 AlmaFilterWidget::AlmaFilterWidget(AlmaFilter *module) : LRModuleWidget(module) {
-    box.size = Vec(FILTER_WIDTH * RACK_GRID_WIDTH, RACK_GRID_HEIGHT);
-
-    {
-        SVGPanel *panel = new SVGPanel();
-        panel->box.size = box.size;
-        panel->setBackground(SVG::load(assetPlugin(plugin, "res/VCF.svg")));
-        addChild(panel);
-    }
+    setPanel(SVG::load(assetPlugin(plugin, "res/VCF.svg")));
 
     // ***** SCREWS **********
     addChild(Widget::create<ScrewDarkA>(Vec(15, 1)));

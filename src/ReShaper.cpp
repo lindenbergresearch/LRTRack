@@ -53,14 +53,7 @@ struct ReShaperWidget : LRModuleWidget {
 
 
 ReShaperWidget::ReShaperWidget(ReShaper *module) : LRModuleWidget(module) {
-    box.size = Vec(RESHAPER_WIDTH * RACK_GRID_WIDTH, RACK_GRID_HEIGHT);
-
-    {
-        SVGPanel *panel = new SVGPanel();
-        panel->box.size = box.size;
-        panel->setBackground(SVG::load(assetPlugin(plugin, "res/ReShaper.svg")));
-        addChild(panel);
-    }
+    setPanel(SVG::load(assetPlugin(plugin, "res/ReShaper.svg")));
 
     // ***** SCREWS **********
     addChild(Widget::create<ScrewDarkA>(Vec(15, 1)));

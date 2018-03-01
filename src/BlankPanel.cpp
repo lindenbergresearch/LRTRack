@@ -39,14 +39,7 @@ struct BlankPanelWidget : LRModuleWidget {
 
 
 BlankPanelWidget::BlankPanelWidget(BlankPanel *module) : LRModuleWidget(module) {
-    box.size = Vec(BLANKPANEL_WIDTH * RACK_GRID_WIDTH, RACK_GRID_HEIGHT);
-
-    {
-        SVGPanel *panel = new SVGPanel();
-        panel->box.size = box.size;
-        panel->setBackground(SVG::load(assetPlugin(plugin, "res/BlankPanel.svg")));
-        addChild(panel);
-    }
+    setPanel(SVG::load(assetPlugin(plugin, "res/BlankPanel.svg")));
 
     // ***** SCREWS **********
     addChild(Widget::create<ScrewDarkA>(Vec(15, 1)));
