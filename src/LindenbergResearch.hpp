@@ -113,11 +113,11 @@ struct LRSwitch : SVGSwitch, ToggleSwitch {
     }
 };
 
-
+/**
+ * @brief Standard LED Redlight
+ */
 struct LRRedLight : SmallLight<ModuleLightWidget> {
-
     LRRedLight();
 
-    //  void draw(NVGcontext *vg) override;
-
+    void draw(NVGcontext *vg) override;
 };
