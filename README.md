@@ -14,11 +14,17 @@ Just download fpr you architecture and unzip in your _**Rack**_ folder located i
 
 ## 2. Build from source
 
+_**NOTE:**_
+
+The current master has been migrated to 0.6.0dev! So you have to install the correct version
+of Rack in order to get it running. I suggest to fetch a clean 0.6.xx version of Rack via git and build
+all from scratch.
+
 You can build build the latest release from source, to do so use the following steps:
 Note that you have to install a C++ environment with a compiler and other needed tools.
 For further information about this, check the documentation found here of: [VCV Rack GIT](https://github.com/VCVRack/Rack)
 
-Clone git to local machine:
+Clone git to local machine (into Rack/plugins):
 
         git clone https://github.com/lindenbergresearch/LRTRack.git
 
