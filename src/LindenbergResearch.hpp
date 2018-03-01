@@ -65,6 +65,7 @@ struct LRBigKnob : LRKnob {
 struct LRMiddleKnob : LRKnob {
     LRMiddleKnob() {
         setSVG(SVG::load(assetPlugin(plugin, "res/MiddleKnob.svg")));
+        setIndicatorDistance(12);
     }
 };
 
