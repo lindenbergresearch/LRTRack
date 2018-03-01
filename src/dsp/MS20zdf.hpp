@@ -87,12 +87,12 @@ namespace dsp {
 
 
         void setFrequency(float value) {
-            setParam(FREQUENCY, clampf(value, 0.f, 1.1f));
+            setParam(FREQUENCY, clamp(value, 0.f, 1.1f));
         }
 
 
         void setDrive(float value) {
-            setParam(DRIVE, clampf(value, 0.f, 1.1f));
+            setParam(DRIVE, clamp(value, 0.f, 1.1f));
         }
 
 
@@ -107,7 +107,7 @@ namespace dsp {
 
 
         void setPeak(float value) {
-            setParam(PEAK, clampf(value, 0.f, 1.1f));
+            setParam(PEAK, clamp(value, 0.f, 1.1f));
         }
 
 

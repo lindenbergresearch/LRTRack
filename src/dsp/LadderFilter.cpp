@@ -90,7 +90,7 @@ void LadderFilter::setFrequency(float frequency) {
         LadderFilter::frequency = frequency;
         // translate frequency to logarithmic scale
         freqHz = 20.f * powf(1000.f, frequency);
-        freqExp = clampf(freqHz * (1.f / (engineGetSampleRate() * OVERSAMPLE / 2.f)), 0.f, 1.f);
+        freqExp = clamp(freqHz * (1.f / (engineGetSampleRate() * OVERSAMPLE / 2.f)), 0.f, 1.f);
 
         updateResExp();
         invalidate();
@@ -102,7 +102,7 @@ void LadderFilter::setFrequency(float frequency) {
  * @brief Update resonance factor
  */
 void LadderFilter::updateResExp() {
-    resExp = clampf(resonance, 0, 1.5f);
+    resExp = clamp(resonance, 0.f, 1.5f);
 }
 
 
@@ -144,7 +144,7 @@ float LadderFilter::getDrive() const {
  */
 void LadderFilter::setDrive(float drive) {
     if (LadderFilter::drive != drive) {
-        LadderFilter::drive = clampf(drive, 0, 1);
+        LadderFilter::drive = clamp(drive, 0.f, 1.f);
 
         updateResExp();
         invalidate();
@@ -157,7 +157,7 @@ void LadderFilter::setDrive(float drive) {
  * @param in
  */
 void LadderFilter::setIn(float in) {
-    float x = clampf(in / INPUT_GAIN, -0.8f, 0.8f);
+    float x = clamp(in / INPUT_GAIN, -0.8f, 0.8f);
 
     LadderFilter::in = x;
 }
@@ -195,7 +195,7 @@ float LadderFilter::getSlope() const {
  * @param slope
  */
 void LadderFilter::setSlope(float slope) {
-    LadderFilter::slope = clampf(slope, 0, 4);
+    LadderFilter::slope = clamp(slope, 0.f, 4.f);
 }
 
 

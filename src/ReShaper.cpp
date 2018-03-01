@@ -33,9 +33,9 @@ struct ReShaper : Module {
 
 void ReShaper::step() {
     // normalize signal input to [-1.0...+1.0]
-    float x = clampf(inputs[RESHAPER_INPUT].value * 0.1f, -1.f, 1.f);
+    float x = clamp(inputs[RESHAPER_INPUT].value * 0.1f, -1.f, 1.f);
     float cv = inputs[RESHAPER_CV_INPUT].value * params[RESHAPER_CV_AMOUNT].value;
-    float a = clampf(params[RESHAPER_AMOUNT].value + cv, 1.f, 50.f);
+    float a = clamp(params[RESHAPER_AMOUNT].value + cv, 1.f, 50.f);
 
     // do the acid!
     float out = x * (fabs(x) + a) / (x * x + (a - 1) * fabs(x) + 1);
