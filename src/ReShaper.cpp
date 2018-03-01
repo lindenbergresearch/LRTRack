@@ -63,26 +63,26 @@ ReShaperWidget::ReShaperWidget(ReShaper *module) : LRModuleWidget(module) {
     }
 
     // ***** SCREWS **********
-    addChild(createScrew<ScrewDarkA>(Vec(15, 1)));
-    addChild(createScrew<ScrewDarkA>(Vec(box.size.x - 30, 1)));
-    addChild(createScrew<ScrewDarkA>(Vec(15, 366)));
-    addChild(createScrew<ScrewDarkA>(Vec(box.size.x - 30, 366)));
+    addChild(Widget::create<ScrewDarkA>(Vec(15, 1)));
+    addChild(Widget::create<ScrewDarkA>(Vec(box.size.x - 30, 1)));
+    addChild(Widget::create<ScrewDarkA>(Vec(15, 366)));
+    addChild(Widget::create<ScrewDarkA>(Vec(box.size.x - 30, 366)));
     // ***** SCREWS **********
 
 
     // ***** MAIN KNOBS ******
-    addParam(createParam<LRBigKnob>(Vec(32, 216), module, ReShaper::RESHAPER_AMOUNT, 1.f, 50.f, 1.f));
-    addParam(createParam<LRSmallKnob>(Vec(48, 126), module, ReShaper::RESHAPER_CV_AMOUNT, 0.f, 5.f, 0.f));
+    addParam(ParamWidget::create<LRBigKnob>(Vec(32, 216), module, ReShaper::RESHAPER_AMOUNT, 1.f, 50.f, 1.f));
+    addParam(ParamWidget::create<LRSmallKnob>(Vec(48, 126), module, ReShaper::RESHAPER_CV_AMOUNT, 0.f, 5.f, 0.f));
     // ***** MAIN KNOBS ******
 
 
     // ***** INPUTS **********
-    addInput(createInput<IOPort>(Vec(21, 60), module, ReShaper::RESHAPER_INPUT));
-    addInput(createInput<IOPort>(Vec(71, 60), module, ReShaper::RESHAPER_CV_INPUT));
+    addInput(Port::create<IOPort>(Vec(21, 60), Port::INPUT, module, ReShaper::RESHAPER_INPUT));
+    addInput(Port::create<IOPort>(Vec(71, 60), Port::INPUT, module, ReShaper::RESHAPER_CV_INPUT));
     // ***** INPUTS **********
 
     // ***** OUTPUTS *********
-    addOutput(createOutput<IOPort>(Vec(46, 320), module, ReShaper::RESHAPER_OUTPUT));
+    addOutput(Port::create<IOPort>(Vec(46, 320), Port::OUTPUT, module, ReShaper::RESHAPER_OUTPUT));
     // ***** OUTPUTS *********
 }
 

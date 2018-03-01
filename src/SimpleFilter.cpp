@@ -144,31 +144,31 @@ SimpleFilterWidget::SimpleFilterWidget(SimpleFilter *module) : LRModuleWidget(mo
     }
 
     // ***** SCREWS **********
-    addChild(createScrew<ScrewDarkA>(Vec(15, 1)));
-    addChild(createScrew<ScrewDarkA>(Vec(box.size.x - 30, 1)));
-    addChild(createScrew<ScrewDarkA>(Vec(15, 366)));
-    addChild(createScrew<ScrewDarkA>(Vec(box.size.x - 30, 366)));
+    addChild(Widget::create<ScrewDarkA>(Vec(15, 1)));
+    addChild(Widget::create<ScrewDarkA>(Vec(box.size.x - 30, 1)));
+    addChild(Widget::create<ScrewDarkA>(Vec(15, 366)));
+    addChild(Widget::create<ScrewDarkA>(Vec(box.size.x - 30, 366)));
     // ***** SCREWS **********
 
     // ***** MAIN KNOBS ******
-    addParam(createParam<LRBigKnob>(Vec(75 - 28, 167), module, SimpleFilter::CUTOFF_PARAM, 0.f, 1.f, 0.f));
-    addParam(createParam<LRMiddleKnob>(Vec(75 - 21, 252), module, SimpleFilter::RESONANCE_PARAM, -0.f, 1.f, 0.0f));
+    addParam(ParamWidget::create<LRBigKnob>(Vec(75 - 28, 167), module, SimpleFilter::CUTOFF_PARAM, 0.f, 1.f, 0.f));
+    addParam(ParamWidget::create<LRMiddleKnob>(Vec(75 - 21, 252), module, SimpleFilter::RESONANCE_PARAM, -0.f, 1.f, 0.0f));
     // ***** MAIN KNOBS ******
 
     // ***** CV INPUTS *******
-    addParam(createParam<LRSmallKnob>(Vec(39 - 12, 120), module, SimpleFilter::CUTOFF_CV_PARAM, 0.f, 1.f, 0.f));
-    addParam(createParam<LRSmallKnob>(Vec(111 - 12, 120), module, SimpleFilter::RESONANCE_CV_PARAM, 0.f, 1.f, 0.f));
+    addParam(ParamWidget::create<LRSmallKnob>(Vec(39 - 12, 120), module, SimpleFilter::CUTOFF_CV_PARAM, 0.f, 1.f, 0.f));
+    addParam(ParamWidget::create<LRSmallKnob>(Vec(111 - 12, 120), module, SimpleFilter::RESONANCE_CV_PARAM, 0.f, 1.f, 0.f));
 
-    addInput(createInput<IOPort>(Vec(39 - 14, 60), module, SimpleFilter::CUTOFF_CV_INPUT));
-    addInput(createInput<IOPort>(Vec(111 - 14, 60), module, SimpleFilter::RESONANCE_CV_INPUT));
+    addInput(Port::create<IOPort>(Vec(39 - 14, 60), Port::INPUT, module, SimpleFilter::CUTOFF_CV_INPUT));
+    addInput(Port::create<IOPort>(Vec(111 - 14, 60), Port::INPUT, module, SimpleFilter::RESONANCE_CV_INPUT));
     // ***** CV INPUTS *******
 
     // ***** INPUTS **********
-    addInput(createInput<IOPort>(Vec(39 - 14, 320), module, SimpleFilter::FILTER_INPUT));
+    addInput(Port::create<IOPort>(Vec(39 - 14, 320), Port::INPUT, module, SimpleFilter::FILTER_INPUT));
     // ***** INPUTS **********
 
     // ***** OUTPUTS *********
-    addOutput(createOutput<IOPort>(Vec(111 - 14, 320), module, SimpleFilter::FILTER_OUTPUT));
+    addOutput(Port::create<IOPort>(Vec(111 - 14, 320), Port::OUTPUT, module, SimpleFilter::FILTER_OUTPUT));
     // ***** OUTPUTS *********
 }
 

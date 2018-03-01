@@ -31,9 +31,7 @@ struct VCO : LRModule {
         NUM_LIGHTS
     };
 
-    BLITOscillator osc;
-    LCDWidget *label1 = new LCDWidget(LCD_COLOR_FG, 10);
-
+    dsp::BLITOscillator *osc = new dsp::BLITOscillator();
 
     VCO() : LRModule(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS) {}
 
@@ -45,29 +43,29 @@ struct VCO : LRModule {
 void VCO::step() {
     LRModule::step();
 
-    float fm = clampf(inputs[FM_CV_INPUT].value, -10.f, 10.f) * 400.f * quadraticBipolar(params[FM_CV_PARAM].value);
+    float fm = clamp(inputs[FM_CV_INPUT].value, -10.f, 10.f) * 400.f * quadraticBipolar(params[FM_CV_PARAM].value);
 
-    osc.updatePitch(inputs[VOCT_INPUT].value, clampf(fm, 0.f, 20.000f), params[FREQUENCY_PARAM].value, params[OCTAVE_PARAM].value);
+    osc->updatePitch(inputs[VOCT_INPUT].value, clamp(fm, 0.f, 20.000f), params[FREQUENCY_PARAM].value, params[OCTAVE_PARAM].value);
 
     float saturate = quadraticBipolar(params[SHAPE_PARAM].value);
     float pw = params[PW_CV_PARAM].value;
 
-    if (osc.getSaturate() != saturate) {
-        osc.setSaturate(saturate);
+    if (osc->shape != saturate) {
+        osc->shape = saturate;
     }
 
-    if (osc.pw != pw) {
-        osc.setPulseWidth(pw);
+    if (osc->pw != pw) {
+        osc->setPulseWidth(pw);
     }
 
-    osc.proccess();
+    osc->proccess();
 
-    outputs[SAW_OUTPUT].value = osc.saw;
+    outputs[SAW_OUTPUT].value = osc->saw;
 
-    outputs[PULSE_OUTPUT].value = osc.pulse;
-    outputs[SAWTRI_OUTPUT].value = osc.sine;
+    outputs[PULSE_OUTPUT].value = osc->pulse;
+    outputs[SAWTRI_OUTPUT].value = osc->sine;
 
-    outputs[TRI_OUTPUT].value = osc.tri;
+    outputs[TRI_OUTPUT].value = osc->tri;
 
     /*if (cnt % 1200 == 0) {
         label1->text = stringf("%.2f Hz", osc.freq);
@@ -102,34 +100,34 @@ VCOWidget::VCOWidget(VCO *module) : LRModuleWidget(module) {
 
 
     // ***** MAIN KNOBS ******
-    addParam(createParam<LRMiddleKnob>(Vec(83, 172.0), module, VCO::FREQUENCY_PARAM, -15.f, 15.f, 0.f));
-    addParam(createParam<LRToggleKnob>(Vec(85, 240), module, VCO::OCTAVE_PARAM, -3.f, 3.f, 0.f));
+    addParam(ParamWidget::create<LRMiddleKnob>(Vec(83, 172.0), module, VCO::FREQUENCY_PARAM, -15.f, 15.f, 0.f));
+    addParam(ParamWidget::create<LRToggleKnob>(Vec(85, 240), module, VCO::OCTAVE_PARAM, -3.f, 3.f, 0.f));
 
-    addParam(createParam<LRSmallKnob>(Vec(118, 111.5), module, VCO::PW_PARAM, -.1f, 1.f, 1.f));
-    addParam(createParam<LRSmallKnob>(Vec(65, 60), module, VCO::SHAPE_CV_PARAM, -1.f, 1.f, 0.f));
-    addParam(createParam<LRSmallKnob>(Vec(15, 267), module, VCO::FM_CV_PARAM, -1.f, 1.f, 0.f));
-    addParam(createParam<LRSmallKnob>(Vec(65, 111.5), module, VCO::PW_CV_PARAM, 0.02f, 1.f, 1.f));
-    addParam(createParam<LRSmallKnob>(Vec(118, 59), module, VCO::SHAPE_PARAM, 1.f, 5.f, 1.f));
+    addParam(ParamWidget::create<LRSmallKnob>(Vec(118, 111.5), module, VCO::PW_PARAM, -.1f, 1.f, 1.f));
+    addParam(ParamWidget::create<LRSmallKnob>(Vec(65, 60), module, VCO::SHAPE_CV_PARAM, -1.f, 1.f, 0.f));
+    addParam(ParamWidget::create<LRSmallKnob>(Vec(15, 267), module, VCO::FM_CV_PARAM, -1.f, 1.f, 0.f));
+    addParam(ParamWidget::create<LRSmallKnob>(Vec(65, 111.5), module, VCO::PW_CV_PARAM, 0.02f, 1.f, 1.f));
+    addParam(ParamWidget::create<LRSmallKnob>(Vec(118, 59), module, VCO::SHAPE_PARAM, 1.f, 5.f, 1.f));
 
 
     // ***** MAIN KNOBS ******
 
 
     // ***** INPUTS **********
-    addInput(createInput<IOPort>(Vec(15, 182), module, VCO::VOCT_INPUT));
-    addInput(createInput<IOPort>(Vec(15, 228), module, VCO::FM_CV_INPUT));
-    addInput(createInput<IOPort>(Vec(15, 112), module, VCO::PW_CV_INPUT));
-    addInput(createInput<IOPort>(Vec(15, 60), module, VCO::SHAPE_CV_INPUT));
+    addInput(Port::create<IOPort>(Vec(15, 182), Port::INPUT, module, VCO::VOCT_INPUT));
+    addInput(Port::create<IOPort>(Vec(15, 228), Port::INPUT, module, VCO::FM_CV_INPUT));
+    addInput(Port::create<IOPort>(Vec(15, 112), Port::INPUT, module, VCO::PW_CV_INPUT));
+    addInput(Port::create<IOPort>(Vec(15, 60), Port::INPUT, module, VCO::SHAPE_CV_INPUT));
 
     //  addInput(createInput<IOPort>(Vec(71, 60), module, VCO::RESHAPER_CV_INPUT));
     // ***** INPUTS **********
 
     // ***** OUTPUTS *********
     // addOutput(createOutput<IOPort>(Vec(20, 320), module, VCO::SAW_OUTPUT));
-    addOutput(createOutput<IOPort>(Vec(20.8, 304.5), module, VCO::SAW_OUTPUT));
-    addOutput(createOutput<IOPort>(Vec(57.2, 304.5), module, VCO::PULSE_OUTPUT));
-    addOutput(createOutput<IOPort>(Vec(96.1, 304.5), module, VCO::SAWTRI_OUTPUT));
-    addOutput(createOutput<IOPort>(Vec(132, 304.5), module, VCO::TRI_OUTPUT));
+    addOutput(Port::create<IOPort>(Vec(20.8, 304.5), Port::OUTPUT, module, VCO::SAW_OUTPUT));
+    addOutput(Port::create<IOPort>(Vec(57.2, 304.5), Port::OUTPUT, module, VCO::PULSE_OUTPUT));
+    addOutput(Port::create<IOPort>(Vec(96.1, 304.5), Port::OUTPUT, module, VCO::SAWTRI_OUTPUT));
+    addOutput(Port::create<IOPort>(Vec(132, 304.5), Port::OUTPUT, module, VCO::TRI_OUTPUT));
     // ***** OUTPUTS *********
 
     //module->label1->box.pos = Vec(30, 310);
