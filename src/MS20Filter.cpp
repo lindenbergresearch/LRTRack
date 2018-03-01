@@ -101,17 +101,14 @@ MS20FilterWidget::MS20FilterWidget(MS20Filter *module) : LRModuleWidget(module) 
     // ***** SCREWS **********
 
     // ***** MAIN KNOBS ******
-    auto *frqKnob = LRKnob::create<LRBigKnob>(Vec(102, 65), module, MS20Filter::FREQUENCY_PARAM, 0.f, 1.f, 1.f);
-    auto *peakKnob = LRKnob::create<LRMiddleKnob>(Vec(110, 161), module, MS20Filter::PEAK_PARAM, 0.0f, 1.0, 0.0f);
-    auto *driveKnob = LRKnob::create<LRMiddleKnob>(Vec(110, 230.7), module, MS20Filter::DRIVE_PARAM, 0.f, 1.0, 0.0f);
+    module->frqKnob = LRKnob::create<LRBigKnob>(Vec(102, 65), module, MS20Filter::FREQUENCY_PARAM, 0.f, 1.f, 1.f);
+    module->peakKnob = LRKnob::create<LRMiddleKnob>(Vec(110, 161), module, MS20Filter::PEAK_PARAM, 0.0f, 1.0, 0.0f);
+    module->driveKnob = LRKnob::create<LRMiddleKnob>(Vec(110, 230.7), module, MS20Filter::DRIVE_PARAM, 0.f, 1.0, 0.0f);
 
-    addParam(frqKnob);
-    addParam(peakKnob);
-    addParam(driveKnob);
+    addParam(module->frqKnob);
+    addParam(module->peakKnob);
+    addParam(module->driveKnob);
 
-    module->frqKnob = frqKnob;
-    module->peakKnob = peakKnob;
-    module->driveKnob = driveKnob;
     // ***** MAIN KNOBS ******
 
     // ***** CV INPUTS *******
