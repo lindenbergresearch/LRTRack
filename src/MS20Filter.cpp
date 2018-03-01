@@ -61,6 +61,8 @@ void MS20Filter::step() {
     /* pass modulated parameter to knob widget for cv indicator */
     if (frqKnob != NULL && peakKnob != NULL && driveKnob != NULL) {
         frqKnob->setIndicatorActive(inputs[CUTOFF_CV_INPUT].active);
+        peakKnob->setIndicatorActive(inputs[PEAK_CV_INPUT].active);
+        driveKnob->setIndicatorActive(inputs[GAIN_CV_INPUT].active);
 
         frqKnob->setIndicatorValue(params[FREQUENCY_PARAM].value + frqcv);
         peakKnob->setIndicatorValue(params[PEAK_PARAM].value + peakcv);
