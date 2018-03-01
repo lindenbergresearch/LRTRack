@@ -75,11 +75,14 @@ struct LCDWidget : Label {
  * @brief Indicator for control voltages on knobs
  */
 struct Indicator {
+    static constexpr float OVERFLOW_THRESOLD = 0.01f;
+
     /** flag to control drawing */
     bool active = false;
 
     /** color of indicator */
-    NVGcolor color = nvgRGBA(0x00, 0x00, 0x00, 0xBB);
+    NVGcolor normalColor = nvgRGBA(0x00, 0x00, 0x00, 0xBB);
+    NVGcolor overflowColor = nvgRGBA(0xBB, 0x00, 0x00, 0xBB);
 
     /** radius from middle */
     float distance;

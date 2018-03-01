@@ -23,6 +23,7 @@ LCDWidget::LCDWidget(NVGcolor fg, unsigned char length) {
 LRModuleWidget::LRModuleWidget(Module *module) : ModuleWidget(module) {
 }
 
+
 /**
  * @brief Draw method of custom LCD widget
  * @param vg
@@ -106,11 +107,25 @@ LRRedLight::LRRedLight() {
  * @param vg
  */
 void Indicator::draw(NVGcontext *vg) {
+    NVGcolor current = normalColor;
+
     if (active) {
+        /** underrun */
+        if (cv < 0.f - OVERFLOW_THRESOLD) {
+            cv = OVERFLOW_THRESOLD;
+            current = overflowColor;
+        }
+
+        /** overrun */
+        if (cv > 1.f + OVERFLOW_THRESOLD) {
+            cv = 1.f + OVERFLOW_THRESOLD;
+            current = overflowColor;
+        }
+
+
         float a = -angle + cv * angle2;
         float d = distance - 5;
         Vec p1, p2, p3;
-
 
         /** compute correct point of indicator on circle */
         p1.x = middle.x - sin(-a * (float) M_PI) * distance;
@@ -129,7 +144,7 @@ void Indicator::draw(NVGcontext *vg) {
         nvgLineTo(vg, p1.x, p1.y);
         nvgClosePath(vg);
 
-        nvgFillColor(vg, color);
+        nvgFillColor(vg, current);
         nvgFill(vg);
     }
 }
