@@ -10,7 +10,7 @@ namespace dsp {
      * @brief
      */
     struct MS20TPT : DSPSystem2x1 {
-        float s;
+        float s = 0;
         DSPDelay1 z;
 
 
@@ -27,8 +27,8 @@ namespace dsp {
      * @brief Zero Delay Feedback
      */
     struct MS20ZDF : DSPSystem2x2 {
-        float y;
-        float s;
+        float y = 0;
+        float s = 0;
         MS20TPT tpt;
 
 
@@ -65,9 +65,9 @@ namespace dsp {
         };
 
     private:
-        float g, g2, b, k;
-        float ky, y;
-        float freqHz;
+        float g = 0, g2 = 0, b = 0, k = 0;
+        float ky = 0, y = 0;
+        float freqHz = 0;
 
         MS20ZDF zdf1, zdf2;
         OverSampler<OVERSAMPLE, 1> os;
