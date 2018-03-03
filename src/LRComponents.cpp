@@ -1,5 +1,4 @@
 #include "LRComponents.hpp"
-#include "LindenbergResearch.hpp"
 
 
 /**
@@ -157,7 +156,7 @@ void Indicator::draw(NVGcontext *vg) {
  * @param size Outer size
  * @param shift XY Offset shift from middle
  */
-void LRKnob::drawShadow(NVGcontext *vg, float strength, float size) {
+void LRShadow::drawShadow(NVGcontext *vg, float strength, float size) {
     // add shadow
     nvgBeginPath(vg);
     nvgRect(vg, -10, -10, box.size.x + 20, box.size.y + 20);
@@ -170,4 +169,21 @@ void LRKnob::drawShadow(NVGcontext *vg, float strength, float size) {
     nvgFillPaint(vg, paint);
     nvgFill(vg);
 
+}
+
+
+/**
+ * @brief Hook into widget draw routine to simulate shadow
+ * @param vg
+ */
+void LRShadow::draw(NVGcontext *vg) {
+    drawShadow(vg, 1.f, 0.65);
+}
+
+/**
+ * @brief Setter for box dimensions
+ * @param box
+ */
+void LRShadow::setBox(const Rect &box) {
+    LRShadow::box = box;
 }

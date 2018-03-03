@@ -125,6 +125,41 @@ struct Indicator {
 
 
 /**
+ * @brief Standard LR Port
+ */
+struct LRShadow {
+private:
+    Rect box;
+
+    /** shadow shift */
+    Vec shadowPos = Vec(3, 5);
+public:
+    /**
+     * @brief Set the new offset of the shadow gradient
+     * @param x
+     * @param y
+     */
+    void setShadowPosition(float x, float y) {
+        shadowPos = Vec(x, y);
+    }
+
+
+    void setBox(const Rect &box);
+
+    /**
+    * @brief Draw shadow for circular knobs
+    * @param vg NVGcontext
+    * @param strength Alpha value of outside gradient
+    * @param size Outer size
+    * @param shift XY Offset shift from middle
+    */
+    void drawShadow(NVGcontext *vg, float strength, float size);
+
+    void draw(NVGcontext *vg);
+};
+
+
+/**
  * @brief The base of all knobs used in LR panels, includes a indicator
  */
 struct LRKnob : SVGKnob {
@@ -133,10 +168,7 @@ private:
 
     /** setup indicator with default values */
     Indicator idc = Indicator(15.f, ANGLE);
-
-    /** shadow shift */
-    Vec shadowPos = Vec(3, 5);
-
+    LRShadow shadow = LRShadow();
 public:
     /**
      * @brief Default constructor
@@ -184,22 +216,23 @@ public:
 
 
     /**
-     * @brief Set the new offset of the shadow gradient
-     * @param x
-     * @param y
-     */
-    void setShadowPosition(float x, float y) {
-        shadowPos = Vec(x, y);
-    }
-
-
-    /**
      * @brief Hook into setSVG() method to setup box dimensions correct for indicator
      * @param svg
      */
     void setSVG(std::shared_ptr<SVG> svg) {
         SVGKnob::setSVG(svg);
         idc.middle = Vec(box.size.x / 2, box.size.y / 2);
+        shadow.setBox(box);
+    }
+
+
+    /**
+     * @brief Route setter to shadow
+     * @param x
+     * @param y
+     */
+    void setShadowPosition(float x, float y) {
+        shadow.setShadowPosition(x, y);
     }
 
 
@@ -227,21 +260,11 @@ public:
 
 
     /**
-     * @brief Draw shadow for circular knobs
-     * @param vg NVGcontext
-     * @param strength Alpha value of outside gradient
-     * @param size Outer size
-     * @param shift XY Offset shift from middle
-     */
-    void drawShadow(NVGcontext *vg, float strength, float size);
-
-
-    /**
      * @brief Draw knob
      * @param vg
      */
     void draw(NVGcontext *vg) override {
-        drawShadow(vg, 1.0f, 0.65f);
+        shadow.draw(vg);
         FramebufferWidget::draw(vg);
         idc.draw(vg);
     }
