@@ -12,6 +12,9 @@
 using namespace rack;
 
 
+extern Plugin *plugin;
+
+
 /**
  * @brief Standard LRT module
  */
@@ -245,3 +248,100 @@ public:
 };
 
 
+/**
+ * @brief Quantize position to odd numbers to simulate a toogle switch
+ */
+struct LRToggleKnob : SVGKnob {
+    LRToggleKnob(float length = 0.45) {
+        minAngle = -length * (float) M_PI;
+        maxAngle = length * (float) M_PI;
+
+        setSVG(SVG::load(assetPlugin(plugin, "res/MiddleKnob.svg")));
+    }
+
+
+    void onChange(EventChange &e) override {
+        value = round(value);
+        SVGKnob::onChange(e);
+    }
+};
+
+
+/**
+ * @brief Basic middle-sized knob
+ */
+struct LRBigKnob : LRKnob {
+    LRBigKnob() {
+        setSVG(SVG::load(assetPlugin(plugin, "res/BigKnob.svg")));
+        setIndicatorDistance(15);
+        setShadowPosition(7, 7);
+    }
+};
+
+
+/**
+ * @brief Basic middle-sized knob
+ */
+struct LRMiddleKnob : LRKnob {
+    LRMiddleKnob() {
+        setSVG(SVG::load(assetPlugin(plugin, "res/MiddleKnob.svg")));
+        setIndicatorDistance(12);
+        setShadowPosition(6, 6);
+    }
+};
+
+
+/**
+ * @brief Blue version of the Davies1900h
+ */
+struct LRSmallKnob : LRKnob {
+    LRSmallKnob() {
+        setSVG(SVG::load(assetPlugin(plugin, "res/SmallKnob.svg")));
+        setShadowPosition(5, 5);
+    }
+};
+
+
+/**
+ * @brief Alternative IO Port
+ */
+struct IOPort : SVGPort {
+    IOPort() {
+        background->svg = SVG::load(assetPlugin(plugin, "res/IOPortB.svg"));
+        background->wrap();
+        box.size = background->box.size;
+    }
+};
+
+
+/**
+ * @brief Alternative screw head A
+ */
+struct ScrewDarkA : SVGScrew {
+    ScrewDarkA() {
+        sw->svg = SVG::load(assetPlugin(plugin, "res/ScrewDark.svg"));
+        sw->wrap();
+        box.size = sw->box.size;
+    }
+};
+
+
+/**
+ * @brief Custom switch based on original Rack files
+ */
+struct LRSwitch : SVGSwitch, ToggleSwitch {
+    LRSwitch() {
+        addFrame(SVG::load(assetPlugin(plugin, "res/Switch0.svg")));
+        addFrame(SVG::load(assetPlugin(plugin, "res/Switch1.svg")));
+    }
+};
+
+
+/**
+ * @brief Standard LED Redlight
+ */
+struct LRRedLight : SmallLight<ModuleLightWidget> {
+    LRRedLight();
+
+    void draw(NVGcontext *vg) override;
+};
