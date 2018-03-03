@@ -125,11 +125,13 @@ struct Indicator {
 
 
 /**
- * @brief Standard LR Port
+ * @brief Standard LR Shadow
  */
 struct LRShadow {
 private:
     Rect box;
+    float size = 0.65;
+    float strength = 1.f;
 
     /** shadow shift */
     Vec shadowPos = Vec(3, 5);
@@ -266,8 +268,13 @@ public:
      * @param vg
      */
     void draw(NVGcontext *vg) override {
+        /** shadow */
         shadow.draw(vg);
+
+        /** component */
         FramebufferWidget::draw(vg);
+
+        /** indicator */
         idc.draw(vg);
     }
 };
@@ -331,10 +338,27 @@ struct LRSmallKnob : LRKnob {
  * @brief Alternative IO Port
  */
 struct IOPort : SVGPort {
+private:
+    LRShadow shadow = LRShadow();
+
+public:
     IOPort() {
         background->svg = SVG::load(assetPlugin(plugin, "res/IOPortB.svg"));
         background->wrap();
         box.size = background->box.size;
+
+        /** inherit dimensions */
+        shadow.setBox(box);
+        shadow.setShadowPosition(1,1);
+    }
+
+    /**
+     * @brief Hook into draw method
+     * @param vg
+     */
+    void draw(NVGcontext *vg) override {
+        shadow.draw(vg);
+        SVGPort::draw(vg);
     }
 };
 
