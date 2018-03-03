@@ -157,7 +157,7 @@ void Indicator::draw(NVGcontext *vg) {
  * @param size Outer size
  * @param shift XY Offset shift from middle
  */
-void LRKnob::drawShadow(NVGcontext *vg, float strength, float size, Vec shift) {
+void LRKnob::drawShadow(NVGcontext *vg, float strength, float size) {
     // add shadow
     nvgBeginPath(vg);
     nvgRect(vg, -10, -10, box.size.x + 20, box.size.y + 20);
@@ -165,8 +165,8 @@ void LRKnob::drawShadow(NVGcontext *vg, float strength, float size, Vec shift) {
     NVGcolor icol = nvgRGBAf(0.0f, 0.0f, 0.0f, strength);
     NVGcolor ocol = nvgRGBAf(0.0f, 0.0f, 0.0f, 0.f);;
 
-    NVGpaint paint = nvgRadialGradient(vg, box.size.x / 2 + shift.x, box.size.y / 2 + shift.y, box.size.x * 0.35f, box.size.x * size, icol,
-                                       ocol);
+    NVGpaint paint = nvgRadialGradient(vg, box.size.x / 2 + shadowPos.x, box.size.y / 2 + shadowPos.y,
+                                       box.size.x * 0.35f, box.size.x * size, icol, ocol);
     nvgFillPaint(vg, paint);
     nvgFill(vg);
 

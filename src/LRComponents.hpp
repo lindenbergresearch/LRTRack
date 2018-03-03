@@ -131,6 +131,9 @@ private:
     /** setup indicator with default values */
     Indicator idc = Indicator(15.f, ANGLE);
 
+    /** shadow shift */
+    Vec shadowPos = Vec(3, 5);
+
 public:
     /**
      * @brief Default constructor
@@ -178,6 +181,16 @@ public:
 
 
     /**
+     * @brief Set the new offset of the shadow gradient
+     * @param x
+     * @param y
+     */
+    void setShadowPosition(float x, float y) {
+        shadowPos = Vec(x, y);
+    }
+
+
+    /**
      * @brief Hook into setSVG() method to setup box dimensions correct for indicator
      * @param svg
      */
@@ -217,7 +230,7 @@ public:
      * @param size Outer size
      * @param shift XY Offset shift from middle
      */
-    void drawShadow(NVGcontext *vg, float strength, float size, Vec shift);
+    void drawShadow(NVGcontext *vg, float strength, float size);
 
 
     /**
@@ -225,7 +238,7 @@ public:
      * @param vg
      */
     void draw(NVGcontext *vg) override {
-        drawShadow(vg, 1.0f, 0.65f, Vec(4,4));
+        drawShadow(vg, 1.0f, 0.65f);
         FramebufferWidget::draw(vg);
         idc.draw(vg);
     }
