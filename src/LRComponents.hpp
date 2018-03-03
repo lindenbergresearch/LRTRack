@@ -351,8 +351,10 @@ public:
 
         /** inherit dimensions */
         shadow.setBox(box);
-        shadow.setShadowPosition(1,1);
+        shadow.setSize(0.55);
+        shadow.setShadowPosition(2, 2);
     }
+
 
     /**
      * @brief Hook into draw method
