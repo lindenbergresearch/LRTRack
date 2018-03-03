@@ -177,8 +177,9 @@ void LRShadow::drawShadow(NVGcontext *vg, float strength, float size) {
  * @param vg
  */
 void LRShadow::draw(NVGcontext *vg) {
-    drawShadow(vg, 1.f, 0.65);
+    drawShadow(vg, strength, size);
 }
+
 
 /**
  * @brief Setter for box dimensions
@@ -186,4 +187,22 @@ void LRShadow::draw(NVGcontext *vg) {
  */
 void LRShadow::setBox(const Rect &box) {
     LRShadow::box = box;
+}
+
+
+/**
+ * @brief Setter for outer radius size
+ * @param size
+ */
+void LRShadow::setSize(float size) {
+    LRShadow::size = size;
+}
+
+
+/**
+ * @brief Setter for draw strength of shadow
+ * @param strength
+ */
+void LRShadow::setStrength(float strength) {
+    LRShadow::strength = strength;
 }

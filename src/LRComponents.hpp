@@ -147,6 +147,8 @@ public:
 
 
     void setBox(const Rect &box);
+    void setSize(float size);
+    void setStrength(float strength);
 
     /**
     * @brief Draw shadow for circular knobs
