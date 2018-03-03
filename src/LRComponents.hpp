@@ -211,10 +211,21 @@ public:
 
 
     /**
+     * @brief Draw shadow for circular knobs
+     * @param vg NVGcontext
+     * @param strength Alpha value of outside gradient
+     * @param size Outer size
+     * @param shift XY Offset shift from middle
+     */
+    void drawShadow(NVGcontext *vg, float strength, float size, Vec shift);
+
+
+    /**
      * @brief Draw knob
      * @param vg
      */
     void draw(NVGcontext *vg) override {
+        drawShadow(vg, 1.0f, 0.65f, Vec(4,4));
         FramebufferWidget::draw(vg);
         idc.draw(vg);
     }
