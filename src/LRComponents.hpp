@@ -274,7 +274,7 @@ struct LRBigKnob : LRKnob {
     LRBigKnob() {
         setSVG(SVG::load(assetPlugin(plugin, "res/BigKnob.svg")));
         setIndicatorDistance(15);
-        setShadowPosition(7, 7);
+        setShadowPosition(5, 6);
     }
 };
 
@@ -286,7 +286,7 @@ struct LRMiddleKnob : LRKnob {
     LRMiddleKnob() {
         setSVG(SVG::load(assetPlugin(plugin, "res/MiddleKnob.svg")));
         setIndicatorDistance(12);
-        setShadowPosition(6, 6);
+        setShadowPosition(4, 4);
     }
 };
 
@@ -297,7 +297,7 @@ struct LRMiddleKnob : LRKnob {
 struct LRSmallKnob : LRKnob {
     LRSmallKnob() {
         setSVG(SVG::load(assetPlugin(plugin, "res/SmallKnob.svg")));
-        setShadowPosition(5, 5);
+        setShadowPosition(3, 5);
     }
 };
 

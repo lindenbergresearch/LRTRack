@@ -166,7 +166,7 @@ void LRKnob::drawShadow(NVGcontext *vg, float strength, float size) {
     NVGcolor ocol = nvgRGBAf(0.0f, 0.0f, 0.0f, 0.f);;
 
     NVGpaint paint = nvgRadialGradient(vg, box.size.x / 2 + shadowPos.x, box.size.y / 2 + shadowPos.y,
-                                       box.size.x * 0.35f, box.size.x * size, icol, ocol);
+                                       box.size.x * 0.36f, box.size.x * size, icol, ocol);
     nvgFillPaint(vg, paint);
     nvgFill(vg);
 
