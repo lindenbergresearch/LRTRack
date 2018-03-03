@@ -221,6 +221,8 @@ public:
      */
     void setSVG(std::shared_ptr<SVG> svg) {
         SVGKnob::setSVG(svg);
+
+        /** inherit dimensions after loaded svg */
         idc.middle = Vec(box.size.x / 2, box.size.y / 2);
         shadow.setBox(box);
     }
