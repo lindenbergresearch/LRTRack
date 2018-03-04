@@ -306,7 +306,7 @@ struct LRToggleKnob : SVGKnob {
  */
 struct LRBigKnob : LRKnob {
     LRBigKnob() {
-        setSVG(SVG::load(assetPlugin(plugin, "res/BigKnob2.svg")));
+        setSVG(SVG::load(assetPlugin(plugin, "res/BigKnob.svg")));
         setIndicatorDistance(15);
         setShadowPosition(5, 6);
     }
@@ -331,7 +331,7 @@ struct LRMiddleKnob : LRKnob {
 struct LRSmallKnob : LRKnob {
     LRSmallKnob() {
         setSVG(SVG::load(assetPlugin(plugin, "res/SmallKnob.svg")));
-        setShadowPosition(3, 5);
+        setShadowPosition(3, 3);
     }
 };
 
@@ -351,7 +351,7 @@ public:
 
         /** inherit dimensions */
         shadow.setBox(box);
-        shadow.setSize(0.55);
+        shadow.setSize(0.50);
         shadow.setShadowPosition(2, 2);
     }
 
