@@ -302,11 +302,11 @@ struct LRToggleKnob : SVGKnob {
 
 
 /**
- * @brief Basic middle-sized knob
+ * @brief LR Big Knob
  */
 struct LRBigKnob : LRKnob {
     LRBigKnob() {
-        setSVG(SVG::load(assetPlugin(plugin, "res/BigKnob.svg")));
+        setSVG(SVG::load(assetPlugin(plugin, "res/BigKnob2.svg")));
         setIndicatorDistance(15);
         setShadowPosition(5, 6);
     }
@@ -314,7 +314,7 @@ struct LRBigKnob : LRKnob {
 
 
 /**
- * @brief Basic middle-sized knob
+ * @brief LR Middle Knob
  */
 struct LRMiddleKnob : LRKnob {
     LRMiddleKnob() {
@@ -326,7 +326,7 @@ struct LRMiddleKnob : LRKnob {
 
 
 /**
- * @brief Blue version of the Davies1900h
+ * @brief LR Small Knob
  */
 struct LRSmallKnob : LRKnob {
     LRSmallKnob() {
