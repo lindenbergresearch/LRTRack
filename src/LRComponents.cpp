@@ -159,16 +159,15 @@ void Indicator::draw(NVGcontext *vg) {
 void LRShadow::drawShadow(NVGcontext *vg, float strength, float size) {
     // add shadow
     nvgBeginPath(vg);
-    nvgRect(vg, -10, -10, box.size.x + 20, box.size.y + 20);
+    nvgRect(vg, -20, -20, box.size.x + 40, box.size.y + 40);
 
     NVGcolor icol = nvgRGBAf(0.0f, 0.0f, 0.0f, strength);
     NVGcolor ocol = nvgRGBAf(0.0f, 0.0f, 0.0f, 0.f);;
 
     NVGpaint paint = nvgRadialGradient(vg, box.size.x / 2 + shadowPos.x, box.size.y / 2 + shadowPos.y,
-                                       box.size.x * 0.36f, box.size.x * size, icol, ocol);
+                                       box.size.x * 0.3f, box.size.x * size, icol, ocol);
     nvgFillPaint(vg, paint);
     nvgFill(vg);
-
 }
 
 
