@@ -39,6 +39,7 @@ struct AlmaFilter : LRModule {
     LRMiddleKnob *peakKnob = NULL;
     LRMiddleKnob *driveKnob = NULL;
 
+
     AlmaFilter() : LRModule(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS) {}
 
 
@@ -90,7 +91,14 @@ struct AlmaFilterWidget : LRModuleWidget {
 
 
 AlmaFilterWidget::AlmaFilterWidget(AlmaFilter *module) : LRModuleWidget(module) {
-    setPanel(SVG::load(assetPlugin(plugin, "res/VCF.svg")));
+    //setPanel(SVG::load(assetPlugin(plugin, "res/VCF.svg")));
+
+
+    panel = new LRPanel(20,40);
+    panel->setBackground(SVG::load(assetPlugin(plugin, "res/VCF.svg")));
+    addChild(panel);
+
+    box.size = panel->box.size;
 
     // ***** SCREWS **********
     addChild(Widget::create<ScrewDarkA>(Vec(15, 1)));
