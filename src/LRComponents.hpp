@@ -398,3 +398,32 @@ struct LRRedLight : SmallLight<ModuleLightWidget> {
 
     void draw(NVGcontext *vg) override;
 };
+
+
+/**
+ * @brief Standard LR module Panel
+ */
+struct LRPanel : SVGPanel {
+private:
+    /** margin of gradient box */
+    static constexpr float MARGIN = 20;
+
+    /** gradient colors */
+    NVGcolor inner = nvgRGBAf(.6f, 0.7f, 0.9f, 0.12);
+    NVGcolor outer = nvgRGBAf(0.0f, 0.0f, 0.0f, 0.0f);;
+
+    /** gradient offset */
+    Vec offset = Vec(-40, -50);
+
+    void setInner(const NVGcolor &inner);
+    void setOuter(const NVGcolor &outer);
+public:
+    LRPanel();
+
+    LRPanel(float x, float y) {
+        offset.x = x;
+        offset.y = y;
+    }
+
+    void draw(NVGcontext *vg) override;
+};

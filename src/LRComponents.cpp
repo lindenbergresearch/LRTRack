@@ -205,3 +205,31 @@ void LRShadow::setSize(float size) {
 void LRShadow::setStrength(float strength) {
     LRShadow::strength = strength;
 }
+
+
+/**
+ * @brief Extention for panel background
+ * @param vg
+ */
+void LRPanel::draw(NVGcontext *vg) {
+    FramebufferWidget::draw(vg);
+
+    nvgBeginPath(vg);
+    nvgRect(vg, -MARGIN, -MARGIN, box.size.x + MARGIN * 2, box.size.y + MARGIN * 2);
+
+    NVGpaint paint = nvgLinearGradient(vg, offset.x, offset.y, box.size.x, box.size.y, inner,  outer);
+    nvgFillPaint(vg, paint);
+    nvgFill(vg);
+}
+
+
+void LRPanel::setInner(const NVGcolor &inner) {
+    LRPanel::inner = inner;
+}
+
+
+void LRPanel::setOuter(const NVGcolor &outer) {
+    LRPanel::outer = outer;
+}
+
+LRPanel::LRPanel() {}
