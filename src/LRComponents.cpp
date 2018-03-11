@@ -123,7 +123,7 @@ void Indicator::draw(NVGcontext *vg) {
 
 
         float a = -angle + cv * angle2;
-        float d = distance - 5;
+        float d = distance - 4.f;
         Vec p1, p2, p3;
 
         /** compute correct point of indicator on circle */
