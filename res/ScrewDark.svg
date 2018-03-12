@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg width="14px" height="14px" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-miterlimit:10;">
+<svg width="14px" height="14px" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:1.5;">
     <g transform="matrix(1.29585,0,0,1.29585,-1.58727,-1.58697)">
         <circle cx="7.001" cy="7" r="5.016" style="fill-opacity:0.87451;"/>
     </g>
     <circle cx="7.001" cy="7" r="5.016"/>
-    <path id="Screw" d="M2.758,2.757c-2.343,2.342 -2.343,6.143 0,8.486c2.342,2.343 6.143,2.343 8.485,-0.001c2.345,-2.343 2.346,-6.142 0,-8.484c-2.343,-2.344 -6.141,-2.345 -8.485,-0.001Zm5.451,4.243l1.773,1.773l-1.208,1.207l-1.773,-1.773l-1.773,1.774l-1.208,-1.208l1.773,-1.775l-1.775,-1.771l1.208,-1.208l1.775,1.774l1.774,-1.775l1.209,1.207l-1.775,1.775Z" style="fill:#828282;fill-rule:nonzero;stroke:#3d3d3d;stroke-width:1px;"/>
+    <g transform="matrix(4.26035,0,0,4.03718,-23.2069,-13.4664)">
+        <ellipse cx="7.09" cy="5.069" rx="1.408" ry="1.486" style="fill:#424242;stroke:#2d2d2d;stroke-width:0.24px;"/>
+    </g>
+    <g transform="matrix(1.27576,0,0,1.27576,-3.09682,-2.43232)">
+        <path d="M7.915,3.474l3.395,1.96l0,3.919l-3.395,1.96l-3.394,-1.96l0,-3.919l3.394,-1.96Z" style="fill:#1b1b1b;"/>
+    </g>
 </svg>
