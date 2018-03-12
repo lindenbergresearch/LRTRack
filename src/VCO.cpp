@@ -82,13 +82,19 @@ struct VCOWidget : LRModuleWidget {
 
 
 VCOWidget::VCOWidget(VCO *module) : LRModuleWidget(module) {
-    setPanel(SVG::load(assetPlugin(plugin, "res/VCO.svg")));
+  //  setPanel(SVG::load(assetPlugin(plugin, "res/VCO.svg")));
+
+    panel = new LRPanel(20,40);
+    panel->setBackground(SVG::load(assetPlugin(plugin, "res/VCO.svg")));
+    addChild(panel);
+
+    box.size = panel->box.size;
 
     // ***** SCREWS **********
-    /*addChild(createScrew<ScrewDarkA>(Vec(15, 1)));
-    addChild(createScrew<ScrewDarkA>(Vec(box.size.x - 30, 1)));
-    addChild(createScrew<ScrewDarkA>(Vec(15, 366)));
-    addChild(createScrew<ScrewDarkA>(Vec(box.size.x - 30, 366)));*/
+    addChild(Widget::create<ScrewDarkA>(Vec(15, 1)));
+    addChild(Widget::create<ScrewDarkA>(Vec(box.size.x - 30, 1)));
+    addChild(Widget::create<ScrewDarkA>(Vec(15, 366)));
+    addChild(Widget::create<ScrewDarkA>(Vec(box.size.x - 30, 366)));
     // ***** SCREWS **********
 
 
