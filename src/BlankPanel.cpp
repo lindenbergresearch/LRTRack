@@ -39,7 +39,13 @@ struct BlankPanelWidget : LRModuleWidget {
 
 
 BlankPanelWidget::BlankPanelWidget(BlankPanel *module) : LRModuleWidget(module) {
-    setPanel(SVG::load(assetPlugin(plugin, "res/BlankPanel.svg")));
+    //setPanel(SVG::load(assetPlugin(plugin, "res/BlankPanel.svg")));
+
+    panel = new LRPanel(10,10);
+    panel->setBackground(SVG::load(assetPlugin(plugin, "res/BlankPanel.svg")));
+    addChild(panel);
+
+    box.size = panel->box.size;
 
     // ***** SCREWS **********
     addChild(Widget::create<ScrewDarkA>(Vec(15, 1)));
@@ -49,9 +55,9 @@ BlankPanelWidget::BlankPanelWidget(BlankPanel *module) : LRModuleWidget(module) 
     // ***** SCREWS **********
 
     // ***** LCD *************
-    module->lcd1->box.pos = Vec(34, 355);
+   /* module->lcd1->box.pos = Vec(34, 355);
     addChild(module->lcd1);
-    module->lcd1->text = VERSION_STR;
+    module->lcd1->text = VERSION_STR;*/
     // ***** LCD *************
 }
 
