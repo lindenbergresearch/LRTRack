@@ -217,7 +217,7 @@ void LRPanel::draw(NVGcontext *vg) {
     nvgBeginPath(vg);
     nvgRect(vg, -MARGIN, -MARGIN, box.size.x + MARGIN * 2, box.size.y + MARGIN * 2);
 
-    NVGpaint paint = nvgLinearGradient(vg, offset.x, offset.y, box.size.x, box.size.y, inner,  outer);
+    NVGpaint paint = nvgLinearGradient(vg, offset.x, offset.y, box.size.x, box.size.y, inner, outer);
     nvgFillPaint(vg, paint);
     nvgFill(vg);
 }
@@ -232,4 +232,33 @@ void LRPanel::setOuter(const NVGcolor &outer) {
     LRPanel::outer = outer;
 }
 
+
 LRPanel::LRPanel() {}
+
+
+SVGRotator::SVGRotator() {
+    FramebufferWidget::FramebufferWidget();
+}
+
+/**
+ * @brief Set SVG image to rotator
+ * @param svg
+ */
+void SVGRotator::setSVG(std::shared_ptr<SVG> svg) {
+    sw->setSVG(svg);
+    tw->box.size = sw->box.size;
+    box.size = sw->box.size;
+}
+
+/**
+ * @brief Rotate one step
+ */
+void SVGRotator::step() {
+    tw->identity();
+
+    Vec center = sw->box.getCenter();
+    tw->translate(center);
+    tw->rotate(angle);
+    tw->translate(center.neg());
+    FramebufferWidget::step();
+}

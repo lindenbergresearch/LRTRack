@@ -283,14 +283,15 @@ public:
 
 
 /**
- * @brief Quantize position to odd numbers to simulate a toogle switch
+ * @brief Quantize position to odd numbers to simulate a toggle switch
  */
-struct LRToggleKnob : SVGKnob {
-    LRToggleKnob(float length = 0.45) {
+struct LRToggleKnob : LRKnob {
+    LRToggleKnob(float length = 0.5f) {
         minAngle = -length * (float) M_PI;
         maxAngle = length * (float) M_PI;
 
-        setSVG(SVG::load(assetPlugin(plugin, "res/MiddleKnob.svg")));
+        setSVG(SVG::load(assetPlugin(plugin, "res/ToggleKnob.svg")));
+        setShadowPosition(2, 2);
     }
 
 
@@ -322,6 +323,11 @@ struct LRMiddleKnob : LRKnob {
         setIndicatorDistance(12);
         setShadowPosition(4, 4);
     }
+
+   /* void onChange(EventChange &e) override {
+        if (value > -0.3 && value < 0.3) value = 0;
+        SVGKnob::onChange(e);
+    }*/
 };
 
 
@@ -426,4 +432,33 @@ public:
     }
 
     void draw(NVGcontext *vg) override;
+};
+
+/**
+ * @brief Passive rotating SVG image
+ */
+struct SVGRotator : FramebufferWidget {
+    TransformWidget *tw;
+    SVGWidget *sw;
+
+    /** angel to rotate per step */
+    float angle;
+
+
+    SVGRotator();
+
+    /**
+     * @brief Factory method
+     * @param pos Position
+     * @param svg Pointer to SVG image
+     * @param angle Increment angle per step
+     */
+    void static create(Vec pos, std::shared_ptr<SVG> svg, float angle) {
+        SVGRotator *svgrotator = FramebufferWidget::create<SVGRotator>(pos);
+        svgrotator->setSVG(svg);
+        svgrotator->angle = angle;
+    }
+
+    void setSVG(std::shared_ptr<SVG> svg);
+    void step() override;
 };
