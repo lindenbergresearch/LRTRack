@@ -27,6 +27,7 @@ struct BlankPanel : Module {
 
 
 void BlankPanel::step() {
+
 }
 
 
@@ -46,6 +47,12 @@ BlankPanelWidget::BlankPanelWidget(BlankPanel *module) : LRModuleWidget(module) 
     addChild(panel);
 
     box.size = panel->box.size;
+
+    float speed = 0.002;
+
+    addChild(SVGRotator::create(Vec(140.5,83), SVG::load(assetPlugin(plugin, "res/CogBig.svg")), speed));
+    addChild(SVGRotator::create(Vec(120,114.7), SVG::load(assetPlugin(plugin, "res/CogSmall.svg")), -speed*1.6));
+
 
     // ***** SCREWS **********
     addChild(Widget::create<ScrewDarkA>(Vec(15, 1)));
