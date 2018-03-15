@@ -236,9 +236,7 @@ void LRPanel::setOuter(const NVGcolor &outer) {
 LRPanel::LRPanel() {}
 
 
-SVGRotator::SVGRotator() {
-    FramebufferWidget::FramebufferWidget();
-
+SVGRotator::SVGRotator() : FramebufferWidget() {
     tw = new TransformWidget();
     addChild(tw);
 
