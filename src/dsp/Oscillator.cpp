@@ -17,8 +17,6 @@ void BLITOscillator::reset() {
     drift = 0.f;
     warmup = 0.f;
 
-    boost = false;
-
     saw = 0.f;
     ramp = 0.f;
     pulse = 0.f;
@@ -182,7 +180,7 @@ void dsp::BLITOscillator::proccess() {
     /* compute RAMP waveform */
     ramp = int1.value * 0.5f;
     /* compute pulse waveform */
-    pulse = delta * 0.4f;
+    pulse = delta;
     /* compute SAW waveform */
     saw = ramp * -1;
 
@@ -225,7 +223,7 @@ float BLITOscillator::getSaturate() const {
  * @brief Set saturation
  * @param saturate
  */
-void BLITOscillator::setSaturate(float saturate) {
+void BLITOscillator::setShape(float saturate) {
     BLITOscillator::shape = saturate;
 }
 

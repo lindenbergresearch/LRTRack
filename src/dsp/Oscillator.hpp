@@ -3,10 +3,29 @@
 #include "DSPMath.hpp"
 #include "DSPSystem.hpp"
 
-#define BLIT_HARMONICS 16000.f
+#define BLIT_HARMONICS 21000.f
 #define NOTE_C4 261.626f
 
 namespace dsp {
+
+    struct DSPIntegrator : DSPSystem<1, 1, 1> {
+        enum Inputs {
+            IN
+        };
+
+        enum Outputs {
+            OUT
+        };
+
+        enum Params {
+            D
+        };
+
+        float d = 0.25;
+        float x = 0;
+
+
+    };
 
 
 /**
@@ -30,8 +49,7 @@ namespace dsp {
         float detune;    // analogue detune
         float drift;     // oscillator drift
         float warmup;    // oscillator warmup detune
-        Noise noise; // randomizer
-        bool boost;
+        Noise noise;     // randomizer
 
         float shape;
         int n;
@@ -86,7 +104,7 @@ namespace dsp {
         float getSawTriWave() const;
         float getTriangleWave() const;
         float getSaturate() const;
-        void setSaturate(float saturate);
+        void setShape(float saturate);
     };
 
 }
