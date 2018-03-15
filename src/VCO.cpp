@@ -69,7 +69,7 @@ void VCO::step() {
     outputs[TRI_OUTPUT].value = osc->tri;
 
     if (cnt % 1200 == 0) {
-        label1->text = stringf("%.2f Hz", osc.freq);
+        label1->text = stringf("%.2f Hz", osc->getFrequency());
     }
 }
 
