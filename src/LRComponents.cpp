@@ -238,7 +238,14 @@ LRPanel::LRPanel() {}
 
 SVGRotator::SVGRotator() {
     FramebufferWidget::FramebufferWidget();
+
+    tw = new TransformWidget();
+    addChild(tw);
+
+    sw = new SVGWidget();
+    tw->addChild(sw);
 }
+
 
 /**
  * @brief Set SVG image to rotator
@@ -250,15 +257,21 @@ void SVGRotator::setSVG(std::shared_ptr<SVG> svg) {
     box.size = sw->box.size;
 }
 
+
 /**
  * @brief Rotate one step
  */
 void SVGRotator::step() {
     tw->identity();
 
+    angle = fmodf(angle + inc, 2 * M_PI);;
+
     Vec center = sw->box.getCenter();
     tw->translate(center);
     tw->rotate(angle);
     tw->translate(center.neg());
+
+    dirty = true;
+
     FramebufferWidget::step();
 }

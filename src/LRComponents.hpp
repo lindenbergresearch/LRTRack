@@ -441,8 +441,9 @@ struct SVGRotator : FramebufferWidget {
     TransformWidget *tw;
     SVGWidget *sw;
 
-    /** angel to rotate per step */
-    float angle;
+    /** angle to rotate per step */
+    float angle = 0;
+    float inc;
 
 
     SVGRotator();
@@ -453,10 +454,13 @@ struct SVGRotator : FramebufferWidget {
      * @param svg Pointer to SVG image
      * @param angle Increment angle per step
      */
-    void static create(Vec pos, std::shared_ptr<SVG> svg, float angle) {
-        SVGRotator *svgrotator = FramebufferWidget::create<SVGRotator>(pos);
-        svgrotator->setSVG(svg);
-        svgrotator->angle = angle;
+    SVGRotator static *create(Vec pos, std::shared_ptr<SVG> svg, float inc) {
+        SVGRotator *rotator = FramebufferWidget::create<SVGRotator>(pos);
+
+        rotator->setSVG(svg);
+        rotator->inc = inc;
+
+        return rotator;
     }
 
     void setSVG(std::shared_ptr<SVG> svg);
