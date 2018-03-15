@@ -14,7 +14,7 @@ const static float TWOPI = (float) M_PI * 2;
  * @brief Basic leaky integrator
  */
 struct Integrator {
-    const float d = 0.25f;
+    float d = 0.25f;
     float value = 0.f;
 
     /**

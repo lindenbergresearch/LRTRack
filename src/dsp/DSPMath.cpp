@@ -54,7 +54,7 @@ float getPhaseIncrement(float frq) {
 float BLITcore(float N, float phase) {
     float a = wrapTWOPI((clipl(N - 1, 0.f) + 0.5f) * phase);
     float x = fastSin(a) * 1.f / fastSin(0.5f * phase);
-    return (x - 1.f) * 2;
+    return (x - 1.f) * 2.f;
 }
 
 
