@@ -110,14 +110,14 @@ void Indicator::draw(NVGcontext *vg) {
 
     if (active) {
         /** underrun */
-        if (cv < 0.f - OVERFLOW_THRESOLD) {
-            cv = 0.f - OVERFLOW_THRESOLD;
+        if (cv < 0.f - OVERFLOW_THRESHOLD) {
+            cv = 0.f - OVERFLOW_THRESHOLD;
             current = overflowColor;
         }
 
         /** overrun */
-        if (cv > 1.f + OVERFLOW_THRESOLD) {
-            cv = 1.f + OVERFLOW_THRESOLD;
+        if (cv > 1.f + OVERFLOW_THRESHOLD) {
+            cv = 1.f + OVERFLOW_THRESHOLD;
             current = overflowColor;
         }
 

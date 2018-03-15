@@ -78,7 +78,7 @@ struct LCDWidget : Label {
  * @brief Indicator for control voltages on knobs
  */
 struct Indicator {
-    static constexpr float OVERFLOW_THRESOLD = 0.01f;
+    static constexpr float OVERFLOW_THRESHOLD = 0.01f;
 
     /** flag to control drawing */
     bool active = false;
