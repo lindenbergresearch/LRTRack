@@ -23,7 +23,7 @@ struct VCO : LRModule {
     enum OutputIds {
         SAW_OUTPUT,
         PULSE_OUTPUT,
-        SAWTRI_OUTPUT,
+        SINE_OUTPUT,
         TRI_OUTPUT,
         NUM_OUTPUTS
     };
@@ -32,6 +32,7 @@ struct VCO : LRModule {
     };
 
     dsp::BLITOscillator *osc = new dsp::BLITOscillator();
+    LCDWidget *label1 = new LCDWidget(COLOR_CYAN, 6);
 
     VCO() : LRModule(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS) {}
 
@@ -45,13 +46,13 @@ void VCO::step() {
 
     float fm = clamp(inputs[FM_CV_INPUT].value, -10.f, 10.f) * 400.f * quadraticBipolar(params[FM_CV_PARAM].value);
 
-    osc->updatePitch(inputs[VOCT_INPUT].value, clamp(fm, 0.f, 20.000f), params[FREQUENCY_PARAM].value, params[OCTAVE_PARAM].value);
+    osc->updatePitch(inputs[VOCT_INPUT].value, clamp(fm, -10000.f, 10000.f), params[FREQUENCY_PARAM].value, params[OCTAVE_PARAM].value);
 
-    float saturate = quadraticBipolar(params[SHAPE_PARAM].value);
+    float shape = quadraticBipolar(params[SHAPE_PARAM].value);
     float pw = params[PW_CV_PARAM].value;
 
-    if (osc->shape != saturate) {
-        osc->shape = saturate;
+    if (osc->shape != shape) {
+        osc->setShape(shape);
     }
 
     if (osc->pw != pw) {
@@ -63,13 +64,13 @@ void VCO::step() {
     outputs[SAW_OUTPUT].value = osc->saw;
 
     outputs[PULSE_OUTPUT].value = osc->pulse;
-    outputs[SAWTRI_OUTPUT].value = osc->sine;
+    outputs[SINE_OUTPUT].value = osc->sine;
 
     outputs[TRI_OUTPUT].value = osc->tri;
 
-    /*if (cnt % 1200 == 0) {
+    if (cnt % 1200 == 0) {
         label1->text = stringf("%.2f Hz", osc.freq);
-    }*/
+    }
 }
 
 
@@ -125,13 +126,13 @@ VCOWidget::VCOWidget(VCO *module) : LRModuleWidget(module) {
     // addOutput(createOutput<IOPort>(Vec(20, 320), module, VCO::SAW_OUTPUT));
     addOutput(Port::create<IOPort>(Vec(20.8, 304.5), Port::OUTPUT, module, VCO::SAW_OUTPUT));
     addOutput(Port::create<IOPort>(Vec(57.2, 304.5), Port::OUTPUT, module, VCO::PULSE_OUTPUT));
-    addOutput(Port::create<IOPort>(Vec(96.1, 304.5), Port::OUTPUT, module, VCO::SAWTRI_OUTPUT));
+    addOutput(Port::create<IOPort>(Vec(96.1, 304.5), Port::OUTPUT, module, VCO::SINE_OUTPUT));
     addOutput(Port::create<IOPort>(Vec(132, 304.5), Port::OUTPUT, module, VCO::TRI_OUTPUT));
     // ***** OUTPUTS *********
 
-    //module->label1->box.pos = Vec(30, 310);
+    module->label1->box.pos = Vec(30,110);
 
-    //addChild(module->label1);
+    addChild(module->label1);
 }
 
 
