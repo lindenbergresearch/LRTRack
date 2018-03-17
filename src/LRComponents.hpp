@@ -173,6 +173,14 @@ private:
     /** setup indicator with default values */
     Indicator idc = Indicator(15.f, ANGLE);
     LRShadow shadow = LRShadow();
+
+    /** snap mode */
+    bool snap = false;
+    /** position to snap */
+    float snapAt = 0.0f;
+    /** snap sensitivity */
+    float snapSens = 0.1;
+
 public:
     /**
      * @brief Default constructor
@@ -279,6 +287,36 @@ public:
         /** indicator */
         idc.draw(vg);
     }
+
+
+    /**
+     * @brief Setup knob snapping
+     * @param position
+     * @param sensitivity
+     */
+    void setSnap(float position, float sensitivity) {
+        snap = true;
+        snapSens = sensitivity;
+        snapAt = position;
+    }
+
+
+    /**
+     * @brief Remove knob snaping
+     */
+    void unsetSnap() {
+        snap = false;
+    }
+
+
+    /**
+     * @brief Snapping mode for knobs
+     * @param e
+     */
+    void onChange(EventChange &e) override {
+        if (snap && value > -snapSens + snapAt && value < snapSens + snapAt) value = 0;
+        SVGKnob::onChange(e);
+    }
 };
 
 
@@ -292,6 +330,8 @@ struct LRToggleKnob : LRKnob {
 
         setSVG(SVG::load(assetPlugin(plugin, "res/ToggleKnob.svg")));
         setShadowPosition(2, 2);
+
+        speed = 2.f;
     }
 
 
@@ -323,11 +363,6 @@ struct LRMiddleKnob : LRKnob {
         setIndicatorDistance(12);
         setShadowPosition(4, 4);
     }
-
-   /* void onChange(EventChange &e) override {
-        if (value > -0.3 && value < 0.3) value = 0;
-        SVGKnob::onChange(e);
-    }*/
 };
 
 
@@ -338,6 +373,10 @@ struct LRSmallKnob : LRKnob {
     LRSmallKnob() {
         setSVG(SVG::load(assetPlugin(plugin, "res/SmallKnob.svg")));
         setShadowPosition(3, 3);
+        setSnap(0.0f, 0.03f);
+
+
+        speed = 0.7f;
     }
 };
 
@@ -426,13 +465,16 @@ private:
 public:
     LRPanel();
 
+
     LRPanel(float x, float y) {
         offset.x = x;
         offset.y = y;
     }
 
+
     void draw(NVGcontext *vg) override;
 };
+
 
 /**
  * @brief Passive rotating SVG image
@@ -448,6 +490,7 @@ struct SVGRotator : FramebufferWidget {
 
     SVGRotator();
 
+
     /**
      * @brief Factory method
      * @param pos Position
@@ -462,6 +505,7 @@ struct SVGRotator : FramebufferWidget {
 
         return rotator;
     }
+
 
     void setSVG(std::shared_ptr<SVG> svg);
     void step() override;
