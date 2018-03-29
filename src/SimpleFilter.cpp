@@ -136,7 +136,7 @@ struct SimpleFilterWidget : LRModuleWidget {
 SimpleFilterWidget::SimpleFilterWidget(SimpleFilter *module) : LRModuleWidget(module) {
     //setPanel(SVG::load(assetPlugin(plugin, "res/SimpleFilter.svg")));
 
-    panel = new LRPanel(-20,-40);
+    panel = new LRPanel();
     panel->setBackground(SVG::load(assetPlugin(plugin, "res/SimpleFilter.svg")));
     addChild(panel);
 

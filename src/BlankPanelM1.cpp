@@ -36,9 +36,9 @@ struct BlankPanelWidgetM1 : LRModuleWidget {
 
 
 BlankPanelWidgetM1::BlankPanelWidgetM1(BlankPanelM1 *module) : LRModuleWidget(module) {
-   // setPanel(SVG::load(assetPlugin(plugin, "res/BlankPanelM1.svg")));
+    // setPanel(SVG::load(assetPlugin(plugin, "res/BlankPanelM1.svg")));
 
-    panel = new LRPanel(-200,20);
+    panel = new LRPanel();
     panel->setBackground(SVG::load(assetPlugin(plugin, "res/BlankPanelM1.svg")));
     addChild(panel);
 

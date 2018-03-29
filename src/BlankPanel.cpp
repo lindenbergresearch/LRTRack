@@ -1,5 +1,4 @@
 #include "LindenbergResearch.hpp"
-#include "Release.h"
 
 
 struct BlankPanel : Module {
@@ -42,7 +41,7 @@ struct BlankPanelWidget : LRModuleWidget {
 BlankPanelWidget::BlankPanelWidget(BlankPanel *module) : LRModuleWidget(module) {
     //setPanel(SVG::load(assetPlugin(plugin, "res/BlankPanel.svg")));
 
-    panel = new LRPanel(10,10);
+    panel = new LRPanel();
     panel->setBackground(SVG::load(assetPlugin(plugin, "res/BlankPanel.svg")));
     addChild(panel);
 
@@ -50,8 +49,8 @@ BlankPanelWidget::BlankPanelWidget(BlankPanel *module) : LRModuleWidget(module) 
 
     float speed = 0.002;
 
-    addChild(SVGRotator::create(Vec(140.5,83), SVG::load(assetPlugin(plugin, "res/CogBig.svg")), speed));
-    addChild(SVGRotator::create(Vec(120,114.7), SVG::load(assetPlugin(plugin, "res/CogSmall.svg")), -speed*1.6));
+    addChild(SVGRotator::create(Vec(140.5, 83), SVG::load(assetPlugin(plugin, "res/CogBig.svg")), speed));
+    addChild(SVGRotator::create(Vec(120, 114.7), SVG::load(assetPlugin(plugin, "res/CogSmall.svg")), -speed * 1.6));
 
 
     // ***** SCREWS **********
@@ -62,9 +61,9 @@ BlankPanelWidget::BlankPanelWidget(BlankPanel *module) : LRModuleWidget(module) 
     // ***** SCREWS **********
 
     // ***** LCD *************
-   /* module->lcd1->box.pos = Vec(34, 355);
-    addChild(module->lcd1);
-    module->lcd1->text = VERSION_STR;*/
+    /* module->lcd1->box.pos = Vec(34, 355);
+     addChild(module->lcd1);
+     module->lcd1->text = VERSION_STR;*/
     // ***** LCD *************
 }
 

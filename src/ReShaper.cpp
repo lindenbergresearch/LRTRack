@@ -53,9 +53,9 @@ struct ReShaperWidget : LRModuleWidget {
 
 
 ReShaperWidget::ReShaperWidget(ReShaper *module) : LRModuleWidget(module) {
-   // setPanel(SVG::load(assetPlugin(plugin, "res/ReShaper.svg")));
+    // setPanel(SVG::load(assetPlugin(plugin, "res/ReShaper.svg")));
 
-    panel = new LRPanel(-20,-40);
+    panel = new LRPanel();
     panel->setBackground(SVG::load(assetPlugin(plugin, "res/ReShaper.svg")));
     addChild(panel);
 

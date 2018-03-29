@@ -94,7 +94,7 @@ AlmaFilterWidget::AlmaFilterWidget(AlmaFilter *module) : LRModuleWidget(module) 
     //setPanel(SVG::load(assetPlugin(plugin, "res/VCF.svg")));
 
 
-    panel = new LRPanel(20,40);
+    panel = new LRPanel();
     panel->setBackground(SVG::load(assetPlugin(plugin, "res/VCF.svg")));
     addChild(panel);
 
