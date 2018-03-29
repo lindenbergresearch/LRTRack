@@ -12,6 +12,6 @@ extern Model *modelSimpleFilter;
 extern Model *modelMS20Filter;
 extern Model *modelAlmaFilter;
 extern Model *modelReShaper;
-extern Model *modelVCO;
+//TODO: extern Model *modelVCO;
 extern Model *modelBlankPanel;
 extern Model *modelBlankPanelM1;
