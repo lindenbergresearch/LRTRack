@@ -15,7 +15,7 @@ void init(rack::Plugin *p) {
     p->addModel(modelAlmaFilter);
     p->addModel(modelReShaper);
 
-    //TODO: p->addModel(modelVCO);
+    p->addModel(modelVCO);
 
     p->addModel(modelBlankPanel);
     p->addModel(modelBlankPanelM1);
