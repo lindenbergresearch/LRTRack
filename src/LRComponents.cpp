@@ -45,7 +45,7 @@ void LCDWidget::draw(NVGcontext *vg) {
     nvgTextBox(vg, 0, 0, 220, s1.c_str(), nullptr);
     nvgTextBox(vg, 0, 0, 220, s2.c_str(), nullptr);
 
-    nvgFillColor(vg, fg);
+    nvgFillColor(vg, LCD_COLOR_FG);
     nvgTextBox(vg, 0, 0, 220, text.c_str(), nullptr);
 }
 
