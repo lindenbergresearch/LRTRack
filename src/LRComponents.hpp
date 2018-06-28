@@ -5,8 +5,8 @@
 #include "widgets.hpp"
 
 #define LCD_FONT_DIG7 "res/digital-7.ttf"
-#define LCD_COLOR_FG nvgRGBA(0x00, 0xE1, 0xE4, 0xFF)
-#define LCD_FONTSIZE 8
+#define LCD_COLOR_FG nvgRGBA(0x00, 0xB1, 0xB4, 0xFF)
+#define LCD_FONTSIZE 12
 #define LCD_LETTER_SPACING 0
 
 using namespace rack;
@@ -397,7 +397,7 @@ public:
         /** inherit dimensions */
         shadow.setBox(box);
         shadow.setSize(0.50);
-        shadow.setShadowPosition(2, 2);
+        shadow.setShadowPosition(2, 1);
     }
 
 
