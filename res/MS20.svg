@@ -2,7 +2,7 @@
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <svg width="180px" height="380px" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-miterlimit:10;">
     <g id="Background" transform="matrix(1,0,0,1,0,-196.458)">
-        <rect x="-0.01" y="196.458" width="180" height="380" style="fill:#1d2227;"/>
+        <rect x="-0.01" y="196.458" width="180" height="380" style="fill:#1d1d1d;"/>
     </g>
     <g id="Controls">
         <g id="Scale_1_">
@@ -220,14 +220,14 @@
         <path d="M104.984,368.969l1.281,0l0,1.432l2.75,0l0,-1.432l1.279,0l0,4l-1.279,0l0,-1.451l-2.75,0l0,1.451l-1.281,0l0,-4Z" style="fill:#fff;fill-rule:nonzero;"/>
     </g>
     <g id="TopHL">
-        <path d="M118.168,18.5l61.822,0" style="fill:none;stroke:#c6c6c6;stroke-width:3px;"/>
-        <path d="M-0.009,18.515l60.582,0" style="fill:none;stroke:#c6c6c6;stroke-width:3px;"/>
-        <path d="M117.579,22.875l62.412,0" style="fill:none;stroke:#c6c6c6;stroke-width:1px;"/>
-        <path d="M-0.008,22.86l61.167,0" style="fill:none;stroke:#c6c6c6;stroke-width:1px;"/>
+        <path d="M118.168,18.5l61.822,0" style="fill:none;stroke:#c6c6c6;stroke-opacity:0.6;stroke-width:3px;"/>
+        <path d="M-0.009,18.515l60.582,0" style="fill:none;stroke:#c6c6c6;stroke-opacity:0.6;stroke-width:3px;"/>
+        <path d="M117.579,22.875l62.412,0" style="fill:none;stroke:#c6c6c6;stroke-opacity:0.6;stroke-width:1px;"/>
+        <path d="M-0.008,22.86l61.167,0" style="fill:none;stroke:#c6c6c6;stroke-opacity:0.6;stroke-width:1px;"/>
     </g>
     <g id="BottomHL">
-        <path d="M60.01,368.098l-60.02,0" style="fill:none;stroke:#c6c6c6;stroke-width:3px;"/>
-        <path d="M180,368.098l-60.838,0" style="fill:none;stroke:#c6c6c6;stroke-width:3px;"/>
+        <path d="M60.01,368.098l-60.02,0" style="fill:none;stroke:#c6c6c6;stroke-opacity:0.6;stroke-width:3px;"/>
+        <path d="M180,368.098l-60.838,0" style="fill:none;stroke:#c6c6c6;stroke-opacity:0.6;stroke-width:3px;"/>
     </g>
     <g id="Name">
         <g transform="matrix(1,0,0,1,1,2)">
