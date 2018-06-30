@@ -15,7 +15,7 @@ LCDWidget::LCDWidget(NVGcolor fg, unsigned char length) {
     LCDWidget::length = length;
 
     LCDWidget::fg = fg;
-    LCDWidget::bg = nvgRGBA(r - 0x40, g - 0x40, b - 0x40, 0x40);
+    LCDWidget::bg = nvgRGBA(r - 0x60, g - 0x60, b - 0x60, 0x20);
 }
 
 

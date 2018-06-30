@@ -5,8 +5,8 @@
 #include "widgets.hpp"
 
 #define LCD_FONT_DIG7 "res/digital-7.ttf"
-#define LCD_COLOR_FG nvgRGBA(0x00, 0xB1, 0xB4, 0xFF)
-#define LCD_FONTSIZE 12
+#define LCD_COLOR_FG nvgRGBA(0x00, 0x61, 0xE4, 0xFF)
+#define LCD_FONTSIZE 14
 #define LCD_LETTER_SPACING 0
 
 using namespace rack;
