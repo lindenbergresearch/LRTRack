@@ -193,11 +193,6 @@ void dsp::BLITOscillator::proccess() {
 
     saw *= 5;
 
-
-/*    sine = shape2(shape, sine);
-    tri = shape2(shape, tri);
-    pulse = shape2(shape, pulse);*/
-
 }
 
 
@@ -252,4 +247,43 @@ void dsp::BLITOscillator::updatePitch(float cv, float fm, float tune, float oct)
     _coeff = coeff;
     _tune = tune;
     _biqufm = biqufm;
+}
+
+
+DSPBLOscillator::DSPBLOscillator(float sr) : DSPSystem(sr) {}
+
+
+void DSPBLOscillator::invalidate() {
+    DSPSystem::invalidate();
+}
+
+
+void DSPBLOscillator::process() {
+    DSPSystem::process();
+}
+
+void DSPBLOscillator::reset() {
+    freq = 0.f;
+    pw = 1.f;
+    phase = 0.f;
+    incr = 0.f;
+    shape = 1.f;
+    detune = noise.nextFloat(0.32);
+    drift = 0.f;
+    warmup = 0.f;
+
+    shape = 1.f;
+    n = 0;
+
+    _cv = 0.f;
+    _oct = 0.f;
+
+    _base = 1.f;
+    _coeff = 1.f;
+    _tune = 0.f;
+    _biqufm = 0.f;
+
+    /* force recalculation of variables */
+    setParam(FREQUENCY, NOTE_C4, false);
+    //setFrequency(NOTE_C4);
 }
