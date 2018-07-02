@@ -172,7 +172,6 @@ private:
 
     /** setup indicator with default values */
     Indicator idc = Indicator(15.f, ANGLE);
-    LRShadow shadow = LRShadow();
 
     /** snap mode */
     bool snap = false;
@@ -180,6 +179,11 @@ private:
     float snapAt = 0.0f;
     /** snap sensitivity */
     float snapSens = 0.1;
+
+protected:
+    /** shader */
+    LRShadow shadow = LRShadow();
+
 
 public:
     /**
@@ -237,16 +241,6 @@ public:
         /** inherit dimensions after loaded svg */
         idc.middle = Vec(box.size.x / 2, box.size.y / 2);
         shadow.setBox(box);
-    }
-
-
-    /**
-     * @brief Route setter to shadow
-     * @param x
-     * @param y
-     */
-    void setShadowPosition(float x, float y) {
-        shadow.setShadowPosition(x, y);
     }
 
 
@@ -314,6 +308,7 @@ public:
      * @param e
      */
     void onChange(EventChange &e) override {
+        // if the value still inside snap-tolerance keep the value zero
         if (snap && value > -snapSens + snapAt && value < snapSens + snapAt) value = 0;
         SVGKnob::onChange(e);
     }
@@ -329,7 +324,10 @@ struct LRToggleKnob : LRKnob {
         maxAngle = length * (float) M_PI;
 
         setSVG(SVG::load(assetPlugin(plugin, "res/ToggleKnob.svg")));
-        setShadowPosition(2, 2);
+        shadow.setShadowPosition(2, 3);
+
+        shadow.setStrength(1.2f);
+        shadow.setSize(0.8f);
 
         speed = 2.f;
     }
@@ -349,7 +347,7 @@ struct LRBigKnob : LRKnob {
     LRBigKnob() {
         setSVG(SVG::load(assetPlugin(plugin, "res/BigKnob.svg")));
         setIndicatorDistance(15);
-        setShadowPosition(5, 6);
+        shadow.setShadowPosition(5, 6);
     }
 };
 
@@ -361,7 +359,7 @@ struct LRMiddleKnob : LRKnob {
     LRMiddleKnob() {
         setSVG(SVG::load(assetPlugin(plugin, "res/MiddleKnob.svg")));
         setIndicatorDistance(12);
-        setShadowPosition(4, 4);
+        shadow.setShadowPosition(4, 4);
     }
 };
 
@@ -372,7 +370,7 @@ struct LRMiddleKnob : LRKnob {
 struct LRSmallKnob : LRKnob {
     LRSmallKnob() {
         setSVG(SVG::load(assetPlugin(plugin, "res/SmallKnob.svg")));
-        setShadowPosition(3, 3);
+        shadow.setShadowPosition(3, 3);
         setSnap(0.0f, 0.03f);
 
 
