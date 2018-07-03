@@ -35,7 +35,7 @@ void BLITOscillator::reset() {
     _biqufm = 0.f;
 
     /* force recalculation of variables */
-    setFrequency(NOTE_C4);
+    setFrequency(DSPBLOscillator::NOTE_C4);
 }
 
 
@@ -201,7 +201,7 @@ void dsp::BLITOscillator::proccess() {
  */
 void BLITOscillator::invalidate() {
     incr = getPhaseIncrement(freq);
-    n = (int) floorf(BLIT_HARMONICS / freq);
+    n = (int) floorf(DSPBLOscillator::BLIT_HARMONICS / freq);
 }
 
 
@@ -238,7 +238,7 @@ void dsp::BLITOscillator::updatePitch(float cv, float fm, float tune, float oct)
     float base = (_cv != cv) ? powf(2.f, cv) : _base;
     float biqufm = (_tune != tune) ? quadraticBipolar(tune) : _biqufm;
 
-    setFrequency((NOTE_C4 + biqufm) * base * coeff + detune + fm);
+    setFrequency((DSPBLOscillator::NOTE_C4 + biqufm) * base * coeff + detune + fm);
 
     /* save states */
     _cv = cv;
@@ -254,12 +254,46 @@ DSPBLOscillator::DSPBLOscillator(float sr) : DSPSystem(sr) {}
 
 
 void DSPBLOscillator::invalidate() {
-    DSPSystem::invalidate();
+    incr = getPhaseIncrement(freq);
+    n = (int) floorf(BLIT_HARMONICS / freq);
 }
 
 
 void DSPBLOscillator::process() {
-    DSPSystem::process();
+    /* phase locked loop */
+    phase = wrapTWOPI(incr + phase);
+
+    /* pulse width */
+    float w = pw * (float) M_PI;
+
+    /* get impulse train */
+    float blit1 = BLIT(n, phase);
+    float blit2 = BLIT(n, wrapTWOPI(w + phase));
+
+    /* feed integrator */
+    int1.add(blit1, incr);
+    int2.add(blit2, incr);
+
+    /* integrator delta */
+    float delta = int1.value - int2.value;
+
+    /* 3rd integrator */
+    float beta = int3.add(delta, incr) * 1.8f;
+
+    /* compute RAMP waveform */
+    float ramp = int1.value * 0.5f;
+    /* compute pulse waveform */
+    output[PULSE].value = delta;
+    /* compute SAW waveform */
+    output[SAW].value = ramp * -5;
+
+    /* compute triangle */
+    output[TRI].value = (float) M_PI / w * beta;
+    /* compute sine */
+    output[SINE].value = fastSin(phase);
+
+    //TODO: warmup oscillator with: y(x)=1-e^-(x/n) and slope
+    //saw *= 5;
 }
 
 void DSPBLOscillator::reset() {
@@ -286,4 +320,41 @@ void DSPBLOscillator::reset() {
     /* force recalculation of variables */
     setParam(FREQUENCY, NOTE_C4, false);
     //setFrequency(NOTE_C4);
+}
+
+/**
+ * @brief
+ * @param cv
+ * @param fm
+ * @param tune
+ * @param oct
+ */
+void DSPBLOscillator::updatePitch(float cv, float fm, float tune, float oct) {
+    // CV is at 1V/OCt, C0 = 16.3516Hz, C4 = 261.626Hz
+    // 10.3V = 20614.33hz
+
+    /* optimize the usage of expensive exp function and other computations */
+    float coeff = (_oct != oct) ? powf(2.f, oct) : _coeff;
+    float base = (_cv != cv) ? powf(2.f, cv) : _base;
+    float biqufm = (_tune != tune) ? quadraticBipolar(tune) : _biqufm;
+
+    setFrequency((DSPBLOscillator::NOTE_C4 + biqufm) * base * coeff + detune + fm);
+
+    /* save states */
+    _cv = cv;
+    _oct = oct;
+    _base = base;
+    _coeff = coeff;
+    _tune = tune;
+    _biqufm = biqufm;
+}
+
+
+void DSPBLOscillator::setFrequency(float frq) {
+    setParam(FREQUENCY, frq, true);
+}
+
+
+void DSPBLOscillator::setPulseWidth(float width) {
+    setParam(PULSEWIDTH, width, true);
 }

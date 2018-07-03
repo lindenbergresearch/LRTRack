@@ -62,6 +62,7 @@ namespace dsp {
             SINE,
             TRI,
             NOISE,
+            SUPER,
             MIX
         };
 
@@ -79,6 +80,11 @@ namespace dsp {
         float drift;     // oscillator drift
         float warmup;    // oscillator warmup detune
         Noise noise;     // randomizer
+
+        Integrator int1;
+        Integrator int2;
+        Integrator int3;
+
 
         float shape;
         int n;
@@ -98,6 +104,11 @@ namespace dsp {
 
     public:
         DSPBLOscillator(float sr);
+
+        void updatePitch(float cv, float fm, float tune, float oct);
+
+        void setFrequency(float frq);
+        void setPulseWidth(float width);
 
 
         void invalidate() override;
