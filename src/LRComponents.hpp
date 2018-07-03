@@ -374,7 +374,7 @@ struct LRSmallKnob : LRKnob {
         setSnap(0.0f, 0.03f);
 
 
-        speed = 0.7f;
+        speed = 0.9f;
     }
 };
 

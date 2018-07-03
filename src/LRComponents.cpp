@@ -51,15 +51,8 @@ void LCDWidget::draw(NVGcontext *vg) {
 
 
 void LRRedLight::draw(NVGcontext *vg) {
-    //LightWidget::draw(vg);
-
     float radius = box.size.x / 1.5f;
-    float oradius = radius + 10.0f;
-
-    /* color.r = clampf(color.r, 0.0f, 1.0f);
-     color.g = clampf(color.g, 0.0f, 1.0f);
-     color.b = clampf(color.b, 0.0f, 1.0f);
-     color.a = clampf(color.a, 0.0f, 1.0f);*/
+    float oradius = radius + 14.0f;
 
     // Solid
     nvgBeginPath(vg);
@@ -84,7 +77,7 @@ void LRRedLight::draw(NVGcontext *vg) {
     nvgRect(vg, radius - oradius, radius - oradius, 2 * oradius, 2 * oradius);
     NVGpaint paint;
     NVGcolor icol = color;
-    icol.a *= 0.40f;
+    icol.a *= 0.30f;
     NVGcolor ocol = color;
     ocol.a = 0.00f;
     paint = nvgRadialGradient(vg, radius, radius, radius, oradius, icol, ocol);
@@ -97,7 +90,7 @@ void LRRedLight::draw(NVGcontext *vg) {
  * @brief Constructor
  */
 LRRedLight::LRRedLight() {
-    addBaseColor(COLOR_RED);
+    addBaseColor(nvgRGBAf(0.1, 0.3, 0.9, 0.99));
 }
 
 
