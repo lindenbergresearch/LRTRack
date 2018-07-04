@@ -72,7 +72,7 @@ namespace dsp {
         explicit DSPSystem(float sr) : sr(sr) {}
 
 
-        /**
+        virtual /**
          * @brief Update sample rate on change
          * @param sr
          */
@@ -132,16 +132,6 @@ namespace dsp {
             if (proccess) {
                 process();
             }
-        }
-
-
-        /**
-         * @brief Get current output value
-         * @param id Output ID
-         * @return
-         */
-        float getOut(int id) {
-            return output[id].value;
         }
 
 
