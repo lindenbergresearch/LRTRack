@@ -47,7 +47,7 @@ namespace dsp {
          * Bandwidth-limited threshold in hz.
          * Should be at least SR/2 !
          * */
-        static constexpr float BLIT_HARMONICS = 21000.f;
+        static constexpr float BLIT_HARMONICS = 18000.f;
         static constexpr float NOTE_C4 = 261.626f;
 
         enum Inputs {
@@ -61,9 +61,7 @@ namespace dsp {
             PULSE,
             SINE,
             TRI,
-            NOISE,
-            SUPER,
-            MIX
+            SUPER
         };
 
         enum Params {
@@ -72,13 +70,14 @@ namespace dsp {
         };
 
     private:
-        float freq;      // oscillator frequency
-        float pw;        // pulse-width value
+       // float freq;      // oscillator frequency
+       // float pw;        // pulse-width value
         float phase;     // current phase
         float incr;      // current phase increment for PLL
         float detune;    // analogue detune
         float drift;     // oscillator drift
         float warmup;    // oscillator warmup detune
+        int n;
         Noise noise;     // randomizer
 
         Integrator int1;
@@ -86,15 +85,6 @@ namespace dsp {
         Integrator int3;
 
 
-        float shape;
-        int n;
-
-        /* currents of waveforms
-        float ramp;
-        float saw;
-        float pulse;
-        float sine;
-        float tri;*/
 
         void reset();
 
@@ -103,12 +93,33 @@ namespace dsp {
 
 
     public:
-        DSPBLOscillator(float sr);
+        explicit DSPBLOscillator(float sr);
 
         void updatePitch(float cv, float fm, float tune, float oct);
 
         void setFrequency(float frq);
         void setPulseWidth(float width);
+
+
+        float getSawWave() {
+            return getOutput(SAW);
+        }
+
+        float getPulseWave() {
+            return getOutput(PULSE);
+        }
+
+        float getSineWave() {
+            return getOutput(SINE);
+        }
+
+        float getTriWave() {
+            return getOutput(TRI);
+        }
+
+        float getSuperWave() {
+            return getOutput(SUPER);
+        }
 
 
         void invalidate() override;

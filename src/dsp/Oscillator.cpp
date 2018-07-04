@@ -96,8 +96,8 @@ void dsp::BLITOscillator::setPulseWidth(float pw) {
         return;
     }
 
-    if (pw > 1.f) {
-        BLITOscillator::pw = 1.f;
+    if (pw > 1.98f) {
+        BLITOscillator::pw = 1.98f;
         return;
     }
 
@@ -250,21 +250,33 @@ void dsp::BLITOscillator::updatePitch(float cv, float fm, float tune, float oct)
 }
 
 
-DSPBLOscillator::DSPBLOscillator(float sr) : DSPSystem(sr) {}
-
-
-void DSPBLOscillator::invalidate() {
-    incr = getPhaseIncrement(freq);
-    n = (int) floorf(BLIT_HARMONICS / freq);
+/**
+ * @brief Construct a Oscillator
+ * @param sr SampleRate
+ */
+DSPBLOscillator::DSPBLOscillator(float sr) : DSPSystem(sr) {
+    reset();
 }
 
 
+/**
+ * @brief Trigger recalculation of internal state
+ */
+void DSPBLOscillator::invalidate() {
+    incr = getPhaseIncrement(param[FREQUENCY].value);
+    n = (int) floorf(BLIT_HARMONICS / param[FREQUENCY].value);
+}
+
+
+/**
+ * @brief Process one sample
+ */
 void DSPBLOscillator::process() {
     /* phase locked loop */
     phase = wrapTWOPI(incr + phase);
 
     /* pulse width */
-    float w = pw * (float) M_PI;
+    float w = param[PULSEWIDTH].value * (float) M_PI;
 
     /* get impulse train */
     float blit1 = BLIT(n, phase);
@@ -286,27 +298,28 @@ void DSPBLOscillator::process() {
     output[PULSE].value = delta;
     /* compute SAW waveform */
     output[SAW].value = ramp * -5;
-
     /* compute triangle */
     output[TRI].value = (float) M_PI / w * beta;
     /* compute sine */
     output[SINE].value = fastSin(phase);
+    /* compute super */
+    output[SUPER].value = -output[SAW].value * output[PULSE].value * output[TRI].value + 5.0f;
+
 
     //TODO: warmup oscillator with: y(x)=1-e^-(x/n) and slope
     //saw *= 5;
 }
 
+
 void DSPBLOscillator::reset() {
-    freq = 0.f;
-    pw = 1.f;
+    param[FREQUENCY].value = 0.f;
+    param[PULSEWIDTH].value = 1.f;
     phase = 0.f;
     incr = 0.f;
-    shape = 1.f;
     detune = noise.nextFloat(0.32);
     drift = 0.f;
     warmup = 0.f;
 
-    shape = 1.f;
     n = 0;
 
     _cv = 0.f;
@@ -318,9 +331,9 @@ void DSPBLOscillator::reset() {
     _biqufm = 0.f;
 
     /* force recalculation of variables */
-    setParam(FREQUENCY, NOTE_C4, false);
-    //setFrequency(NOTE_C4);
+    setParam(FREQUENCY, NOTE_C4, true);
 }
+
 
 /**
  * @brief
@@ -358,3 +371,4 @@ void DSPBLOscillator::setFrequency(float frq) {
 void DSPBLOscillator::setPulseWidth(float width) {
     setParam(PULSEWIDTH, width, true);
 }
+
