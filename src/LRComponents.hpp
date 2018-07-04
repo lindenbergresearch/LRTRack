@@ -320,7 +320,8 @@ public:
  */
 struct LRToggleKnob : LRKnob {
     LRToggleKnob(float length = 0.5f) {
-        minAngle = -length * (float) M_PI;
+        //TODO: parametrize start and end angle
+        minAngle = -0.666666f * (float) M_PI;
         maxAngle = length * (float) M_PI;
 
         setSVG(SVG::load(assetPlugin(plugin, "res/ToggleKnob.svg")));
