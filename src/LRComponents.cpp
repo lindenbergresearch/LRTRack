@@ -12,7 +12,7 @@ LCDNumericWidget::LCDNumericWidget(NVGcolor fg, unsigned char length, std::strin
     LCDNumericWidget::format = format;
 
     LCDNumericWidget::fg = fg;
-    LCDNumericWidget::bg = nvgRGBAf(fg.r * 0.2f, fg.g * 0.2f, fg.b * 0.2f, 0.4f);
+    LCDNumericWidget::bg = nvgRGBAf(fg.r * 0.2f, fg.g * 0.2f, fg.b * 0.2f, 1.0f);
 }
 
 
