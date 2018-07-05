@@ -6,7 +6,7 @@
 
 #define LCD_FONT_DIG7 "res/digital-7.ttf"
 #define LCD_COLOR_FG nvgRGBA(0x00, 0x61, 0xE4, 0xFF)
-#define LCD_FONTSIZE 14
+#define LCD_FONTSIZE 10
 #define LCD_LETTER_SPACING 0
 
 using namespace rack;
@@ -53,17 +53,19 @@ struct LRModuleWidget : ModuleWidget {
 /**
  * @brief Emulation of a LCD monochrome display
  */
-struct LCDWidget : Label {
+struct LCDNumericWidget : Label {
     std::shared_ptr<Font> gLCDFont_DIG7;
     NVGcolor fg;
     NVGcolor bg;
+    float value = 0.0;
     unsigned char length = 0;
+    std::string format;
 
 
     /**
      * @brief Constructor
      */
-    LCDWidget(NVGcolor fg, unsigned char length);
+    LCDNumericWidget(NVGcolor fg, unsigned char length, std::string format);
 
 
     /**
@@ -437,8 +439,8 @@ struct LRSwitch : SVGSwitch, ToggleSwitch {
 /**
  * @brief Standard LED Redlight
  */
-struct LRRedLight : SmallLight<ModuleLightWidget> {
-    LRRedLight();
+struct LRLight : SmallLight<ModuleLightWidget> {
+    LRLight();
 
     void draw(NVGcontext *vg) override;
 };

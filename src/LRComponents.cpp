@@ -4,18 +4,15 @@
 /**
  * @brief Constructor of LCD Widget
  */
-LCDWidget::LCDWidget(NVGcolor fg, unsigned char length) {
+LCDNumericWidget::LCDNumericWidget(NVGcolor fg, unsigned char length, std::string format) {
     /** load LCD ttf font */
     gLCDFont_DIG7 = Font::load(assetPlugin(plugin, LCD_FONT_DIG7));
 
-    auto r = (unsigned char) (fg.r * 0xFF);
-    auto g = (unsigned char) (fg.g * 0xFF);
-    auto b = (unsigned char) (fg.b * 0xFF);
+    LCDNumericWidget::length = length;
+    LCDNumericWidget::format = format;
 
-    LCDWidget::length = length;
-
-    LCDWidget::fg = fg;
-    LCDWidget::bg = nvgRGBA(r - 0x60, g - 0x60, b - 0x60, 0x20);
+    LCDNumericWidget::fg = fg;
+    LCDNumericWidget::bg = nvgRGBAf(fg.r * 0.2f, fg.g * 0.2f, fg.b * 0.2f, 0.4f);
 }
 
 
@@ -27,7 +24,7 @@ LRModuleWidget::LRModuleWidget(Module *module) : ModuleWidget(module) {
  * @brief Draw method of custom LCD widget
  * @param vg
  */
-void LCDWidget::draw(NVGcontext *vg) {
+void LCDNumericWidget::draw(NVGcontext *vg) {
     nvgFontSize(vg, LCD_FONTSIZE);
     nvgFontFaceId(vg, gLCDFont_DIG7->handle);
     nvgTextLetterSpacing(vg, LCD_LETTER_SPACING);
@@ -37,10 +34,12 @@ void LCDWidget::draw(NVGcontext *vg) {
     std::string s1;
     std::string s2;
 
-    for (int i = 0; i < LCDWidget::length; ++i) {
+    for (int i = 0; i < LCDNumericWidget::length; ++i) {
         s1.append("8");
         s2.append(":");
     }
+
+    text = stringf(format.c_str(), value);
 
     nvgTextBox(vg, 0, 0, 220, s1.c_str(), nullptr);
     nvgTextBox(vg, 0, 0, 220, s2.c_str(), nullptr);
@@ -50,7 +49,7 @@ void LCDWidget::draw(NVGcontext *vg) {
 }
 
 
-void LRRedLight::draw(NVGcontext *vg) {
+void LRLight::draw(NVGcontext *vg) {
     float radius = box.size.x / 1.5f;
     float oradius = radius + 14.0f;
 
@@ -89,7 +88,7 @@ void LRRedLight::draw(NVGcontext *vg) {
 /**
  * @brief Constructor
  */
-LRRedLight::LRRedLight() {
+LRLight::LRLight() {
     addBaseColor(nvgRGBAf(0.1, 0.3, 0.9, 0.99));
 }
 
