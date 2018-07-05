@@ -15,8 +15,6 @@ struct BlankPanel : Module {
         NUM_LIGHTS
     };
 
-    LCDWidget *lcd1 = new LCDWidget(LCD_COLOR_FG, 15);
-
 
     BlankPanel() : Module(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS) {}
 
@@ -39,8 +37,6 @@ struct BlankPanelWidget : LRModuleWidget {
 
 
 BlankPanelWidget::BlankPanelWidget(BlankPanel *module) : LRModuleWidget(module) {
-    //setPanel(SVG::load(assetPlugin(plugin, "res/BlankPanel.svg")));
-
     panel = new LRPanel();
     panel->setBackground(SVG::load(assetPlugin(plugin, "res/BlankPanel.svg")));
     addChild(panel);
@@ -59,12 +55,6 @@ BlankPanelWidget::BlankPanelWidget(BlankPanel *module) : LRModuleWidget(module) 
     addChild(Widget::create<ScrewDarkA>(Vec(15, 366)));
     addChild(Widget::create<ScrewDarkA>(Vec(box.size.x - 30, 366)));
     // ***** SCREWS **********
-
-    // ***** LCD *************
-    /* module->lcd1->box.pos = Vec(34, 355);
-     addChild(module->lcd1);
-     module->lcd1->text = VERSION_STR;*/
-    // ***** LCD *************
 }
 
 
