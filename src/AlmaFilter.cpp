@@ -138,7 +138,7 @@ AlmaFilterWidget::AlmaFilterWidget(AlmaFilter *module) : LRModuleWidget(module) 
     // ***** OUTPUTS *********
 
     // ***** LIGHTS **********
-    addChild(ModuleLightWidget::create<LRRedLight>(Vec(85, 247), module, AlmaFilter::OVERLOAD_LIGHT));
+    addChild(ModuleLightWidget::create<LRLight>(Vec(85, 247), module, AlmaFilter::OVERLOAD_LIGHT));
     // ***** LIGHTS **********
 }
 

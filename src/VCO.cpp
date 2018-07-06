@@ -81,7 +81,7 @@ void VCO::step() {
 
 
     if (outputs[MIX_OUTPUT].active) {
-        float mix = 0f;
+        float mix = 0.f;
 
         mix += osc->getSawWave() * params[SAW_PARAM].value;
         mix += osc->getPulseWave() * params[PULSE_PARAM].value;
