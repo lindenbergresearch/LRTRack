@@ -36,7 +36,8 @@ struct VCO : LRModule {
     };
 
     dsp::DSPBLOscillator *osc = new dsp::DSPBLOscillator(engineGetSampleRate());
-    //LCDWidget *label1 = new LCDWidget(COLOR_CYAN, 10);
+    LCDNumericWidget *lcd = new LCDNumericWidget(COLOR_CYAN, 10, "%f");
+    LRBigKnob *frqKnob = NULL;
 
 
     VCO() : LRModule(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS) {}
@@ -50,17 +51,27 @@ struct VCO : LRModule {
 void VCO::step() {
     LRModule::step();
 
-    float fm = clamp(inputs[FM_CV_INPUT].value, -10.f, 10.f) * 400.f * quadraticBipolar(params[FM_CV_PARAM].value);
+    float fm = clamp(inputs[FM_CV_INPUT].value, -CV_BOUNDS, CV_BOUNDS) * 0.4f * quadraticBipolar(params[FM_CV_PARAM].value);
+    float tune = params[FREQUENCY_PARAM].value;
+    /*float oct = params[OCTAVE_PARAM].value == -4 ? LFO_MODE : params[OCTAVE_PARAM].value;
 
-    osc->updatePitch(inputs[VOCT1_INPUT].value, clamp(fm, -10000.f, 10000.f), params[FREQUENCY_PARAM].value,
-                     params[OCTAVE_PARAM].value == -4 ? -8 : params[OCTAVE_PARAM].value);
+    if (oct == LFO_MODE) {
+        tune = quadraticBipolar((tune + 1) / 2);
+        tune *= LFO_SCALE;
+    } else {
+        // frequency scale of tune knob. around +/- 1 oct
+        tune *= TUNE_SCALE;
+    }*/
 
+    if (frqKnob != NULL) {
+        frqKnob->setIndicatorActive(inputs[FM_CV_INPUT].active);
+        frqKnob->setIndicatorValue((params[FREQUENCY_PARAM].value + 1) / 2 + (fm/2));
+    }
+
+    osc->setInputs(inputs[VOCT1_INPUT].value, inputs[VOCT2_INPUT].value, fm, tune, params[OCTAVE_PARAM].value);
     osc->setPulseWidth(params[PW_CV_PARAM].value);
 
     osc->process();
-
-
-    // outputs[MIX_OUTPUT].value = -osc->saw*osc->pulse*osc->tri + 5.f;
 
     outputs[SAW_OUTPUT].value = osc->getSawWave();
     outputs[PULSE_OUTPUT].value = osc->getPulseWave();
@@ -69,12 +80,13 @@ void VCO::step() {
     outputs[SUPER_OUTPUT].value = osc->getSuperWave();
 
     /* for LFO mode */
-    if (params[OCTAVE_PARAM].value == -4)
+    if (osc->isLFO())
         lights[LFO_LIGHT].value = osc->getTriWave() / 11.f;
     else lights[LFO_LIGHT].value = 0.f;
-    /* if (cnt % 1200 == 0) {
-         label1->text = stringf("%.2f Hz", osc->getFrequency());
-     }*/
+
+
+    //lcd->visible = osc->isLFO();
+    lcd->value = osc->getFrequency();
 }
 
 
@@ -110,7 +122,9 @@ VCOWidget::VCOWidget(VCO *module) : LRModuleWidget(module) {
 
 
     // ***** MAIN KNOBS ******
-    addParam(ParamWidget::create<LRBigKnob>(Vec(126.0, 64.7), module, VCO::FREQUENCY_PARAM, -15.f, 15.f, 0.f));
+    module->frqKnob = LRKnob::create<LRBigKnob>(Vec(126.0, 64.7), module, VCO::FREQUENCY_PARAM, -1.f, 1.f, 0.f);
+
+    addParam(module->frqKnob);
     addParam(ParamWidget::create<LRToggleKnob>(Vec(134.7, 172.0), module, VCO::OCTAVE_PARAM, -4.f, 3.f, 0.f));
 
     //addParam(ParamWidget::create<LRSmallKnob>(Vec(81.5, 195), module, VCO::PW_PARAM, -.1f, 1.f, 1.f));
@@ -142,12 +156,13 @@ VCOWidget::VCOWidget(VCO *module) : LRModuleWidget(module) {
     // ***** OUTPUTS *********
 
     // ***** LIGHTS **********
-    addChild(ModuleLightWidget::create<LRRedLight>(Vec(181.8, 210), module, VCO::LFO_LIGHT));
+    addChild(ModuleLightWidget::create<LRLight>(Vec(181.8, 210), module, VCO::LFO_LIGHT));
     // ***** LIGHTS **********
 
-    /*module->label1->box.pos = Vec(110, 250);
+    module->lcd->box.pos = Vec(25, 242);
+    module->lcd->format = "%00004.3f Hz";
 
-    addChild(module->label1);*/
+    addChild(module->lcd);
 }
 
 
