@@ -65,7 +65,7 @@ void VCO::step() {
 
     if (frqKnob != NULL) {
         frqKnob->setIndicatorActive(inputs[FM_CV_INPUT].active);
-        frqKnob->setIndicatorValue((params[FREQUENCY_PARAM].value + 1) / 2 + (fm/2));
+        frqKnob->setIndicatorValue((params[FREQUENCY_PARAM].value + 1) / 2 + (fm / 2));
     }
 
     osc->setInputs(inputs[VOCT1_INPUT].value, inputs[VOCT2_INPUT].value, fm, tune, params[OCTAVE_PARAM].value);
@@ -78,6 +78,18 @@ void VCO::step() {
     outputs[SINE_OUTPUT].value = osc->getSineWave();
     outputs[TRI_OUTPUT].value = osc->getTriWave();
     outputs[SUPER_OUTPUT].value = osc->getSuperWave();
+
+
+    if (outputs[MIX_OUTPUT].active) {
+        float mix = 0f;
+
+        mix += osc->getSawWave() * params[SAW_PARAM].value;
+        mix += osc->getPulseWave() * params[PULSE_PARAM].value;
+        mix += osc->getSineWave() * params[SINE_PARAM].value;
+        mix += osc->getTriWave() * params[TRI_PARAM].value;
+
+        outputs[MIX_OUTPUT].value = mix;
+    }
 
     /* for LFO mode */
     if (osc->isLFO())
