@@ -50,13 +50,13 @@ void DSPBLOscillator::process() {
     /* compute RAMP waveform */
     float ramp = int1.value * 0.5f;
     /* compute pulse waveform */
-    output[PULSE].value = delta;
+    output[PULSE].value = delta * 2.f;
     /* compute SAW waveform */
     output[SAW].value = ramp * -5;
     /* compute triangle */
-    output[TRI].value = (float) M_PI / w * beta;
+    output[TRI].value = (float) M_PI / w * beta * 5.f;
     /* compute sine */
-    output[SINE].value = fastSin(phase);
+    output[SINE].value = fastSin(phase) * 5.f;
     /* compute noise */
     output[NOISE].value = noise.nextFloat(10.f) - 5.f;
 
