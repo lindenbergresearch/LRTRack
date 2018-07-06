@@ -3,6 +3,10 @@
 #include "DSPMath.hpp"
 #include "DSPSystem.hpp"
 
+#define LFO_SCALE 25.f
+#define TUNE_SCALE 17.3f
+#define LFO_MODE -4
+#define CV_BOUNDS 10.f
 
 namespace dsp {
 
@@ -53,7 +57,8 @@ namespace dsp {
         enum Inputs {
             VOCT1, VOCT2,
             FM_CV,
-            PW_CV
+            TUNE,
+            OCTAVE
         };
 
         enum Outputs {
@@ -61,7 +66,7 @@ namespace dsp {
             PULSE,
             SINE,
             TRI,
-            SUPER
+            NOISE
         };
 
         enum Params {
@@ -70,20 +75,18 @@ namespace dsp {
         };
 
     private:
-       // float freq;      // oscillator frequency
-       // float pw;        // pulse-width value
         float phase;     // current phase
         float incr;      // current phase increment for PLL
         float detune;    // analogue detune
         float drift;     // oscillator drift
         float warmup;    // oscillator warmup detune
         int n;
+        bool lfoMode;    // LFO mode?
         Noise noise;     // randomizer
 
         Integrator int1;
         Integrator int2;
         Integrator int3;
-
 
 
         void reset();
@@ -95,9 +98,19 @@ namespace dsp {
     public:
         explicit DSPBLOscillator(float sr);
 
-        void updatePitch(float cv, float fm, float tune, float oct);
+        void updatePitch();
 
         void setFrequency(float frq);
+
+
+        void setInputs(float voct1, float voct2, float fm, float tune, float oct);
+
+        float getFrequency() { return param[FREQUENCY].value; }
+
+        bool isLFO() {
+            return lfoMode;
+        }
+
         void setPulseWidth(float width);
 
 
@@ -105,20 +118,24 @@ namespace dsp {
             return getOutput(SAW);
         }
 
+
         float getPulseWave() {
             return getOutput(PULSE);
         }
+
 
         float getSineWave() {
             return getOutput(SINE);
         }
 
+
         float getTriWave() {
             return getOutput(TRI);
         }
 
+
         float getSuperWave() {
-            return getOutput(SUPER);
+            return getOutput(NOISE);
         }
 
 
@@ -127,83 +144,5 @@ namespace dsp {
     };
 
 
-/**
- * @brief Oscillator base class
- */
-    struct BLITOscillator {
-
-    public:
-        enum SIGNAL {
-            SAW,
-            PULSE,
-            SINE,
-            TRI
-        };
-
-
-        float freq;      // oscillator frequency
-        float pw;        // pulse-width value
-        float phase;     // current phase
-        float incr;      // current phase increment for PLL
-        float detune;    // analogue detune
-        float drift;     // oscillator drift
-        float warmup;    // oscillator warmup detune
-        Noise noise;     // randomizer
-
-        float shape;
-        int n;
-
-        /* currents of waveforms */
-        float ramp;
-        float saw;
-        float pulse;
-        float sine;
-        float tri;
-
-        /* saved frequency states */
-        float _cv, _oct, _base, _coeff, _tune, _biqufm;
-
-        /* leaky integrators */
-        Integrator int1;
-        Integrator int2;
-        Integrator int3;
-
-        BLITOscillator();
-        ~BLITOscillator();
-
-        /**
-         * @brief Proccess next sample for output
-         */
-        void proccess();
-
-
-        /**
-         * @brief ReCompute states on change
-         */
-        void invalidate();
-
-
-        /**
-         * @brief Reset oscillator
-         */
-        void reset();
-
-
-        void updatePitch(float cv, float fm, float tune, float oct);
-
-        /* common getter and setter */
-        float getFrequency() const;
-        void setFrequency(float freq);
-        float getPulseWidth() const;
-        void setPulseWidth(float pw);
-
-        float getRampWave() const;
-        float getSawWave() const;
-        float getPulseWave() const;
-        float getSawTriWave() const;
-        float getTriangleWave() const;
-        float getSaturate() const;
-        void setShape(float saturate);
-    };
 
 }
