@@ -111,6 +111,7 @@ namespace dsp {
             return lfoMode;
         }
 
+
         void setPulseWidth(float width);
 
 

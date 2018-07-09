@@ -54,7 +54,7 @@ void DSPBLOscillator::process() {
     /* compute SAW waveform */
     output[SAW].value = ramp * -5;
     /* compute triangle */
-    output[TRI].value = (float) M_PI / w * beta * 5.f;
+    output[TRI].value = beta * 5.f;//(float) M_PI / w * beta * 5.f;
     /* compute sine */
     output[SINE].value = fastSin(phase) * 5.f;
     /* compute noise */
