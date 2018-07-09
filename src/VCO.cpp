@@ -93,7 +93,7 @@ void VCO::step() {
 
     /* for LFO mode */
     if (osc->isLFO())
-        lights[LFO_LIGHT].value = osc->getTriWave() / 11.f;
+        lights[LFO_LIGHT].value = (osc->getTriWave() + 2.5f) / 10.f;
     else lights[LFO_LIGHT].value = 0.f;
 
     lcd->visible = osc->isLFO();
