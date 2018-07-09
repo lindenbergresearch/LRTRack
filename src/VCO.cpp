@@ -69,7 +69,7 @@ void VCO::step() {
     }
 
     osc->setInputs(inputs[VOCT1_INPUT].value, inputs[VOCT2_INPUT].value, fm, tune, params[OCTAVE_PARAM].value);
-    osc->setPulseWidth(params[PW_CV_PARAM].value);
+    osc->setPulseWidth(params[PW_CV_PARAM].value * 0.9f + 1);
 
     osc->process();
 
@@ -96,8 +96,7 @@ void VCO::step() {
         lights[LFO_LIGHT].value = osc->getTriWave() / 11.f;
     else lights[LFO_LIGHT].value = 0.f;
 
-
-    //lcd->visible = osc->isLFO();
+    lcd->visible = osc->isLFO();
     lcd->value = osc->getFrequency();
 }
 
@@ -140,8 +139,8 @@ VCOWidget::VCOWidget(VCO *module) : LRModuleWidget(module) {
     addParam(ParamWidget::create<LRToggleKnob>(Vec(134.7, 172.0), module, VCO::OCTAVE_PARAM, -4.f, 3.f, 0.f));
 
     //addParam(ParamWidget::create<LRSmallKnob>(Vec(81.5, 195), module, VCO::PW_PARAM, -.1f, 1.f, 1.f));
-    addParam(ParamWidget::create<LRSmallKnob>(Vec(69.5, 125.5), module, VCO::FM_CV_PARAM, -1.f, 1.f, 0.f));
-    addParam(ParamWidget::create<LRSmallKnob>(Vec(69.5, 181.8), module, VCO::PW_CV_PARAM, -1, 1, 0.f));
+    addParam(ParamWidget::create<LRSmallKnob>(Vec(69.5, 121.5), module, VCO::FM_CV_PARAM, -1.f, 1.f, 0.f));
+    addParam(ParamWidget::create<LRSmallKnob>(Vec(69.5, 174.8), module, VCO::PW_CV_PARAM, -1, 1, 0.f));
 
 
     addParam(ParamWidget::create<LRSmallKnob>(Vec(22.8, 270.1), module, VCO::SAW_PARAM, -1.f, 1.f, 0.f));
@@ -154,8 +153,8 @@ VCOWidget::VCOWidget(VCO *module) : LRModuleWidget(module) {
     // ***** INPUTS **********
     addInput(Port::create<IOPort>(Vec(20.8, 67.9), Port::INPUT, module, VCO::VOCT1_INPUT));
     addInput(Port::create<IOPort>(Vec(68.0, 67.9), Port::INPUT, module, VCO::VOCT2_INPUT));
-    addInput(Port::create<IOPort>(Vec(20.8, 125.5), Port::INPUT, module, VCO::FM_CV_INPUT));
-    addInput(Port::create<IOPort>(Vec(20.8, 181.8), Port::INPUT, module, VCO::PW_CV_INPUT));
+    addInput(Port::create<IOPort>(Vec(20.8, 121.5), Port::INPUT, module, VCO::FM_CV_INPUT));
+    addInput(Port::create<IOPort>(Vec(20.8, 174.8), Port::INPUT, module, VCO::PW_CV_INPUT));
     // ***** INPUTS **********
 
     // ***** OUTPUTS *********
@@ -171,7 +170,7 @@ VCOWidget::VCOWidget(VCO *module) : LRModuleWidget(module) {
     addChild(ModuleLightWidget::create<LRLight>(Vec(181.8, 210), module, VCO::LFO_LIGHT));
     // ***** LIGHTS **********
 
-    module->lcd->box.pos = Vec(25, 242);
+    module->lcd->box.pos = Vec(25, 239);
     module->lcd->format = "%00004.3f Hz";
 
     addChild(module->lcd);

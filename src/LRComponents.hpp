@@ -327,10 +327,10 @@ struct LRToggleKnob : LRKnob {
         maxAngle = length * (float) M_PI;
 
         setSVG(SVG::load(assetPlugin(plugin, "res/ToggleKnob.svg")));
-        shadow.setShadowPosition(2, 3);
+        shadow.setShadowPosition(3, 4);
 
         shadow.setStrength(1.2f);
-        shadow.setSize(0.8f);
+        shadow.setSize(0.7f);
 
         speed = 2.f;
     }
