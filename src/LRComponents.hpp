@@ -455,8 +455,8 @@ private:
     static constexpr float MARGIN = 20;
 
     /** gradient colors */
-    NVGcolor inner = nvgRGBAf(.6f, 0.7f, 0.9f, 0.12);
-    NVGcolor outer = nvgRGBAf(0.0f, 0.0f, 0.0f, 0.0f);;
+    NVGcolor inner = nvgRGBAf(.6f, 0.7f, 0.9f, 0.15);
+    NVGcolor outer = nvgRGBAf(0.0f, 0.0f, 0.0f, 0.17f);;
 
     /** gradient offset */
     Vec offset = Vec(-40, -50);
