@@ -53,15 +53,15 @@ void VCO::step() {
 
     float fm = clamp(inputs[FM_CV_INPUT].value, -CV_BOUNDS, CV_BOUNDS) * 0.4f * quadraticBipolar(params[FM_CV_PARAM].value);
     float tune = params[FREQUENCY_PARAM].value;
-    /*float oct = params[OCTAVE_PARAM].value == -4 ? LFO_MODE : params[OCTAVE_PARAM].value;
+    float pw;
 
-    if (oct == LFO_MODE) {
-        tune = quadraticBipolar((tune + 1) / 2);
-        tune *= LFO_SCALE;
+    if (inputs[PW_CV_INPUT].active) {
+        pw = clamp(inputs[PW_CV_INPUT].value, -CV_BOUNDS, CV_BOUNDS) * 0.6f * quadraticBipolar(params[PW_CV_PARAM].value / 2.f) + 1;
+        pw = clamp(pw, 0.01, 1.99);
     } else {
-        // frequency scale of tune knob. around +/- 1 oct
-        tune *= TUNE_SCALE;
-    }*/
+        pw = params[PW_CV_PARAM].value * 0.99f + 1;
+    }
+
 
     if (frqKnob != NULL) {
         frqKnob->setIndicatorActive(inputs[FM_CV_INPUT].active);
@@ -69,7 +69,7 @@ void VCO::step() {
     }
 
     osc->setInputs(inputs[VOCT1_INPUT].value, inputs[VOCT2_INPUT].value, fm, tune, params[OCTAVE_PARAM].value);
-    osc->setPulseWidth(params[PW_CV_PARAM].value * 0.9f + 1);
+    osc->setPulseWidth(pw);
 
     osc->process();
 
