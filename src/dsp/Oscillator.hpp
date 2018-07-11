@@ -8,6 +8,7 @@
 #define LFO_MODE -4
 #define CV_BOUNDS 10.f
 #define DETUNE_AMOUNT  2.0f
+#define DRIFT_AMOUNT 1.4f
 
 namespace dsp {
 
@@ -28,7 +29,9 @@ namespace dsp {
 
     public:
 
-        DSPSineLFO(float sr) : DSPSystem(sr) {}
+        DSPSineLFO(float sr) : DSPSystem(sr) {
+            setFrequency(1.f);
+        }
 
         void setFrequency(float freq) {
             setParam(FREQ, freq, true);

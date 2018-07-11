@@ -77,7 +77,8 @@ void DSPBLOscillator::reset() {
     warmupTau = sr * 1.5;
     tick = round(sr * 0.7);
 
-    lfo.reset();
+    lfo->reset();
+    lfo->setFrequency(0.01);
 
     n = 0;
 
@@ -114,6 +115,9 @@ void DSPBLOscillator::updatePitch() {
             warmup = 1 - powf((float) M_E, -(tick / warmupTau));
     }
 
+    lfo->process();
+    drift = lfo->getSine() * DRIFT_AMOUNT;
+
     float cv = input[VOCT1].value + input[VOCT2].value;
     float fm;
     float tune;
@@ -140,7 +144,7 @@ void DSPBLOscillator::updatePitch() {
     if (lfoMode)
         setFrequency(tune + fm);
     else
-        setFrequency((NOTE_C4 + detune + biqufm) * base * coeff * warmup);
+        setFrequency((NOTE_C4 + drift + detune + biqufm) * base * coeff * warmup);
 
     /* save states */
     _cv = cv;
