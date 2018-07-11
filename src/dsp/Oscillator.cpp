@@ -3,6 +3,7 @@
 
 using namespace dsp;
 
+
 /**
  * @brief Construct a Oscillator
  * @param sr SampleRate
@@ -69,9 +70,11 @@ void DSPBLOscillator::reset() {
     param[PULSEWIDTH].value = 1.f;
     phase = 0.f;
     incr = 0.f;
-    detune = noise.nextFloat(0.32);
+    detune = noise.nextFloat(DETUNE_AMOUNT);
     drift = 0.f;
     warmup = 0.f;
+    warmupTau = sr * 1.5;
+    tick = 0;//round(sr * 1.8f);
 
     n = 0;
 
@@ -84,7 +87,7 @@ void DSPBLOscillator::reset() {
     _biqufm = 0.f;
 
     /* force recalculation of variables */
-    setParam(FREQUENCY, NOTE_C4, true);
+    setParam(FREQUENCY, NOTE_C4 + detune, true);
 }
 
 
@@ -99,6 +102,15 @@ void DSPBLOscillator::updatePitch() {
     // CV is at 1V/OCt, C0 = 16.3516Hz, C4 = 261.626Hz
     // 10.3V = 20614.33hz
 
+    // give it 5s to warmup
+    if (tick++ < sr * 25) {
+        if (tick < sr * 1.8f){
+            tick += 4; // accelerated detune
+            warmup = 1 - powf((float) M_E, -(tick / warmupTau));
+        } else
+            warmup = 1 - powf((float) M_E, -(tick / warmupTau));
+    }
+
     float cv = input[VOCT1].value + input[VOCT2].value;
     float fm;
     float tune;
@@ -109,7 +121,7 @@ void DSPBLOscillator::updatePitch() {
         fm = input[FM_CV].value;
         tune = quadraticBipolar((input[TUNE].value + 1) / 2);
         tune *= LFO_SCALE;
-        fm *=  LFO_SCALE;
+        fm *= LFO_SCALE;
         oct = -8;
     } else {
         fm = input[FM_CV].value * TUNE_SCALE;
@@ -125,7 +137,7 @@ void DSPBLOscillator::updatePitch() {
     if (lfoMode)
         setFrequency(tune + fm);
     else
-        setFrequency((NOTE_C4 + biqufm) * base * coeff + detune);
+        setFrequency((NOTE_C4 + detune + biqufm) * base * coeff * warmup);
 
     /* save states */
     _cv = cv;

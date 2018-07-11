@@ -7,6 +7,7 @@
 #define TUNE_SCALE 17.3f
 #define LFO_MODE -4
 #define CV_BOUNDS 10.f
+#define DETUNE_AMOUNT  2.0f
 
 namespace dsp {
 
@@ -15,8 +16,7 @@ namespace dsp {
      */
     struct DSPIntegrator : DSPSystem<1, 1, 1> {
         enum Inputs {
-            IN,
-            FN
+            IN
         };
 
         enum Outputs {
@@ -24,24 +24,39 @@ namespace dsp {
         };
 
         enum Params {
-            D
+            LEAK
         };
 
     private:
-        float value;
+        float z = 0;
 
     public:
         void process() override {
-            value = (input[IN].value - value) * (param[D].value * input[FN].value) + value;
-            output[OUT].value = value;
+            output[OUT].value = z;
+            z = input[IN].value + (param[LEAK].value * z);
         }
 
 
-        void setInputs(float x, float fn) {
+        /**
+         * @brief Add a value to integrator and push output
+         * @param x Input value
+         * @return Current of integrator
+         */
+        float add(float x, float leak) {
+            param[LEAK].value = 0.999;
             input[IN].value = x;
-            input[FN].value = fn;
+            process();
 
-            invalidate();
+            return output[OUT].value;
+        }
+
+
+        /**
+         * @brief Returns the current integrator state
+         * @return
+         */
+        float value() {
+            return z;
         }
     };
 
@@ -80,6 +95,8 @@ namespace dsp {
         float detune;    // analogue detune
         float drift;     // oscillator drift
         float warmup;    // oscillator warmup detune
+        float warmupTau; // time factor for warmup detune
+        int tick;
         int n;
         bool lfoMode;    // LFO mode?
         Noise noise;     // randomizer
@@ -105,7 +122,9 @@ namespace dsp {
 
         void setInputs(float voct1, float voct2, float fm, float tune, float oct);
 
+
         float getFrequency() { return param[FREQUENCY].value; }
+
 
         bool isLFO() {
             return lfoMode;
@@ -143,7 +162,6 @@ namespace dsp {
         void invalidate() override;
         void process() override;
     };
-
 
 
 }
