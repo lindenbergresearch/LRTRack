@@ -78,7 +78,8 @@ void DSPBLOscillator::reset() {
     tick = round(sr * 0.7);
 
     lfo->reset();
-    lfo->setFrequency(0.01);
+    lfo->setPhase(noise.nextFloat(TWOPI));
+    lfo->setFrequency(DRIFT_FREQ);
 
     n = 0;
 
@@ -109,7 +110,7 @@ void DSPBLOscillator::updatePitch() {
     // give it 30s to warmup
     if (tick++ < sr * 30) {
         if (tick < sr * 1.8f) {
-            tick += 3; // accelerated detune
+            tick += 6; // accelerated detune
             warmup = 1 - powf((float) M_E, -(tick / warmupTau));
         } else
             warmup = 1 - powf((float) M_E, -(tick / warmupTau));
