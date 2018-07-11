@@ -74,7 +74,7 @@ void DSPBLOscillator::reset() {
     drift = 0.f;
     warmup = 0.f;
     warmupTau = sr * 1.5;
-    tick = 0;//round(sr * 1.8f);
+    tick = round(sr * 0.7);
 
     n = 0;
 
@@ -102,10 +102,10 @@ void DSPBLOscillator::updatePitch() {
     // CV is at 1V/OCt, C0 = 16.3516Hz, C4 = 261.626Hz
     // 10.3V = 20614.33hz
 
-    // give it 5s to warmup
-    if (tick++ < sr * 25) {
-        if (tick < sr * 1.8f){
-            tick += 4; // accelerated detune
+    // give it 30s to warmup
+    if (tick++ < sr * 30) {
+        if (tick < sr * 1.8f) {
+            tick += 3; // accelerated detune
             warmup = 1 - powf((float) M_E, -(tick / warmupTau));
         } else
             warmup = 1 - powf((float) M_E, -(tick / warmupTau));
