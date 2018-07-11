@@ -9,6 +9,7 @@
 #define CV_BOUNDS 10.f
 #define DETUNE_AMOUNT  2.0f
 #define DRIFT_AMOUNT 1.4f
+#define DRIFT_FREQ 0.005f
 
 namespace dsp {
 
@@ -56,6 +57,11 @@ namespace dsp {
 
         float getSine() {
             return output[SINE].value;
+        }
+
+
+        void setPhase(float phase) {
+            DSPSineLFO::phase = phase;
         }
 
 
