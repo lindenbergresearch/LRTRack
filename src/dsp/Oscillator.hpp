@@ -10,6 +10,7 @@
 #define DETUNE_AMOUNT  2.0f
 #define DRIFT_AMOUNT 1.4f
 #define DRIFT_FREQ 0.005f
+#define DRIFT_VARIANZ 0.004
 
 namespace dsp {
 

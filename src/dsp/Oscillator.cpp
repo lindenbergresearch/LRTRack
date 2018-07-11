@@ -79,7 +79,7 @@ void DSPBLOscillator::reset() {
 
     lfo->reset();
     lfo->setPhase(noise.nextFloat(TWOPI));
-    lfo->setFrequency(DRIFT_FREQ);
+    lfo->setFrequency(DRIFT_FREQ + noise.nextFloat(DRIFT_VARIANZ));
 
     n = 0;
 
