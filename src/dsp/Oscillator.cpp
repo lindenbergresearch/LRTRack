@@ -9,6 +9,7 @@ using namespace dsp;
  * @param sr SampleRate
  */
 DSPBLOscillator::DSPBLOscillator(float sr) : DSPSystem(sr) {
+    lfo = new DSPSineLFO(sr);
     reset();
 }
 
@@ -75,6 +76,8 @@ void DSPBLOscillator::reset() {
     warmup = 0.f;
     warmupTau = sr * 1.5;
     tick = round(sr * 0.7);
+
+    lfo.reset();
 
     n = 0;
 
@@ -168,5 +171,14 @@ void DSPBLOscillator::setInputs(float voct1, float voct2, float fm, float tune, 
 
     /* check for lowest value on toggle knob */
     lfoMode = oct == LFO_MODE;
+}
+
+/**
+ * @brief Pass changed samplerate to LFO
+ * @param sr
+ */
+void DSPBLOscillator::updateSampleRate(float sr) {
+    DSPSystem::updateSampleRate(sr);
+    lfo->updateSampleRate(sr);
 }
 
