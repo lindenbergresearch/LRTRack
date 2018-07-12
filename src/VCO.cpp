@@ -133,9 +133,8 @@ VCOWidget::VCOWidget(VCO *module) : LRModuleWidget(module) {
     module->frqKnob = LRKnob::create<LRBigKnob>(Vec(126.0, 64.7), module, VCO::FREQUENCY_PARAM, -1.f, 1.f, 0.f);
 
     addParam(module->frqKnob);
-    addParam(ParamWidget::create<LRToggleKnob>(Vec(134.7, 172.0), module, VCO::OCTAVE_PARAM, -4.f, 3.f, 0.f));
+    addParam(ParamWidget::create<LRToggleKnob>(Vec(134.6, 171.9), module, VCO::OCTAVE_PARAM, -4.f, 3.f, 0.f));
 
-    //addParam(ParamWidget::create<LRSmallKnob>(Vec(81.5, 195), module, VCO::PW_PARAM, -.1f, 1.f, 1.f));
     addParam(ParamWidget::create<LRSmallKnob>(Vec(69.5, 121.5), module, VCO::FM_CV_PARAM, -1.f, 1.f, 0.f));
     addParam(ParamWidget::create<LRSmallKnob>(Vec(69.5, 174.8), module, VCO::PW_CV_PARAM, -1, 1, 0.f));
 
