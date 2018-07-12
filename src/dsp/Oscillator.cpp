@@ -51,18 +51,23 @@ void DSPBLOscillator::process() {
 
     /* compute RAMP waveform */
     float ramp = int1.value * 0.5f;
+
     /* compute pulse waveform */
     output[PULSE].value = delta * 2.f;
+
     /* compute SAW waveform */
     output[SAW].value = ramp * -5;
+
     /* compute triangle */
-    output[TRI].value = beta * 5.f;//(float) M_PI / w * beta * 5.f;
+    output[TRI].value = beta * 5.f;
+
     /* compute sine */
     output[SINE].value = fastSin(phase) * 5.f;
-    /* compute noise */
-    output[NOISE].value = noise.nextFloat(10.f) - 5.f;
 
-    //TODO: warmup oscillator with: y(x)=1-e^-(x/n) and slope
+    /* compute noise: act as S&H in LFO mode, update next random only every cycle */
+    if (!lfoMode || phase - incr <= -M_PI)
+        output[NOISE].value = noise.nextFloat(10.f) - 5.f;
+
 }
 
 
@@ -74,8 +79,8 @@ void DSPBLOscillator::reset() {
     detune = noise.nextFloat(DETUNE_AMOUNT);
     drift = 0.f;
     warmup = 0.f;
-    warmupTau = sr * 1.5;
-    tick = round(sr * 0.7);
+    warmupTau = sr * 1.5f;
+    tick = round(sr * 0.7f);
 
     lfo->reset();
     lfo->setPhase(noise.nextFloat(TWOPI));
@@ -177,6 +182,7 @@ void DSPBLOscillator::setInputs(float voct1, float voct2, float fm, float tune, 
     /* check for lowest value on toggle knob */
     lfoMode = oct == LFO_MODE;
 }
+
 
 /**
  * @brief Pass changed samplerate to LFO

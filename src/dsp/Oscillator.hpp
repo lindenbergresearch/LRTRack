@@ -218,7 +218,7 @@ namespace dsp {
         }
 
 
-        float getSuperWave() {
+        float getNoise() {
             return getOutput(NOISE);
         }
 
