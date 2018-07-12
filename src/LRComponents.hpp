@@ -6,6 +6,7 @@
 
 #define LCD_FONT_DIG7 "res/LCD.ttf"
 #define LCD_COLOR_FG nvgRGBA(0x00, 0x61, 0xE4, 0xFF)
+#define LCD_COLOR_BG nvgRGBA(0x00, 0x01, 0x04, 0xFF)
 #define LCD_FONTSIZE 20
 #define LCD_LETTER_SPACING 0
 

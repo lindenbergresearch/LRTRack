@@ -19,4 +19,5 @@ void init(rack::Plugin *p) {
 
     p->addModel(modelBlankPanel);
     p->addModel(modelBlankPanelM1);
+    p->addModel(modelBlankPanelSmall);
 }

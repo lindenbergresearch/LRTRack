@@ -29,7 +29,7 @@ void LCDNumericWidget::draw(NVGcontext *vg) {
     nvgFontFaceId(vg, gLCDFont_DIG7->handle);
     nvgTextLetterSpacing(vg, LCD_LETTER_SPACING);
 
-    nvgFillColor(vg, bg);
+    nvgFillColor(vg, LCD_COLOR_BG);
 
     std::string s1;
     std::string s2;

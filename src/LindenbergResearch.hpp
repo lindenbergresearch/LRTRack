@@ -15,3 +15,4 @@ extern Model *modelReShaper;
 extern Model *modelVCO;
 extern Model *modelBlankPanel;
 extern Model *modelBlankPanelM1;
+extern Model *modelBlankPanelSmall;
