@@ -62,7 +62,6 @@ void VCO::step() {
         pw = params[PW_CV_PARAM].value * 0.99f + 1;
     }
 
-
     if (frqKnob != NULL) {
         frqKnob->setIndicatorActive(inputs[FM_CV_INPUT].active);
         frqKnob->setIndicatorValue((params[FREQUENCY_PARAM].value + 1) / 2 + (fm / 2));
@@ -108,7 +107,7 @@ void VCO::onSampleRateChange() {
 
 
 /**
- * @brief Woldemar VCO
+ * @brief Woldemar VCO Widget
  */
 struct VCOWidget : LRModuleWidget {
     VCOWidget(VCO *module);
@@ -116,8 +115,6 @@ struct VCOWidget : LRModuleWidget {
 
 
 VCOWidget::VCOWidget(VCO *module) : LRModuleWidget(module) {
-    //  setPanel(SVG::load(assetPlugin(plugin, "res/VCO.svg")));
-
     panel = new LRPanel(20, 40);
     panel->setBackground(SVG::load(assetPlugin(plugin, "res/VCO.svg")));
     addChild(panel);
@@ -177,4 +174,4 @@ VCOWidget::VCOWidget(VCO *module) : LRModuleWidget(module) {
 }
 
 
-Model *modelVCO = Model::create<VCO, VCOWidget>("Lindenberg Research", "VCO", "Voltage Controlled Oscillator", OSCILLATOR_TAG);
+Model *modelVCO = Model::create<VCO, VCOWidget>("Lindenberg Research", "VCO", "Woldemar VCO", OSCILLATOR_TAG);
