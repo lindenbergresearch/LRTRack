@@ -26,7 +26,7 @@ struct VCO : LRModule {
         PULSE_OUTPUT,
         SINE_OUTPUT,
         TRI_OUTPUT,
-        SUPER_OUTPUT,
+        NOISE_OUTPUT,
         MIX_OUTPUT,
         NUM_OUTPUTS
     };
@@ -76,7 +76,7 @@ void VCO::step() {
     outputs[PULSE_OUTPUT].value = osc->getPulseWave();
     outputs[SINE_OUTPUT].value = osc->getSineWave();
     outputs[TRI_OUTPUT].value = osc->getTriWave();
-    outputs[SUPER_OUTPUT].value = osc->getSuperWave();
+    outputs[NOISE_OUTPUT].value = osc->getNoise();
 
 
     if (outputs[MIX_OUTPUT].active) {
@@ -159,7 +159,7 @@ VCOWidget::VCOWidget(VCO *module) : LRModuleWidget(module) {
     addOutput(Port::create<IOPort>(Vec(56.8, 305.8), Port::OUTPUT, module, VCO::PULSE_OUTPUT));
     addOutput(Port::create<IOPort>(Vec(91.6, 305.8), Port::OUTPUT, module, VCO::SINE_OUTPUT));
     addOutput(Port::create<IOPort>(Vec(126.6, 305.8), Port::OUTPUT, module, VCO::TRI_OUTPUT));
-    addOutput(Port::create<IOPort>(Vec(162.0, 305.8), Port::OUTPUT, module, VCO::SUPER_OUTPUT));
+    addOutput(Port::create<IOPort>(Vec(162.0, 305.8), Port::OUTPUT, module, VCO::NOISE_OUTPUT));
     addOutput(Port::create<IOPort>(Vec(162.0, 269.1), Port::OUTPUT, module, VCO::MIX_OUTPUT));
     // ***** OUTPUTS *********
 
