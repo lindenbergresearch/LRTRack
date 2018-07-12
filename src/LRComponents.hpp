@@ -5,8 +5,8 @@
 #include "widgets.hpp"
 
 #define LCD_FONT_DIG7 "res/digital-7.ttf"
-#define LCD_COLOR_FG nvgRGBAf(0, 0.6, 0.91, 1.0)
-#define LCD_COLOR_BG nvgRGBAf(0, 0.1, 0.1, 0.7)
+#define LCD_COLOR_FG nvgRGBAf(0.8, 0.2, 0.1, 1.0)
+#define LCD_COLOR_BG nvgRGBAf(0.1, 0.1, 0, 0.7)
 #define LCD_FONTSIZE 11
 #define LCD_LETTER_SPACING 0
 
