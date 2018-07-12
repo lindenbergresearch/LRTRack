@@ -36,7 +36,7 @@ struct VCO : LRModule {
     };
 
     dsp::DSPBLOscillator *osc = new dsp::DSPBLOscillator(engineGetSampleRate());
-    LCDNumericWidget *lcd = new LCDNumericWidget(COLOR_CYAN, 10, "%f");
+    LCDNumericWidget *lcd = new LCDNumericWidget(COLOR_CYAN, 9, "%00004.3f Hz");
     LRBigKnob *frqKnob = NULL;
 
 
@@ -167,7 +167,7 @@ VCOWidget::VCOWidget(VCO *module) : LRModuleWidget(module) {
     addChild(ModuleLightWidget::create<LRLight>(Vec(181.8, 210), module, VCO::LFO_LIGHT));
     // ***** LIGHTS **********
 
-    module->lcd->box.pos = Vec(25, 239);
+    module->lcd->box.pos = Vec(24, 239);
     module->lcd->format = "%00004.3f Hz";
 
     addChild(module->lcd);

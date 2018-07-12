@@ -4,10 +4,10 @@
 #include "asset.hpp"
 #include "widgets.hpp"
 
-#define LCD_FONT_DIG7 "res/LCD.ttf"
-#define LCD_COLOR_FG nvgRGBA(0x00, 0x61, 0xE4, 0xFF)
-#define LCD_COLOR_BG nvgRGBA(0x00, 0x01, 0x04, 0xFF)
-#define LCD_FONTSIZE 20
+#define LCD_FONT_DIG7 "res/digital-7.ttf"
+#define LCD_COLOR_FG nvgRGBAf(0, 0.6, 0.91, 1.0)
+#define LCD_COLOR_BG nvgRGBAf(0, 0.1, 0.1, 0.7)
+#define LCD_FONTSIZE 11
 #define LCD_LETTER_SPACING 0
 
 using namespace rack;
@@ -61,7 +61,6 @@ struct LCDNumericWidget : Label {
     float value = 0.0;
     unsigned char length = 0;
     std::string format;
-
 
     /**
      * @brief Constructor

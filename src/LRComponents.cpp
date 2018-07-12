@@ -35,11 +35,15 @@ void LCDNumericWidget::draw(NVGcontext *vg) {
     std::string s2;
 
     for (int i = 0; i < LCDNumericWidget::length; ++i) {
-        s1.append("8");
-        s2.append(":");
+        s1.append("O");
+        s2.append("X");
     }
 
     text = stringf(format.c_str(), value);
+
+    // quick and dirty, urgs
+    if (value < 10)
+        text = "0" + text;
 
     nvgTextBox(vg, 0, 0, 220, s1.c_str(), nullptr);
     nvgTextBox(vg, 0, 0, 220, s2.c_str(), nullptr);
