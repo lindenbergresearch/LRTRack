@@ -124,17 +124,17 @@ AlmaFilterWidget::AlmaFilterWidget(AlmaFilter *module) : LRModuleWidget(module) 
     addParam(ParamWidget::create<LRSmallKnob>(Vec(78, 106), module, AlmaFilter::CUTOFF_CV_PARAM, -1.f, 1.f, 0.f));
     addParam(ParamWidget::create<LRSmallKnob>(Vec(127.1, 106), module, AlmaFilter::DRIVE_CV_PARAM, -1.f, 1.f, 0.f));
 
-    addInput(Port::create<IOPort>(Vec(26, 50), Port::INPUT, module, AlmaFilter::RESONANCE_CV_INPUT));
-    addInput(Port::create<IOPort>(Vec(76, 50), Port::INPUT, module, AlmaFilter::CUTOFF_CV_INPUT));
-    addInput(Port::create<IOPort>(Vec(125, 50), Port::INPUT, module, AlmaFilter::DRIVE_CV_INPUT));
+    addInput(Port::create<LRIOPort>(Vec(26, 50), Port::INPUT, module, AlmaFilter::RESONANCE_CV_INPUT));
+    addInput(Port::create<LRIOPort>(Vec(76, 50), Port::INPUT, module, AlmaFilter::CUTOFF_CV_INPUT));
+    addInput(Port::create<LRIOPort>(Vec(125, 50), Port::INPUT, module, AlmaFilter::DRIVE_CV_INPUT));
     // ***** CV INPUTS *******
 
     // ***** INPUTS **********
-    addInput(Port::create<IOPort>(Vec(25, 326.5), Port::INPUT, module, AlmaFilter::FILTER_INPUT));
+    addInput(Port::create<LRIOPort>(Vec(25, 326.5), Port::INPUT, module, AlmaFilter::FILTER_INPUT));
     // ***** INPUTS **********
 
     // ***** OUTPUTS *********
-    addOutput(Port::create<IOPort>(Vec(124.5, 326.5), Port::OUTPUT, module, AlmaFilter::LP_OUTPUT));
+    addOutput(Port::create<LRIOPort>(Vec(124.5, 326.5), Port::OUTPUT, module, AlmaFilter::LP_OUTPUT));
     // ***** OUTPUTS *********
 
     // ***** LIGHTS **********

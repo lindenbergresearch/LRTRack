@@ -385,12 +385,12 @@ struct LRSmallKnob : LRKnob {
 /**
  * @brief Alternative IO Port
  */
-struct IOPort : SVGPort {
+struct LRIOPort : SVGPort {
 private:
     LRShadow shadow = LRShadow();
 
 public:
-    IOPort() {
+    LRIOPort() {
         background->svg = SVG::load(assetPlugin(plugin, "res/IOPortB.svg"));
         background->wrap();
         box.size = background->box.size;

@@ -147,19 +147,19 @@ VCOWidget::VCOWidget(VCO *module) : LRModuleWidget(module) {
 
 
     // ***** INPUTS **********
-    addInput(Port::create<IOPort>(Vec(20.8, 67.9), Port::INPUT, module, VCO::VOCT1_INPUT));
-    addInput(Port::create<IOPort>(Vec(68.0, 67.9), Port::INPUT, module, VCO::VOCT2_INPUT));
-    addInput(Port::create<IOPort>(Vec(20.8, 121.5), Port::INPUT, module, VCO::FM_CV_INPUT));
-    addInput(Port::create<IOPort>(Vec(20.8, 174.8), Port::INPUT, module, VCO::PW_CV_INPUT));
+    addInput(Port::create<LRIOPort>(Vec(20.8, 67.9), Port::INPUT, module, VCO::VOCT1_INPUT));
+    addInput(Port::create<LRIOPort>(Vec(68.0, 67.9), Port::INPUT, module, VCO::VOCT2_INPUT));
+    addInput(Port::create<LRIOPort>(Vec(20.8, 121.5), Port::INPUT, module, VCO::FM_CV_INPUT));
+    addInput(Port::create<LRIOPort>(Vec(20.8, 174.8), Port::INPUT, module, VCO::PW_CV_INPUT));
     // ***** INPUTS **********
 
     // ***** OUTPUTS *********
-    addOutput(Port::create<IOPort>(Vec(21, 305.8), Port::OUTPUT, module, VCO::SAW_OUTPUT));
-    addOutput(Port::create<IOPort>(Vec(56.8, 305.8), Port::OUTPUT, module, VCO::PULSE_OUTPUT));
-    addOutput(Port::create<IOPort>(Vec(91.6, 305.8), Port::OUTPUT, module, VCO::SINE_OUTPUT));
-    addOutput(Port::create<IOPort>(Vec(126.6, 305.8), Port::OUTPUT, module, VCO::TRI_OUTPUT));
-    addOutput(Port::create<IOPort>(Vec(162.0, 305.8), Port::OUTPUT, module, VCO::NOISE_OUTPUT));
-    addOutput(Port::create<IOPort>(Vec(162.0, 269.1), Port::OUTPUT, module, VCO::MIX_OUTPUT));
+    addOutput(Port::create<LRIOPort>(Vec(21, 305.8), Port::OUTPUT, module, VCO::SAW_OUTPUT));
+    addOutput(Port::create<LRIOPort>(Vec(56.8, 305.8), Port::OUTPUT, module, VCO::PULSE_OUTPUT));
+    addOutput(Port::create<LRIOPort>(Vec(91.6, 305.8), Port::OUTPUT, module, VCO::SINE_OUTPUT));
+    addOutput(Port::create<LRIOPort>(Vec(126.6, 305.8), Port::OUTPUT, module, VCO::TRI_OUTPUT));
+    addOutput(Port::create<LRIOPort>(Vec(162.0, 305.8), Port::OUTPUT, module, VCO::NOISE_OUTPUT));
+    addOutput(Port::create<LRIOPort>(Vec(162.0, 269.1), Port::OUTPUT, module, VCO::MIX_OUTPUT));
     // ***** OUTPUTS *********
 
     // ***** LIGHTS **********
