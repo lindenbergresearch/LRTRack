@@ -107,6 +107,21 @@ void BlankPanelSmall::step() {
     if (multiple) {
         if (!ioports[0]->visible) {
             showPorts();
+
+            if (inputs[M1_INPUT].active) {
+                float sig = inputs[M1_INPUT].value;
+                outputs[M1_OUTPUT].value = sig;
+                outputs[M2_OUTPUT].value = sig;
+                outputs[M3_OUTPUT].value = sig;
+            }
+
+
+            if (inputs[M2_INPUT].active) {
+                float sig = inputs[M1_INPUT].value;
+                outputs[M4_OUTPUT].value = sig;
+                outputs[M5_OUTPUT].value = sig;
+                outputs[M6_OUTPUT].value = sig;
+            }
         }
     } else {
         if (ioports[0]->visible) {
@@ -151,16 +166,16 @@ BlankPanelWidgetM1::BlankPanelWidgetM1(BlankPanelM1 *module) : LRModuleWidget(mo
 
 void BlankPanelSmall::createPorts() {
     /* INPUTS */
-    ioports[0] = Port::create<LRIOPort>(Vec(16.5, 16.5), Port::INPUT, this, BlankPanelSmall::M1_INPUT);
-    ioports[1] = Port::create<LRIOPort>(Vec(16.5, 241.5), Port::INPUT, this, BlankPanelSmall::M2_INPUT);
+    ioports[0] = Port::create<LRIOPort>(Vec(16.5, 19.5), Port::INPUT, this, BlankPanelSmall::M1_INPUT);
+    ioports[1] = Port::create<LRIOPort>(Vec(16.5, 233.5), Port::INPUT, this, BlankPanelSmall::M2_INPUT);
 
     /* OUTPUTS */
-    ioports[2] = Port::create<LRIOPort>(Vec(16.5, 50.5), Port::OUTPUT, this, BlankPanelSmall::M1_OUTPUT);
-    ioports[3] = Port::create<LRIOPort>(Vec(16.5, 84.5), Port::OUTPUT, this, BlankPanelSmall::M2_OUTPUT);
-    ioports[4] = Port::create<LRIOPort>(Vec(16.5, 117.5), Port::OUTPUT, this, BlankPanelSmall::M3_OUTPUT);
-    ioports[5] = Port::create<LRIOPort>(Vec(16.5, 275.5), Port::OUTPUT, this, BlankPanelSmall::M4_OUTPUT);
-    ioports[6] = Port::create<LRIOPort>(Vec(16.5, 309.5), Port::OUTPUT, this, BlankPanelSmall::M5_OUTPUT);
-    ioports[7] = Port::create<LRIOPort>(Vec(16.5, 342.5), Port::OUTPUT, this, BlankPanelSmall::M6_OUTPUT);
+    ioports[2] = Port::create<LRIOPort>(Vec(16.5, 53.5), Port::OUTPUT, this, BlankPanelSmall::M1_OUTPUT);
+    ioports[3] = Port::create<LRIOPort>(Vec(16.5, 87.5), Port::OUTPUT, this, BlankPanelSmall::M2_OUTPUT);
+    ioports[4] = Port::create<LRIOPort>(Vec(16.5, 120.5), Port::OUTPUT, this, BlankPanelSmall::M3_OUTPUT);
+    ioports[5] = Port::create<LRIOPort>(Vec(16.5, 267.5), Port::OUTPUT, this, BlankPanelSmall::M4_OUTPUT);
+    ioports[6] = Port::create<LRIOPort>(Vec(16.5, 301.5), Port::OUTPUT, this, BlankPanelSmall::M5_OUTPUT);
+    ioports[7] = Port::create<LRIOPort>(Vec(16.5, 334.5), Port::OUTPUT, this, BlankPanelSmall::M6_OUTPUT);
 
     hidePorts();
 }
@@ -176,8 +191,8 @@ BlankPanelWidgetSmall::BlankPanelWidgetSmall(BlankPanelSmall *module) : LRModule
     module->createPorts();
 
     // ***** SCREWS **********
-    addChild(Widget::create<ScrewDarkA>(Vec(25, 1)));
-    addChild(Widget::create<ScrewDarkA>(Vec(25, 366)));
+    addChild(Widget::create<ScrewDarkA>(Vec(23.4, 1)));
+    addChild(Widget::create<ScrewDarkA>(Vec(23.4, 366)));
     // ***** SCREWS **********
 
 
