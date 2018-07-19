@@ -6,11 +6,9 @@ struct BlankPanelM1 : Module {
         NUM_PARAMS
     };
     enum InputIds {
-
         NUM_INPUTS
     };
     enum OutputIds {
-
         NUM_OUTPUTS
     };
     enum LightIds {
@@ -107,21 +105,21 @@ void BlankPanelSmall::step() {
     if (multiple) {
         if (!ioports[0]->visible) {
             showPorts();
+        }
 
-            if (inputs[M1_INPUT].active) {
-                float sig = inputs[M1_INPUT].value;
-                outputs[M1_OUTPUT].value = sig;
-                outputs[M2_OUTPUT].value = sig;
-                outputs[M3_OUTPUT].value = sig;
-            }
+        if (inputs[M1_INPUT].active) {
+            float sig = inputs[M1_INPUT].value;
+            outputs[M1_OUTPUT].value = sig;
+            outputs[M2_OUTPUT].value = sig;
+            outputs[M3_OUTPUT].value = sig;
+        }
 
 
-            if (inputs[M2_INPUT].active) {
-                float sig = inputs[M1_INPUT].value;
-                outputs[M4_OUTPUT].value = sig;
-                outputs[M5_OUTPUT].value = sig;
-                outputs[M6_OUTPUT].value = sig;
-            }
+        if (inputs[M2_INPUT].active) {
+            float sig = inputs[M2_INPUT].value;
+            outputs[M4_OUTPUT].value = sig;
+            outputs[M5_OUTPUT].value = sig;
+            outputs[M6_OUTPUT].value = sig;
         }
     } else {
         if (ioports[0]->visible) {
@@ -215,7 +213,25 @@ struct BlankPanelMultiple : MenuItem {
 
 
     void onAction(EventAction &e) override {
-        blankPanelSmall->multiple ^= true;
+        if (blankPanelSmall->multiple) {
+            for (int i = 0; i < 2; i++) {
+                if (blankPanelSmall->inputs[i].active) {
+                    blankPanelSmall->multiple = true;
+                    return;
+                }
+            }
+
+            for (int i = 0; i < 6; i++) {
+                if (blankPanelSmall->outputs[i].active) {
+                    blankPanelSmall->multiple = true;
+                    return;
+                }
+
+                blankPanelSmall->multiple = false;
+            }
+        } else {
+            blankPanelSmall->multiple = true;
+        }
     }
 
 
