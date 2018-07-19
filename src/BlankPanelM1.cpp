@@ -6,9 +6,11 @@ struct BlankPanelM1 : Module {
         NUM_PARAMS
     };
     enum InputIds {
+
         NUM_INPUTS
     };
     enum OutputIds {
+
         NUM_OUTPUTS
     };
     enum LightIds {
@@ -26,14 +28,23 @@ struct BlankPanelM1 : Module {
 void BlankPanelM1::step() {
 }
 
+
 struct BlankPanelSmall : Module {
     enum ParamIds {
+        M1_INPUT,
+        M2_INPUT,
         NUM_PARAMS
     };
     enum InputIds {
         NUM_INPUTS
     };
     enum OutputIds {
+        M1_OUTPUT,
+        M2_OUTPUT,
+        M3_OUTPUT,
+        M4_OUTPUT,
+        M5_OUTPUT,
+        M6_OUTPUT,
         NUM_OUTPUTS
     };
     enum LightIds {
@@ -44,12 +55,61 @@ struct BlankPanelSmall : Module {
     BlankPanelSmall() : Module(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS) {}
 
 
+    LRIOPort *ioports[8];
+    bool multiple = false;
+
     void step() override;
+    void createPorts();
+
+
+    void showPorts() {
+        /* set all to invisible */
+        for (int i = 0; i < 8; i++) {
+            ioports[i]->visible = true;
+        }
+    }
+
+
+    void hidePorts() {
+        /* set all to invisible */
+        for (int i = 0; i < 8; i++) {
+            ioports[i]->visible = false;
+        }
+    }
+
+
+    void onReset() override {
+        multiple = false;
+    }
+
+
+    json_t *toJson() override {
+        json_t *rootJ = json_object();
+        json_object_set_new(rootJ, "multiple", json_boolean(multiple));
+        return rootJ;
+    }
+
+
+    void fromJson(json_t *rootJ) override {
+        json_t *multJ = json_object_get(rootJ, "multiple");
+        if (multJ)
+            multiple = json_boolean_value(multJ);
+    }
 };
 
 
 void BlankPanelSmall::step() {
+    if (multiple) {
+        if (!ioports[0]->visible) {
+            showPorts();
+        }
+    } else {
+        if (ioports[0]->visible) {
+            hidePorts();
+        }
+    }
 }
+
 
 /**
  * @brief Blank Panel Mark I
@@ -58,16 +118,17 @@ struct BlankPanelWidgetM1 : LRModuleWidget {
     BlankPanelWidgetM1(BlankPanelM1 *module);
 };
 
+
 /**
  * @brief Blank Panel Small
  */
 struct BlankPanelWidgetSmall : LRModuleWidget {
     BlankPanelWidgetSmall(BlankPanelSmall *module);
+    void appendContextMenu(Menu *menu) override;
 };
 
-BlankPanelWidgetM1::BlankPanelWidgetM1(BlankPanelM1 *module) : LRModuleWidget(module) {
-    // setPanel(SVG::load(assetPlugin(plugin, "res/BlankPanelM1.svg")));
 
+BlankPanelWidgetM1::BlankPanelWidgetM1(BlankPanelM1 *module) : LRModuleWidget(module) {
     panel = new LRPanel();
     panel->setBackground(SVG::load(assetPlugin(plugin, "res/BlankPanelM1.svg")));
     addChild(panel);
@@ -82,14 +143,32 @@ BlankPanelWidgetM1::BlankPanelWidgetM1(BlankPanelM1 *module) : LRModuleWidget(mo
     // ***** SCREWS **********
 }
 
-BlankPanelWidgetSmall::BlankPanelWidgetSmall(BlankPanelSmall *module) : LRModuleWidget(module) {
-    // setPanel(SVG::load(assetPlugin(plugin, "res/BlankPanelM1.svg")));
 
+void BlankPanelSmall::createPorts() {
+    /* INPUTS */
+    ioports[0] = Port::create<LRIOPort>(Vec(16.5, 16.5), Port::INPUT, this, BlankPanelSmall::M1_INPUT);
+    ioports[1] = Port::create<LRIOPort>(Vec(16.5, 241.5), Port::INPUT, this, BlankPanelSmall::M2_INPUT);
+
+    /* OUTPUTS */
+    ioports[2] = Port::create<LRIOPort>(Vec(16.5, 50.5), Port::OUTPUT, this, BlankPanelSmall::M1_OUTPUT);
+    ioports[3] = Port::create<LRIOPort>(Vec(16.5, 84.5), Port::OUTPUT, this, BlankPanelSmall::M2_OUTPUT);
+    ioports[4] = Port::create<LRIOPort>(Vec(16.5, 117.5), Port::OUTPUT, this, BlankPanelSmall::M3_OUTPUT);
+    ioports[5] = Port::create<LRIOPort>(Vec(16.5, 275.5), Port::OUTPUT, this, BlankPanelSmall::M4_OUTPUT);
+    ioports[6] = Port::create<LRIOPort>(Vec(16.5, 309.5), Port::OUTPUT, this, BlankPanelSmall::M5_OUTPUT);
+    ioports[7] = Port::create<LRIOPort>(Vec(16.5, 342.5), Port::OUTPUT, this, BlankPanelSmall::M6_OUTPUT);
+
+    hidePorts();
+}
+
+
+BlankPanelWidgetSmall::BlankPanelWidgetSmall(BlankPanelSmall *module) : LRModuleWidget(module) {
     panel = new LRPanel();
     panel->setBackground(SVG::load(assetPlugin(plugin, "res/BlankPanelSmall.svg")));
     addChild(panel);
 
     box.size = panel->box.size;
+
+    module->createPorts();
 
     // ***** SCREWS **********
     addChild(Widget::create<ScrewDarkA>(Vec(25, 1)));
@@ -97,8 +176,37 @@ BlankPanelWidgetSmall::BlankPanelWidgetSmall(BlankPanelSmall *module) : LRModule
     // ***** SCREWS **********
 }
 
+
+struct BlankPanelMultiple : MenuItem {
+    BlankPanelSmall *blankPanelSmall;
+
+
+    void onAction(EventAction &e) override {
+        blankPanelSmall->multiple ^= true;
+    }
+
+
+    void step() override {
+        rightText = CHECKMARK(blankPanelSmall->multiple);
+    }
+};
+
+
+void BlankPanelWidgetSmall::appendContextMenu(Menu *menu) {
+    menu->addChild(MenuEntry::create());
+
+    BlankPanelSmall *blankPanelSmall = dynamic_cast<BlankPanelSmall *>(module);
+    assert(blankPanelSmall);
+
+    BlankPanelMultiple *mergeItem = MenuItem::create<BlankPanelMultiple>("Merge channels 1 & 2");
+    mergeItem->blankPanelSmall = blankPanelSmall;
+    menu->addChild(mergeItem);
+}
+
+
 Model *modelBlankPanelM1 = Model::create<BlankPanelM1, BlankPanelWidgetM1>("Lindenberg Research", "BlankPanel 02", "Blank Panel 12TE",
                                                                            BLANK_TAG);
 
-Model *modelBlankPanelSmall = Model::create<BlankPanelSmall, BlankPanelWidgetSmall>("Lindenberg Research", "BlankPanel Small", "Blank Panel Small",
-                                                                           BLANK_TAG);
+Model *modelBlankPanelSmall = Model::create<BlankPanelSmall, BlankPanelWidgetSmall>("Lindenberg Research", "BlankPanel Small",
+                                                                                    "Blank Panel Small",
+                                                                                    BLANK_TAG);
