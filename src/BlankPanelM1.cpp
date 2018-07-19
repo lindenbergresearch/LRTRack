@@ -31,11 +31,11 @@ void BlankPanelM1::step() {
 
 struct BlankPanelSmall : Module {
     enum ParamIds {
-        M1_INPUT,
-        M2_INPUT,
         NUM_PARAMS
     };
     enum InputIds {
+        M1_INPUT,
+        M2_INPUT,
         NUM_INPUTS
     };
     enum OutputIds {
@@ -63,7 +63,7 @@ struct BlankPanelSmall : Module {
 
 
     void showPorts() {
-        /* set all to invisible */
+        /* set all to visible */
         for (int i = 0; i < 8; i++) {
             ioports[i]->visible = true;
         }
@@ -99,6 +99,11 @@ struct BlankPanelSmall : Module {
 
 
 void BlankPanelSmall::step() {
+
+    for (int i = 0; i < 8; i++) {
+        if (ioports[i] == nullptr) return;
+    }
+
     if (multiple) {
         if (!ioports[0]->visible) {
             showPorts();
@@ -174,6 +179,19 @@ BlankPanelWidgetSmall::BlankPanelWidgetSmall(BlankPanelSmall *module) : LRModule
     addChild(Widget::create<ScrewDarkA>(Vec(25, 1)));
     addChild(Widget::create<ScrewDarkA>(Vec(25, 366)));
     // ***** SCREWS **********
+
+
+    // ***** IO-PORTS **********
+    addInput(module->ioports[0]);
+    addInput(module->ioports[1]);
+
+    addOutput(module->ioports[2]);
+    addOutput(module->ioports[3]);
+    addOutput(module->ioports[4]);
+    addOutput(module->ioports[5]);
+    addOutput(module->ioports[6]);
+    addOutput(module->ioports[7]);
+    // ***** IO-PORTS **********
 }
 
 
@@ -198,7 +216,7 @@ void BlankPanelWidgetSmall::appendContextMenu(Menu *menu) {
     BlankPanelSmall *blankPanelSmall = dynamic_cast<BlankPanelSmall *>(module);
     assert(blankPanelSmall);
 
-    BlankPanelMultiple *mergeItem = MenuItem::create<BlankPanelMultiple>("Merge channels 1 & 2");
+    BlankPanelMultiple *mergeItem = MenuItem::create<BlankPanelMultiple>("dual multiple");
     mergeItem->blankPanelSmall = blankPanelSmall;
     menu->addChild(mergeItem);
 }
