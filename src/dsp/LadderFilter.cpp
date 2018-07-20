@@ -26,11 +26,11 @@ void LadderFilter::invalidate() {
  * @return
  */
 void LadderFilter::process() {
-    os.next(LOWPASS, in);
-    os.doUpsample(LOWPASS);
+    //os.next(LOWPASS, in);
+    os.doUpsample(LOWPASS, in);
 
-    for (int i = 0; i < os.factor; i++) {
-        float x = os.up[LOWPASS][i];
+    for (int i = 0; i < os.getFactor(); i++) {
+        float x = os.getUpsampled(LOWPASS)[i];
 
         // non linear feedback with nice saturation
         x -= fastatan(bx * q);

@@ -25,7 +25,7 @@ namespace rack {
         float in, lpOut;
         float lightValue;
 
-        OverSampler<OVERSAMPLE, 1> os;
+        Resampler<OVERSAMPLE, 1> os;
         Noise noise;
 
         void updateResExp();
