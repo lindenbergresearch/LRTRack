@@ -3,7 +3,7 @@
 #include <cmath>
 #include <random>
 #include "rack.hpp"
-#include "dsp/decimator.hpp"
+#include "dsp/resampler.hpp"
 
 using namespace rack;
 
@@ -96,6 +96,59 @@ struct Noise {
         static std::default_random_engine e;
         static std::uniform_real_distribution<> dis(0, 1); // rage 0 - 1
         return (float) dis(e) * gain;
+    }
+};
+
+
+/**
+ * @brief NEW oversampling class
+ */
+template<int OVERSAMPLE, int CHANNELS>
+struct Resampler {
+
+    float up[CHANNELS][OVERSAMPLE] = {};
+    float data[CHANNELS][OVERSAMPLE] = {};
+
+    Decimator<OVERSAMPLE, OVERSAMPLE> decimator[CHANNELS];
+    Upsampler<OVERSAMPLE, OVERSAMPLE> interpolator[CHANNELS];
+
+
+    /**
+     * @brief Constructor
+     * @param factor Oversampling factor
+     */
+    Resampler() {}
+
+
+    int getFactor() {
+        return OVERSAMPLE;
+    }
+
+    /**
+     * @brief Create up-sampled data out of two basic values
+     */
+    void doUpsample(int channel, float in) {
+        interpolator[channel].process(in, up[channel]);
+    }
+
+
+    /**
+     * @brief Downsampled data from a given channel
+     * @param channel Channel to proccess
+     * @return Downsampled point
+     */
+    float getDownsampled(int channel) {
+        return decimator[channel].process(data[channel]);
+    }
+
+
+    /**
+     * @brief Upsampled data from a given channel
+     * @param channel Channel to retrieve
+     * @return Pointer to the upsampled data
+     */
+    float *getUpsampled(int channel) {
+        return up[channel];
     }
 };
 
