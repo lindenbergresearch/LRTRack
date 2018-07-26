@@ -24,6 +24,7 @@ namespace dsp {
 
         void setSamplerate(float sr) {
             DSPEffect::sr = sr;
+            invalidate();
         }
 
 
