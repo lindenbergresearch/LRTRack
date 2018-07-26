@@ -24,19 +24,6 @@ LCDWidget::LCDWidget(NVGcolor fg, unsigned char length, std::string format, LCDT
 
 
 /**
- * @brief Alternate constructor for list view of LCD display
- * @param fg Foreground color
- * @param length Display length (for drawing inactive segments
- * @param list List of string items
- */
-LCDWidget::LCDWidget(NVGcolor fg, unsigned char length, std::string *list) {
-    LCDWidget::list = list;
-
-    LCDWidget(fg, length, "%s", LIST);
-}
-
-
-/**
  * @brief Draw method of custom LCD widget
  * @param vg
  */
@@ -71,16 +58,18 @@ void LCDWidget::draw(NVGcontext *vg) {
 
     // on list mode get current item out of the current value
     if (type == LIST) {
-        int index;
+        unsigned long index;
         long current = lround(value);
 
         if (current < 0) {
             index = 0;
+        } else if ((unsigned long) current >= items.size()) {
+            index = items.size() - 1;
         } else {
-            index = (int) current;
+            index = (unsigned long) current;
         }
 
-        str = stringf(format.c_str(), list[index].c_str());
+        str = stringf(format.c_str(), items[index].c_str());
     }
 
     nvgFillColor(vg, fg);

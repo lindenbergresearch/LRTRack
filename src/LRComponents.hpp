@@ -71,7 +71,7 @@ struct LCDWidget : Label {
     float value = 0.0;
     unsigned char length = 0;
     std::string format;
-    std::string *list;
+    std::vector<std::string> items;
 
     std::string s1;
     std::string s2;
@@ -81,13 +81,16 @@ struct LCDWidget : Label {
      */
     LCDWidget(NVGcolor fg, unsigned char length, std::string format, LCDType type);
 
-    LCDWidget(NVGcolor fg, unsigned char length, std::string *list);
-
     /**
      * @brief Draw LCD display
      * @param vg
      */
     void draw(NVGcontext *vg) override;
+
+
+    inline void addItem(std::string name) {
+        items.push_back(name);
+    }
 };
 
 
