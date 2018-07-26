@@ -1,13 +1,6 @@
 #include "LadderFilter.hpp"
 
-using namespace rack;
-
-
-/**
- * @brief Constructor
- */
-LadderFilter::LadderFilter() {}
-
+using namespace dsp;
 
 /**
  * @brief Check parameter
@@ -26,7 +19,6 @@ void LadderFilter::invalidate() {
  * @return
  */
 void LadderFilter::process() {
-    //os.next(LOWPASS, in);
     os.doUpsample(LOWPASS, in);
 
     for (int i = 0; i < os.getFactor(); i++) {
@@ -90,7 +82,7 @@ void LadderFilter::setFrequency(float frequency) {
         LadderFilter::frequency = frequency;
         // translate frequency to logarithmic scale
         freqHz = 20.f * powf(1000.f, frequency);
-        freqExp = clamp(freqHz * (1.f / (engineGetSampleRate() * OVERSAMPLE / 2.f)), 0.f, 1.f);
+        freqExp = clamp(freqHz * (1.f / (sr * OVERSAMPLE / 2.f)), 0.f, 1.f);
 
         updateResExp();
         invalidate();
@@ -214,4 +206,9 @@ float LadderFilter::getLightValue() const {
  */
 void LadderFilter::setLightValue(float lightValue) {
     LadderFilter::lightValue = lightValue;
+}
+
+
+LadderFilter::LadderFilter(float sr) : DSPEffect(sr) {
+
 }

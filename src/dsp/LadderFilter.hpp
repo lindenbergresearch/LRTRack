@@ -5,7 +5,7 @@
 #include "engine.hpp"
 #include "DSPMath.hpp"
 
-namespace rack {
+namespace dsp {
 
     struct LadderFilter : DSPEffect {
 
@@ -31,10 +31,28 @@ namespace rack {
         void updateResExp();
 
     public:
-        LadderFilter();
+
+        LadderFilter(float sr);
+
+
+        void init() override {
+            f = 0;
+            p = 0;
+            q = 0;
+            b0 = 0;
+            b1 = 0;
+            b2 = 0;
+            b3 = 0;
+            b4 = 0;
+            b5 = 0;
+            bx = 0;
+            t1 = 0;
+            t2 = 0;
+            lightValue = 0.0f;
+        }
+
 
         void invalidate() override;
-
         void process() override;
 
         float getFrequency() const;

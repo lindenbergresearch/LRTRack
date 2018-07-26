@@ -7,7 +7,7 @@ namespace dsp {
      */
     struct DSPEffect {
 
-    private:
+    protected:
         float sr = 44100.0;
 
     public:
