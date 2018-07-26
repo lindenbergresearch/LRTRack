@@ -5,8 +5,6 @@
 #include "widgets.hpp"
 
 #define LCD_FONT_DIG7 "res/digital-7.ttf"
-#define LCD_COLOR_FG nvgRGBAf(0.98, 0.2, 0.1, 1.0)
-#define LCD_COLOR_BG nvgRGBAf(0.2, 0.2, 0.2, 1.0)
 #define LCD_FONTSIZE 10.5
 #define LCD_LETTER_SPACING 0
 
@@ -54,18 +52,30 @@ struct LRModuleWidget : ModuleWidget {
 /**
  * @brief Emulation of a LCD monochrome display
  */
-struct LCDNumericWidget : Label {
+struct LCDWidget : Label {
+
+    enum LCDType {
+        NUMERIC,
+        TEXT,
+        LIST
+    };
+
     std::shared_ptr<Font> gLCDFont_DIG7;
+
+    LCDType type;
+
     NVGcolor fg;
     NVGcolor bg;
+
     float value = 0.0;
     unsigned char length = 0;
     std::string format;
+    //std::string text;
 
     /**
      * @brief Constructor
      */
-    LCDNumericWidget(NVGcolor fg, unsigned char length, std::string format);
+    LCDWidget(NVGcolor fg, unsigned char length, std::string format, LCDType type);
 
 
     /**
@@ -175,7 +185,7 @@ private:
     /** setup indicator with default values */
     Indicator idc = Indicator(15.f, ANGLE);
 
-    bool debug = true;
+    bool debug = false;
     std::shared_ptr<Font> font;
 
     /** snap mode */
@@ -285,16 +295,30 @@ public:
         /** component */
         FramebufferWidget::draw(vg);
 
+/*
+        nvgBeginPath(vg);
+        nvgRect(vg, -30, -30, box.size.x + 60, box.size.y + 60);
+
+        NVGcolor icol = nvgRGBAf(0.0f, 0.0f, 0.0f, 0.3f);
+        NVGcolor ocol = nvgRGBAf(0.0f, 0.0f, 0.0f, 0.0f);;
+
+        NVGpaint paint = nvgRadialGradient(vg, box.size.x / 2, box.size.y / 2,
+                                           0.f, box.size.x /2.f * 0.9f, icol, ocol);
+        nvgFillPaint(vg, paint);
+        nvgFill(vg);*/
+
         /** indicator */
         idc.draw(vg);
 
         if (debug) {
             auto text = stringf("%4.2f", value);
-            nvgFontSize(vg, 9);
+            nvgFontSize(vg, 6);
             nvgFontFaceId(vg, font->handle);
             nvgFillColor(vg, nvgRGBAf(1.f, 1.f, 1.0f, 1.0f));
             nvgText(vg, box.size.x - 5, box.size.y + 10, text.c_str(), NULL);
         }
+
+
     }
 
 
@@ -468,7 +492,7 @@ private:
     static constexpr float MARGIN = 20;
 
     /** gradient colors */
-    NVGcolor inner = nvgRGBAf(.6f, 0.7f, 0.9f, 0.15);
+    NVGcolor inner = nvgRGBAf(.7f, 0.7f, 0.8f, 0.15);
     NVGcolor outer = nvgRGBAf(0.0f, 0.0f, 0.0f, 0.17f);;
 
     /** gradient offset */
