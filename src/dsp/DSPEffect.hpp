@@ -1,6 +1,6 @@
 #pragma once
 
-namespace rack {
+namespace dsp {
 
     /**
      * @brief Base class for all signal processors
@@ -11,6 +11,11 @@ namespace rack {
         float sr = 44100.0;
 
     public:
+
+        DSPEffect(float sr) : sr(sr) {
+            init();
+        }
+
 
         float getSamplerate() const {
             return sr;
