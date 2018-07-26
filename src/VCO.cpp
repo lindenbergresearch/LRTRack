@@ -36,7 +36,7 @@ struct VCO : LRModule {
     };
 
     dsp::DSPBLOscillator *osc = new dsp::DSPBLOscillator(engineGetSampleRate());
-    LCDNumericWidget *lcd = new LCDNumericWidget(COLOR_CYAN, 9, "%00004.3f Hz");
+    LCDWidget *lcd = new LCDWidget(nvgRGBAf(0.9, 0.2, 0.1, 1.0), 9, "%00004.3f Hz", LCDWidget::NUMERIC);
     LRBigKnob *frqKnob = NULL;
 
 
@@ -95,7 +95,7 @@ void VCO::step() {
         lights[LFO_LIGHT].value = (osc->getTriWave() + 2.5f) / 10.f;
     else lights[LFO_LIGHT].value = 0.f;
 
-    lcd->visible = osc->isLFO();
+    lcd->active = osc->isLFO();
     lcd->value = osc->getFrequency();
 }
 
@@ -120,6 +120,13 @@ VCOWidget::VCOWidget(VCO *module) : LRModuleWidget(module) {
     addChild(panel);
 
     box.size = panel->box.size;
+
+    // **** SETUP LCD ********
+    module->lcd->box.pos = Vec(24, 239);
+    module->lcd->format = "%00004.3f Hz";
+    addChild(module->lcd);
+    // **** SETUP LCD ********
+
 
     // ***** SCREWS **********
     addChild(Widget::create<ScrewDarkA>(Vec(15, 1)));
@@ -153,6 +160,7 @@ VCOWidget::VCOWidget(VCO *module) : LRModuleWidget(module) {
     addInput(Port::create<LRIOPort>(Vec(20.8, 174.8), Port::INPUT, module, VCO::PW_CV_INPUT));
     // ***** INPUTS **********
 
+
     // ***** OUTPUTS *********
     addOutput(Port::create<LRIOPort>(Vec(21, 305.8), Port::OUTPUT, module, VCO::SAW_OUTPUT));
     addOutput(Port::create<LRIOPort>(Vec(56.8, 305.8), Port::OUTPUT, module, VCO::PULSE_OUTPUT));
@@ -162,14 +170,10 @@ VCOWidget::VCOWidget(VCO *module) : LRModuleWidget(module) {
     addOutput(Port::create<LRIOPort>(Vec(162.0, 269.1), Port::OUTPUT, module, VCO::MIX_OUTPUT));
     // ***** OUTPUTS *********
 
+
     // ***** LIGHTS **********
     addChild(ModuleLightWidget::create<LRLight>(Vec(181.8, 210), module, VCO::LFO_LIGHT));
     // ***** LIGHTS **********
-
-    module->lcd->box.pos = Vec(24, 239);
-    module->lcd->format = "%00004.3f Hz";
-
-    addChild(module->lcd);
 }
 
 
