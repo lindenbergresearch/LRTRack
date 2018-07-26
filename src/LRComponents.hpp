@@ -193,7 +193,7 @@ private:
     /** setup indicator with default values */
     Indicator idc = Indicator(15.f, ANGLE);
 
-    bool debug = false;
+    bool debug = true;
     std::shared_ptr<Font> font;
 
     /** snap mode */
@@ -216,7 +216,7 @@ public:
         minAngle = -ANGLE * (float) M_PI;
         maxAngle = ANGLE * (float) M_PI;
 
-        font = Font::load(assetPlugin(plugin, "res/whitrabt.ttf"));
+        font = Font::load(assetGlobal("res/fonts/ShareTechMono-Regular.ttf"));
     }
 
 
@@ -320,8 +320,9 @@ public:
 
         if (debug) {
             auto text = stringf("%4.2f", value);
-            nvgFontSize(vg, 6);
+            nvgFontSize(vg, 15);
             nvgFontFaceId(vg, font->handle);
+
             nvgFillColor(vg, nvgRGBAf(1.f, 1.f, 1.0f, 1.0f));
             nvgText(vg, box.size.x - 5, box.size.y + 10, text.c_str(), NULL);
         }
