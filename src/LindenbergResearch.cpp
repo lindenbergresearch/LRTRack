@@ -5,6 +5,7 @@ using namespace rack;
 
 Plugin *plugin;
 
+
 void init(rack::Plugin *p) {
     plugin = p;
     p->slug = TOSTRING(SLUG);
@@ -14,6 +15,7 @@ void init(rack::Plugin *p) {
     p->addModel(modelMS20Filter);
     p->addModel(modelAlmaFilter);
     p->addModel(modelReShaper);
+    p->addModel(modelWestcoast);
 
     p->addModel(modelVCO);
 
