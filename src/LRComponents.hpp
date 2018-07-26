@@ -5,7 +5,7 @@
 #include "widgets.hpp"
 
 #define LCD_FONT_DIG7 "res/digital-7.ttf"
-#define LCD_FONTSIZE 10.5
+#define LCD_FONTSIZE 11
 #define LCD_LETTER_SPACING 0
 
 using namespace rack;
@@ -67,16 +67,21 @@ struct LCDWidget : Label {
     NVGcolor fg;
     NVGcolor bg;
 
+    bool active = true;
     float value = 0.0;
     unsigned char length = 0;
     std::string format;
-    //std::string text;
+    std::string *list;
+
+    std::string s1;
+    std::string s2;
 
     /**
      * @brief Constructor
      */
     LCDWidget(NVGcolor fg, unsigned char length, std::string format, LCDType type);
 
+    LCDWidget(NVGcolor fg, unsigned char length, std::string *list);
 
     /**
      * @brief Draw LCD display

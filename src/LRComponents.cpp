@@ -15,10 +15,24 @@ LCDWidget::LCDWidget(NVGcolor fg, unsigned char length, std::string format, LCDT
 
     LCDWidget::fg = fg;
     LCDWidget::bg = nvgRGBAf(fg.r * 0.2f, fg.g * 0.2f, fg.b * 0.2f, 1.0f);
+
+    for (int i = 0; i < LCDWidget::length; ++i) {
+        s1.append("O");
+        s2.append("X");
+    }
 }
 
 
-LRModuleWidget::LRModuleWidget(Module *module) : ModuleWidget(module) {
+/**
+ * @brief Alternate constructor for list view of LCD display
+ * @param fg Foreground color
+ * @param length Display length (for drawing inactive segments
+ * @param list List of string items
+ */
+LCDWidget::LCDWidget(NVGcolor fg, unsigned char length, std::string *list) {
+    LCDWidget::list = list;
+
+    LCDWidget(fg, length, "%s", LIST);
 }
 
 
@@ -32,29 +46,45 @@ void LCDWidget::draw(NVGcontext *vg) {
     nvgTextLetterSpacing(vg, LCD_LETTER_SPACING);
 
     nvgFillColor(vg, bg);
+    std::string str;
 
-    std::string s1;
-    std::string s2;
+    nvgTextBox(vg, 0, 0, 220, s1.c_str(), nullptr);
+    nvgTextBox(vg, 0, 0, 220, s2.c_str(), nullptr);
 
-    for (int i = 0; i < LCDWidget::length; ++i) {
-        s1.append("O");
-        s2.append("X");
-    }
+    /** if set to inactive just draw the background segments */
+    if (!active) return;
+
 
     // if set to numeric, do some formatting
     if (type == NUMERIC) {
-        text = stringf(format.c_str(), value);
+        str = stringf(format.c_str(), value);
 
         // quick and dirty, urgs
         if (value < 10)
             text = "0" + text;
     }
 
-    nvgTextBox(vg, 0, 0, 220, s1.c_str(), nullptr);
-    nvgTextBox(vg, 0, 0, 220, s2.c_str(), nullptr);
+    // on text mode just format
+    if (type == TEXT) {
+        str = stringf(format.c_str(), text.c_str());
+    }
+
+    // on list mode get current item out of the current value
+    if (type == LIST) {
+        int index;
+        long current = lround(value);
+
+        if (current < 0) {
+            index = 0;
+        } else {
+            index = (int) current;
+        }
+
+        str = stringf(format.c_str(), list[index].c_str());
+    }
 
     nvgFillColor(vg, fg);
-    nvgTextBox(vg, 0, 0, 220, text.c_str(), nullptr);
+    nvgTextBox(vg, 0, 0, 220, str.c_str(), nullptr);
 }
 
 
@@ -273,4 +303,12 @@ void SVGRotator::step() {
     dirty = true;
 
     FramebufferWidget::step();
+}
+
+
+/**
+ * @brief
+ * @param module
+ */
+LRModuleWidget::LRModuleWidget(Module *module) : ModuleWidget(module) {
 }
