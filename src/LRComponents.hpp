@@ -8,6 +8,10 @@
 #define LCD_FONTSIZE 11
 #define LCD_LETTER_SPACING 0
 
+/* show values of all knobs */
+#define DEBUG_VALUES true
+
+typedef std::shared_ptr<rack::Font> TrueType;
 using namespace rack;
 
 
@@ -60,7 +64,7 @@ struct LCDWidget : Label {
         LIST
     };
 
-    std::shared_ptr<Font> gLCDFont_DIG7;
+    TrueType gLCDFont_DIG7;
 
     LCDType type;
 
@@ -193,8 +197,8 @@ private:
     /** setup indicator with default values */
     Indicator idc = Indicator(15.f, ANGLE);
 
-    bool debug = true;
-    std::shared_ptr<Font> font;
+    bool debug = DEBUG_VALUES;
+    TrueType font;
 
     /** snap mode */
     bool snap = false;
@@ -388,6 +392,31 @@ struct LRToggleKnob : LRKnob {
     }
 };
 
+
+/**
+ * @brief Quantize position to odd numbers to simulate a toggle switch
+ */
+struct LRMiddleIncremental : LRKnob {
+    LRMiddleIncremental(float length = 0.5f) {
+        minAngle = -(float) M_PI;
+        maxAngle = (float) M_PI;
+
+        setSVG(SVG::load(assetPlugin(plugin, "res/ToggleKnob.svg")));
+        shadow.setShadowPosition(3, 4);
+
+        shadow.setStrength(1.2f);
+        shadow.setSize(0.7f);
+
+        speed = 2.f;
+    }
+
+
+    void onChange(EventChange &e) override {
+
+        value = round(value);
+        SVGKnob::onChange(e);
+    }
+};
 
 /**
  * @brief LR Big Knob

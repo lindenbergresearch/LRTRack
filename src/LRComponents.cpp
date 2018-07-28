@@ -14,7 +14,7 @@ LCDWidget::LCDWidget(NVGcolor fg, unsigned char length, std::string format, LCDT
     LCDWidget::format = format;
 
     LCDWidget::fg = fg;
-    LCDWidget::bg = nvgRGBAf(fg.r * 0.2f, fg.g * 0.2f, fg.b * 0.2f, 1.0f);
+    LCDWidget::bg = nvgRGBAf(fg.r, fg.g, fg.b, 0.15f);
 
     for (int i = 0; i < LCDWidget::length; ++i) {
         s1.append("O");
