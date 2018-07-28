@@ -25,6 +25,7 @@ namespace dsp {
 
     public:
 
+
         float getIn() const;
         void setIn(float in);
         float getGain() const;
@@ -36,6 +37,14 @@ namespace dsp {
         float getOut() const;
         void setOut(float out);
 
+
+        /**
+         * @brief Returns the actual sample-rate which is used by oversampled computation
+         * @return
+         */
+        float getOversampledRate() {
+            return sr * OVERSAMPLE;
+        }
 
         void setAmplitude(float kpos, float kneg) {
             amp = Vec(kpos, kneg);
@@ -76,6 +85,7 @@ namespace dsp {
         void init() override;
         void invalidate() override;
         void process() override;
+        float compute(float x) override;
 
     };
 

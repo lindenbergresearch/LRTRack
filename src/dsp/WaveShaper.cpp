@@ -120,6 +120,11 @@ const Vec &WaveShaper<OVERSAMPLE>::getAmplitude() const {
 template<int OVERSAMPLE>
 void WaveShaper<OVERSAMPLE>::process() {
 
+    /* if no oversampling enabled */
+    if (OVERSAMPLE == 1) {
+        return compute(in);
+    }
+
     rs.doUpsample(STD_CHANNEL, in);
 
     for (int i = 0; i < OVERSAMPLE; i++) {
@@ -143,4 +148,10 @@ void LockhartWavefolder::invalidate() {
 
 void LockhartWavefolder::process() {
     DSPEffect::process();
+}
+
+
+float LockhartWavefolder::compute(float x) {
+    // DUMMY FOR NOW
+    return x;
 }
