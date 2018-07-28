@@ -4,9 +4,10 @@
 /**
  * @brief Constructor of LCD Widget
  */
-LCDWidget::LCDWidget(NVGcolor fg, unsigned char length, std::string format, LCDType type) {
+LCDWidget::LCDWidget(NVGcolor fg, unsigned char length, std::string format, LCDType type, float fontsize) {
     /** load LCD ttf font */
-    gLCDFont_DIG7 = Font::load(assetPlugin(plugin, LCD_FONT_DIG7));
+    ttfLCDDig7 = Font::load(assetPlugin(plugin, LCD_FONT_DIG7));
+    LCDWidget::fontsize = fontsize;
 
     LCDWidget::type = type;
 
@@ -28,8 +29,8 @@ LCDWidget::LCDWidget(NVGcolor fg, unsigned char length, std::string format, LCDT
  * @param vg
  */
 void LCDWidget::draw(NVGcontext *vg) {
-    nvgFontSize(vg, LCD_FONTSIZE);
-    nvgFontFaceId(vg, gLCDFont_DIG7->handle);
+    nvgFontSize(vg, fontSize);
+    nvgFontFaceId(vg, ttfLCDDig7->handle);
     nvgTextLetterSpacing(vg, LCD_LETTER_SPACING);
 
     nvgFillColor(vg, bg);

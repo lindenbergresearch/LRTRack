@@ -9,7 +9,7 @@
 #define LCD_LETTER_SPACING 0
 
 /* show values of all knobs */
-#define DEBUG_VALUES true
+#define DEBUG_VALUES false
 
 typedef std::shared_ptr<rack::Font> TrueType;
 using namespace rack;
@@ -64,7 +64,8 @@ struct LCDWidget : Label {
         LIST
     };
 
-    TrueType gLCDFont_DIG7;
+    TrueType ttfLCDDig7;
+    float fontsize;
 
     LCDType type;
 
@@ -83,7 +84,7 @@ struct LCDWidget : Label {
     /**
      * @brief Constructor
      */
-    LCDWidget(NVGcolor fg, unsigned char length, std::string format, LCDType type);
+    LCDWidget(NVGcolor fg, unsigned char length, std::string format, LCDType type, float fontsize = LCD_FONTSIZE);
 
     /**
      * @brief Draw LCD display
