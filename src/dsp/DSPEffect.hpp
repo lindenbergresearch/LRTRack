@@ -8,9 +8,11 @@ namespace dsp {
     struct DSPEffect {
 
     protected:
-        float sr = 44100.0;
+
 
     public:
+
+        float sr = 44100.0;
 
         DSPEffect(float sr) : sr(sr) {
             init();

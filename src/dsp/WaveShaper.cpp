@@ -122,7 +122,7 @@ void WaveShaper<OVERSAMPLE>::process() {
 
     /* if no oversampling enabled */
     if (OVERSAMPLE == 1) {
-        return compute(in);
+        out = compute(in);
     }
 
     rs.doUpsample(STD_CHANNEL, in);
@@ -132,8 +132,13 @@ void WaveShaper<OVERSAMPLE>::process() {
         rs.data[STD_CHANNEL][i] = compute(x);
     }
 
-    return rs.getDownsampled(STD_CHANNEL);
+    out = rs.getDownsampled(STD_CHANNEL);
 }
+
+
+template<int OVERSAMPLE>
+WaveShaper<OVERSAMPLE>::WaveShaper(float sr):DSPEffect(sr) {}
+
 
 
 void LockhartWavefolder::init() {
@@ -155,3 +160,6 @@ float LockhartWavefolder::compute(float x) {
     // DUMMY FOR NOW
     return x;
 }
+
+
+LockhartWavefolder::LockhartWavefolder(float sr) : WaveShaper(sr) {}

@@ -1,6 +1,5 @@
 #pragma once
 
-#include "DSPSystem.hpp"
 #include "DSPMath.hpp"
 #include "DSPEffect.hpp"
 
@@ -25,6 +24,7 @@ namespace dsp {
 
     public:
 
+        WaveShaper(float sr);
 
         float getIn() const;
         void setIn(float in);
@@ -81,6 +81,8 @@ namespace dsp {
 
     struct LockhartWavefolder : WaveShaper<1> {
 
+
+        explicit LockhartWavefolder(float sr);
 
         void init() override;
         void invalidate() override;
