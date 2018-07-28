@@ -32,7 +32,7 @@ struct Westcoast : LRModule {
 
 
     dsp::WaveShaper *hs = new dsp::WaveShaper(engineGetSampleRate());
-    LCDWidget *lcd = new LCDWidget(nvgRGBAf(0.1, 0.7, 0.9, 1.0), 14, "%s", LCDWidget::LIST);
+    LCDWidget *lcd = new LCDWidget(nvgRGBAf(0.1, 0.5, 0.9, 1.0), 12, "%s", LCDWidget::LIST);
 
 
     void step() override;
@@ -79,6 +79,8 @@ WestcoastWidget::WestcoastWidget(Westcoast *module) : LRModuleWidget(module) {
     // **** SETUP LCD ********
     module->lcd->box.pos = Vec(24, 239);
     module->lcd->addItem("LOCKHART");
+    module->lcd->addItem("Chebyshev");
+    module->lcd->addItem("SINE");
     module->lcd->addItem("SATURATE");
     module->lcd->addItem("HARDCLIP");
 
