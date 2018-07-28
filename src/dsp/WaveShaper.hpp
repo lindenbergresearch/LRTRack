@@ -45,6 +45,9 @@ namespace dsp {
         const Vec &getAmplitude() const;
 
 
+        /**
+         * @brief Implements the oversamping of compute method
+         */
         void process() override;
 
 
@@ -60,8 +63,8 @@ namespace dsp {
         /**
          * @brief To be implemented by subclass, automaticaly oversampled
          *
-         * @param x
-         * @return
+         * @param x Input sample
+         * @return Output sample
          */
         virtual float compute(float x) { return x; }
     };

@@ -120,9 +120,14 @@ const Vec &WaveShaper<OVERSAMPLE>::getAmplitude() const {
 template<int OVERSAMPLE>
 void WaveShaper<OVERSAMPLE>::process() {
 
-    rs.d
+    rs.doUpsample(STD_CHANNEL, in);
 
+    for (int i = 0; i < OVERSAMPLE; i++) {
+        float x = rs.getUpsampled(STD_CHANNEL)[i];
+        rs.data[STD_CHANNEL][i] = compute(x);
+    }
 
+    return rs.getDownsampled(STD_CHANNEL);
 }
 
 
