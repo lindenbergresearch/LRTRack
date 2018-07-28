@@ -9,7 +9,7 @@
 #define LCD_LETTER_SPACING 0
 
 /* show values of all knobs */
-#define DEBUG_VALUES false
+#define DEBUG_VALUES true
 
 typedef std::shared_ptr<rack::Font> TrueType;
 using namespace rack;
@@ -402,7 +402,7 @@ struct LRMiddleIncremental : LRKnob {
         minAngle = -(float) M_PI;
         maxAngle = (float) M_PI;
 
-        setSVG(SVG::load(assetPlugin(plugin, "res/ToggleKnob.svg")));
+        setSVG(SVG::load(assetPlugin(plugin, "res/MiddleIncremental.svg")));
         shadow.setShadowPosition(3, 4);
 
         shadow.setStrength(1.2f);
@@ -414,10 +414,13 @@ struct LRMiddleIncremental : LRKnob {
 
     void onChange(EventChange &e) override {
 
-        value = round(value);
+        value = lround(value * 10) / 10.f;
+
+        //value = round(value);
         SVGKnob::onChange(e);
     }
 };
+
 
 /**
  * @brief LR Big Knob
@@ -528,14 +531,14 @@ struct LRLight : SmallLight<ModuleLightWidget> {
 struct LRPanel : SVGPanel {
 private:
     /** margin of gradient box */
-    static constexpr float MARGIN = 20;
+    static constexpr float MARGIN = 10;
 
     /** gradient colors */
-    NVGcolor inner = nvgRGBAf(.7f, 0.7f, 0.8f, 0.15);
-    NVGcolor outer = nvgRGBAf(0.0f, 0.0f, 0.0f, 0.17f);;
+    NVGcolor inner = nvgRGBAf(1.5 * .369f, 1.5 * 0.357f, 1.5 * 0.3333f, 0.25);
+    NVGcolor outer = nvgRGBAf(0.0f, 0.0f, 0.0f, 0.34f);;
 
     /** gradient offset */
-    Vec offset = Vec(-40, -50);
+    Vec offset = Vec(30, -50);
 
     void setInner(const NVGcolor &inner);
     void setOuter(const NVGcolor &outer);

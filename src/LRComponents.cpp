@@ -29,7 +29,7 @@ LCDWidget::LCDWidget(NVGcolor fg, unsigned char length, std::string format, LCDT
  * @param vg
  */
 void LCDWidget::draw(NVGcontext *vg) {
-    nvgFontSize(vg, fontSize);
+    nvgFontSize(vg, fontsize);
     nvgFontFaceId(vg, ttfLCDDig7->handle);
     nvgTextLetterSpacing(vg, LCD_LETTER_SPACING);
 
