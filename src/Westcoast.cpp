@@ -32,7 +32,7 @@ struct Westcoast : LRModule {
 
 
     dsp::WaveShaper *hs = new dsp::WaveShaper(engineGetSampleRate());
-    LCDWidget *lcd = new LCDWidget(nvgRGBAf(0.1, 0.5, 0.9, 1.0), 12, "%s", LCDWidget::LIST);
+    LCDWidget *lcd = new LCDWidget(nvgRGBAf(0.9, 0.1, 0.2, 1.0), 12, "%s", LCDWidget::LIST, 14.f);
 
 
     void step() override;
