@@ -4,9 +4,7 @@
 using namespace dsp;
 
 
-void WaveShaper::invalidate() {}
-
-
+/*
 void WaveShaper::process() {
     float x = input[IN].value;
     float g = param[GAIN].value;
@@ -26,7 +24,7 @@ void WaveShaper::process() {
 
          y = fastatan(y);
 
-         y = y * g;*/
+         y = y * g;
 
         // for (int j = 0; j < 5; j++) {
         if (x >= 0)
@@ -42,6 +40,89 @@ void WaveShaper::process() {
 
 
     output[OUT].value = rs.getDownsampled(IN);
+}*/
+
+template<int OVERSAMPLE>
+
+float WaveShaper<OVERSAMPLE>::getIn() const {
+    return in;
+}
+
+
+template<int OVERSAMPLE>
+
+void WaveShaper<OVERSAMPLE>::setIn(float in) {
+    WaveShaper::in = in;
+}
+
+
+template<int OVERSAMPLE>
+
+float WaveShaper<OVERSAMPLE>::getGain() const {
+    return gain;
+}
+
+
+template<int OVERSAMPLE>
+
+void WaveShaper<OVERSAMPLE>::setGain(float gain) {
+    WaveShaper::gain = gain;
+}
+
+
+template<int OVERSAMPLE>
+
+float WaveShaper<OVERSAMPLE>::getBias() const {
+    return bias;
+}
+
+
+template<int OVERSAMPLE>
+
+void WaveShaper<OVERSAMPLE>::setBias(float bias) {
+    WaveShaper::bias = bias;
+}
+
+
+template<int OVERSAMPLE>
+
+float WaveShaper<OVERSAMPLE>::getK() const {
+    return k;
+}
+
+
+template<int OVERSAMPLE>
+
+void WaveShaper<OVERSAMPLE>::setK(float k) {
+    WaveShaper::k = k;
+}
+
+
+template<int OVERSAMPLE>
+
+float WaveShaper<OVERSAMPLE>::getOut() const {
+    return out;
+}
+
+
+template<int OVERSAMPLE>
+void WaveShaper<OVERSAMPLE>::setOut(float out) {
+    WaveShaper::out = out;
+}
+
+
+template<int OVERSAMPLE>
+const Vec &WaveShaper<OVERSAMPLE>::getAmplitude() const {
+    return amp;
+}
+
+
+template<int OVERSAMPLE>
+void WaveShaper<OVERSAMPLE>::process() {
+
+    rs.d
+
+
 }
 
 
