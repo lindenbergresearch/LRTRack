@@ -101,7 +101,7 @@ WestcoastWidget::WestcoastWidget(Westcoast *module) : LRModuleWidget(module) {
     addParam(LRKnob::create<LRMiddleKnob>(Vec(122, 134.9), module, Westcoast::KNEG_PARAM, 0.1f, 2.f, 1.f));
     addParam(LRKnob::create<LRMiddleKnob>(Vec(22, 64), module, Westcoast::BIAS_PARAM, -5.f, 5.f, 0.f));
 
-    addParam(LRKnob::create<LRMiddleKnob>(Vec(42, 260), module, Westcoast::TYPE_PARAM, 0, 1, 0));
+    addParam(LRKnob::create<LRMiddleIncremental>(Vec(42, 260), module, Westcoast::TYPE_PARAM, 0, 1, 0));
 
     // ***** MAIN KNOBS ******
 
