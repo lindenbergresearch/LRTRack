@@ -80,7 +80,7 @@ float WaveShaper<OVERSAMPLE>::getBias() const {
 template<int OVERSAMPLE>
 
 void WaveShaper<OVERSAMPLE>::setBias(float bias) {
-    WaveShaper::bias = bias;
+    WaveShaper::bias = clamp(bias, -MAX_BIAS_LEVEL, MAX_BIAS_LEVEL);
 }
 
 
