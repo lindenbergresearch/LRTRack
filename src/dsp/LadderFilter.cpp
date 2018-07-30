@@ -19,10 +19,10 @@ void LadderFilter::invalidate() {
  * @return
  */
 void LadderFilter::process() {
-    os.doUpsample(LOWPASS, in);
+    rs->doUpsample(LOWPASS, in);
 
-    for (int i = 0; i < os.getFactor(); i++) {
-        float x = os.getUpsampled(LOWPASS)[i];
+    for (int i = 0; i < rs->getFactor(); i++) {
+        float x = rs->getUpsampled(LOWPASS)[i];
 
         // non linear feedback with nice saturation
         x -= fastatan(bx * q);
@@ -57,10 +57,10 @@ void LadderFilter::process() {
 
 
         // overdrive with fast atan, which folds back the waves at high input and creates a noisy bright sound
-        os.data[LOWPASS][i] = fastatan(y);
+        rs->data[LOWPASS][i] = fastatan(y);
     }
 
-    lpOut = os.getDownsampled(LOWPASS) * (INPUT_GAIN / (drive * 20 + 1) * (quadraticBipolar(drive * 3) + 1));
+    lpOut = rs->getDownsampled(LOWPASS) * (INPUT_GAIN / (drive * 20 + 1) * (quadraticBipolar(drive * 3) + 1));
 }
 
 
@@ -210,5 +210,5 @@ void LadderFilter::setLightValue(float lightValue) {
 
 
 LadderFilter::LadderFilter(float sr) : DSPEffect(sr) {
-
+    rs = new Resampler<1>(OVERSAMPLE);
 }

@@ -25,7 +25,7 @@ namespace dsp {
         float in, lpOut;
         float lightValue;
 
-        Resampler<OVERSAMPLE, 1> os;
+        Resampler<1> *rs;
         Noise noise;
 
         void updateResExp();
