@@ -5,6 +5,7 @@
 #include "dsp/fir.hpp"
 
 
+#define RS_BUFFER_SIZE 512
 namespace dsp {
 
     /**
@@ -54,8 +55,8 @@ namespace dsp {
 
 
     struct Decimator {
-        float inBuffer[512];
-        float kernel[512];
+        float inBuffer[RS_BUFFER_SIZE];
+        float kernel[RS_BUFFER_SIZE];
         int inIndex;
         int oversample, quality;
         float cutoff = 0.9;
@@ -97,8 +98,8 @@ namespace dsp {
 
 
     struct Upsampler {
-        float inBuffer[512];
-        float kernel[512];
+        float inBuffer[RS_BUFFER_SIZE];
+        float kernel[RS_BUFFER_SIZE];
         int inIndex;
         int oversample, quality;
         float cutoff = 0.9;
@@ -148,11 +149,11 @@ namespace dsp {
  */
     template<int CHANNELS>
     struct Resampler {
-        float up[CHANNELS][512] = {};
-        float data[CHANNELS][512] = {};
+        float up[CHANNELS][RS_BUFFER_SIZE] = {};
+        float data[CHANNELS][RS_BUFFER_SIZE] = {};
 
-        Decimator decimator[CHANNELS];
-        Upsampler interpolator[CHANNELS];
+        Decimator *decimator[CHANNELS];
+        Upsampler *interpolator[CHANNELS];
 
         int oversample;
 
@@ -163,6 +164,11 @@ namespace dsp {
          */
         Resampler(int oversample) {
             Resampler::oversample = oversample;
+
+            for (int i = 0; i < CHANNELS; i++) {
+                decimator[i] = new Decimator(oversample, 1);
+                interpolator[i] = new Upsampler(oversample, 1);
+            }
         }
 
 
@@ -175,7 +181,7 @@ namespace dsp {
          * @brief Create up-sampled data out of two basic values
          */
         void doUpsample(int channel, float in) {
-            interpolator[channel].process(in, up[channel]);
+            interpolator[channel]->process(in, up[channel]);
         }
 
 
@@ -185,7 +191,7 @@ namespace dsp {
          * @return Downsampled point
          */
         float getDownsampled(int channel) {
-            return decimator[channel].process(data[channel]);
+            return decimator[channel]->process(data[channel]);
         }
 
 
