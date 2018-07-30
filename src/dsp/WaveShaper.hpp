@@ -10,14 +10,14 @@ namespace dsp {
      * @brief Basic WaveShaper class with build-in dynamic oversampling
      * @tparam OVERSAMPLE
      */
-    template<int OVERSAMPLE>
     struct WaveShaper : DSPEffect {
         /* oversampling channel */
         static const int STD_CHANNEL = 1;
+        static const int OVERSAMPLE = 1;
         static constexpr float MAX_BIAS_LEVEL = 0.7;
 
-    private:
-        Resampler<OVERSAMPLE, 1> rs;
+    protected:
+        Resampler<1> *rs;
 
         float in, gain, bias, k;
         float out;
@@ -46,6 +46,7 @@ namespace dsp {
         float getOversampledRate() {
             return sr * OVERSAMPLE;
         }
+
 
         void setAmplitude(float kpos, float kneg) {
             amp = Vec(kpos, kneg);
@@ -80,8 +81,9 @@ namespace dsp {
     };
 
 
-    struct LockhartWavefolder : WaveShaper<1> {
+    struct LockhartWavefolder : WaveShaper {
 
+        static const int OVERSAMPLE = 8;
 
         explicit LockhartWavefolder(float sr);
 

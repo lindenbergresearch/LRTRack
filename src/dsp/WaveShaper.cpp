@@ -4,155 +4,93 @@
 using namespace dsp;
 
 
-/*
-void WaveShaper::process() {
-    float x = input[IN].value;
-    float g = param[GAIN].value;
-    float b = param[BIAS].value;
-    float kpos = param[KPOS].value;
-    float kneg = param[KNEG].value;
-
-    rs.doUpsample(IN, x);
-
-    for (int i = 0; i < rs.getFactor(); i++) {
-        x = rs.getUpsampled(IN)[i] + b;
-
-        /* float y = fastSin(x / g) * g;
-
-         y = y / sqrt(s + y * y);
-
-
-         y = fastatan(y);
-
-         y = y * g;
-
-        // for (int j = 0; j < 5; j++) {
-        if (x >= 0)
-            x = 1 / atan(kpos) * atan(kpos * x);
-        else
-            x = 1 / atan(kneg) * atan(kneg * x);
-
-        //     if (j % 2 == 0) x *= -1;
-        //   }
-
-        rs.data[IN][i] = x * g;
-    }
-
-
-    output[OUT].value = rs.getDownsampled(IN);
-}*/
-
-template<int OVERSAMPLE>
-
-float WaveShaper<OVERSAMPLE>::getIn() const {
+float WaveShaper::getIn() const {
     return in;
 }
 
 
-template<int OVERSAMPLE>
-
-void WaveShaper<OVERSAMPLE>::setIn(float in) {
+void WaveShaper::setIn(float in) {
     WaveShaper::in = in;
 }
 
 
-template<int OVERSAMPLE>
-
-float WaveShaper<OVERSAMPLE>::getGain() const {
+float WaveShaper::getGain() const {
     return gain;
 }
 
 
-template<int OVERSAMPLE>
-
-void WaveShaper<OVERSAMPLE>::setGain(float gain) {
+void WaveShaper::setGain(float gain) {
     WaveShaper::gain = gain;
 }
 
 
-template<int OVERSAMPLE>
-
-float WaveShaper<OVERSAMPLE>::getBias() const {
+float WaveShaper::getBias() const {
     return bias;
 }
 
 
-template<int OVERSAMPLE>
-
-void WaveShaper<OVERSAMPLE>::setBias(float bias) {
+void WaveShaper::setBias(float bias) {
     WaveShaper::bias = clamp(bias, -MAX_BIAS_LEVEL, MAX_BIAS_LEVEL);
 }
 
 
-template<int OVERSAMPLE>
-
-float WaveShaper<OVERSAMPLE>::getK() const {
+float WaveShaper::getK() const {
     return k;
 }
 
 
-template<int OVERSAMPLE>
-
-void WaveShaper<OVERSAMPLE>::setK(float k) {
+void WaveShaper::setK(float k) {
     WaveShaper::k = k;
 }
 
 
-template<int OVERSAMPLE>
-
-float WaveShaper<OVERSAMPLE>::getOut() const {
+float WaveShaper::getOut() const {
     return out;
 }
 
 
-template<int OVERSAMPLE>
-void WaveShaper<OVERSAMPLE>::setOut(float out) {
+void WaveShaper::setOut(float out) {
     WaveShaper::out = out;
 }
 
 
-template<int OVERSAMPLE>
-const Vec &WaveShaper<OVERSAMPLE>::getAmplitude() const {
+const Vec &WaveShaper::getAmplitude() const {
     return amp;
 }
 
 
-template<int OVERSAMPLE>
-void WaveShaper<OVERSAMPLE>::process() {
+void WaveShaper::process() {
 
     /* if no oversampling enabled */
     if (OVERSAMPLE == 1) {
         out = compute(in);
     }
 
-    rs.doUpsample(STD_CHANNEL, in);
+    rs->doUpsample(STD_CHANNEL, in);
 
     for (int i = 0; i < OVERSAMPLE; i++) {
-        float x = rs.getUpsampled(STD_CHANNEL)[i];
-        rs.data[STD_CHANNEL][i] = compute(x);
+        float x = rs->getUpsampled(STD_CHANNEL)[i];
+        rs->data[STD_CHANNEL][i] = compute(x);
     }
 
-    out = rs.getDownsampled(STD_CHANNEL);
+    out = rs->getDownsampled(STD_CHANNEL);
 }
 
 
-template<int OVERSAMPLE>
-WaveShaper<OVERSAMPLE>::WaveShaper(float sr):DSPEffect(sr) {}
+WaveShaper::WaveShaper(float sr) : DSPEffect(sr) {}
 
 
 
 void LockhartWavefolder::init() {
-    DSPEffect::init();
+    rs = new Resampler<1>(1);
 }
 
 
 void LockhartWavefolder::invalidate() {
-    DSPEffect::invalidate();
 }
 
 
 void LockhartWavefolder::process() {
-    DSPEffect::process();
 }
 
 
