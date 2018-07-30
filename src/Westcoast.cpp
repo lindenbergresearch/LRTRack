@@ -31,7 +31,7 @@ struct Westcoast : LRModule {
     Westcoast() : LRModule(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS) {}
 
 
-    dsp::LockhartWavefolder hs = dsp::LockhartWavefolder(engineGetSampleRate());
+    dsp::LockhartWavefolder *hs = new dsp::LockhartWavefolder(engineGetSampleRate());
     LCDWidget *lcd = new LCDWidget(nvgRGBAf(0.9, 0.1, 0.2, 1.0), 12, "%s", LCDWidget::LIST, 14.f);
 
 
@@ -41,14 +41,14 @@ struct Westcoast : LRModule {
 
 
 void Westcoast::step() {
-    hs.setGain(params[GAIN_PARAM].value);
-    hs.setAmplitude(params[KPOS_PARAM].value, params[KNEG_PARAM].value);
-    hs.setBias(params[BIAS_PARAM].value);
-    hs.setIn(inputs[SHAPER_INPUT].value);
+    hs->setGain(params[GAIN_PARAM].value);
+    hs->setAmplitude(params[KPOS_PARAM].value, params[KNEG_PARAM].value);
+    hs->setBias(params[BIAS_PARAM].value);
+    hs->setIn(inputs[SHAPER_INPUT].value);
 
-    hs.process();
+    hs->process();
 
-    outputs[SHAPER_OUTPUT].value = hs.getOut();
+    //outputs[SHAPER_OUTPUT].value = hs.getOut();
 
     lcd->value = params[TYPE_PARAM].value;
 }
@@ -57,7 +57,7 @@ void Westcoast::step() {
 void Westcoast::onSampleRateChange() {
     Module::onSampleRateChange();
     // pass to dsp system
-    hs.setSamplerate(engineGetSampleRate());
+    hs->setSamplerate(engineGetSampleRate());
 }
 
 
