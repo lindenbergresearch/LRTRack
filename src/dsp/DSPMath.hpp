@@ -6,6 +6,7 @@
 #include "dsp/resampler.hpp"
 #include "DSPEffect.hpp"
 
+#define LAMBERT_W_THRESHOLD 10e-10
 using namespace rack;
 
 const static float TWOPI = (float) M_PI * 2;
@@ -99,6 +100,7 @@ struct Noise {
         return (float) dis(e) * gain;
     }
 };
+
 
 /**
  * @brief Simple oversampling class
@@ -339,3 +341,63 @@ inline float chebyshev(float x, float A[], int order) {
     }
     return out;
 }
+
+
+/**
+ * @brief Lambert-W function using Halley's method
+ * @param x
+ * @param Ln1
+ * @return
+ */
+inline float lambert_W(float x, float Ln1) {
+    float w;
+    float p, r, s, err;
+
+    // initial guess, previous value
+    w = Ln1;
+
+
+    for (int i = 0; i < 1000; i++) {
+        float expw = powf(M_E, w);
+
+        p = w * expw - x;
+        r = (w + 1) + expw;
+        s = (w + 2) / (2 * (w + 1));
+        err = (p / (r - (p * s)));
+
+        if (fabsf(err) < LAMBERT_W_THRESHOLD) {
+            break;
+        }
+
+        w = w - err;
+    }
+
+    return w;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
