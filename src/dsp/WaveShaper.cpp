@@ -63,10 +63,10 @@ void WaveShaper::process() {
 
     /* if no oversampling enabled */
     if (OVERSAMPLE == 1) {
-        out = compute(in);
+        out = compute(in * gain);
     }
 
-    rs->doUpsample(STD_CHANNEL, in);
+    rs->doUpsample(STD_CHANNEL, in * gain);
 
     for (int i = 0; i < OVERSAMPLE; i++) {
         float x = rs->getUpsampled(STD_CHANNEL)[i];
@@ -78,7 +78,6 @@ void WaveShaper::process() {
 
 
 WaveShaper::WaveShaper(float sr) : DSPEffect(sr) {}
-
 
 
 void LockhartWavefolder::init() {
