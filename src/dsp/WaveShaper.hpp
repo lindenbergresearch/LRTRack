@@ -4,10 +4,10 @@
 #include "DSPEffect.hpp"
 
 // constants for Lockhart wavesahper model
-#define LOCKHART_RL 7.5e3f
-#define LOCKHART_R 15e3f
-#define LOCKHART_VT 26e-3f
-#define LOCKHART_Is 10e-16f
+#define LOCKHART_RL 7.5e3
+#define LOCKHART_R 15e3
+#define LOCKHART_VT 26e-3
+#define LOCKHART_Is 10e-16
 #define LOCKHART_THRESHOLD 10e-10
 
 
@@ -92,10 +92,14 @@ namespace dsp {
      */
     struct LockhartWFStage {
     private:
-        float ln1, fn1, xn1;
+        double ln1, fn1, xn1;
+        double a, b, d;
 
     public:
-        float compute(float x);
+
+        LockhartWFStage();
+
+        double compute(double x);
     };
 
 
