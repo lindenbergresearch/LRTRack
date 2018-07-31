@@ -62,7 +62,7 @@ const Vec &WaveShaper::getAmplitude() const {
 void WaveShaper::process() {
 
     /* if no oversampling enabled */
-    if (OVERSAMPLE == 1) {
+    if (rs->getFactor() == 1) {
         out = compute(in * gain);
     }
 

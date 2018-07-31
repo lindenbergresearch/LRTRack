@@ -137,10 +137,8 @@ namespace dsp {
      */
     struct LockhartWavefolder : WaveShaper {
 
-        static const int OVERSAMPLE = 8;
-
     private:
-        float ln1, fn1, xn1;
+        LockhartWFStage l1, l2, l3, l4;
 
 
     public:
