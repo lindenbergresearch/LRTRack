@@ -62,10 +62,10 @@ const Vec &WaveShaper::getAmplitude() const {
 void WaveShaper::process() {
     /* if no oversampling set up */
     if (rs->getFactor() == 1) {
-        out = compute(in * gain);
+        out = compute(in);
     }
 
-    rs->doUpsample(STD_CHANNEL, in * gain);
+    rs->doUpsample(STD_CHANNEL, in);
 
     for (int i = 0; i < rs->getFactor(); i++) {
         float x = rs->getUpsampled(STD_CHANNEL)[i];
@@ -84,17 +84,66 @@ void LockhartWavefolder::init() {
 }
 
 
+float LockhartWFStage::compute(float x) {
+    float out;
+    float a, b, d, l, u, ln, fn;
+
+    a = 2 * LOCKHART_RL / LOCKHART_R;
+    b = (LOCKHART_R + 2 * LOCKHART_RL) / (LOCKHART_VT * LOCKHART_R);
+    d = (LOCKHART_RL * LOCKHART_Is) / LOCKHART_VT;
+
+    // Compute Antiderivative
+    l = sign(x);
+    u = d * pow((float) M_E, l * b * x);
+    ln = lambert_W(u, ln1);
+    fn = (0.5f * LOCKHART_VT / b) * (ln * (ln + 2.f)) - 0.5f * a * x * x;
+
+    // Check for ill-conditioning
+    if (abs(x - xn1) < LOCKHART_THRESHOLD) {
+        // Compute Averaged Wavefolder Output
+        float xn = 0.5f * (x + xn1);
+        u = d * powf((float) M_E, l * b * xn);
+        ln = lambert_W(u, ln1);
+        out = l * LOCKHART_VT * ln - a * xn;
+
+    } else {
+        // Apply AA Form
+        out = (fn - fn1) / (x - xn1);
+    }
+
+    ln1 = ln;
+    fn1 = fn;
+    xn1 = x;
+
+    return out;
+}
+
 void LockhartWavefolder::invalidate() {
 }
 
 
 void LockhartWavefolder::process() {
+    WaveShaper::process();
 }
 
 
 float LockhartWavefolder::compute(float x) {
+    float out;
+    float in = (x + bias) * gain;
 
+    in = lh.compute(in);
+    in = lh.compute(in);
+    in = lh.compute(in);
+    in = lh.compute(in);
+
+    in *= 3.f;
+
+    out = tanhf(in);
+
+    return out;
 }
 
 
-LockhartWavefolder::LockhartWavefolder(float sr) : WaveShaper(sr) {}
+LockhartWavefolder::LockhartWavefolder(float sr) : WaveShaper(sr) {
+    init();
+}
