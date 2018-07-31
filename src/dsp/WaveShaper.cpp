@@ -60,15 +60,14 @@ const Vec &WaveShaper::getAmplitude() const {
 
 
 void WaveShaper::process() {
-
-    /* if no oversampling enabled */
+    /* if no oversampling set up */
     if (rs->getFactor() == 1) {
         out = compute(in * gain);
     }
 
     rs->doUpsample(STD_CHANNEL, in * gain);
 
-    for (int i = 0; i < OVERSAMPLE; i++) {
+    for (int i = 0; i < rs->getFactor(); i++) {
         float x = rs->getUpsampled(STD_CHANNEL)[i];
         rs->data[STD_CHANNEL][i] = compute(x);
     }
