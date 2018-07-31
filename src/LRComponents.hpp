@@ -9,7 +9,7 @@
 #define LCD_LETTER_SPACING 0
 
 /* show values of all knobs */
-#define DEBUG_VALUES true
+#define DEBUG_VALUES false
 
 typedef std::shared_ptr<rack::Font> TrueType;
 using namespace rack;
@@ -534,7 +534,7 @@ private:
     static constexpr float MARGIN = 10;
 
     /** gradient colors */
-    NVGcolor inner = nvgRGBAf(1.5 * .369f, 1.5 * 0.357f, 1.5 * 0.3333f, 0.25);
+    NVGcolor inner = nvgRGBAf(1.5f * .369f, 1.5f * 0.357f, 1.5f * 0.3333f, 0.25f);
     NVGcolor outer = nvgRGBAf(0.0f, 0.0f, 0.0f, 0.34f);;
 
     /** gradient offset */
