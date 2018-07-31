@@ -344,7 +344,20 @@ inline float chebyshev(float x, float A[], int order) {
 
 
 /**
+ * @brief Signum function
+ * @param x
+ * @return
+ */
+inline float sign(float x) {
+    if (x > 0) return 1;
+    if (x < 0) return -1;
+    return 0;
+}
+
+
+/**
  * @brief Lambert-W function using Halley's method
+ *        see: http://smc2017.aalto.fi/media/materials/proceedings/SMC17_p336.pdf
  * @param x
  * @param Ln1
  * @return
@@ -356,7 +369,7 @@ inline float lambert_W(float x, float Ln1) {
     // initial guess, previous value
     w = Ln1;
 
-
+    // Haley's method (Sec. 4.2 of the paper)
     for (int i = 0; i < 1000; i++) {
         float expw = powf(M_E, w);
 
