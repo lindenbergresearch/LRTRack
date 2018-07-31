@@ -348,7 +348,7 @@ inline float chebyshev(float x, float A[], int order) {
  * @param x
  * @return
  */
-inline float sign(float x) {
+inline double sign(double x) {
     if (x > 0) return 1;
     if (x < 0) return -1;
     return 0;
@@ -362,24 +362,25 @@ inline float sign(float x) {
  * @param Ln1
  * @return
  */
-inline float lambert_W(float x, float Ln1) {
-    float w;
-    float p, r, s, err;
+inline double lambert_W(double x, double Ln1) {
+    double w;
+    double p, r, s, err;
+    double expw;
 
     // initial guess, previous value
     w = Ln1;
 
     // Haley's method (Sec. 4.2 of the paper)
     for (int i = 0; i < 1000; i++) {
-        float expw = powf(M_E, w);
+        expw = pow(M_E, w);
 
         p = w * expw - x;
         r = (w + 1) + expw;
         s = (w + 2) / (2 * (w + 1));
         err = (p / (r - (p * s)));
 
-        if (fabsf(err) < LAMBERT_W_THRESHOLD) {
-            break;
+        if (abs(err) < LAMBERT_W_THRESHOLD) {
+            return w - err;
         }
 
         w = w - err;
