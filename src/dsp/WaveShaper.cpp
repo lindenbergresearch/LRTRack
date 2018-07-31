@@ -94,7 +94,39 @@ void LockhartWavefolder::process() {
 
 
 float LockhartWavefolder::compute(float x) {
-    // DUMMY FOR NOW
+    float out;
+    float a, b, d, l, u, ln, fn;
+
+    a = 2 * LOCKHART_RL / LOCKHART_R;
+    b = (LOCKHART_R + 2 * LOCKHART_RL) / (LOCKHART_VT * LOCKHART_R);
+    d = (LOCKHART_RL * LOCKHART_Is) / LOCKHART_VT;
+
+    // Compute Antiderivative
+    l = sign(x);
+    u = d * pow((float) M_E, l * b * x);
+    ln = lambert_W(u, ln1);
+    fn = (0.5f * LOCKHART_VT / b) * (ln * (ln + 2.f)) - 0.5f * a * x * x;
+
+    // Check for ill-conditioning
+    if (abs(x - xn1) < LOCKHART_THRESHOLD) {
+
+        // Compute Averaged Wavefolder Output
+        float xn = 0.5f * (x + xn1);
+        u = d * powf((float) M_E, l * b * xn);
+        ln = lambert_W(u, ln1);
+        out = l * LOCKHART_VT * ln - a * xn;
+
+    } else {
+
+        // Apply AA Form
+        out = (fn - fn1) / (x - xn1);
+
+    }
+
+    ln1 = ln;
+    fn1 = fn;
+    xn1 = x;
+
     return x;
 }
 

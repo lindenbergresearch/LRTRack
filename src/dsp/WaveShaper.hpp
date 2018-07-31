@@ -3,6 +3,14 @@
 #include "DSPMath.hpp"
 #include "DSPEffect.hpp"
 
+// constants for Lockhart wavesahper model
+#define LOCKHART_RL 7.5e3f
+#define LOCKHART_R 15e3f
+#define LOCKHART_VT 26e-3f
+#define LOCKHART_Is 10e-16f
+#define LOCKHART_THRESHOLD 10e-10
+
+
 
 namespace dsp {
 
@@ -84,6 +92,8 @@ namespace dsp {
     struct LockhartWavefolder : WaveShaper {
 
         static const int OVERSAMPLE = 8;
+
+        float ln1, fn1, xn1;
 
         explicit LockhartWavefolder(float sr);
 
