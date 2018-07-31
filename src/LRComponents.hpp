@@ -552,6 +552,9 @@ public:
     }
 
 
+    const NVGcolor &getInner() const;
+    const NVGcolor &getOuter() const;
+
     void draw(NVGcontext *vg) override;
 };
 
