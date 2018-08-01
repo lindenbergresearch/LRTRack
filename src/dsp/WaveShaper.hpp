@@ -83,7 +83,7 @@ namespace dsp {
          * @param x Input sample
          * @return Output sample
          */
-        virtual float compute(float x) { return x; }
+        virtual double compute(double x) { return x; }
     };
 
 
@@ -118,7 +118,7 @@ namespace dsp {
         void init() override;
         void invalidate() override;
         void process() override;
-        float compute(float x) override;
+        double compute(double x) override;
 
     };
 

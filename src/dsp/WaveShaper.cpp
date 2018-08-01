@@ -93,7 +93,7 @@ double LockhartWFStage::compute(double x) {
     // Compute Antiderivative
     l = sign(x);
     u = d * pow(M_E, l * b * x);
-    ln = lambert_W(u, ln1);
+    ln = lambert_W_Fritsch(u);
     fn = (0.5 * LOCKHART_VT / b) * (ln * (ln + 2.)) - 0.5 * a * x * x;
 
     // Check for ill-conditioning
@@ -101,7 +101,7 @@ double LockhartWFStage::compute(double x) {
         // Compute Averaged Wavefolder Output
         double xn = 0.5 * (x + xn1);
         u = d * pow(M_E, l * b * xn);
-        ln = lambert_W(u, ln1);
+        ln = lambert_W_Fritsch(u);
         out = l * LOCKHART_VT * ln - a * xn;
 
     } else {
@@ -122,8 +122,8 @@ LockhartWFStage::LockhartWFStage() {
     fn1 = 0;
     xn1 = 0;
 
-    a = 2 * LOCKHART_RL / LOCKHART_R;
-    b = (LOCKHART_R + 2 * LOCKHART_RL) / (LOCKHART_VT * LOCKHART_R);
+    a = 2. * LOCKHART_RL / LOCKHART_R;
+    b = (LOCKHART_R + 2. * LOCKHART_RL) / (LOCKHART_VT * LOCKHART_R);
     d = (LOCKHART_RL * LOCKHART_Is) / LOCKHART_VT;
 }
 
@@ -137,23 +137,62 @@ void LockhartWavefolder::process() {
 }
 
 
-float LockhartWavefolder::compute(float x) {
-    float out;
-    float in = (x + bias) * gain;
+double LockhartWavefolder::compute(double x) {
+    double out;
+    double in = (x + bias) * gain;
 
-    in = (float) lh.compute(in * 0.05);
-    /* in = lh.compute(in);
+    in = lh.compute(in * 0.7);
+    in = lh.compute(in);
      in = lh.compute(in);
-     in = lh.compute(in);*/
+    in = lh.compute(in);
 
-//    in *= 3.f;
+    in *= 3.f;
 
-    out = tanhf(in);
+    out = tanh(in);
 
-    return out;
+    return out * 30;
 }
 
 
 LockhartWavefolder::LockhartWavefolder(float sr) : WaveShaper(sr) {
     init();
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
