@@ -32,7 +32,7 @@ struct Westcoast : LRModule {
 
 
     dsp::LockhartWavefolder *hs = new dsp::LockhartWavefolder(engineGetSampleRate());
-    LCDWidget *lcd = new LCDWidget(nvgRGBAf(0.9, 0.1, 0.3, 1.0), 12, "%s", LCDWidget::LIST, 14.f);
+    LCDWidget *lcd = new LCDWidget(nvgRGBAf(0.9, 0.1, 0.3, 1.0), 10, "%s", LCDWidget::LIST, 14.f);
 
 
     void step() override;
@@ -41,9 +41,9 @@ struct Westcoast : LRModule {
 
 
 void Westcoast::step() {
-    hs->setGain(params[GAIN_PARAM].value);
+    hs->setGain(quadraticBipolar(params[GAIN_PARAM].value));
     // hs->setAmplitude(params[KPOS_PARAM].value, params[KNEG_PARAM].value);
-    // hs->setBias(params[BIAS_PARAM].value);
+    hs->setBias(params[BIAS_PARAM].value);
     hs->setIn(inputs[SHAPER_INPUT].value);
 
     hs->process();
@@ -96,7 +96,7 @@ WestcoastWidget::WestcoastWidget(Westcoast *module) : LRModuleWidget(module) {
     // ***** SCREWS **********
 
     // ***** MAIN KNOBS ******
-    addParam(LRKnob::create<LRBigKnob>(Vec(102, 64.9), module, Westcoast::GAIN_PARAM, 0.1, 20.f, 1.f));
+    addParam(LRKnob::create<LRBigKnob>(Vec(102, 64.9), module, Westcoast::GAIN_PARAM, 0.25, 1.f, 0.25f));
     addParam(LRKnob::create<LRMiddleKnob>(Vec(22, 134.9), module, Westcoast::KPOS_PARAM, 0.1f, 2.f, 1.f));
     addParam(LRKnob::create<LRMiddleKnob>(Vec(122, 134.9), module, Westcoast::KNEG_PARAM, 0.1f, 2.f, 1.f));
     addParam(LRKnob::create<LRMiddleKnob>(Vec(22, 64), module, Westcoast::BIAS_PARAM, -5.f, 5.f, 0.f));
