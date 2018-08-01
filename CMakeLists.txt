@@ -20,7 +20,17 @@ set(SOURCE_FILES
         src/dsp/DSPSystem.hpp
         src/dsp/LadderFilter.hpp
         src/dsp/LadderFilter.cpp
-        src/dsp/MS20zdf.hpp src/dsp/MS20zdf.cpp src/MS20Filter.cpp src/LRComponents.cpp src/LRComponents.hpp src/Westcoast.cpp src/dsp/WaveShaper.cpp src/dsp/WaveShaper.hpp)
+        src/dsp/MS20zdf.hpp
+        src/dsp/MS20zdf.cpp
+        src/MS20Filter.cpp
+        src/LRComponents.cpp
+        src/LRComponents.hpp
+        src/Westcoast.cpp
+        src/dsp/WaveShaper.cpp
+        src/dsp/WaveShaper.hpp
+        src/dsp/Lockhart.cpp
+        src/dsp/Lockhart.hpp
+        )
 
 include_directories(.)
 include_directories(src)
