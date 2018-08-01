@@ -362,12 +362,12 @@ inline double sign(double x) {
  * @param ln1
  * @return
  */
-inline long double lambert_W(long double x, long double ln1) {
-    long double w;
-    long double p, r, s, err;
-    long double expw;
+inline double lambert_W(double x, double ln1) {
+    double w;
+    double p, r, s, err;
+    double expw;
 
-    if (!isnan(ln1) || !isfinite(ln1)) ln1 = 0.;
+    // if (!isnan(ln1) || !isfinite(ln1)) ln1 = 0.;
 
     // initial guess, previous value
     w = ln1;
@@ -375,16 +375,16 @@ inline long double lambert_W(long double x, long double ln1) {
 //    debug("x: %f  ln1: %f", x, ln1);
 
     // Haley's method (Sec. 4.2 of the paper)
-    for (int i = 0; i < 1000; i++) {
+    for (int i = 0; i < 100; i++) {
         expw = pow(M_E, w);
 
         p = w * expw - x;
-        r = (w + 1.) + expw;
+        r = (w + 1.) * expw;
         s = (w + 2.) / (2. * (w + 1.));
         err = (p / (r - (p * s)));
 
-        if (abs(err) < LAMBERT_W_THRESHOLD) {
-            return w - err;
+        if (abs(err) < 10e-12) {
+            break;
         }
 
         w = w - err;
