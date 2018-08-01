@@ -359,24 +359,28 @@ inline double sign(double x) {
  * @brief Lambert-W function using Halley's method
  *        see: http://smc2017.aalto.fi/media/materials/proceedings/SMC17_p336.pdf
  * @param x
- * @param Ln1
+ * @param ln1
  * @return
  */
-inline double lambert_W(double x, double Ln1) {
-    double w;
-    double p, r, s, err;
-    double expw;
+inline long double lambert_W(long double x, long double ln1) {
+    long double w;
+    long double p, r, s, err;
+    long double expw;
+
+    if (!isnan(ln1) || !isfinite(ln1)) ln1 = 0.;
 
     // initial guess, previous value
-    w = Ln1;
+    w = ln1;
+
+//    debug("x: %f  ln1: %f", x, ln1);
 
     // Haley's method (Sec. 4.2 of the paper)
     for (int i = 0; i < 1000; i++) {
         expw = pow(M_E, w);
 
         p = w * expw - x;
-        r = (w + 1) + expw;
-        s = (w + 2) / (2 * (w + 1));
+        r = (w + 1.) + expw;
+        s = (w + 2.) / (2. * (w + 1.));
         err = (p / (r - (p * s)));
 
         if (abs(err) < LAMBERT_W_THRESHOLD) {
@@ -390,6 +394,57 @@ inline double lambert_W(double x, double Ln1) {
 }
 
 
+/**
+ * @brief
+ *
+ * This function evaluates the upper branch of the Lambert-W function for
+ * real input x.
+ *
+ * Function written by F. Esqueda 2/10/17 based on implementation presented
+ * by Darko Veberic - "Lambert W Function for Applications in Physics"
+ * Available at https://arxiv.org/pdf/1209.0735.pdf
+ *
+ * @param x input
+ * @return W(x)
+ */
+inline double lambert_W_Fritsch(double x) {
+    double num, den;
+    double w, w1, a, b, ia;
+    double z, q, e;
+
+    if (x < 0.14546954290661823) {
+        num = 1 + 5.931375839364438 * x + 11.39220550532913 * x * x + 7.33888339911111 * x * x * x + 0.653449016991959 * x * x * x * x;
+        den = 1 + 6.931373689597704 * x + 16.82349461388016 * x * x + 16.43072324143226 * x * x * x + 5.115235195211697 * x * x * x * x;
+
+        w = x * num / den;
+    } else if (x < 8.706658967856612) {
+        num = 1 + 2.4450530707265568 * x + 1.3436642259582265 * x * x + 0.14844005539759195 * x * x * x +
+              0.0008047501729130 * x * x * x * x;
+        den = 1 + 3.4447089864860025 * x + 3.2924898573719523 * x * x + 0.9164600188031222 * x * x * x +
+              0.05306864044833221 * x * x * x * x;
+
+        w = x * num / den;
+    } else {
+        a = log(x);
+        b = log(a);
+        ia = 1. / a;
+        w = a - b + (b * ia) * 0.5 * b * (b - 2.) * (ia * ia) + (1. / 6.) * (2. * b * b - 9. * b + 6.) * (ia * ia * ia);
+    }
+
+
+    for (int i = 0; i < 20; i++) {
+        w1 = w + 1.;
+        z = log(x) - log(w) - w;
+        q = 2. * w1 * (w1 + (2. / 3.) * z);
+        e = (z / w1) * ((q - z) / (q - 2. * z));
+
+        if (abs(e) < 10e-12) {
+            break;
+        }
+    }
+
+    return w;
+}
 
 
 
