@@ -88,12 +88,15 @@ float Integrator::add(float x, float Fn) {
  * @return Filtered sample
  */
 float DCBlocker::filter(float x) {
-    float y = x - xm1 + R * ym1;
+    float y = x - xm1 + r * ym1;
     xm1 = x;
     ym1 = y;
 
     return y;
 }
+
+
+DCBlocker::DCBlocker(float r) : r(r) {}
 
 
 /**
