@@ -462,6 +462,30 @@ struct LRSmallKnob : LRKnob {
 
 
 /**
+ * @brief LR Middle Knob
+ */
+struct LRAlternateMiddleKnob : LRKnob {
+    LRAlternateMiddleKnob() {
+        setSVG(SVG::load(assetPlugin(plugin, "res/AlternateMiddleKnob.svg")));
+        setIndicatorDistance(12);
+        shadow.setShadowPosition(4, 4);
+    }
+};
+
+
+/**
+ * @brief LR Big Knob
+ */
+struct LRAlternateBigKnob : LRKnob {
+    LRAlternateBigKnob() {
+        setSVG(SVG::load(assetPlugin(plugin, "res/AlternateBigKnob.svg")));
+        setIndicatorDistance(15);
+        shadow.setShadowPosition(5, 6);
+    }
+};
+
+
+/**
  * @brief Alternative IO Port
  */
 struct LRIOPort : SVGPort {
@@ -540,8 +564,7 @@ private:
     /** gradient offset */
     Vec offset = Vec(30, -50);
 
-    void setInner(const NVGcolor &inner);
-    void setOuter(const NVGcolor &outer);
+
 public:
     LRPanel();
 
@@ -552,6 +575,8 @@ public:
     }
 
 
+    void setInner(const NVGcolor &inner);
+    void setOuter(const NVGcolor &outer);
     const NVGcolor &getInner() const;
     const NVGcolor &getOuter() const;
 
