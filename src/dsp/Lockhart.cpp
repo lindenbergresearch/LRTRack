@@ -26,7 +26,6 @@ double LockhartWFStage::compute(double x) {
         out = (fn - fn1) / (x - xn1);
     }
 
-    ln1 = ln;
     fn1 = fn;
     xn1 = x;
 
@@ -35,7 +34,6 @@ double LockhartWFStage::compute(double x) {
 
 
 LockhartWFStage::LockhartWFStage() {
-    ln1 = 0;
     fn1 = 0;
     xn1 = 0;
 
@@ -61,18 +59,23 @@ void LockhartWavefolder::process() {
 
 double LockhartWavefolder::compute(double x) {
     double out;
-    double in = (x + bias) * gain * 0.2;
+    double in = (x + bias) * gain * 0.333;
 
-    in = lh.compute(in);
-    in = lh.compute(in);
-    in = lh.compute(in);
-    in = lh.compute(in);
+    //debug("%fV", in);
 
-    in *= 2.f;
+    in = lh1.compute(in);
+    in = lh2.compute(in);
+    in = lh3.compute(in);
+    in = lh4.compute(in);
+
+    in *= 3.f;
+
+    in *= 0.2;
+    //in = dc->filter(in);
 
     out = tanh(in);
 
-    return out * 30;
+    return lp6->filter(out);
 }
 
 

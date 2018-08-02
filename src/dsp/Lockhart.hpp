@@ -5,7 +5,7 @@
 // constants for Lockhart waveshaper model
 #define LOCKHART_RL 7.5e3
 #define LOCKHART_R 15e3
-#define LOCKHART_VT 26e-3
+#define LOCKHART_VT 25.864e-3
 #define LOCKHART_Is 10e-16
 #define LOCKHART_THRESHOLD 10e-10
 
@@ -16,7 +16,8 @@ namespace dsp {
  */
     struct LockhartWFStage {
     private:
-        double ln1, fn1, xn1;
+
+        double fn1, xn1;
         double a, b, d;
 
     public:
@@ -33,7 +34,9 @@ namespace dsp {
     struct LockhartWavefolder : WaveShaper {
 
     private:
-        LockhartWFStage lh;
+        LockhartWFStage lh1, lh2, lh3, lh4;
+        DCBlocker *dc = new DCBlocker(0.9);
+        LP6DBFilter *lp6 = new LP6DBFilter(1300, 1);
 
 
     public:
