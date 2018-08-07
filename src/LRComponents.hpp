@@ -399,8 +399,8 @@ struct LRToggleKnob : LRKnob {
  */
 struct LRMiddleIncremental : LRKnob {
     LRMiddleIncremental(float length = 0.5f) {
-        minAngle = -(float) M_PI;
-        maxAngle = (float) M_PI;
+        minAngle = -length * (float) M_PI;
+        maxAngle = length * (float) M_PI;
 
         setSVG(SVG::load(assetPlugin(plugin, "res/MiddleIncremental.svg")));
         shadow.setShadowPosition(3, 4);
@@ -408,13 +408,13 @@ struct LRMiddleIncremental : LRKnob {
         shadow.setStrength(1.2f);
         shadow.setSize(0.7f);
 
-        speed = 2.f;
+        speed = 3.f;
     }
 
 
     void onChange(EventChange &e) override {
 
-        value = lround(value * 10) / 10.f;
+        value = lround(value);
 
         //value = round(value);
         SVGKnob::onChange(e);
@@ -460,6 +460,20 @@ struct LRSmallKnob : LRKnob {
     }
 };
 
+
+/**
+ * @brief LR Alternate Small Knob
+ */
+struct LRAlternateSmallKnob : LRKnob {
+    LRAlternateSmallKnob() {
+        setSVG(SVG::load(assetPlugin(plugin, "res/AlternateSmallKnob.svg")));
+        shadow.setShadowPosition(3, 3);
+        setSnap(0.0f, 0.03f);
+
+
+        speed = 0.9f;
+    }
+};
 
 /**
  * @brief LR Middle Knob

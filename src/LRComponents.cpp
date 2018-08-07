@@ -60,7 +60,7 @@ void LCDWidget::draw(NVGcontext *vg) {
     // on list mode get current item out of the current value
     if (type == LIST) {
         unsigned long index;
-        long current = lround(value * items.size());
+        long current = lround(value);
 
         if (current < 0) {
             index = 0;
