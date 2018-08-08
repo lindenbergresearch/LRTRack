@@ -4,8 +4,9 @@
 #include "dsp/ringbuffer.hpp"
 #include "dsp/fir.hpp"
 
-
 #define RS_BUFFER_SIZE 512
+
+
 namespace dsp {
 
     /**
@@ -144,9 +145,9 @@ namespace dsp {
     };
 
 
-/**
- * @brief NEW oversampling class
- */
+    /**
+     * @brief NEW oversampling class
+     */
     template<int CHANNELS>
     struct Resampler {
         float up[CHANNELS][RS_BUFFER_SIZE] = {};
