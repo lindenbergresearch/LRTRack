@@ -25,12 +25,12 @@ set(SOURCE_FILES
         src/MS20Filter.cpp
         src/LRComponents.cpp
         src/LRComponents.hpp
-        src/Westcoast.cpp
         src/dsp/WaveShaper.cpp
         src/dsp/WaveShaper.hpp
         src/dsp/Lockhart.cpp
         src/dsp/Lockhart.hpp
-        )
+        src/Westcoast.cpp
+        src/dsp/HQTrig.hpp)
 
 include_directories(.)
 include_directories(src)
