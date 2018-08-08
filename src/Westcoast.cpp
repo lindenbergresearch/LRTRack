@@ -1,4 +1,4 @@
-#include <src/dsp/Lockhart.hpp>
+#include "dsp/Lockhart.hpp"
 #include "LindenbergResearch.hpp"
 
 
@@ -6,8 +6,8 @@ struct Westcoast : LRModule {
 
     enum ParamIds {
         GAIN_PARAM,
-        KPOS_PARAM,
-        KNEG_PARAM,
+        CV_GAIN_PARAM,
+        CV_BIAS_PARAM,
         BIAS_PARAM,
         TYPE_PARAM,
         NUM_PARAMS
@@ -15,6 +15,8 @@ struct Westcoast : LRModule {
 
     enum InputIds {
         SHAPER_INPUT,
+        CV_GAIN_INPUT,
+        CV_BIAS_INPUT,
         NUM_INPUTS
     };
 
@@ -32,8 +34,6 @@ struct Westcoast : LRModule {
 
 
     dsp::LockhartWavefolder *hs = new dsp::LockhartWavefolder(engineGetSampleRate());
-    LCDWidget *lcd = new LCDWidget(nvgRGBAf(0.9, 0.1, 0.3, 1.0), 10, "%s", LCDWidget::LIST, 14.f);
-
 
     void step() override;
     void onSampleRateChange() override;
@@ -42,28 +42,21 @@ struct Westcoast : LRModule {
 
 void Westcoast::step() {
     hs->setGain((params[GAIN_PARAM].value));
-    // hs->setAmplitude(params[KPOS_PARAM].value, params[KNEG_PARAM].value);
     hs->setBias(params[BIAS_PARAM].value);
     hs->setIn(inputs[SHAPER_INPUT].value);
 
     hs->process();
 
-    outputs[SHAPER_OUTPUT].value = hs->getOut();
-
-    lcd->value = params[TYPE_PARAM].value;
+    outputs[SHAPER_OUTPUT].value = hs->getOut() * 5;
 }
 
 
 void Westcoast::onSampleRateChange() {
     Module::onSampleRateChange();
-    // pass to dsp system
     hs->setSamplerate(engineGetSampleRate());
 }
 
 
-/**
- * @brief Valerie MS20 filter
- */
 struct WestcoastWidget : LRModuleWidget {
     WestcoastWidget(Westcoast *module);
 };
@@ -76,18 +69,6 @@ WestcoastWidget::WestcoastWidget(Westcoast *module) : LRModuleWidget(module) {
 
     box.size = panel->box.size;
 
-    // **** SETUP LCD ********
-    module->lcd->box.pos = Vec(24, 239);
-    module->lcd->addItem("LOCKHART");
-    module->lcd->addItem("Chebyshev");
-    module->lcd->addItem("SINE");
-    module->lcd->addItem("SATURATE");
-    module->lcd->addItem("HARDCLIP");
-
-
-    addChild(module->lcd);
-    // **** SETUP LCD ********
-
     // ***** SCREWS **********
     addChild(Widget::create<ScrewDarkA>(Vec(15, 1)));
     addChild(Widget::create<ScrewDarkA>(Vec(box.size.x - 30, 1)));
@@ -96,24 +77,26 @@ WestcoastWidget::WestcoastWidget(Westcoast *module) : LRModuleWidget(module) {
     // ***** SCREWS **********
 
     // ***** MAIN KNOBS ******
-    addParam(LRKnob::create<LRBigKnob>(Vec(102, 64.9), module, Westcoast::GAIN_PARAM, 0.25, 5.f, 0.25f));
-    addParam(LRKnob::create<LRMiddleKnob>(Vec(22, 134.9), module, Westcoast::KPOS_PARAM, 0.1f, 2.f, 1.f));
-    addParam(LRKnob::create<LRMiddleKnob>(Vec(122, 134.9), module, Westcoast::KNEG_PARAM, 0.1f, 2.f, 1.f));
-    addParam(LRKnob::create<LRMiddleKnob>(Vec(22, 64), module, Westcoast::BIAS_PARAM, -5.f, 5.f, 0.f));
+    addParam(LRKnob::create<LRAlternateBigKnob>(Vec(28.4, 62.6), module, Westcoast::GAIN_PARAM, 0.25, 20.f, 1.f));
+    addParam(LRKnob::create<LRAlternateMiddleKnob>(Vec(36.4, 155.7), module, Westcoast::BIAS_PARAM, -0.5f, 0.5f, 0.f));
+    addParam(LRKnob::create<LRMiddleIncremental>(Vec(85, 269.3), module, Westcoast::TYPE_PARAM, -3, 3, 0));
 
-    addParam(LRKnob::create<LRMiddleIncremental>(Vec(42, 260), module, Westcoast::TYPE_PARAM, 0, 1, 0));
+    addParam(LRKnob::create<LRAlternateSmallKnob>(Vec(114, 78.7), module, Westcoast::CV_GAIN_PARAM, -1.f, 1.f, 0.f));
+    addParam(LRKnob::create<LRAlternateSmallKnob>(Vec(114, 163.3), module, Westcoast::CV_BIAS_PARAM, -1.f, 1.f, 0.f));
 
     // ***** MAIN KNOBS ******
 
     // ***** CV INPUTS *******
+    addInput(Port::create<LRIOPort>(Vec(159.9, 78.6), Port::INPUT, module, Westcoast::CV_GAIN_INPUT));
+    addInput(Port::create<LRIOPort>(Vec(159.9, 163.7), Port::INPUT, module, Westcoast::CV_BIAS_INPUT));
     // ***** CV INPUTS *******
 
     // ***** INPUTS **********
-    addInput(Port::create<LRIOPort>(Vec(17.999, 326.05), Port::INPUT, module, Westcoast::SHAPER_INPUT));
+    addInput(Port::create<LRIOPort>(Vec(22.9, 326.7), Port::INPUT, module, Westcoast::SHAPER_INPUT));
     // ***** INPUTS **********
 
     // ***** OUTPUTS *********
-    addOutput(Port::create<LRIOPort>(Vec(58.544, 326.05), Port::OUTPUT, module, Westcoast::SHAPER_OUTPUT));
+    addOutput(Port::create<LRIOPort>(Vec(159.9, 326.7), Port::OUTPUT, module, Westcoast::SHAPER_OUTPUT));
     // ***** OUTPUTS *********
 
     // ***** SWITCH  *********
