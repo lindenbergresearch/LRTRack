@@ -91,9 +91,7 @@ public:
  */
 struct Noise {
 
-    Noise() {
-
-    }
+    Noise() {}
 
 
     float nextFloat(float gain) {
@@ -106,6 +104,7 @@ struct Noise {
 
 /**
  * @brief Simple oversampling class
+ * @deprecated Use resampler instead
  */
 template<int OVERSAMPLE, int CHANNELS>
 struct OverSampler {
