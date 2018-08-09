@@ -531,6 +531,36 @@ public:
 
 
 /**
+ * @brief Alternative IO Port
+ */
+struct LRIOPortC : SVGPort {
+private:
+    LRShadow shadow = LRShadow();
+
+public:
+    LRIOPortC() {
+        background->svg = SVG::load(assetPlugin(plugin, "res/IOPortC.svg"));
+        background->wrap();
+        box.size = background->box.size;
+
+        /** inherit dimensions */
+        shadow.setBox(box);
+        shadow.setSize(0.50);
+        shadow.setShadowPosition(2, 1);
+    }
+
+
+    /**
+     * @brief Hook into draw method
+     * @param vg
+     */
+    void draw(NVGcontext *vg) override {
+        shadow.draw(vg);
+        SVGPort::draw(vg);
+    }
+};
+
+/**
  * @brief Alternative screw head A
  */
 struct ScrewDarkA : SVGScrew {
