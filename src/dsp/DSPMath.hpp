@@ -33,17 +33,17 @@ struct Integrator {
  * @brief Filter out DC offset / 1-Pole HP Filter
  */
 struct DCBlocker {
-    float r = 0.999;
-    float xm1 = 0.f, ym1 = 0.f;
+    double r = 0.999;
+    double xm1 = 0.f, ym1 = 0.f;
 
-    DCBlocker(float r);
+    DCBlocker(double r);
 
     /**
      * @brief Filter signal
      * @param x Input sample
      * @return Filtered output
      */
-    float filter(float x);
+    double filter(double x);
 };
 
 
