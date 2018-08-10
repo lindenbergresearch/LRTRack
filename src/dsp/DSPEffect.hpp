@@ -56,17 +56,17 @@ namespace dsp {
 
     /** The normalized sinc function. https://en.wikipedia.org/wiki/Sinc_function */
     inline double sinc(double x) {
-        if (x == 0.f)
-            return 1.f;
+        if (x == 0.)
+            return 1.;
         x *= M_PI;
         return sin(x) / x;
     }
 
 
     /** Computes the impulse response of a boxcar lowpass filter */
-    inline void boxcarLowpassIR(double *out, int len, double cutoff = 0.5f) {
+    inline void boxcarLowpassIR(double *out, int len, double cutoff = 0.5) {
         for (int i = 0; i < len; i++) {
-            double t = i - (len - 1) / 2.f;
+            double t = i - (len - 1) / 2.;
             out[i] = 2 * cutoff * sinc(2 * cutoff * t);
         }
     }
@@ -74,10 +74,10 @@ namespace dsp {
 
     inline void blackmanHarrisWindow(double *x, int len) {
         // Constants from https://en.wikipedia.org/wiki/Window_function#Blackman%E2%80%93Harris_window
-        const double a0 = 0.35875f;
-        const double a1 = 0.48829f;
-        const double a2 = 0.14128f;
-        const double a3 = 0.01168f;
+        const double a0 = 0.35875;
+        const double a1 = 0.48829;
+        const double a2 = 0.14128;
+        const double a3 = 0.01168;
         double factor = 2 * M_PI / (len - 1);
         for (int i = 0; i < len; i++) {
             x[i] *= +a0
@@ -100,7 +100,7 @@ namespace dsp {
             Decimator::oversample = oversample;
             Decimator::quality = quality;
 
-            boxcarLowpassIR(kernel, oversample * quality, cutoff * 0.5f / oversample);
+            boxcarLowpassIR(kernel, oversample * quality, cutoff * 0.5 / oversample);
             blackmanHarrisWindow(kernel, oversample * quality);
             reset();
         }
@@ -120,7 +120,7 @@ namespace dsp {
             inIndex += oversample;
             inIndex %= oversample * quality;
             // Perform naive convolution
-            double out = 0.f;
+            double out = 0.;
             for (int i = 0; i < oversample * quality; i++) {
                 int index = inIndex - 1 - i;
                 index = (index + oversample * quality) % (oversample * quality);
@@ -138,12 +138,11 @@ namespace dsp {
         int oversample, quality;
         double cutoff = 0.9;
 
-
         Upsampler(int oversample, int quality) {
             Upsampler::oversample = oversample;
             Upsampler::quality = quality;
 
-            boxcarLowpassIR(kernel, oversample * quality, cutoff * 0.5f / oversample);
+            boxcarLowpassIR(kernel, oversample * quality, cutoff * 0.5 / oversample);
             blackmanHarrisWindow(kernel, oversample * quality);
             reset();
         }
@@ -165,7 +164,7 @@ namespace dsp {
             // Naively convolve each sample
             // TODO replace with polyphase filter hierarchy
             for (int i = 0; i < oversample; i++) {
-                float y = 0.f;
+                float y = 0.0;
                 for (int j = 0; j < quality; j++) {
                     int index = inIndex - 1 - j;
                     index = (index + quality) % quality;
