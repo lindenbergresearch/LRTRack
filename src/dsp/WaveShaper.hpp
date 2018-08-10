@@ -12,41 +12,41 @@ namespace dsp {
     struct WaveShaper : DSPEffect {
         /* oversampling channel */
         static const int STD_CHANNEL = 0;
-        static constexpr float MAX_BIAS_LEVEL = 5.0; // +/- 5V
+        static constexpr double MAX_BIAS_LEVEL = 5.0; // +/- 5V
 
     protected:
         Resampler<1> *rs;
 
-        float in, gain, bias, k;
-        float out;
+        double in, gain, bias, k;
+        double out;
         Vec amp;
 
     public:
 
         WaveShaper(float sr);
 
-        float getIn() const;
-        void setIn(float in);
-        float getGain() const;
-        void setGain(float gain);
-        float getBias() const;
-        void setBias(float bias);
-        float getK() const;
-        void setK(float k);
-        float getOut() const;
-        void setOut(float out);
+        double getIn() const;
+        void setIn(double in);
+        double getGain() const;
+        void setGain(double gain);
+        double getBias() const;
+        void setBias(double bias);
+        double getK() const;
+        void setK(double k);
+        double getOut() const;
+        void setOut(double out);
 
 
         /**
          * @brief Returns the actual sample-rate which is used by oversampled computation
          * @return
          */
-        float getOversampledRate() {
+        double getOversampledRate() {
             return sr * rs->getFactor();
         }
 
 
-        void setAmplitude(float kpos, float kneg) {
+        void setAmplitude(double kpos, double kneg) {
             amp = Vec(kpos, kneg);
         }
 

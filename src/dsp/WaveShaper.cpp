@@ -4,52 +4,52 @@
 using namespace dsp;
 
 
-float WaveShaper::getIn() const {
+double WaveShaper::getIn() const {
     return in;
 }
 
 
-void WaveShaper::setIn(float in) {
+void WaveShaper::setIn(double in) {
     WaveShaper::in = in;
 }
 
 
-float WaveShaper::getGain() const {
+double WaveShaper::getGain() const {
     return gain;
 }
 
 
-void WaveShaper::setGain(float gain) {
+void WaveShaper::setGain(double gain) {
     WaveShaper::gain = gain;
 }
 
 
-float WaveShaper::getBias() const {
+double WaveShaper::getBias() const {
     return bias;
 }
 
 
-void WaveShaper::setBias(float bias) {
-    WaveShaper::bias = clamp(bias, -MAX_BIAS_LEVEL, MAX_BIAS_LEVEL);
+void WaveShaper::setBias(double bias) {
+    WaveShaper::bias = bias;
 }
 
 
-float WaveShaper::getK() const {
+double WaveShaper::getK() const {
     return k;
 }
 
 
-void WaveShaper::setK(float k) {
+void WaveShaper::setK(double k) {
     WaveShaper::k = k;
 }
 
 
-float WaveShaper::getOut() const {
+double WaveShaper::getOut() const {
     return out;
 }
 
 
-void WaveShaper::setOut(float out) {
+void WaveShaper::setOut(double out) {
     WaveShaper::out = out;
 }
 
@@ -70,7 +70,7 @@ void WaveShaper::process() {
     rs->doUpsample(STD_CHANNEL, in);
 
     for (int i = 0; i < rs->getFactor(); i++) {
-        float x = rs->getUpsampled(STD_CHANNEL)[i];
+        double x = rs->getUpsampled(STD_CHANNEL)[i];
         rs->data[STD_CHANNEL][i] = compute(x);
     }
 
