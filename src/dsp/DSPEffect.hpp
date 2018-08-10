@@ -2,7 +2,6 @@
 
 #include <string.h>
 #include "dsp/ringbuffer.hpp"
-#include "dsp/fir.hpp"
 
 #define RS_BUFFER_SIZE 512
 
@@ -55,20 +54,54 @@ namespace dsp {
     };
 
 
+    /** The normalized sinc function. https://en.wikipedia.org/wiki/Sinc_function */
+    inline double sinc(double x) {
+        if (x == 0.f)
+            return 1.f;
+        x *= M_PI;
+        return sin(x) / x;
+    }
+
+
+    /** Computes the impulse response of a boxcar lowpass filter */
+    inline void boxcarLowpassIR(double *out, int len, double cutoff = 0.5f) {
+        for (int i = 0; i < len; i++) {
+            double t = i - (len - 1) / 2.f;
+            out[i] = 2 * cutoff * sinc(2 * cutoff * t);
+        }
+    }
+
+
+    inline void blackmanHarrisWindow(double *x, int len) {
+        // Constants from https://en.wikipedia.org/wiki/Window_function#Blackman%E2%80%93Harris_window
+        const double a0 = 0.35875f;
+        const double a1 = 0.48829f;
+        const double a2 = 0.14128f;
+        const double a3 = 0.01168f;
+        double factor = 2 * M_PI / (len - 1);
+        for (int i = 0; i < len; i++) {
+            x[i] *= +a0
+                    - a1 * cos(1 * factor * i)
+                    + a2 * cos(2 * factor * i)
+                    - a3 * cos(3 * factor * i);
+        }
+    }
+
+
     struct Decimator {
-        float inBuffer[RS_BUFFER_SIZE];
-        float kernel[RS_BUFFER_SIZE];
+        double inBuffer[RS_BUFFER_SIZE];
+        double kernel[RS_BUFFER_SIZE];
         int inIndex;
         int oversample, quality;
-        float cutoff = 0.9;
+        double cutoff = 0.9;
 
 
         Decimator(int oversample, int quality) {
             Decimator::oversample = oversample;
             Decimator::quality = quality;
 
-            rack::boxcarLowpassIR(kernel, oversample * quality, cutoff * 0.5f / oversample);
-            rack::blackmanHarrisWindow(kernel, oversample * quality);
+            boxcarLowpassIR(kernel, oversample * quality, cutoff * 0.5f / oversample);
+            blackmanHarrisWindow(kernel, oversample * quality);
             reset();
         }
 
@@ -80,14 +113,14 @@ namespace dsp {
 
 
         /** `in` must be length OVERSAMPLE */
-        float process(float *in) {
+        float process(double *in) {
             // Copy input to buffer
-            memcpy(&inBuffer[inIndex], in, oversample * sizeof(float));
+            memcpy(&inBuffer[inIndex], in, oversample * sizeof(double));
             // Advance index
             inIndex += oversample;
             inIndex %= oversample * quality;
             // Perform naive convolution
-            float out = 0.f;
+            double out = 0.f;
             for (int i = 0; i < oversample * quality; i++) {
                 int index = inIndex - 1 - i;
                 index = (index + oversample * quality) % (oversample * quality);
@@ -99,19 +132,19 @@ namespace dsp {
 
 
     struct Upsampler {
-        float inBuffer[RS_BUFFER_SIZE];
-        float kernel[RS_BUFFER_SIZE];
+        double inBuffer[RS_BUFFER_SIZE];
+        double kernel[RS_BUFFER_SIZE];
         int inIndex;
         int oversample, quality;
-        float cutoff = 0.9;
+        double cutoff = 0.9;
 
 
         Upsampler(int oversample, int quality) {
             Upsampler::oversample = oversample;
             Upsampler::quality = quality;
 
-            rack::boxcarLowpassIR(kernel, oversample * quality, cutoff * 0.5f / oversample);
-            rack::blackmanHarrisWindow(kernel, oversample * quality);
+            boxcarLowpassIR(kernel, oversample * quality, cutoff * 0.5f / oversample);
+            blackmanHarrisWindow(kernel, oversample * quality);
             reset();
         }
 
@@ -123,7 +156,7 @@ namespace dsp {
 
 
         /** `out` must be length OVERSAMPLE */
-        void process(float in, float *out) {
+        void process(double in, double *out) {
             // Zero-stuff input buffer
             inBuffer[inIndex] = oversample * in;
             // Advance index
@@ -150,8 +183,8 @@ namespace dsp {
      */
     template<int CHANNELS>
     struct Resampler {
-        float up[CHANNELS][RS_BUFFER_SIZE] = {};
-        float data[CHANNELS][RS_BUFFER_SIZE] = {};
+        double up[CHANNELS][RS_BUFFER_SIZE] = {};
+        double data[CHANNELS][RS_BUFFER_SIZE] = {};
 
         Decimator *decimator[CHANNELS];
         Upsampler *interpolator[CHANNELS];
@@ -181,7 +214,7 @@ namespace dsp {
         /**
          * @brief Create up-sampled data out of two basic values
          */
-        void doUpsample(int channel, float in) {
+        void doUpsample(int channel, double in) {
             interpolator[channel]->process(in, up[channel]);
         }
 
@@ -191,7 +224,7 @@ namespace dsp {
          * @param channel Channel to proccess
          * @return Downsampled point
          */
-        float getDownsampled(int channel) {
+        double getDownsampled(int channel) {
             return decimator[channel]->process(data[channel]);
         }
 
@@ -201,7 +234,7 @@ namespace dsp {
          * @param channel Channel to retrieve
          * @return Pointer to the upsampled data
          */
-        float *getUpsampled(int channel) {
+        double *getUpsampled(int channel) {
             return up[channel];
         }
     };
