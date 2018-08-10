@@ -64,7 +64,7 @@ namespace dsp {
             double xn, out;
 
             if (abs(x - xn1) < 10e-10) {
-                xn = (x + xn1) / 2.f;
+                xn = (x + xn1) / 2.;
                 out = tanh(xn);
             } else {
                 out = (fn - fn1) / (x - xn1);
@@ -84,7 +84,7 @@ namespace dsp {
             rs->doUpsample(STD_CHANNEL, in);
 
             for (int i = 0; i < rs->getFactor(); i++) {
-                float x = rs->getUpsampled(STD_CHANNEL)[i];
+                double x = rs->getUpsampled(STD_CHANNEL)[i];
                 rs->data[STD_CHANNEL][i] = computeAA(x);
             }
 
