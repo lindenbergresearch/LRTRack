@@ -1,6 +1,7 @@
 #pragma once
 
 #include "WaveShaper.hpp"
+#include "HQTrig.hpp"
 
 // constants for Lockhart waveshaper model
 #define LOCKHART_RL 7.5e3
@@ -9,11 +10,12 @@
 #define LOCKHART_Is 10e-16
 #define LOCKHART_THRESHOLD 10e-10
 
+#define DCBLOCK_ALPHA 0.9999
 namespace dsp {
 
-/**
- * @brief Represents one stage of the Lockhart Wavefolder
- */
+    /**
+     * @brief Represents one stage of the Lockhart Wavefolder
+     */
     struct LockhartWFStage {
     private:
 
@@ -28,15 +30,16 @@ namespace dsp {
     };
 
 
-/**
- * Lockhart Wavefolder class
- */
+    /**
+     * Lockhart Wavefolder class
+     */
     struct LockhartWavefolder : WaveShaper {
 
     private:
         LockhartWFStage lh1, lh2, lh3, lh4;
-        DCBlocker *dc = new DCBlocker(0.9);
-        LP6DBFilter *lp6 = new LP6DBFilter(1300, 1);
+        DCBlocker *dc = new DCBlocker(DCBLOCK_ALPHA);
+        HQTanh *tanh1;
+        bool blockDC = false;
 
 
     public:
@@ -46,6 +49,10 @@ namespace dsp {
         void invalidate() override;
         void process() override;
         double compute(double x) override;
+
+
+        bool isBlockDC() const;
+        void setBlockDC(bool blockDC);
 
     };
 

@@ -14,7 +14,7 @@ double LockhartWFStage::compute(double x) {
     fn = (0.5 * LOCKHART_VT / b) * (ln * (ln + 2.)) - 0.5 * a * x * x;
 
     // Check for ill-conditioning
-    if (abs(x - xn1) < 10e-10) {
+    if (abs(x - xn1) < LOCKHART_THRESHOLD) {
         // Compute Averaged Wavefolder Output
         xn = 0.5 * (x + xn1);
         u = d * pow(M_E, l * b * xn);
@@ -59,26 +59,37 @@ void LockhartWavefolder::process() {
 
 double LockhartWavefolder::compute(double x) {
     double out;
-    double in = (x + bias) * gain * 0.333;
+    double in = (x / 8. + bias) * gain;
 
-    //debug("%fV", in);
+    in *= 0.5;
 
     in = lh1.compute(in);
     in = lh2.compute(in);
     in = lh3.compute(in);
     in = lh4.compute(in);
 
-    in *= 3.f;
+    in *= 2.f;
 
-    in *= 0.2;
-    //in = dc->filter(in);
+    if (blockDC) in = dc->filter(in);
 
-    out = tanh(in);
+    out = tanh1->next(in / 2.);
+    // out = tanh(in/2);
 
-    return lp6->filter(out);
+    return out * 20 * 2;
 }
 
 
 LockhartWavefolder::LockhartWavefolder(float sr) : WaveShaper(sr) {
     init();
+    tanh1 = new HQTanh(sr, 4);
+}
+
+
+bool LockhartWavefolder::isBlockDC() const {
+    return blockDC;
+}
+
+
+void LockhartWavefolder::setBlockDC(bool blockDC) {
+    LockhartWavefolder::blockDC = blockDC;
 }
