@@ -11,7 +11,7 @@ namespace dsp {
         static const int STD_CHANNEL = 0;
 
         int factor;
-        float in, out;
+        double in, out, xn1, fn1;
         Resampler<1> *rs;
 
 
@@ -46,9 +46,32 @@ namespace dsp {
          * @param x
          * @return
          */
-        float next(float x) {
+        double next(double x) {
             in = x;
             process();
+
+            return out;
+        }
+
+
+        /**
+         * @brief Generate an anti-aliased tanh
+         * @param x
+         * @return
+         */
+        double computeAA(double x) {
+            double fn = log(cosh(x));
+            double xn, out;
+
+            if (abs(x - xn1) < 10e-10) {
+                xn = (x + xn1) / 2.f;
+                out = tanh(xn);
+            } else {
+                out = (fn - fn1) / (x - xn1);
+            }
+
+            fn1 = fn;
+            xn1 = x;
 
             return out;
         }
@@ -62,7 +85,7 @@ namespace dsp {
 
             for (int i = 0; i < rs->getFactor(); i++) {
                 float x = rs->getUpsampled(STD_CHANNEL)[i];
-                rs->data[STD_CHANNEL][i] = tanh(x);
+                rs->data[STD_CHANNEL][i] = computeAA(x);
             }
 
             out = rs->getDownsampled(STD_CHANNEL);
