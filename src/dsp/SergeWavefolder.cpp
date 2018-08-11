@@ -36,3 +36,40 @@ SergeWFStage::SergeWFStage() {
     xn1 = 0;
 }
 
+
+SergeWavefolder::SergeWavefolder(float sr) : WaveShaper(sr) {
+    init();
+    tanh1 = new HQTanh(sr, 4);
+}
+
+
+void SergeWavefolder::init() {
+    dsp::WaveShaper::rs = new dsp::Resampler<1>(1);
+}
+
+
+void SergeWavefolder::process() {
+    WaveShaper::process();
+}
+
+
+double SergeWavefolder::compute(double x) {
+    double out;
+    double in = (x / 8. + bias) * gain;
+
+    in *= 0.5;
+
+    in = sg1.compute(in);
+    in = sg2.compute(in);
+    in = sg3.compute(in);
+    in = sg4.compute(in);
+    in = sg5.compute(in);
+    in = sg6.compute(in);
+
+    in *= 2.f;
+
+    out = tanh1->next(in / 2.);
+
+    return out * 20 * 2;
+}
+

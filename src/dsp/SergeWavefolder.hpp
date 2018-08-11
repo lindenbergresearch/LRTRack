@@ -27,7 +27,21 @@ namespace dsp {
     };
 
 
-    class SergeWavefolder {
+    struct SergeWavefolder : WaveShaper {
+
+    private:
+        SergeWFStage sg1, sg2, sg3, sg4, sg5, sg6;
+        //   DCBlocker *dc = new DCBlocker(DCBLOCK_ALPHA);
+        HQTanh *tanh1;
+        bool blockDC = false;
+
+
+    public:
+        explicit SergeWavefolder(float sr);
+
+        void init() override;
+        void process() override;
+        double compute(double x) override;
 
     };
 
