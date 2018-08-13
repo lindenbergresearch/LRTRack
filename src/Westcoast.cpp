@@ -82,7 +82,7 @@ struct WestcoastWidget : LRModuleWidget {
 
 
 WestcoastWidget::WestcoastWidget(Westcoast *module) : LRModuleWidget(module) {
-    panel = new LRPanel(55, -55);
+    panel = new LRPanel();
     panel->setBackground(SVG::load(assetPlugin(plugin, "res/Westcoast.svg")));
     addChild(panel);
 
@@ -115,11 +115,11 @@ WestcoastWidget::WestcoastWidget(Westcoast *module) : LRModuleWidget(module) {
 
     // ***** OUTPUTS *********
     addOutput(Port::create<LRIOPortC>(Vec(159.4, 324.6), Port::OUTPUT, module, Westcoast::SHAPER_OUTPUT));
-    addOutput(Port::create<LRIOPortC>(Vec(159.4, 300.7), Port::OUTPUT, module, Westcoast::SG_OUTPUT));
+    //  addOutput(Port::create<LRIOPortC>(Vec(159.4, 300.7), Port::OUTPUT, module, Westcoast::SG_OUTPUT));
     // ***** OUTPUTS *********
 
     // ***** SWITCH  *********
-    addParam(ParamWidget::create<LRSwitch>(Vec(119, 331), module, Westcoast::DCBLOCK_PARAM, 0.0, 1.0, 1.0));
+    // addParam(ParamWidget::create<LRSwitch>(Vec(119, 331), module, Westcoast::DCBLOCK_PARAM, 0.0, 1.0, 1.0));
     // ***** SWITCH  *********
 }
 
