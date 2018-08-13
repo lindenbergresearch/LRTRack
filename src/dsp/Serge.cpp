@@ -1,4 +1,4 @@
-#include "SergeWavefolder.hpp"
+#include "Serge.hpp"
 
 using namespace dsp;
 
@@ -13,7 +13,7 @@ double SergeWFStage::compute(double x) {
     fn = SERGE_VT * SERGE_ETA * SERGE_ETA * SERGE_VT * (ln * (ln + 2)) - x * x / 2;
 
     // Check for ill-conditioning
-    if (abs(x - xn1) < 10e-12) {
+    if (abs(x - xn1) < SERGE_THRESHOLD) {
         // Compute Averaged Wavefolder Output
         xn = 0.5 * (x + xn1);
         u = (SERGE_R1 * SERGE_IS) / (SERGE_ETA * SERGE_VT) * pow(M_E, (l * xn) / (SERGE_VT * SERGE_ETA));
