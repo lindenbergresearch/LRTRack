@@ -73,7 +73,6 @@ double LockhartWavefolder::compute(double x) {
     if (blockDC) in = dc->filter(in);
 
     out = tanh1->next(in / 2.);
-    // out = tanh(in/2);
 
     return out * 20 * 2;
 }
