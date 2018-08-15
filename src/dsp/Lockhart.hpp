@@ -10,7 +10,8 @@
 #define LOCKHART_Is 10e-16
 #define LOCKHART_THRESHOLD 10e-10
 
-#define DCBLOCK_ALPHA 0.9999
+#define DCBLOCK_ALPHA 0.998
+
 namespace dsp {
 
     /**

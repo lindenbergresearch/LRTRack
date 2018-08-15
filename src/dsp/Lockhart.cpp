@@ -1,4 +1,5 @@
 #include "Lockhart.hpp"
+#include "LambertW.h"
 
 using namespace dsp;
 
@@ -10,7 +11,7 @@ double LockhartWFStage::compute(double x) {
     // Compute Antiderivative
     l = sign(x);
     u = d * pow(M_E, l * b * x);
-    ln = lambert_W_Fritsch(u);
+    ln = dsp::LambertW<0>(u);
     fn = (0.5 * LOCKHART_VT / b) * (ln * (ln + 2.)) - 0.5 * a * x * x;
 
     // Check for ill-conditioning
@@ -18,7 +19,7 @@ double LockhartWFStage::compute(double x) {
         // Compute Averaged Wavefolder Output
         xn = 0.5 * (x + xn1);
         u = d * pow(M_E, l * b * xn);
-        ln = lambert_W_Fritsch(u);
+        ln = dsp::LambertW<0>(u);
         out = l * LOCKHART_VT * ln - a * xn;
 
     } else {
@@ -61,20 +62,20 @@ double LockhartWavefolder::compute(double x) {
     double out;
     double in = (x / 8. + bias) * gain;
 
-    in *= 0.5;
+   // in *= 0.5;
 
     in = lh1.compute(in);
     in = lh2.compute(in);
     in = lh3.compute(in);
     in = lh4.compute(in);
 
-    in *= 2.f;
+    in *= 4.f;
 
-    if (blockDC) in = dc->filter(in);
+    //if (blockDC) in = dc->filter(in);
 
-    out = tanh1->next(in / 2.);
+    out = in;// tanh1->next(in / 2.);
 
-    return out * 20 * 2;
+    return out;
 }
 
 
