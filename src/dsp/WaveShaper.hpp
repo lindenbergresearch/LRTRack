@@ -3,6 +3,8 @@
 #include "DSPMath.hpp"
 #include "DSPEffect.hpp"
 
+#define SHAPER_MAX_VOLTS 1.5
+
 namespace dsp {
 
     /**
