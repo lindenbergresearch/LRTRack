@@ -30,7 +30,12 @@ set(SOURCE_FILES
         src/dsp/Lockhart.cpp
         src/dsp/Lockhart.hpp
         src/Westcoast.cpp
-        src/dsp/HQTrig.hpp src/dsp/SergeWavefolder.cpp src/dsp/SergeWavefolder.hpp)
+        src/dsp/HQTrig.hpp
+        src/dsp/Serge.cpp
+        src/dsp/Serge.hpp
+        src/dsp/Horner.h
+        src/dsp/LambertW.h
+        src/dsp/LambertW.cpp)
 
 include_directories(.)
 include_directories(src)
