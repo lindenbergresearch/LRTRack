@@ -1,4 +1,5 @@
 #include "Serge.hpp"
+#include "LambertW.h"
 
 using namespace dsp;
 
@@ -9,7 +10,8 @@ double SergeWFStage::compute(double x) {
 
     l = sign(x);
     u = (SERGE_R1 * SERGE_IS) / (SERGE_ETA * SERGE_VT) * pow(M_E, (l * x) / (SERGE_ETA * SERGE_VT));
-    ln = lambert_W_Fritsch(u);
+    ln = dsp::LambertW<0>(u);
+
     fn = SERGE_VT * SERGE_ETA * SERGE_ETA * SERGE_VT * (ln * (ln + 2)) - x * x / 2;
 
     // Check for ill-conditioning
@@ -17,7 +19,7 @@ double SergeWFStage::compute(double x) {
         // Compute Averaged Wavefolder Output
         xn = 0.5 * (x + xn1);
         u = (SERGE_R1 * SERGE_IS) / (SERGE_ETA * SERGE_VT) * pow(M_E, (l * xn) / (SERGE_VT * SERGE_ETA));
-        ln = lambert_W_Fritsch(u);
+        ln = dsp::LambertW<0>(u);
         out = 2 * l * SERGE_ETA * SERGE_VT * ln - xn;
     } else {
         // Apply AA Form

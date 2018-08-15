@@ -1,6 +1,5 @@
 #pragma once
 
-
 #include "WaveShaper.hpp"
 #include "HQTrig.hpp"
 
