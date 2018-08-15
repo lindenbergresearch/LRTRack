@@ -1,11 +1,19 @@
 #include "dsp/Serge.hpp"
 #include "dsp/Lockhart.hpp"
-
-
 #include "LindenbergResearch.hpp"
 
 
 struct Westcoast : LRModule {
+
+    enum RotaryStages {
+        OVERDRIVE = 1,
+        LOCKHART,
+        SERGE,
+        SATURATE,
+        POLYNOM,
+        SOFTCLIP,
+        HARDCLIP
+    };
 
     enum ParamIds {
         GAIN_PARAM,
@@ -53,28 +61,36 @@ void Westcoast::step() {
     float biascv = 0;
 
     if (inputs[CV_GAIN_INPUT].active) {
-        gaincv = inputs[CV_GAIN_INPUT].value * params[CV_GAIN_PARAM].value;
+        gaincv = inputs[CV_GAIN_INPUT].value * quadraticBipolar(params[CV_GAIN_PARAM].value) * 4.0f;
     }
 
     if (inputs[CV_BIAS_INPUT].active) {
-        biascv = inputs[CV_BIAS_INPUT].value * params[CV_BIAS_PARAM].value;
+        biascv = inputs[CV_BIAS_INPUT].value * quadraticBipolar(params[CV_BIAS_PARAM].value) * 2.0f;
+    }
+
+    if (bias != nullptr && gain != nullptr) {
+        gain->setIndicatorActive(inputs[CV_GAIN_INPUT].active);
+        bias->setIndicatorActive(inputs[CV_BIAS_INPUT].active);
+
+        gain->setIndicatorValue((params[GAIN_PARAM].value + gaincv) / 20);
+        bias->setIndicatorValue((params[BIAS_PARAM].value + (biascv + 3)) / 6);
     }
 
     float out;
 
     switch (lround(params[TYPE_PARAM].value)) {
-        case 1: // Lockhart Model
-            hs->setGain((params[GAIN_PARAM].value));
-            hs->setBias(params[BIAS_PARAM].value);
+        case LOCKHART: // Lockhart Model
+            hs->setGain((params[GAIN_PARAM].value + gaincv));
+            hs->setBias(params[BIAS_PARAM].value + biascv);
             hs->setIn(inputs[SHAPER_INPUT].value);
             hs->setBlockDC(params[DCBLOCK_PARAM].value == 1);
 
             hs->process();
             out = (float) hs->getOut();
             break;
-        case 2: // Serge Model
-            sg->setGain((params[GAIN_PARAM].value));
-            sg->setBias(params[BIAS_PARAM].value);
+        case SERGE: // Serge Model
+            sg->setGain((params[GAIN_PARAM].value + gaincv));
+            sg->setBias(params[BIAS_PARAM].value + biascv);
             sg->setIn(inputs[SHAPER_INPUT].value);
             sg->setBlockDC(params[DCBLOCK_PARAM].value == 1);
 
@@ -117,7 +133,7 @@ WestcoastWidget::WestcoastWidget(Westcoast *module) : LRModuleWidget(module) {
     // ***** SCREWS **********
 
     // ***** MAIN KNOBS ******
-    module->gain = LRKnob::create<LRAlternateBigKnob>(Vec(128.7, 63.0), module, Westcoast::GAIN_PARAM, 0.25, 20.f, 1.f);
+    module->gain = LRKnob::create<LRAlternateBigKnob>(Vec(128.7, 63.0), module, Westcoast::GAIN_PARAM, 0.0, 20.f, 1.f);
     module->bias = LRKnob::create<LRAlternateMiddleKnob>(Vec(136.4, 153.3), module, Westcoast::BIAS_PARAM, -6.f, 6.f, 0.f);
 
     addParam(module->gain);
