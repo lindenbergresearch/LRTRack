@@ -355,19 +355,6 @@ inline double sign(double x) {
     return 0;
 }
 
-/**
- * @brief Clamp supporting double precicion
- * @param x
- * @param min
- * @param max
- * @return
- */
-inline double clamp(double x, double min, double max) {
-    if (x > max) return max;
-    if (x < min) return min;
-
-    return x;
-}
 
 /**
  * @brief Lambert-W function using Halley's method
