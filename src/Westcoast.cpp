@@ -39,6 +39,8 @@ struct Westcoast : LRModule {
 
     dsp::LockhartWavefolder *hs = new dsp::LockhartWavefolder(engineGetSampleRate());
     dsp::SergeWavefolder *sg = new dsp::SergeWavefolder(engineGetSampleRate());
+    LRAlternateBigKnob *gain;
+    LRAlternateMiddleKnob *bias;
 
     void step() override;
     void onSampleRateChange() override;
@@ -46,26 +48,36 @@ struct Westcoast : LRModule {
 
 
 void Westcoast::step() {
-    hs->setGain((params[GAIN_PARAM].value));
-    hs->setBias(params[BIAS_PARAM].value);
-    hs->setIn(inputs[SHAPER_INPUT].value);
 
-    sg->setGain((params[GAIN_PARAM].value));
-    sg->setBias(params[BIAS_PARAM].value);
-    sg->setIn(inputs[SHAPER_INPUT].value);
+    float gaincv = 0;
+    float biascv = 0;
 
+    if (inputs[CV_GAIN_INPUT].active) {
+        gaincv = inputs[CV_GAIN_INPUT].value * params[CV_GAIN_PARAM].value;
+    }
 
-    hs->setBlockDC(params[DCBLOCK_PARAM].value == 1);
-
+    if (inputs[CV_BIAS_INPUT].active) {
+        biascv = inputs[CV_BIAS_INPUT].value * params[CV_BIAS_PARAM].value;
+    }
 
     float out;
 
     switch (lround(params[TYPE_PARAM].value)) {
         case 1: // Lockhart Model
+            hs->setGain((params[GAIN_PARAM].value));
+            hs->setBias(params[BIAS_PARAM].value);
+            hs->setIn(inputs[SHAPER_INPUT].value);
+            hs->setBlockDC(params[DCBLOCK_PARAM].value == 1);
+
             hs->process();
             out = (float) hs->getOut();
             break;
         case 2: // Serge Model
+            sg->setGain((params[GAIN_PARAM].value));
+            sg->setBias(params[BIAS_PARAM].value);
+            sg->setIn(inputs[SHAPER_INPUT].value);
+            sg->setBlockDC(params[DCBLOCK_PARAM].value == 1);
+
             sg->process();
             out = (float) sg->getOut();
             break;
@@ -105,8 +117,12 @@ WestcoastWidget::WestcoastWidget(Westcoast *module) : LRModuleWidget(module) {
     // ***** SCREWS **********
 
     // ***** MAIN KNOBS ******
-    addParam(LRKnob::create<LRAlternateBigKnob>(Vec(128.7, 63.0), module, Westcoast::GAIN_PARAM, 0.25, 20.f, 1.f));
-    addParam(LRKnob::create<LRAlternateMiddleKnob>(Vec(136.4, 153.3), module, Westcoast::BIAS_PARAM, -3.f, 3.f, 0.f));
+    module->gain = LRKnob::create<LRAlternateBigKnob>(Vec(128.7, 63.0), module, Westcoast::GAIN_PARAM, 0.25, 20.f, 1.f);
+    module->bias = LRKnob::create<LRAlternateMiddleKnob>(Vec(136.4, 153.3), module, Westcoast::BIAS_PARAM, -6.f, 6.f, 0.f);
+
+    addParam(module->gain);
+    addParam(module->bias);
+
     addParam(LRKnob::create<LRMiddleIncremental>(Vec(85, 274.3), module, Westcoast::TYPE_PARAM, 1, 6, 1));
 
     addParam(LRKnob::create<LRAlternateSmallKnob>(Vec(83.4, 101.00), module, Westcoast::CV_GAIN_PARAM, -1.f, 1.f, 0.f));
