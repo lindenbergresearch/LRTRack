@@ -1,4 +1,4 @@
-#include "dsp/SergeWavefolder.hpp"
+#include "dsp/Serge.hpp"
 #include "dsp/Lockhart.hpp"
 
 
@@ -56,16 +56,26 @@ void Westcoast::step() {
     sg->setIn(inputs[SHAPER_INPUT].value);
 
 
-    if (params[DCBLOCK_PARAM].value == 1)
-        hs->setBlockDC(true);
-    else
-        hs->setBlockDC(false);
+    hs->setBlockDC(params[DCBLOCK_PARAM].value == 1);
 
-    hs->process();
-    sg->process();
 
-    outputs[SHAPER_OUTPUT].value = hs->getOut();
-    outputs[SG_OUTPUT].value = sg->getOut();
+    float out;
+
+    switch (lround(params[TYPE_PARAM].value)) {
+        case 1: // Lockhart Model
+            hs->process();
+            out = (float) hs->getOut();
+            break;
+        case 2: // Serge Model
+            sg->process();
+            out = (float) sg->getOut();
+            break;
+        default: // invalid state, should not happen
+            out = 0;
+            break;
+    }
+
+    outputs[SHAPER_OUTPUT].value = out;
 }
 
 
@@ -98,7 +108,7 @@ WestcoastWidget::WestcoastWidget(Westcoast *module) : LRModuleWidget(module) {
     // ***** MAIN KNOBS ******
     addParam(LRKnob::create<LRAlternateBigKnob>(Vec(128.7, 63.0), module, Westcoast::GAIN_PARAM, 0.25, 20.f, 1.f));
     addParam(LRKnob::create<LRAlternateMiddleKnob>(Vec(136.4, 153.3), module, Westcoast::BIAS_PARAM, -0.5f, 0.5f, 0.f));
-    addParam(LRKnob::create<LRMiddleIncremental>(Vec(85, 274.3), module, Westcoast::TYPE_PARAM, -3, 3, 0));
+    addParam(LRKnob::create<LRMiddleIncremental>(Vec(85, 274.3), module, Westcoast::TYPE_PARAM, 1, 6, 1));
 
     addParam(LRKnob::create<LRAlternateSmallKnob>(Vec(83.4, 101.00), module, Westcoast::CV_GAIN_PARAM, -1.f, 1.f, 0.f));
     addParam(LRKnob::create<LRAlternateSmallKnob>(Vec(83.4, 183.0), module, Westcoast::CV_BIAS_PARAM, -1.f, 1.f, 0.f));
@@ -115,11 +125,11 @@ WestcoastWidget::WestcoastWidget(Westcoast *module) : LRModuleWidget(module) {
 
     // ***** OUTPUTS *********
     addOutput(Port::create<LRIOPortC>(Vec(159.4, 324.6), Port::OUTPUT, module, Westcoast::SHAPER_OUTPUT));
-    //  addOutput(Port::create<LRIOPortC>(Vec(159.4, 300.7), Port::OUTPUT, module, Westcoast::SG_OUTPUT));
+    addOutput(Port::create<LRIOPortC>(Vec(159.4, 300.7), Port::OUTPUT, module, Westcoast::SG_OUTPUT));
     // ***** OUTPUTS *********
 
     // ***** SWITCH  *********
-    // addParam(ParamWidget::create<LRSwitch>(Vec(119, 331), module, Westcoast::DCBLOCK_PARAM, 0.0, 1.0, 1.0));
+    addParam(ParamWidget::create<LRSwitch>(Vec(119, 331), module, Westcoast::DCBLOCK_PARAM, 0.0, 1.0, 1.0));
     // ***** SWITCH  *********
 }
 
