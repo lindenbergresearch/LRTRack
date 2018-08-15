@@ -50,8 +50,7 @@ namespace dsp {
         double compute(double x) override;
 
 
-        bool isBlockDC() const;
-        void setBlockDC(bool blockDC);
+
 
     };
 

@@ -61,6 +61,8 @@ namespace dsp {
 
         const Vec &getAmplitude() const;
 
+        bool isBlockDC() const;
+        void setBlockDC(bool blockDC);
 
         /**
          * @brief Implements the oversamping of compute method

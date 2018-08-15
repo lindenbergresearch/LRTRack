@@ -86,12 +86,3 @@ LockhartWavefolder::LockhartWavefolder(float sr) : WaveShaper(sr) {
     tanh1 = new HQTanh(sr, 4);
 }
 
-
-bool LockhartWavefolder::isBlockDC() const {
-    return blockDC;
-}
-
-
-void LockhartWavefolder::setBlockDC(bool blockDC) {
-    LockhartWavefolder::blockDC = blockDC;
-}
