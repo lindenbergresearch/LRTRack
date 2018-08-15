@@ -63,7 +63,7 @@ double LockhartWavefolder::compute(double x) {
     double in = clampd(x / 5., -SHAPER_MAX_VOLTS, SHAPER_MAX_VOLTS);
 
     in *= clampd(gain, 0., 20.); // add gain
-    in += clampd(bias, -3., 3.); // add bias
+    in += clampd(bias, -6., 6.); // add bias
 
     in *= 0.33333;
 
@@ -73,11 +73,9 @@ double LockhartWavefolder::compute(double x) {
     in = lh4.compute(in);
 
     in *= 3.f;
+    if (blockDC) in = dc->filter(in);
 
     out =  tanh1->next(in);
-
-//    if (blockDC) in = dc->filter(in);
-
 
     return out * 20.;
 }

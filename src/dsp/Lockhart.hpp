@@ -10,7 +10,7 @@
 #define LOCKHART_Is 10e-16
 #define LOCKHART_THRESHOLD 10e-10
 
-#define DCBLOCK_ALPHA 0.998
+
 
 namespace dsp {
 
@@ -38,9 +38,7 @@ namespace dsp {
 
     private:
         LockhartWFStage lh1, lh2, lh3, lh4;
-        DCBlocker *dc = new DCBlocker(DCBLOCK_ALPHA);
-        HQTanh *tanh1;
-        bool blockDC = false;
+
 
 
     public:

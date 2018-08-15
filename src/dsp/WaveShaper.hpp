@@ -2,8 +2,10 @@
 
 #include "DSPMath.hpp"
 #include "DSPEffect.hpp"
+#include "HQTrig.hpp"
 
 #define SHAPER_MAX_VOLTS 1.5
+#define DCBLOCK_ALPHA 0.998
 
 namespace dsp {
 
@@ -18,6 +20,10 @@ namespace dsp {
 
     protected:
         Resampler<1> *rs;
+
+        DCBlocker *dc = new DCBlocker(DCBLOCK_ALPHA);
+        HQTanh *tanh1;
+        bool blockDC = false;
 
         double in, gain, bias, k;
         double out;
