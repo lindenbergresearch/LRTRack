@@ -35,7 +35,7 @@ set(SOURCE_FILES
         src/dsp/Serge.hpp
         src/dsp/Horner.h
         src/dsp/LambertW.h
-        src/dsp/LambertW.cpp src/widgets/LRKnob.cpp src/widgets/LRShadow.cpp)
+        src/dsp/LambertW.cpp src/widgets/LRKnob.cpp src/widgets/LRShadow.cpp src/widgets/LRCVIndicator.cpp src/widgets/LRCVIndicator.cpp)
 
 include_directories(.)
 include_directories(src)
