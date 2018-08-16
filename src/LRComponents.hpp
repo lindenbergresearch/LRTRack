@@ -47,18 +47,18 @@ namespace lrt {
     };
 
 
-/**
- * @brief Standard LRT ModuleWidget definition
- */
+    /**
+     * @brief Standard LRT ModuleWidget definition
+     */
     struct LRModuleWidget : ModuleWidget {
         explicit LRModuleWidget(Module *module);
     };
 
 
-/**
- * @brief Emulation of a LCD monochrome display
- */
-    struct LCDWidget : Label {
+    /**
+     * @brief Emulation of a LCD monochrome display
+     */
+    struct LRLCDWidget : Label {
 
         enum LCDType {
             NUMERIC,
@@ -86,7 +86,7 @@ namespace lrt {
         /**
          * @brief Constructor
          */
-        LCDWidget(NVGcolor fg, unsigned char length, std::string format, LCDType type, float fontsize = LCD_FONTSIZE);
+        LRLCDWidget(NVGcolor fg, unsigned char length, std::string format, LCDType type, float fontsize = LCD_FONTSIZE);
 
         /**
          * @brief Draw LCD display
