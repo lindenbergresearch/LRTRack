@@ -1,0 +1,54 @@
+#include "../LRComponents.hpp"
+
+
+namespace lrt {
+
+    void LRKnob::setSVG(std::shared_ptr<SVG> svg) {
+        SVGKnob::setSVG(svg);
+
+        /** inherit dimensions after loaded svg */
+        idc.middle = Vec(box.size.x / 2, box.size.y / 2);
+        shadow.setBox(box);
+    }
+
+
+    void LRKnob::draw(NVGcontext *vg) {
+        /** shadow */
+        shadow.draw(vg);
+
+        /** component */
+        FramebufferWidget::draw(vg);
+
+
+        /** indicator */
+        idc.draw(vg);
+
+        if (debug) {
+            auto text = stringf("%4.2f", value);
+            nvgFontSize(vg, 15);
+            nvgFontFaceId(vg, font->handle);
+
+            nvgFillColor(vg, nvgRGBAf(1.f, 1.f, 1.0f, 1.0f));
+            nvgText(vg, box.size.x - 5, box.size.y + 10, text.c_str(), NULL);
+        }
+    }
+
+
+    void LRKnob::setSnap(float position, float sensitivity) {
+        snap = true;
+        snapSens = sensitivity;
+        snapAt = position;
+    }
+
+
+    void LRKnob::unsetSnap() {
+        snap = false;
+    }
+
+
+    void LRKnob::onChange(EventChange &e) {
+        // if the value still inside snap-tolerance keep the value zero
+        if (snap && value > -snapSens + snapAt && value < snapSens + snapAt) value = 0;
+        SVGKnob::onChange(e);
+    }
+}

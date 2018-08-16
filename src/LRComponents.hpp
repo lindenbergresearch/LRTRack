@@ -11,8 +11,11 @@
 /* show values of all knobs */
 #define DEBUG_VALUES false
 
-typedef std::shared_ptr<rack::Font> TrueType;
 using namespace rack;
+
+namespace lrt {
+
+typedef std::shared_ptr<rack::Font> TrueType;
 
 
 extern Plugin *plugin;
@@ -265,13 +268,7 @@ public:
      * @brief Hook into setSVG() method to setup box dimensions correct for indicator
      * @param svg
      */
-    void setSVG(std::shared_ptr<SVG> svg) {
-        SVGKnob::setSVG(svg);
-
-        /** inherit dimensions after loaded svg */
-        idc.middle = Vec(box.size.x / 2, box.size.y / 2);
-        shadow.setBox(box);
-    }
+    void setSVG(std::shared_ptr<SVG> svg);
 
 
     /**
@@ -301,70 +298,26 @@ public:
      * @brief Draw knob
      * @param vg
      */
-    void draw(NVGcontext *vg) override {
-        /** shadow */
-        shadow.draw(vg);
-
-        /** component */
-        FramebufferWidget::draw(vg);
-
-/*
-        nvgBeginPath(vg);
-        nvgRect(vg, -30, -30, box.size.x + 60, box.size.y + 60);
-
-        NVGcolor icol = nvgRGBAf(0.0f, 0.0f, 0.0f, 0.3f);
-        NVGcolor ocol = nvgRGBAf(0.0f, 0.0f, 0.0f, 0.0f);;
-
-        NVGpaint paint = nvgRadialGradient(vg, box.size.x / 2, box.size.y / 2,
-                                           0.f, box.size.x /2.f * 0.9f, icol, ocol);
-        nvgFillPaint(vg, paint);
-        nvgFill(vg);*/
-
-        /** indicator */
-        idc.draw(vg);
-
-        if (debug) {
-            auto text = stringf("%4.2f", value);
-            nvgFontSize(vg, 15);
-            nvgFontFaceId(vg, font->handle);
-
-            nvgFillColor(vg, nvgRGBAf(1.f, 1.f, 1.0f, 1.0f));
-            nvgText(vg, box.size.x - 5, box.size.y + 10, text.c_str(), NULL);
-        }
-
-
-    }
-
+    void draw(NVGcontext *vg) override;
 
     /**
      * @brief Setup knob snapping
      * @param position
      * @param sensitivity
      */
-    void setSnap(float position, float sensitivity) {
-        snap = true;
-        snapSens = sensitivity;
-        snapAt = position;
-    }
-
+    void setSnap(float position, float sensitivity);
 
     /**
      * @brief Remove knob snaping
      */
-    void unsetSnap() {
-        snap = false;
-    }
+    void unsetSnap();
 
 
     /**
      * @brief Snapping mode for knobs
      * @param e
      */
-    void onChange(EventChange &e) override {
-        // if the value still inside snap-tolerance keep the value zero
-        if (snap && value > -snapSens + snapAt && value < snapSens + snapAt) value = 0;
-        SVGKnob::onChange(e);
-    }
+    void onChange(EventChange &e) override;
 };
 
 
@@ -475,6 +428,7 @@ struct LRAlternateSmallKnob : LRKnob {
     }
 };
 
+
 /**
  * @brief LR Middle Knob
  */
@@ -560,6 +514,7 @@ public:
     }
 };
 
+
 /**
  * @brief Alternative screw head A
  */
@@ -582,6 +537,7 @@ struct ScrewLight : SVGScrew {
         box.size = sw->box.size;
     }
 };
+
 
 /**
  * @brief Custom switch based on original Rack files
@@ -673,3 +629,4 @@ struct SVGRotator : FramebufferWidget {
     void setSVG(std::shared_ptr<SVG> svg);
     void step() override;
 };
+}
