@@ -3,18 +3,29 @@
 
 namespace lrt {
 
+    LRKnob::LRKnob() {
+        minAngle = -ANGLE * (float) M_PI;
+        maxAngle = ANGLE * (float) M_PI;
+
+        shader = new LRShadow();
+       // addChild(shader);
+
+        font = Font::load(assetGlobal("res/fonts/ShareTechMono-Regular.ttf"));
+    }
+
+
     void LRKnob::setSVG(std::shared_ptr<SVG> svg) {
         SVGKnob::setSVG(svg);
 
         /** inherit dimensions after loaded svg */
         idc.middle = Vec(box.size.x / 2, box.size.y / 2);
-        shadow.setBox(box);
+        shader->setBox(box);
     }
 
 
     void LRKnob::draw(NVGcontext *vg) {
         /** shadow */
-        shadow.draw(vg);
+        shader->draw(vg);
 
         /** component */
         FramebufferWidget::draw(vg);

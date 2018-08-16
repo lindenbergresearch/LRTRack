@@ -154,7 +154,7 @@ namespace lrt {
     /**
      * @brief Standard LR Shadow
      */
-    struct LRShadow {
+    struct LRShadow : TransparentWidget {
     private:
         Rect box;
         float size = 0.65;
@@ -163,6 +163,11 @@ namespace lrt {
         /** shadow shift */
         Vec shadowPos = Vec(3, 5);
     public:
+
+
+        LRShadow();
+
+
         /**
          * @brief Set the new offset of the shadow gradient
          * @param x
@@ -186,7 +191,7 @@ namespace lrt {
         */
         void drawShadow(NVGcontext *vg, float strength, float size);
 
-        void draw(NVGcontext *vg);
+        void draw(NVGcontext *vg) override;
     };
 
 
@@ -212,19 +217,14 @@ namespace lrt {
 
     protected:
         /** shader */
-        LRShadow shadow = LRShadow();
+        LRShadow *shader;
 
 
     public:
         /**
          * @brief Default constructor
          */
-        LRKnob() {
-            minAngle = -ANGLE * (float) M_PI;
-            maxAngle = ANGLE * (float) M_PI;
-
-            font = Font::load(assetGlobal("res/fonts/ShareTechMono-Regular.ttf"));
-        }
+        LRKnob();
 
 
         /**
@@ -330,10 +330,10 @@ namespace lrt {
             maxAngle = length * (float) M_PI;
 
             setSVG(SVG::load(assetPlugin(plugin, "res/ToggleKnob.svg")));
-            shadow.setShadowPosition(3, 4);
+            shader->setShadowPosition(3, 4);
 
-            shadow.setStrength(1.2f);
-            shadow.setSize(0.7f);
+            shader->setStrength(1.2f);
+            shader->setSize(0.7f);
 
             speed = 2.f;
         }
@@ -355,10 +355,10 @@ namespace lrt {
             maxAngle = length * (float) M_PI;
 
             setSVG(SVG::load(assetPlugin(plugin, "res/MiddleIncremental.svg")));
-            shadow.setShadowPosition(3, 4);
+            shader->setShadowPosition(3, 4);
 
-            shadow.setStrength(1.2f);
-            shadow.setSize(0.7f);
+            shader->setStrength(1.2f);
+            shader->setSize(0.7f);
 
             speed = 3.f;
         }
@@ -381,7 +381,7 @@ namespace lrt {
         LRBigKnob() {
             setSVG(SVG::load(assetPlugin(plugin, "res/BigKnob.svg")));
             setIndicatorDistance(15);
-            shadow.setShadowPosition(5, 6);
+            shader->setShadowPosition(5, 6);
         }
     };
 
@@ -393,7 +393,7 @@ namespace lrt {
         LRMiddleKnob() {
             setSVG(SVG::load(assetPlugin(plugin, "res/MiddleKnob.svg")));
             setIndicatorDistance(12);
-            shadow.setShadowPosition(4, 4);
+            shader->setShadowPosition(4, 4);
         }
     };
 
@@ -404,7 +404,7 @@ namespace lrt {
     struct LRSmallKnob : LRKnob {
         LRSmallKnob() {
             setSVG(SVG::load(assetPlugin(plugin, "res/SmallKnob.svg")));
-            shadow.setShadowPosition(3, 3);
+            shader->setShadowPosition(3, 3);
             setSnap(0.0f, 0.03f);
 
 
@@ -419,7 +419,7 @@ namespace lrt {
     struct LRAlternateSmallKnob : LRKnob {
         LRAlternateSmallKnob() {
             setSVG(SVG::load(assetPlugin(plugin, "res/AlternateSmallKnob.svg")));
-            shadow.setShadowPosition(3, 3);
+            shader->setShadowPosition(3, 3);
             setSnap(0.0f, 0.03f);
 
 
@@ -435,7 +435,7 @@ namespace lrt {
         LRAlternateMiddleKnob() {
             setSVG(SVG::load(assetPlugin(plugin, "res/AlternateMiddleKnob.svg")));
             setIndicatorDistance(12);
-            shadow.setShadowPosition(4, 4);
+            shader->setShadowPosition(4, 4);
         }
     };
 
@@ -447,7 +447,7 @@ namespace lrt {
         LRAlternateBigKnob() {
             setSVG(SVG::load(assetPlugin(plugin, "res/AlternateBigKnob.svg")));
             setIndicatorDistance(15);
-            shadow.setShadowPosition(5, 6);
+            shader->setShadowPosition(5, 6);
         }
     };
 
@@ -457,7 +457,7 @@ namespace lrt {
      */
     struct LRIOPort : SVGPort {
     private:
-        LRShadow shadow = LRShadow();
+        LRShadow *shader;
 
     public:
         LRIOPort() {
@@ -465,10 +465,13 @@ namespace lrt {
             background->wrap();
             box.size = background->box.size;
 
+            shader = new LRShadow();
+          //  addChild(shadow);
+
             /** inherit dimensions */
-            shadow.setBox(box);
-            shadow.setSize(0.50);
-            shadow.setShadowPosition(2, 1);
+            shader->setBox(box);
+            shader->setSize(0.50);
+            shader->setShadowPosition(2, 1);
         }
 
 
@@ -477,7 +480,7 @@ namespace lrt {
          * @param vg
          */
         void draw(NVGcontext *vg) override {
-            shadow.draw(vg);
+            shader->draw(vg);
             SVGPort::draw(vg);
         }
     };
@@ -488,7 +491,7 @@ namespace lrt {
      */
     struct LRIOPortC : SVGPort {
     private:
-        LRShadow shadow = LRShadow();
+        LRShadow *shader;
 
     public:
         LRIOPortC() {
@@ -496,10 +499,13 @@ namespace lrt {
             background->wrap();
             box.size = background->box.size;
 
+            shader = new LRShadow();
+          //  addChild(shader);
+
             /** inherit dimensions */
-            shadow.setBox(box);
-            shadow.setSize(0.50);
-            shadow.setShadowPosition(2, 1);
+            shader->setBox(box);
+            shader->setSize(0.50);
+            shader->setShadowPosition(2, 1);
         }
 
 
@@ -508,7 +514,7 @@ namespace lrt {
          * @param vg
          */
         void draw(NVGcontext *vg) override {
-            shadow.draw(vg);
+            shader->draw(vg);
             SVGPort::draw(vg);
         }
     };

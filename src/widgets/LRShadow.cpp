@@ -11,7 +11,7 @@ namespace lrt {
      * @param shift XY Offset shift from middle
      */
     void LRShadow::drawShadow(NVGcontext *vg, float strength, float size) {
-        // add shadow
+        // add shader
         nvgBeginPath(vg);
         nvgRect(vg, -20, -20, box.size.x + 40, box.size.y + 40);
 
@@ -58,6 +58,11 @@ namespace lrt {
      */
     void LRShadow::setStrength(float strength) {
         LRShadow::strength = strength;
+    }
+
+
+    LRShadow::LRShadow() {
+
     }
 
 }
