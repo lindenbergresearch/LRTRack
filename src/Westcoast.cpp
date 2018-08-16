@@ -2,6 +2,8 @@
 #include "dsp/Lockhart.hpp"
 #include "LindenbergResearch.hpp"
 
+using namespace rack;
+using namespace lrt;
 
 struct Westcoast : LRModule {
 

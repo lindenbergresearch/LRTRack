@@ -1,5 +1,7 @@
 #include "LRComponents.hpp"
 
+using namespace rack;
+using namespace lrt;
 
 /**
  * @brief Constructor of LCD Widget

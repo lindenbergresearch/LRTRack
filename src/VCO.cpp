@@ -1,6 +1,8 @@
 #include "dsp/Oscillator.hpp"
 #include "LindenbergResearch.hpp"
 
+using namespace rack;
+using namespace lrt;
 
 struct VCO : LRModule {
     enum ParamIds {

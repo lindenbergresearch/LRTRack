@@ -1,10 +1,6 @@
 #include "LindenbergResearch.hpp"
 
-using namespace rack;
-
-
 Plugin *plugin;
-
 
 void init(rack::Plugin *p) {
     plugin = p;

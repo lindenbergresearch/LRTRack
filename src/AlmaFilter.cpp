@@ -1,6 +1,8 @@
 #include "dsp/LadderFilter.hpp"
 #include "LindenbergResearch.hpp"
 
+using namespace rack;
+using namespace lrt;
 
 struct AlmaFilter : LRModule {
 

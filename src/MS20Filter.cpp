@@ -1,6 +1,8 @@
 #include "dsp/MS20zdf.hpp"
 #include "LindenbergResearch.hpp"
 
+using namespace rack;
+using namespace lrt;
 
 struct MS20Filter : LRModule {
 

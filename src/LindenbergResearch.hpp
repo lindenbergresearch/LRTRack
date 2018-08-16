@@ -7,6 +7,7 @@
 #include "LRComponents.hpp"
 
 using namespace rack;
+using namespace lrt;
 
 extern Model *modelSimpleFilter;
 extern Model *modelMS20Filter;
