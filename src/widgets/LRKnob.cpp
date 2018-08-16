@@ -8,9 +8,12 @@ namespace lrt {
         maxAngle = ANGLE * (float) M_PI;
 
         shader = new LRShadow();
-       // addChild(shader);
+        removeChild(shadow); // uninstall default
 
         font = Font::load(assetGlobal("res/fonts/ShareTechMono-Regular.ttf"));
+
+        indicator = new LRCVIndicator(15.f, ANGLE);
+        addChild(indicator);
     }
 
 
@@ -18,7 +21,8 @@ namespace lrt {
         SVGKnob::setSVG(svg);
 
         /** inherit dimensions after loaded svg */
-        idc.middle = Vec(box.size.x / 2, box.size.y / 2);
+        indicator->box.size = sw->box.size;
+        indicator->middle = Vec(box.size.x / 2, box.size.y / 2);
         shader->setBox(box);
     }
 
@@ -30,10 +34,7 @@ namespace lrt {
         /** component */
         FramebufferWidget::draw(vg);
 
-
-        /** indicator */
-        idc.draw(vg);
-
+        /** debug numerical values */
         if (debug) {
             auto text = stringf("%4.2f", value);
             nvgFontSize(vg, 15);
@@ -62,4 +63,5 @@ namespace lrt {
         if (snap && value > -snapSens + snapAt && value < snapSens + snapAt) value = 0;
         SVGKnob::onChange(e);
     }
+
 }

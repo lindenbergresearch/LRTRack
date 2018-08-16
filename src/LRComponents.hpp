@@ -104,7 +104,7 @@ namespace lrt {
     /**
      * @brief Indicator for control voltages on knobs
      */
-    struct Indicator {
+    struct LRCVIndicator : TransparentWidget {
         static constexpr float OVERFLOW_THRESHOLD = 0.01f;
 
         /** flag to control drawing */
@@ -133,21 +133,14 @@ namespace lrt {
          * @param distance Radius viewed from the middle
          * @param angle Angle of active knob area
          */
-        Indicator(float distance, float angle) {
-            Indicator::distance = distance;
-            Indicator::angle = angle;
-
-            /** for optimization */
-            angle2 = 2 * angle;
-        }
+        LRCVIndicator(float distance, float angle);
 
 
         /**
          * @brief Draw routine for cv indicator
          * @param vg
          */
-        void draw(NVGcontext *vg);
-
+        void draw(NVGcontext *vg) override;
     };
 
 
@@ -203,7 +196,7 @@ namespace lrt {
         static constexpr float ANGLE = 0.83f;
 
         /** setup indicator with default values */
-        Indicator idc = Indicator(15.f, ANGLE);
+        LRCVIndicator *indicator;
 
         bool debug = DEBUG_VALUES;
         TrueType font;
@@ -221,9 +214,7 @@ namespace lrt {
 
 
     public:
-        /**
-         * @brief Default constructor
-         */
+
         LRKnob();
 
 
@@ -232,7 +223,7 @@ namespace lrt {
          * @param value
          */
         void setIndicatorValue(float value) {
-            idc.cv = value;
+            indicator->cv = value;
         }
 
 
@@ -241,7 +232,7 @@ namespace lrt {
          * @param active
          */
         void setIndicatorActive(bool active) {
-            idc.active = active;
+            indicator->active = active;
         }
 
 
@@ -250,7 +241,7 @@ namespace lrt {
          * @return
          */
         bool isIndicatorActive() {
-            return idc.active;
+            return indicator->active;
         }
 
 
@@ -259,7 +250,7 @@ namespace lrt {
          * @param distance
          */
         void setIndicatorDistance(float distance) {
-            idc.distance = distance;
+            indicator->distance = distance;
         }
 
 
