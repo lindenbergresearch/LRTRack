@@ -14,7 +14,6 @@ set(SOURCE_FILES
         src/VCO.cpp
         src/dsp/DSPMath.cpp
         src/dsp/DSPMath.hpp
-        src/Release.h
         src/dsp/Oscillator.cpp
         src/dsp/Oscillator.hpp
         src/dsp/DSPSystem.hpp
@@ -35,7 +34,15 @@ set(SOURCE_FILES
         src/dsp/Serge.hpp
         src/dsp/Horner.h
         src/dsp/LambertW.h
-        src/dsp/LambertW.cpp src/widgets/LRKnob.cpp src/widgets/LRShadow.cpp src/widgets/LRCVIndicator.cpp src/widgets/LRCVIndicator.cpp src/widgets/LRLCDWidget.cpp src/widgets/LRLight.cpp src/widgets/LRPanel.cpp src/widgets/LRSVGRotator.cpp)
+        src/dsp/LambertW.cpp
+        src/widgets/LRKnob.cpp
+        src/widgets/LRShadow.cpp
+        src/widgets/LRCVIndicator.cpp
+        src/widgets/LRCVIndicator.cpp
+        src/widgets/LRLCDWidget.cpp
+        src/widgets/LRLight.cpp
+        src/widgets/LRPanel.cpp
+        src/widgets/LRSVGRotator.cpp)
 
 include_directories(.)
 include_directories(src)
