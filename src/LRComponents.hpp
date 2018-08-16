@@ -547,7 +547,7 @@ namespace lrt {
 
 
     /**
-     * @brief Standard LED Redlight
+     * @brief Standard LED
      */
     struct LRLight : SmallLight<ModuleLightWidget> {
         LRLight();
