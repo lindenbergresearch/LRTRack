@@ -22,7 +22,6 @@ set(SOURCE_FILES
         src/dsp/MS20zdf.hpp
         src/dsp/MS20zdf.cpp
         src/MS20Filter.cpp
-        src/LRComponents.cpp
         src/LRComponents.hpp
         src/dsp/WaveShaper.cpp
         src/dsp/WaveShaper.hpp
@@ -52,4 +51,4 @@ include_directories(../../include)
 include_directories(../../include/dsp)
 include_directories(../../dep/include)
 
-add_executable(LRT ${SOURCE_FILES} src/dsp/DSPMath.cpp src/dsp/DSPMath.hpp src/Release.h)
+add_executable(LRT ${SOURCE_FILES} src/dsp/DSPMath.cpp src/dsp/DSPMath.hpp)
