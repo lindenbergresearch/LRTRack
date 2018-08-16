@@ -51,7 +51,12 @@ namespace lrt {
      * @brief Standard LRT ModuleWidget definition
      */
     struct LRModuleWidget : ModuleWidget {
-        explicit LRModuleWidget(Module *module);
+        /**
+         * @brief
+         * @param module
+         */
+        LRModuleWidget(Module *module) : ModuleWidget(module) {
+        }
     };
 
 
@@ -457,7 +462,7 @@ namespace lrt {
             box.size = background->box.size;
 
             shader = new LRShadow();
-          //  addChild(shadow);
+            //  addChild(shadow);
 
             /** inherit dimensions */
             shader->setBox(box);
@@ -491,7 +496,7 @@ namespace lrt {
             box.size = background->box.size;
 
             shader = new LRShadow();
-          //  addChild(shader);
+            //  addChild(shader);
 
             /** inherit dimensions */
             shader->setBox(box);
