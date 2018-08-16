@@ -229,6 +229,7 @@ namespace lrt {
          */
         void setIndicatorValue(float value) {
             indicator->cv = value;
+            dirty = true;
         }
 
 
