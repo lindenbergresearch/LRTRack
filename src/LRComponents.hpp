@@ -239,6 +239,7 @@ namespace lrt {
          */
         void setIndicatorActive(bool active) {
             indicator->active = active;
+            dirty = true;
         }
 
 
@@ -257,6 +258,7 @@ namespace lrt {
          */
         void setIndicatorDistance(float distance) {
             indicator->distance = distance;
+            dirty = true;
         }
 
 
