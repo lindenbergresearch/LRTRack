@@ -5,6 +5,7 @@
 using namespace rack;
 using namespace lrt;
 
+
 struct Westcoast : LRModule {
 
     enum RotaryStages {
@@ -52,13 +53,15 @@ struct Westcoast : LRModule {
     LRAlternateBigKnob *gain;
     LRAlternateMiddleKnob *bias;
 
+    LRPanel *patina;
+    bool showPatina = true;
+
     void step() override;
     void onSampleRateChange() override;
 };
 
 
 void Westcoast::step() {
-
     float gaincv = 0;
     float biascv = 0;
 
@@ -117,6 +120,7 @@ void Westcoast::onSampleRateChange() {
 
 struct WestcoastWidget : LRModuleWidget {
     WestcoastWidget(Westcoast *module);
+    void appendContextMenu(Menu *menu) override;
 };
 
 
@@ -124,6 +128,11 @@ WestcoastWidget::WestcoastWidget(Westcoast *module) : LRModuleWidget(module) {
     panel = new LRPanel();
     panel->setBackground(SVG::load(assetPlugin(plugin, "res/Westcoast.svg")));
     addChild(panel);
+
+    module->patina = new LRPanel();
+    module->patina->setBackground(SVG::load(assetPlugin(plugin, "res/Patina.svg")));
+    module->patina->visible = false;
+    addChild(module->patina);
 
     box.size = panel->box.size;
 
@@ -153,16 +162,43 @@ WestcoastWidget::WestcoastWidget(Westcoast *module) : LRModuleWidget(module) {
     // ***** CV INPUTS *******
 
     // ***** INPUTS **********
-    addInput(Port::create<LRIOPortC>(Vec(22.4, 324.6), Port::INPUT, module, Westcoast::SHAPER_INPUT));
+    addInput(Port::create<LRIOPortC>(Vec(22.4, 332.6), Port::INPUT, module, Westcoast::SHAPER_INPUT));
     // ***** INPUTS **********
 
     // ***** OUTPUTS *********
-    addOutput(Port::create<LRIOPortC>(Vec(159.4, 324.6), Port::OUTPUT, module, Westcoast::SHAPER_OUTPUT));
+    addOutput(Port::create<LRIOPortC>(Vec(159.4, 332.6), Port::OUTPUT, module, Westcoast::SHAPER_OUTPUT));
     // ***** OUTPUTS *********
 
     // ***** SWITCH  *********
     addParam(ParamWidget::create<LRSwitch>(Vec(119, 331), module, Westcoast::DCBLOCK_PARAM, 0.0, 1.0, 1.0));
     // ***** SWITCH  *********
+}
+
+
+struct WestcoastShowPatina : MenuItem {
+    Westcoast *westcoast;
+
+
+    void onAction(EventAction &e) override {
+        westcoast->patina->visible ^= true;
+    }
+
+
+    void step() override {
+        rightText = CHECKMARK(westcoast->patina->visible);
+    }
+};
+
+
+void WestcoastWidget::appendContextMenu(Menu *menu) {
+    menu->addChild(MenuEntry::create());
+
+    auto *westcoast = dynamic_cast<Westcoast *>(module);
+    assert(westcoast);
+
+    auto *mergeItem = MenuItem::create<WestcoastShowPatina>("use aged look");
+    mergeItem->westcoast = westcoast;
+    menu->addChild(mergeItem);
 }
 
 
