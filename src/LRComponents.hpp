@@ -374,7 +374,7 @@ namespace lrt {
             minAngle = -length * (float) M_PI;
             maxAngle = length * (float) M_PI;
 
-            setSVG(SVG::load(assetPlugin(plugin, "res/MiddleIncremental.svg")));
+            setSVG(SVG::load(assetPlugin(plugin, "res/AlternateMiddleKnob.svg")));
             shader->setShadowPosition(3, 4);
 
             shader->setStrength(1.2f);
@@ -459,6 +459,8 @@ namespace lrt {
             setIndicatorDistance(11);
             setIndicatorShape(6, 0.2);
             shader->setShadowPosition(4, 5);
+
+            setSnap(0.0f, 0.12f);
         }
     };
 
