@@ -24,7 +24,6 @@ struct Westcoast : LRModule {
         CV_BIAS_PARAM,
         BIAS_PARAM,
         TYPE_PARAM,
-        DCBLOCK_PARAM,
         NUM_PARAMS
     };
 
@@ -101,7 +100,6 @@ void Westcoast::step() {
             hs->setGain((params[GAIN_PARAM].value + gaincv));
             hs->setBias(params[BIAS_PARAM].value + biascv);
             hs->setIn(inputs[SHAPER_INPUT].value);
-            hs->setBlockDC(params[DCBLOCK_PARAM].value == 1);
 
             hs->process();
             out = (float) hs->getOut();
@@ -110,7 +108,6 @@ void Westcoast::step() {
             sg->setGain((params[GAIN_PARAM].value + gaincv));
             sg->setBias(params[BIAS_PARAM].value + biascv);
             sg->setIn(inputs[SHAPER_INPUT].value);
-            sg->setBlockDC(params[DCBLOCK_PARAM].value == 1);
 
             sg->process();
             out = (float) sg->getOut();
@@ -183,7 +180,7 @@ WestcoastWidget::WestcoastWidget(Westcoast *module) : LRModuleWidget(module) {
     // ***** OUTPUTS *********
 
     // ***** SWITCH  *********
-    addParam(ParamWidget::create<LRSwitch>(Vec(119, 331), module, Westcoast::DCBLOCK_PARAM, 0.0, 1.0, 1.0));
+    //addParam(ParamWidget::create<LRSwitch>(Vec(119, 331), module, Westcoast::DCBLOCK_PARAM, 0.0, 1.0, 1.0));
     // ***** SWITCH  *********
 }
 
