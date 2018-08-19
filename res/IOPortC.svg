@@ -6,13 +6,13 @@
             <g transform="matrix(0.892857,0,0,0.892857,1.5,1.5)">
                 <circle cx="14" cy="14" r="14" style="fill:#0d0d0d;stroke:#8b8b8b;stroke-width:1.5px;"/>
             </g>
-            <g transform="matrix(1.6023,0,0,1.30133,-0.523693,-4.14426)">
-                <rect x="0.304" y="13.174" width="2.917" height="1.537" style="fill:#1c1c1c;"/>
+            <g transform="matrix(1.2957,0,0,1.952,0.463866,-13.2164)">
+                <rect x="0.304" y="13.174" width="2.917" height="1.537" style="fill:#0e0e0e;"/>
             </g>
-            <g transform="matrix(1.6023,0,0,1.30133,22.8183,-4.14426)">
-                <rect x="0.304" y="13.174" width="2.917" height="1.537" style="fill:#1c1c1c;"/>
+            <g transform="matrix(1.2957,0,0,1.952,22.9115,-13.2164)">
+                <rect x="0.304" y="13.174" width="2.917" height="1.537" style="fill:#0e0e0e;"/>
             </g>
-            <circle cx="13.982" cy="14.085" r="9.333" style="fill:#444;stroke:#727272;stroke-width:0.95px;stroke-linejoin:round;stroke-miterlimit:1.41421;"/>
+            <circle cx="13.982" cy="14.085" r="9.333" style="fill:#373737;stroke:#313131;stroke-width:0.95px;stroke-linejoin:round;stroke-miterlimit:1.41421;"/>
             <circle cx="14.001" cy="14.084" r="6.458"/>
         </g>
     </g>

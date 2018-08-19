@@ -2,7 +2,7 @@
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <svg width="210px" height="380px" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-miterlimit:10;">
     <g id="Background" transform="matrix(1.16667,0,0,1,0.0116667,-196.458)">
-        <rect x="-0.01" y="196.458" width="180" height="380" style="fill:#161616;"/>
+        <rect x="-0.01" y="196.458" width="180" height="380" style="fill:#1c1810;"/>
     </g>
     <g id="Guides">
         <g transform="matrix(0.288308,0,0,0.614395,49.6719,65.0418)">
@@ -66,7 +66,7 @@
                 </g>
             </g>
             <g id="OuterCircle_5_" transform="matrix(1.05,0,0,1.05,-4.4995,-15.3303)">
-                <path d="M80.647,325.45c-6.339,-3.354 -10.657,-10.016 -10.657,-17.687c0,-11.045 8.955,-19.999 20,-19.999c11.046,0 20,8.954 20,19.999c0,7.612 -4.253,14.231 -10.514,17.609" style="fill:#2b2b2b;stroke:#fff;stroke-opacity:0.0980392;stroke-width:14.29px;"/>
+                <path d="M80.647,325.45c-6.339,-3.354 -10.657,-10.016 -10.657,-17.687c0,-11.045 8.955,-19.999 20,-19.999c11.046,0 20,8.954 20,19.999c0,7.612 -4.253,14.231 -10.514,17.609" style="fill:#2b2b2b;stroke:#fff;stroke-opacity:0.129412;stroke-width:14.29px;"/>
             </g>
         </g>
         <g id="Scale-Middle1" serif:id="Scale Middle" transform="matrix(1,0,0,1,54.5185,-134.424)">
