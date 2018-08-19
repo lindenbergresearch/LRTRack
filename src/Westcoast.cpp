@@ -54,10 +54,23 @@ struct Westcoast : LRModule {
     LRAlternateMiddleKnob *bias;
 
     LRPanel *patina;
-    bool showPatina = true;
 
     void step() override;
     void onSampleRateChange() override;
+
+
+    json_t *toJson() override {
+        json_t *rootJ = json_object();
+        json_object_set_new(rootJ, "agedmode", json_boolean(patina->visible));
+        return rootJ;
+    }
+
+
+    void fromJson(json_t *rootJ) override {
+        json_t *agedmodeJ = json_object_get(rootJ, "agedmode");
+        if (agedmodeJ)
+            patina->visible = json_boolean_value(agedmodeJ);
+    }
 };
 
 
