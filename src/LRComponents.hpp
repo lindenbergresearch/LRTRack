@@ -526,12 +526,12 @@ namespace lrt {
             box.size = background->box.size;
 
             shader = new LRShadow();
-            //  addChild(shader);
+           // addChild(shader);
 
             /** inherit dimensions */
             shader->setBox(box);
             shader->setSize(0.50);
-            shader->setShadowPosition(2, 1);
+            shader->setShadowPosition(3, 2);
         }
 
 
