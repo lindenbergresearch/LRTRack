@@ -160,7 +160,7 @@ WestcoastWidget::WestcoastWidget(Westcoast *module) : LRModuleWidget(module) {
     addParam(module->gain);
     addParam(module->bias);
 
-    addParam(LRKnob::create<LRMiddleIncremental>(Vec(85, 279.3), module, Westcoast::TYPE_PARAM, 1, 6, 1));
+    addParam(LRKnob::create<LRMiddleIncremental>(Vec(85, 279.3), module, Westcoast::TYPE_PARAM, 1, 7, 1));
 
     addParam(LRKnob::create<LRAlternateSmallKnob>(Vec(83.4, 101.00), module, Westcoast::CV_GAIN_PARAM, -1.f, 1.f, 0.f));
     addParam(LRKnob::create<LRAlternateSmallKnob>(Vec(83.4, 183.0), module, Westcoast::CV_BIAS_PARAM, -1.f, 1.f, 0.f));
