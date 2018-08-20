@@ -1,5 +1,5 @@
 SLUG = LindenbergResearch
-VERSION = 0.6.2_beta
+VERSION = 0.6.2_beta-2
 
 SOURCES += $(wildcard src/*.cpp src/dsp/*.cpp src/widgets/*.cpp)
 
