@@ -1,14 +1,12 @@
-//
-// Created by Patrick Lindenberg on 20.08.18.
-//
+#pragma once
 
-#ifndef LRT_SATURATOR_HPP
-#define LRT_SATURATOR_HPP
+#include "WaveShaper.hpp"
 
 
-class Saturator {
+namespace dsp {
 
-};
+    class Saturator : WaveShaper {
 
+    };
 
-#endif //LRT_SATURATOR_HPP
+}
