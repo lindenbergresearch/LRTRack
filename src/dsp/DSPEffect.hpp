@@ -13,9 +13,6 @@ namespace dsp {
      */
     struct DSPEffect {
 
-    protected:
-
-
     public:
 
         float sr = 44100.0;
