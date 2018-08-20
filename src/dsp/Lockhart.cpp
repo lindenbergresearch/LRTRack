@@ -65,14 +65,14 @@ double LockhartWavefolder::compute(double x) {
     in *= clampd(gain, 0., 20.); // add gain
     in += clampd(bias, -6., 6.); // add bias
 
-    in *= 0.33333;
+    in *= 0.2;
 
     in = lh1.compute(in);
     in = lh2.compute(in);
     in = lh3.compute(in);
     in = lh4.compute(in);
 
-    in *= 3.f;
+    in *= 4.f;
     if (blockDC) in = dc->filter(in);
 
     out =  tanh1->next(in);
