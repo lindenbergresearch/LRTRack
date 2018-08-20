@@ -41,7 +41,7 @@ set(SOURCE_FILES
         src/widgets/LRLCDWidget.cpp
         src/widgets/LRLight.cpp
         src/widgets/LRPanel.cpp
-        src/widgets/LRSVGRotator.cpp)
+        src/widgets/LRSVGRotator.cpp src/dsp/Saturator.cpp src/dsp/Saturator.hpp)
 
 include_directories(.)
 include_directories(src)
