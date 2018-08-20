@@ -255,9 +255,9 @@ void BlankPanelWidgetSmall::appendContextMenu(Menu *menu) {
 }
 
 
-Model *modelBlankPanelM1 = Model::create<BlankPanelM1, BlankPanelWidgetM1>("Lindenberg Research", "BlankPanel 02", "Blank Panel 12TE",
+Model *modelBlankPanelM1 = Model::create<BlankPanelM1, BlankPanelWidgetM1>("Lindenberg Research", "BlankPanel 02", "Blank: Empty",
                                                                            BLANK_TAG);
 
 Model *modelBlankPanelSmall = Model::create<BlankPanelSmall, BlankPanelWidgetSmall>("Lindenberg Research", "BlankPanel Small",
-                                                                                    "Blank Panel Small",
-                                                                                    BLANK_TAG);
+                                                                                    "Blank: Small / Multiple",
+                                                                                    BLANK_TAG, MULTIPLE_TAG);
