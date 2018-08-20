@@ -9,9 +9,9 @@ using namespace lrt;
 struct Westcoast : LRModule {
 
     enum RotaryStages {
-        OVERDRIVE = 1,
-        LOCKHART,
+        LOCKHART = 1,
         SERGE,
+        OVERDRIVE,
         SATURATE,
         POLYNOM,
         SOFTCLIP,
@@ -206,7 +206,7 @@ void WestcoastWidget::appendContextMenu(Menu *menu) {
     auto *westcoast = dynamic_cast<Westcoast *>(module);
     assert(westcoast);
 
-    auto *mergeItem = MenuItem::create<WestcoastShowPatina>("use aged look");
+    auto *mergeItem = MenuItem::create<WestcoastShowPatina>("Aged Look");
     mergeItem->westcoast = westcoast;
     menu->addChild(mergeItem);
 }
