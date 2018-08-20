@@ -1,7 +1,11 @@
 # Created by .ignore support plugin (hsz.mobi)
 plugin.dylib
 
-.idea/
+*.[oa]
+#.idea/*
+.idea/dictionaries/*.xml
 build/
 cmake-build-debug/
 dist/
+cmake-build-release/
+res/Untitled.afdesign
