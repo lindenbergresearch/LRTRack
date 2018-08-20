@@ -2,8 +2,7 @@
 plugin.dylib
 
 *.[oa]
-#.idea/*
-.idea/dictionaries/*.xml
+.idea/*
 build/
 cmake-build-debug/
 dist/
