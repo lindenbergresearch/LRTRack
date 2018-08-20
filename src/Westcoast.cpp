@@ -1,5 +1,6 @@
 #include "dsp/Serge.hpp"
 #include "dsp/Lockhart.hpp"
+#include "dsp/Saturator.hpp"
 #include "LindenbergResearch.hpp"
 
 using namespace rack;
@@ -49,6 +50,8 @@ struct Westcoast : LRModule {
 
     dsp::LockhartWavefolder *hs = new dsp::LockhartWavefolder(engineGetSampleRate());
     dsp::SergeWavefolder *sg = new dsp::SergeWavefolder(engineGetSampleRate());
+    dsp::Saturator *saturator = new dsp::Saturator(engineGetSampleRate());
+
     LRAlternateBigKnob *gain;
     LRAlternateMiddleKnob *bias;
 
@@ -94,24 +97,37 @@ void Westcoast::step() {
     }
 
     float out;
+    float gain = params[GAIN_PARAM].value + gaincv;
+    float bias = params[BIAS_PARAM].value + biascv;
 
     switch (lround(params[TYPE_PARAM].value)) {
-        case LOCKHART: // Lockhart Model
-            hs->setGain((params[GAIN_PARAM].value + gaincv));
-            hs->setBias(params[BIAS_PARAM].value + biascv);
+        case LOCKHART:  // Lockhart Model
+            hs->setGain(gain);
+            hs->setBias(bias);
             hs->setIn(inputs[SHAPER_INPUT].value);
 
             hs->process();
             out = (float) hs->getOut();
             break;
-        case SERGE: // Serge Model
-            sg->setGain((params[GAIN_PARAM].value + gaincv));
-            sg->setBias(params[BIAS_PARAM].value + biascv);
+
+        case SERGE:     // Serge Model
+            sg->setGain(gain);
+            sg->setBias(bias);
             sg->setIn(inputs[SHAPER_INPUT].value);
 
             sg->process();
             out = (float) sg->getOut();
             break;
+
+        case SATURATE: // Saturator
+            saturator->setGain(gain);
+            saturator->setBias(bias);
+            saturator->setIn(inputs[SHAPER_INPUT].value);
+
+            saturator->process();
+            out = (float) saturator->getOut();
+            break;
+
         default: // invalid state, should not happen
             out = 0;
             break;
@@ -123,8 +139,10 @@ void Westcoast::step() {
 
 void Westcoast::onSampleRateChange() {
     Module::onSampleRateChange();
+
     hs->setSamplerate(engineGetSampleRate());
     sg->setSamplerate(engineGetSampleRate());
+    saturator->setSamplerate(engineGetSampleRate());
 }
 
 
