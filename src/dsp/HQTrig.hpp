@@ -18,7 +18,7 @@ namespace dsp {
         HQTanh(float sr, int factor) : DSPEffect(sr) {
             HQTanh::factor = factor;
 
-            rs = new Resampler<1>(factor);
+            rs = new Resampler<1>(factor, factor * 4);
         }
 
 
