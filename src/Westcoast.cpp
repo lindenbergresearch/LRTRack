@@ -10,8 +10,8 @@ using namespace lrt;
 struct Westcoast : LRModule {
 
     enum RotaryStages {
-        LOCKHART = 1,
-        SERGE,
+        SERGE = 1,
+        LOCKHART,
         OVERDRIVE,
         SATURATE,
         POLYNOM,
