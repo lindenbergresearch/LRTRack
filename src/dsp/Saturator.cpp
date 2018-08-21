@@ -11,7 +11,7 @@ Saturator::Saturator(float sr) : WaveShaper(sr) {
 
 
 void Saturator::init() {
-    WaveShaper::rs = new Resampler<1>(4);
+    WaveShaper::rs = new Resampler<1>(1);
 }
 
 
@@ -34,7 +34,7 @@ double Saturator::compute(double x) {
 
     in = tanh1->next(in);
 
-    in *= 1 / SATURATOR_GAIN;
+    in *= 1 / SATURATOR_GAIN * 0.3;
     if (blockDC) in = dc->filter(in);
 
     out = in + noise->nextFloat(SATURATOR_NOISE);
