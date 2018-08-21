@@ -25,10 +25,10 @@ void Saturator::invalidate() {}
 
 double Saturator::compute(double x) {
     double out;
-    double in = clampd(x, -10, 10);
+    double in = clampd(x, -SHAPER_MAX_VOLTS, SHAPER_MAX_VOLTS);
 
     in *= clampd(gain, 0., 20.); // add gain
-    in += clampd(bias * 2, -6., 6.); // add bias
+    in += clampd(bias * 2, -12., 12.); // add bias
 
     in *= SATURATOR_GAIN;
 
@@ -39,5 +39,5 @@ double Saturator::compute(double x) {
 
     out = in + noise->nextFloat(SATURATOR_NOISE);
 
-    return out * 10.;
+    return out;
 }
