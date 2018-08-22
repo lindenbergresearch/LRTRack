@@ -27,8 +27,8 @@ double Saturator::compute(double x) {
     double out;
     double in = clampd(x, -SHAPER_MAX_VOLTS, SHAPER_MAX_VOLTS);
 
-    in *= clampd(gain, 0., 20.); // add gain
-    in += clampd(bias * 2, -12., 12.); // add bias
+    in *= clampd(gain, 0., 20.); // add gainBtn
+    in += clampd(bias * 2, -12., 12.); // add biasBtn
 
     in *= SATURATOR_GAIN;
 
