@@ -1,4 +1,4 @@
-#include "dsp/Overdrive.hpp"
+#include "dsp/Hardclip.hpp"
 #include "dsp/RShaper.hpp"
 #include "dsp/Serge.hpp"
 #include "dsp/Lockhart.hpp"
@@ -53,7 +53,7 @@ struct Westcoast : LRModule {
     dsp::LockhartWavefolder *hs = new dsp::LockhartWavefolder(engineGetSampleRate());
     dsp::SergeWavefolder *sg = new dsp::SergeWavefolder(engineGetSampleRate());
     dsp::Saturator *saturator = new dsp::Saturator(engineGetSampleRate());
-    dsp::Overdrive *overdrive = new dsp::Overdrive(engineGetSampleRate());
+    dsp::Hardclip *hardclip = new dsp::Hardclip(engineGetSampleRate());
     dsp::ReShaper *reshaper = new dsp::ReShaper(engineGetSampleRate());
 
     LRAlternateBigKnob *gainBtn = NULL;
@@ -135,13 +135,13 @@ void Westcoast::step() {
             out = (float) saturator->getOut();
             break;
 
-        case OVERDRIVE: // Overdrive
-            overdrive->setGain(gain);
-            overdrive->setBias(bias);
-            overdrive->setIn(inputs[SHAPER_INPUT].value);
+        case HARDCLIP: // Hardclip
+            hardclip->setGain(gain);
+            hardclip->setBias(bias);
+            hardclip->setIn(inputs[SHAPER_INPUT].value);
 
-            overdrive->process();
-            out = (float) overdrive->getOut();
+            hardclip->process();
+            out = (float) hardclip->getOut();
             break;
 
         case RESHAPER: // ReShaper

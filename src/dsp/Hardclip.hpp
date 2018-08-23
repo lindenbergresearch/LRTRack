@@ -2,12 +2,12 @@
 
 #include "WaveShaper.hpp"
 
-#define OVERDRIVE_NOISE 0.0017234327
-#define OVERDRIVE_GAIN 0.05
+#define HARDCLIP_NOISE 0.0017234327
+#define HARDCLIP_GAIN 0.05
 
 namespace dsp {
 
-    struct Overdrive : WaveShaper {
+    struct Hardclip : WaveShaper {
 
         Noise *noise;
         HQClip *hqclip;
@@ -15,7 +15,7 @@ namespace dsp {
 
     public:
 
-        explicit Overdrive(float sr);
+        explicit Hardclip(float sr);
 
         void init() override;
         void invalidate() override;
