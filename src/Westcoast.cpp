@@ -96,7 +96,7 @@ void Westcoast::step() {
         biasBtn->setIndicatorActive(inputs[CV_BIAS_INPUT].active);
 
         gainBtn->setIndicatorValue((params[GAIN_PARAM].value + gaincv) / 20);
-        biasBtn->setIndicatorValue((params[BIAS_PARAM].value + (biascv + 3)) / 6);
+        biasBtn->setIndicatorValue((params[BIAS_PARAM].value + (biascv + 6)) / 12);
     }
 
     float out;
