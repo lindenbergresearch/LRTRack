@@ -2,14 +2,15 @@
 
 #include "WaveShaper.hpp"
 
-#define SATURATOR_NOISE 0.0017234327
-#define SATURATOR_GAIN 0.05
+#define OVERDRIVE_NOISE 0.0017234327
+#define OVERDRIVE_GAIN 0.05
 
 namespace dsp {
 
     struct Overdrive : WaveShaper {
 
         Noise *noise;
+        HQClip *hqclip;
 
 
     public:
