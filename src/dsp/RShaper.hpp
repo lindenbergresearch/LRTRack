@@ -3,7 +3,7 @@
 #include "WaveShaper.hpp"
 
 #define RSHAPER_NOISE 0.0017234327
-#define RSHAPER_GAIN 0.05
+#define RSHAPER_GAIN 0.1
 
 namespace dsp {
 

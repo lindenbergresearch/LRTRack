@@ -24,16 +24,19 @@ void ReShaper::invalidate() {}
 
 double ReShaper::compute(double x) {
     double out;
+    double a = gain * 2.5;
     double in = clampd(x, -SHAPER_MAX_VOLTS, SHAPER_MAX_VOLTS);
 
-    in *= clampd(gain, 0., 20.); // add gainBtn
-    in += clampd(bias * 2, -SHAPER_MAX_BIAS, SHAPER_MAX_BIAS); // add biasBtn
+  //  in *= clampd(gain, 0., 20.); // add gainBtn
+    in += clampd(bias*0.5, -SHAPER_MAX_BIAS/4., SHAPER_MAX_BIAS/.4); // add biasBtn
+
+   // in *= RSHAPER_GAIN;
 
     in *= RSHAPER_GAIN;
 
-    in = tanh1->next(in);
+    in = in * (fabs(in) + a) / (in * in + (a - 1) * fabs(in) + 1);
 
-    in *= 1 / RSHAPER_GAIN * 0.3;
+    in *= 1 / RSHAPER_GAIN * 0.5;
     if (blockDC) in = dc->filter(in);
 
     out = in + noise->nextFloat(RSHAPER_NOISE);
