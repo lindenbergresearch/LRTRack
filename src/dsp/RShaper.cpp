@@ -10,7 +10,7 @@ ReShaper::ReShaper(float sr) : WaveShaper(sr) {
 
 
 void ReShaper::init() {
-    WaveShaper::rs = new Resampler<1>(1);
+    WaveShaper::rs = new Resampler<1>(8, 16);
 }
 
 
