@@ -1,3 +1,5 @@
+#include "dsp/Overdrive.hpp"
+#include "dsp/RShaper.hpp"
 #include "dsp/Serge.hpp"
 #include "dsp/Lockhart.hpp"
 #include "dsp/Saturator.hpp"
@@ -14,8 +16,8 @@ struct Westcoast : LRModule {
         LOCKHART,
         OVERDRIVE,
         SATURATE,
-        POLYNOM,
-        SOFTCLIP,
+        RESHAPER,
+        VALERIE,
         HARDCLIP
     };
 
@@ -51,6 +53,8 @@ struct Westcoast : LRModule {
     dsp::LockhartWavefolder *hs = new dsp::LockhartWavefolder(engineGetSampleRate());
     dsp::SergeWavefolder *sg = new dsp::SergeWavefolder(engineGetSampleRate());
     dsp::Saturator *saturator = new dsp::Saturator(engineGetSampleRate());
+    dsp::Overdrive *overdrive = new dsp::Overdrive(engineGetSampleRate());
+    dsp::ReShaper *reshaper = new dsp::ReShaper(engineGetSampleRate());
 
     LRAlternateBigKnob *gainBtn = NULL;
     LRAlternateMiddleKnob *biasBtn = NULL;
@@ -129,6 +133,15 @@ void Westcoast::step() {
 
             saturator->process();
             out = (float) saturator->getOut();
+            break;
+
+        case OVERDRIVE: // Overdrive
+            overdrive->setGain(gain);
+            overdrive->setBias(bias);
+            overdrive->setIn(inputs[SHAPER_INPUT].value);
+
+            overdrive->process();
+            out = (float) overdrive->getOut();
             break;
 
         default: // invalid state, should not happen
