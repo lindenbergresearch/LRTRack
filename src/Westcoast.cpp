@@ -144,6 +144,15 @@ void Westcoast::step() {
             out = (float) overdrive->getOut();
             break;
 
+        case RESHAPER: // ReShaper
+            reshaper->setGain(gain);
+            reshaper->setBias(bias);
+            reshaper->setIn(inputs[SHAPER_INPUT].value);
+
+            reshaper->process();
+            out = (float) reshaper->getOut();
+            break;
+
         default: // invalid state, should not happen
             out = 0;
             break;
