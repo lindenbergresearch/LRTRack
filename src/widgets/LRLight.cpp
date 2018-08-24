@@ -9,12 +9,12 @@ namespace lrt {
         // Solid
         nvgBeginPath(vg);
         nvgCircle(vg, radius, radius, radius);
-        nvgFillColor(vg, bgColor);
+        nvgFillColor(vg, nvgRGBAf(0.2,0.3,0.9,0.3));
         nvgFill(vg);
 
         // Border
         nvgStrokeWidth(vg, 1.0f);
-        NVGcolor borderColor = bgColor;
+        NVGcolor borderColor = nvgRGBAf(0.01,0.03,0.09,0.9);
         borderColor.a *= 0.5f;
         nvgStrokeColor(vg, borderColor);
         nvgStroke(vg);
