@@ -86,8 +86,12 @@ void Westcoast::step() {
     float gaincv = 0;
     float biascv = 0;
 
-    if (!inputs[SHAPER_INPUT].active) return;
+    /* not connected */
+    if (!inputs[SHAPER_INPUT].active) {
+        outputs[SHAPER_OUTPUT].value = 0.f;
 
+        return;
+    }
 
     if (inputs[CV_GAIN_INPUT].active) {
         gaincv = inputs[CV_GAIN_INPUT].value * quadraticBipolar(params[CV_GAIN_PARAM].value) * 4.0f;
