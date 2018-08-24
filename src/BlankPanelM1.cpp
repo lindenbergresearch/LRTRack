@@ -3,6 +3,7 @@
 using namespace rack;
 using namespace lrt;
 
+
 struct BlankPanelM1 : Module {
     enum ParamIds {
         NUM_PARAMS
@@ -55,7 +56,7 @@ struct BlankPanelSmall : Module {
     BlankPanelSmall() : Module(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS) {}
 
 
-    LRIOPort *ioports[8];
+    LRIOPort *ioports[8] = {NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL};
     bool multiple = false;
 
     void step() override;
