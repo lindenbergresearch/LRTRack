@@ -427,7 +427,7 @@ namespace lrt {
         LRSmallKnob() {
             setSVG(SVG::load(assetPlugin(plugin, "res/SmallKnob.svg")));
             shader->setShadowPosition(3, 3);
-            setSnap(0.0f, 0.03f);
+            setSnap(0.0f, 0.02f);
 
 
             speed = 0.9f;
@@ -442,7 +442,7 @@ namespace lrt {
         LRAlternateSmallKnob() {
             setSVG(SVG::load(assetPlugin(plugin, "res/AlternateSmallKnob.svg")));
             shader->setShadowPosition(3, 3);
-            setSnap(0.0f, 0.03f);
+            setSnap(0.0f, 0.02f);
 
 
             speed = 0.9f;
