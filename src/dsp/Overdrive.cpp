@@ -6,7 +6,7 @@ using namespace dsp;
 Overdrive::Overdrive(float sr) : WaveShaper(sr) {
     init();
     noise = new Noise;
-    tanh1 = new HQTanh(sr, 4);
+    tanh1 = new HQTanh(sr, 1);
 }
 
 
@@ -24,7 +24,7 @@ void Overdrive::invalidate() {}
 
 
 double Overdrive::compute(double x) {
-    double out;
+    double out, k;
     double in = clampd(x, -SHAPER_MAX_VOLTS, SHAPER_MAX_VOLTS);
 
     in *= clampd(gain, 0., 20.); // add gain
@@ -32,10 +32,15 @@ double Overdrive::compute(double x) {
 
     in *= OVERDRIVE_GAIN;
 
-    in = tanh1->next(in);
+    in = tanh1->next(in * 1.5) * 1.5;
 
-   // in *= 1 / OVERDRIVE_GAIN * 0.3;
-   // if (blockDC) in = dc->filter(in);
+    double a = clampd(gain / 20, 0., .999999);
+
+    k = 2 * a / (1 - a);
+    in = (1 + k) * (in) / (1 + k * abs(in));
+
+    in *= 1 / OVERDRIVE_GAIN * 0.3;
+    // if (blockDC) in = dc->filter(in);
 
     out = in + noise->nextFloat(OVERDRIVE_NOISE);
 
