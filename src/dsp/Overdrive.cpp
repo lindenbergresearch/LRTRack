@@ -11,7 +11,7 @@ Overdrive::Overdrive(float sr) : WaveShaper(sr) {
 
 
 void Overdrive::init() {
-    WaveShaper::rs = new Resampler<1>(1);
+    WaveShaper::rs = new Resampler<1>(4);
 }
 
 
@@ -42,7 +42,7 @@ double Overdrive::compute(double x) {
     in *= 1 / OVERDRIVE_GAIN * 0.3;
     // if (blockDC) in = dc->filter(in);
 
-    out = in + noise->nextFloat(OVERDRIVE_NOISE);
+    out = in;
 
     return out;
 }
