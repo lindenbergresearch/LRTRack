@@ -1,3 +1,4 @@
+#include "dsp/Overdrive.hpp"
 #include "dsp/Hardclip.hpp"
 #include "dsp/RShaper.hpp"
 #include "dsp/Serge.hpp"
@@ -55,6 +56,7 @@ struct Westcoast : LRModule {
     dsp::Saturator *saturator = new dsp::Saturator(engineGetSampleRate());
     dsp::Hardclip *hardclip = new dsp::Hardclip(engineGetSampleRate());
     dsp::ReShaper *reshaper = new dsp::ReShaper(engineGetSampleRate());
+    dsp::Overdrive *overdrive = new dsp::Overdrive(engineGetSampleRate());
 
     LRAlternateBigKnob *gainBtn = NULL;
     LRAlternateMiddleKnob *biasBtn = NULL;
@@ -153,10 +155,19 @@ void Westcoast::step() {
             out = (float) reshaper->getOut();
             break;
 
+        case OVERDRIVE: // ReShaper
+            overdrive->setGain(gain);
+            overdrive->setBias(bias);
+            overdrive->setIn(inputs[SHAPER_INPUT].value);
+
+            overdrive->process();
+            out = (float) overdrive->getOut();
+            break;
         default: // invalid state, should not happen
             out = 0;
             break;
     }
+
 
     outputs[SHAPER_OUTPUT].value = out;
 }
