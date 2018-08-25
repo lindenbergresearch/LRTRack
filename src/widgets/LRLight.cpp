@@ -42,6 +42,7 @@ namespace lrt {
      * @brief Constructor
      */
     LRLight::LRLight() {
+        box.size = Vec(7.5f, 7.5f);
         addBaseColor(nvgRGBAf(0.1, 0.3, 0.9, 0.99));
     }
 
