@@ -50,7 +50,7 @@ void QuickMix::step() {
     float out = 0;
     /* lights */
     for (int i = 0; i < NUM_LIGHTS - 1; i++) {
-        lights[i].value = quadraticBipolar(params[i].value) * inputs[i].value / 20;
+        lights[i].value = quadraticBipolar(params[i].value) * inputs[i].value / 10;
     }
 
     /* mixup all signals */
@@ -59,7 +59,7 @@ void QuickMix::step() {
     }
 
     /* master out light */
-    lights[LEVELM_LIGHT].value = quadraticBipolar(params[LEVELM_PARAM].value) * out / 20;
+    lights[LEVELM_LIGHT].value = quadraticBipolar(params[LEVELM_PARAM].value) * out / 10;
 
     out *= quadraticBipolar(params[LEVELM_PARAM].value);
 
@@ -76,16 +76,18 @@ struct QuickMixWidget : LRModuleWidget {
 
 
 QuickMixWidget::QuickMixWidget(QuickMix *module) : LRModuleWidget(module) {
-    panel = new LRPanel(-50, -190);
+    panel = new LRPanel();
     panel->setBackground(SVG::load(assetPlugin(plugin, "res/QuickMix.svg")));
     addChild(panel);
 
     box.size = panel->box.size;
 
     // ***** SCREWS **********
-    addChild(Widget::create<ScrewDarkA>(Vec(13.4, 1)));
-    addChild(Widget::create<ScrewDarkA>(Vec(13.4, 366)));
-    // ***** SCREWS **********
+    addChild(Widget::create<ScrewDarkA>(Vec(4.7f, 1)));
+    addChild(Widget::create<ScrewDarkA>(Vec(4.7f, 366)));
+
+    addChild(Widget::create<ScrewDarkA>(Vec(75.f-19.3f, 1)));
+    addChild(Widget::create<ScrewDarkA>(Vec(75.f-19.3f, 366)));    // ***** SCREWS **********
 
     // ***** MAIN KNOBS ******
     addParam(ParamWidget::create<LRSmallKnob>(Vec(43, 55.8), module, QuickMix::LEVEL1_PARAM, -1.f, 1.f, 0.f));
@@ -95,7 +97,7 @@ QuickMixWidget::QuickMixWidget(QuickMix *module) : LRModuleWidget(module) {
     addParam(ParamWidget::create<LRSmallKnob>(Vec(43, 235.8), module, QuickMix::LEVEL5_PARAM, -1.f, 1.f, 0.f));
     addParam(ParamWidget::create<LRSmallKnob>(Vec(43, 280.8), module, QuickMix::LEVEL6_PARAM, -1.f, 1.f, 0.f));
 
-    addParam(ParamWidget::create<LRSmallKnob>(Vec(8, 326.5), module, QuickMix::LEVELM_PARAM, -1.f, 1.f, 0.f));
+    addParam(ParamWidget::create<LRSmallKnob>(Vec(8, 326.5), module, QuickMix::LEVELM_PARAM, -3.f, 3.f, 1.f));
     // ***** MAIN KNOBS ******
 
     // ***** INPUTS **********
@@ -119,6 +121,8 @@ QuickMixWidget::QuickMixWidget(QuickMix *module) : LRModuleWidget(module) {
     addChild(ModuleLightWidget::create<LRLight>(Vec(33, 214.6), module, QuickMix::LEVEL4_LIGHT));
     addChild(ModuleLightWidget::create<LRLight>(Vec(33, 259.6), module, QuickMix::LEVEL5_LIGHT));
     addChild(ModuleLightWidget::create<LRLight>(Vec(33, 304.6), module, QuickMix::LEVEL6_LIGHT));
+
+    addChild(ModuleLightWidget::create<LRLight>(Vec(33, 344.6), module, QuickMix::LEVELM_LIGHT));
     // ***** LIGHTS **********
 
 
