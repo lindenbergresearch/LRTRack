@@ -1,5 +1,4 @@
 #include "Serge.hpp"
-#include "LambertW.h"
 
 using namespace dsp;
 

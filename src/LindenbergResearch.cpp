@@ -2,6 +2,7 @@
 
 Plugin *plugin;
 
+
 void init(rack::Plugin *p) {
     plugin = p;
     p->slug = TOSTRING(SLUG);
