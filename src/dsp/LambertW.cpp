@@ -14,7 +14,6 @@
 */
 
 #include <cmath>
-#include "Horner.h"
 
 using namespace dsp;
 
