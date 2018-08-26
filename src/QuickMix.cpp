@@ -40,7 +40,9 @@ struct QuickMix : Module {
         NUM_LIGHTS
     };
 
+
     QuickMix() : Module(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS) {}
+
 
     void step() override;
 };
@@ -86,8 +88,8 @@ QuickMixWidget::QuickMixWidget(QuickMix *module) : LRModuleWidget(module) {
     addChild(Widget::create<ScrewDarkA>(Vec(4.7f, 1)));
     addChild(Widget::create<ScrewDarkA>(Vec(4.7f, 366)));
 
-    addChild(Widget::create<ScrewDarkA>(Vec(75.f-19.3f, 1)));
-    addChild(Widget::create<ScrewDarkA>(Vec(75.f-19.3f, 366)));    // ***** SCREWS **********
+    addChild(Widget::create<ScrewDarkA>(Vec(75.f - 19.3f, 1)));
+    addChild(Widget::create<ScrewDarkA>(Vec(75.f - 19.3f, 366)));    // ***** SCREWS **********
 
     // ***** MAIN KNOBS ******
     addParam(ParamWidget::create<LRSmallKnob>(Vec(43, 55.8), module, QuickMix::LEVEL1_PARAM, -1.f, 1.f, 0.f));

@@ -3,6 +3,7 @@
 using namespace rack;
 using namespace lrt;
 
+
 struct BlankPanel : Module {
     enum ParamIds {
         NUM_PARAMS
@@ -28,6 +29,8 @@ struct BlankPanel : Module {
 void BlankPanel::step() {
 
 }
+
+
 /**
  * @brief Blank Panel with Logo
  */

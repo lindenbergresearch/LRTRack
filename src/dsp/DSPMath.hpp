@@ -447,6 +447,7 @@ inline double lambert_W_Fritsch(double x) {
     return w;
 }
 
+
 /**
  * @brief Implementation of the error function
  *        https://www.johndcook.com/blog/cpp_erf/

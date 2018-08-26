@@ -3,6 +3,7 @@
 using namespace rack;
 using namespace lrt;
 
+
 struct ReShaper : Module {
     enum ParamIds {
         RESHAPER_AMOUNT,
