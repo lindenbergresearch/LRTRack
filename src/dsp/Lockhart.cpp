@@ -1,4 +1,5 @@
 #include "Lockhart.hpp"
+#include "LambertW.h"
 
 using namespace dsp;
 
