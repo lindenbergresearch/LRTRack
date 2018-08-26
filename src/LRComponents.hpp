@@ -48,19 +48,6 @@ struct LRModule : Module {
 
 
 /**
- * @brief Standard LRT ModuleWidget definition
- */
-struct LRModuleWidget : ModuleWidget {
-    /**
-     * @brief
-     * @param module
-     */
-    LRModuleWidget(Module *module) : ModuleWidget(module) {
-    }
-};
-
-
-/**
  * @brief Emulation of a LCD monochrome display
  */
 struct LRLCDWidget : Label {
@@ -601,7 +588,7 @@ private:
 
     /** gradient colors */
     NVGcolor inner = nvgRGBAf(1.5f * .369f, 1.5f * 0.357f, 1.5f * 0.3333f, 0.25f);
-    NVGcolor outer = nvgRGBAf(0.0f, 0.0f, 0.0f, 0.0f);;
+    NVGcolor outer = nvgRGBAf(0.0f, 0.0f, 0.0f, 0.1f);;
 
     /** gradient offset */
     Vec offset = Vec(30, -50);
@@ -623,6 +610,23 @@ public:
     const NVGcolor &getOuter() const;
 
     void draw(NVGcontext *vg) override;
+};
+
+
+/**
+ * @brief Standard LRT ModuleWidget definition
+ */
+struct LRModuleWidget : ModuleWidget {
+
+    LRPanel *panel;
+
+
+    /**
+     * @brief
+     * @param module
+     */
+    LRModuleWidget(Module *module) : ModuleWidget(module) {
+    }
 };
 
 
