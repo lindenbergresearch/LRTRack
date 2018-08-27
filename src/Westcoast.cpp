@@ -1,3 +1,4 @@
+#include "dsp/FastTanWF.hpp"
 #include "dsp/Overdrive.hpp"
 #include "dsp/Hardclip.hpp"
 #include "dsp/RShaper.hpp"
@@ -57,6 +58,7 @@ struct Westcoast : LRModule {
     dsp::Hardclip *hardclip = new dsp::Hardclip(engineGetSampleRate());
     dsp::ReShaper *reshaper = new dsp::ReShaper(engineGetSampleRate());
     dsp::Overdrive *overdrive = new dsp::Overdrive(engineGetSampleRate());
+    dsp::FastTan *fastTan = new dsp::FastTan(engineGetSampleRate());
 
     LRAlternateBigKnob *gainBtn = NULL;
     LRAlternateMiddleKnob *biasBtn = NULL;
@@ -159,7 +161,7 @@ void Westcoast::step() {
             out = (float) reshaper->getOut();
             break;
 
-        case OVERDRIVE: // ReShaper
+        case OVERDRIVE: // Overdrive
             overdrive->setGain(gain);
             overdrive->setBias(bias);
             overdrive->setIn(inputs[SHAPER_INPUT].value);
@@ -167,6 +169,16 @@ void Westcoast::step() {
             overdrive->process();
             out = (float) overdrive->getOut();
             break;
+
+        case VALERIE: // Overdrive
+            fastTan->setGain(gain);
+            fastTan->setBias(bias);
+            fastTan->setIn(inputs[SHAPER_INPUT].value);
+
+            fastTan->process();
+            out = (float) fastTan->getOut();
+            break;
+
         default: // invalid state, should not happen
             out = 0;
             break;
