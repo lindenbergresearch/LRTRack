@@ -31,9 +31,9 @@ double FastTan::compute(double x) {
 
     in *= FASTTAN_GAIN;
 
-    in = fastatan(in * 5) / 5;// hqclip->next(in);
+    in = fastatan(in * 10) / 10;
 
-    in *= 1 / FASTTAN_GAIN;
+    in *= 1 / FASTTAN_GAIN * (1 + gain / 15);
     if (blockDC) in = dc->filter(in);
 
     out = in;
