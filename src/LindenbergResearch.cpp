@@ -13,7 +13,7 @@ void init(rack::Plugin *p) {
     p->addModel(modelAlmaFilter);
     p->addModel(modelReShaper);
     p->addModel(modelWestcoast);
-    p->addModel(modelQuickMix);
+    //p->addModel(modelQuickMix);
 
     p->addModel(modelVCO);
 
