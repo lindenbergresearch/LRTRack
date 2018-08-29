@@ -1,4 +1,5 @@
-#include <dsp/functions.hpp>
+#include "dsp/functions.hpp"
+#include "dsp/DSPMath.hpp"
 #include "LindenbergResearch.hpp"
 
 using namespace rack;
@@ -35,7 +36,6 @@ struct QuickMix : Module {
         LEVEL3_LIGHT,
         LEVEL4_LIGHT,
         LEVEL5_LIGHT,
-        LEVELM_LIGHT,
         NUM_LIGHTS
     };
 
@@ -54,8 +54,13 @@ void QuickMix::step() {
     float out = 0;
     /* lights */
     for (int i = 0; i < NUM_LIGHTS - 1; i++) {
-        lightVals[i] = (lightVals[i] + (abs(quadraticBipolar(params[i].value)) * abs(inputs[i].value) / 10)) / 2;
-        lights[i].value = lightVals[i];
+        lightVals[i] = clamp(inputs[i].value * abs(quadraticBipolar(params[i].value)) / 6, 0.f, 1.f);
+
+        if (inputs[i].active) {
+            lights[i].setBrightnessSmooth(lightVals[i]);
+        } else {
+            lights[i].value = 0;
+        }
     }
 
     /* mixup all signals */
