@@ -18,4 +18,4 @@ extern Model *modelBlankPanel;
 extern Model *modelBlankPanelM1;
 extern Model *modelBlankPanelSmall;
 extern Model *modelWestcoast;
-//extern Model *modelQuickMix;
+extern Model *modelQuickMix;
