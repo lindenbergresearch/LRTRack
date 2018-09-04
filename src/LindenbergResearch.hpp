@@ -17,5 +17,6 @@ extern Model *modelVCO;
 extern Model *modelBlankPanel;
 extern Model *modelBlankPanelM1;
 extern Model *modelBlankPanelSmall;
+extern Model *modelBlankPanelWood;
 extern Model *modelWestcoast;
 extern Model *modelQuickMix;
