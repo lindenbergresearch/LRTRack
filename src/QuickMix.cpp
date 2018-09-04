@@ -108,7 +108,7 @@ QuickMixWidget::QuickMixWidget(QuickMix *module) : LRModuleWidget(module) {
 
     addParam(ParamWidget::create<LRSmallKnob>(Vec(62.3, 242.0), module, QuickMix::SHAPE_PARAM, -1.f, 1.f, 0.f));
 
-    addParam(ParamWidget::create<LRSmallKnob>(Vec(18.8, 305.8), module, QuickMix::LEVELM_PARAM, -3.f, 3.f, 1.f));
+    addParam(ParamWidget::create<LRSmallKnob>(Vec(18.8, 305.8), module, QuickMix::LEVELM_PARAM, 0.f, 2.f, 1.f));
     // ***** MAIN KNOBS ******
 
     // ***** INPUTS **********
