@@ -127,11 +127,11 @@ QuickMixWidget::QuickMixWidget(QuickMix *module) : LRModuleWidget(module) {
 
 
     // ***** LIGHTS **********
-    addChild(ModuleLightWidget::create<LRLight>(Vec(47.5, 61.3), module, QuickMix::LEVEL1_LIGHT));
-    addChild(ModuleLightWidget::create<LRLight>(Vec(47.5, 96.3), module, QuickMix::LEVEL2_LIGHT));
-    addChild(ModuleLightWidget::create<LRLight>(Vec(47.5, 131.3), module, QuickMix::LEVEL3_LIGHT));
-    addChild(ModuleLightWidget::create<LRLight>(Vec(47.5, 166.3), module, QuickMix::LEVEL4_LIGHT));
-    addChild(ModuleLightWidget::create<LRLight>(Vec(47.5, 201.3), module, QuickMix::LEVEL5_LIGHT));
+    addChild(ModuleLightWidget::create<LRLight>(Vec(47., 61.3), module, QuickMix::LEVEL1_LIGHT));
+    addChild(ModuleLightWidget::create<LRLight>(Vec(47., 96.3), module, QuickMix::LEVEL2_LIGHT));
+    addChild(ModuleLightWidget::create<LRLight>(Vec(47., 131.3), module, QuickMix::LEVEL3_LIGHT));
+    addChild(ModuleLightWidget::create<LRLight>(Vec(47., 166.3), module, QuickMix::LEVEL4_LIGHT));
+    addChild(ModuleLightWidget::create<LRLight>(Vec(47., 201.3), module, QuickMix::LEVEL5_LIGHT));
 
 
     // addChild(ModuleLightWidget::create<LRLight>(Vec(47.5, 304.6), module, QuickMix::LEVEL6_LIGHT));
