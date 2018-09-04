@@ -182,7 +182,7 @@ struct Upsampler {
 template<int CHANNELS>
 struct Resampler {
     struct Vector {
-        float y0, y1;
+        double y0, y1;
     };
 
     Vector y[CHANNELS] = {};
@@ -219,7 +219,7 @@ struct Resampler {
      * @param point Point in oversampled data
      * @return
      */
-    float interpolate(int channel, int point) {
+    double interpolate(int channel, int point) {
         return y[channel].y0 + (point / getFactor()) * (y[channel].y1 - y[channel].y0);
     }
 
@@ -228,7 +228,10 @@ struct Resampler {
      * @brief Create up-sampled data out of two basic values
      */
     void doUpsample(int channel, double in) {
-        //interpolator[channel]->process(in * UPSAMPLE_COMPENSATION, up[channel]);
+        // interpolator[channel]->process(in * UPSAMPLE_COMPENSATION, up[channel]);
+        y[channel].y0 = y[channel].y1;
+        y[channel].y1 = in;
+
         for (int i = 0; i < getFactor(); i++) {
             up[channel][i] = interpolate(channel, i + 1);
         }
