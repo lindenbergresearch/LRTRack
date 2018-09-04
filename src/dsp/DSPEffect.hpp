@@ -181,6 +181,11 @@ struct Upsampler {
  */
 template<int CHANNELS>
 struct Resampler {
+    struct Vector {
+        float y0, y1;
+    };
+
+    Vector y[CHANNELS] = {};
     double up[CHANNELS][RS_BUFFER_SIZE] = {};
     double data[CHANNELS][RS_BUFFER_SIZE] = {};
 
@@ -210,10 +215,23 @@ struct Resampler {
 
 
     /**
+     * @brief Return linear interpolated position
+     * @param point Point in oversampled data
+     * @return
+     */
+    float interpolate(int channel, int point) {
+        return y[channel].y0 + (point / getFactor()) * (y[channel].y1 - y[channel].y0);
+    }
+
+
+    /**
      * @brief Create up-sampled data out of two basic values
      */
     void doUpsample(int channel, double in) {
-        interpolator[channel]->process(in * UPSAMPLE_COMPENSATION, up[channel]);
+        //interpolator[channel]->process(in * UPSAMPLE_COMPENSATION, up[channel]);
+        for (int i = 0; i < getFactor(); i++) {
+            up[channel][i] = interpolate(channel, i + 1);
+        }
     }
 
 
