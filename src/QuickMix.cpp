@@ -6,6 +6,49 @@ using namespace rack;
 using namespace lrt;
 
 
+struct ShapedVCA {
+
+    float shapeExp(float x) {
+        return powf(x, 7);
+    }
+
+
+    float shapeLog(float x) {
+        return tanh(6 * x);
+    }
+
+
+    float shapeLin(float x) {
+        return x;
+    }
+
+
+    /**
+     * @brief Returns the correct weighted gain value
+     * @param gain Input gain 0 <= x < 1
+     * @param shape Mixing value of the given shapes (LOG->LIN->EXP) -1 <= x < 1
+     * @return Weighted gain coefficent
+     */
+    float getWeightedGain(float gain, float shape) {
+        float y = 0;
+
+        if (shape < 0 && shape >= -1) {
+            y = fade2(shapeLog(gain), shapeLin(gain), shape + 1);
+        } else if (shape <= 1 && shape >= 0) {
+            y = fade2(shapeLin(gain), shapeExp(gain), shape);
+        }
+
+        return y;
+    }
+
+
+    float compute(float in, float gain, float shape) {
+        return in * getWeightedGain(gain, shape);
+    }
+
+};
+
+
 struct QuickMix : Module {
     enum ParamIds {
         LEVEL1_PARAM,
@@ -41,7 +84,7 @@ struct QuickMix : Module {
 
 
     float lightVals[NUM_LIGHTS];
-
+    ShapedVCA vca;
 
     QuickMix() : Module(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS) {}
 
@@ -52,6 +95,7 @@ struct QuickMix : Module {
 
 void QuickMix::step() {
     float out = 0;
+
     /* lights */
     for (int i = 0; i < NUM_LIGHTS - 1; i++) {
         lightVals[i] = clamp(inputs[i].value * abs(quadraticBipolar(params[i].value)) / 6, 0.f, 1.f);
@@ -68,8 +112,12 @@ void QuickMix::step() {
         out += inputs[i].value * quadraticBipolar(params[i].value);
     }
 
-    /* master out light */
-    //lights[LEVELM_LIGHT].value = quadraticBipolar(params[LEVELM_PARAM].value) * out / 10;
+    /* VCA mode active */
+    if (inputs[CV_INPUT].active) {
+        float cv = inputs[CV_INPUT].value / 10;
+
+        out = vca.getWeightedGain(cv, params[SHAPE_PARAM].value) * out;
+    }
 
     out *= quadraticBipolar(params[LEVELM_PARAM].value);
 
