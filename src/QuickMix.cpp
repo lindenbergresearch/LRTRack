@@ -9,7 +9,13 @@ using namespace lrt;
 struct ShapedVCA {
 
     float shapeExp(float x) {
-        return powf(x, 7);
+        float y = powf(x, 7);
+
+        if (x > 1) {
+            y = tanh(y) * 5; // limit exp curve
+        }
+
+        return y;
     }
 
 
@@ -114,12 +120,13 @@ void QuickMix::step() {
 
     /* VCA mode active */
     if (inputs[CV_INPUT].active) {
-        float cv = inputs[CV_INPUT].value / 10;
+        float cv = inputs[CV_INPUT].value / 5;
 
-        out = vca.getWeightedGain(cv, params[SHAPE_PARAM].value) * out;
+        out = vca.getWeightedGain(cv, params[SHAPE_PARAM].value);
     }
 
-    out *= quadraticBipolar(params[LEVELM_PARAM].value);
+//    out *= quadraticBipolar(params[LEVELM_PARAM].value) * 2;
+    out *= params[LEVELM_PARAM].value;
 
     outputs[MASTER_OUTPUT].value = out;
 }
@@ -156,7 +163,7 @@ QuickMixWidget::QuickMixWidget(QuickMix *module) : LRModuleWidget(module) {
 
     addParam(ParamWidget::create<LRSmallKnob>(Vec(62.3, 242.0), module, QuickMix::SHAPE_PARAM, -1.f, 1.f, 0.f));
 
-    addParam(ParamWidget::create<LRSmallKnob>(Vec(18.8, 305.8), module, QuickMix::LEVELM_PARAM, 0.f, 2.f, 1.f));
+    addParam(ParamWidget::create<LRSmallKnob>(Vec(18.8, 305.8), module, QuickMix::LEVELM_PARAM, 0.f, 1.f, 0.5f));
     // ***** MAIN KNOBS ******
 
     // ***** INPUTS **********
@@ -190,4 +197,4 @@ QuickMixWidget::QuickMixWidget(QuickMix *module) : LRModuleWidget(module) {
 }
 
 
-Model *modelQuickMix = Model::create<QuickMix, QuickMixWidget>("Lindenberg Research", "QuickMixer", "Q: Quick Mixer", MIXER_TAG);
+Model *modelQuickMix = Model::create<QuickMix, QuickMixWidget>("Lindenberg Research", "QuickMixer", "VC Mixer Amp", MIXER_TAG);
