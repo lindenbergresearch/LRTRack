@@ -24,9 +24,30 @@ struct BlankPanelWood : Module {
 
 
     SVGWidget *patina;
+    bool aged = true;
+    bool screws = true;
 
     void step() override;
     void randomize() override;
+
+
+    json_t *toJson() override {
+        json_t *rootJ = json_object();
+        json_object_set_new(rootJ, "aged", json_boolean(aged));
+        json_object_set_new(rootJ, "screws", json_boolean(screws));
+        return rootJ;
+    }
+
+
+    void fromJson(json_t *rootJ) override {
+        json_t *agedJ = json_object_get(rootJ, "aged");
+        if (agedJ)
+            aged = json_boolean_value(agedJ);
+
+        json_t *screwsJ = json_object_get(rootJ, "screws");
+        if (screwsJ)
+            screws = json_boolean_value(screwsJ);
+    }
 };
 
 
@@ -42,6 +63,8 @@ void BlankPanelWood::randomize() {
 
 struct BlankPanelWidgetWood : LRModuleWidget {
     BlankPanelWidgetWood(BlankPanelWood *module);
+
+    void appendContextMenu(Menu *menu) override;
 };
 
 
@@ -67,6 +90,60 @@ BlankPanelWidgetWood::BlankPanelWidgetWood(BlankPanelWood *module) : LRModuleWid
     addChild(Widget::create<ScrewDarkA>(Vec(23, box.size.y - 20)));
     //  addChild(Widget::create<ScrewDarkA>(Vec(box.size.x - 30, 366)));
     // ***** SCREWS **********
+}
+
+
+struct BlankPanelWoodAged : MenuItem {
+    BlankPanelWood *blankPanelWood;
+
+
+    void onAction(EventAction &e) override {
+        if (blankPanelWood->aged) {
+            blankPanelWood->aged = false;
+        } else {
+            blankPanelWood->aged = true;
+        }
+    }
+
+
+    void step() override {
+        rightText = CHECKMARK(blankPanelWood->aged);
+    }
+};
+
+
+struct BlankPanelWoodScrews : MenuItem {
+    BlankPanelWood *blankPanelWood;
+
+
+    void onAction(EventAction &e) override {
+        if (blankPanelWood->screws) {
+            blankPanelWood->screws = false;
+        } else {
+            blankPanelWood->screws = true;
+        }
+    }
+
+
+    void step() override {
+        rightText = CHECKMARK(blankPanelWood->screws);
+    }
+};
+
+
+void BlankPanelWidgetWood::appendContextMenu(Menu *menu) {
+    menu->addChild(MenuEntry::create());
+
+    BlankPanelWood *blankPanelWood = dynamic_cast<BlankPanelWood *>(module);
+    assert(blankPanelWood);
+
+    BlankPanelWoodAged *mergeItemAged = MenuItem::create<BlankPanelWoodAged>("Aged");
+    mergeItemAged->blankPanelWood = blankPanelWood;
+    menu->addChild(mergeItemAged);
+
+    BlankPanelWoodScrews *mergeItemScrews = MenuItem::create<BlankPanelWoodScrews>("Show Screws");
+    mergeItemScrews->blankPanelWood = blankPanelWood;
+    menu->addChild(mergeItemScrews);
 }
 
 
