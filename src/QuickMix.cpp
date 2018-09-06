@@ -114,7 +114,7 @@ void QuickMix::step() {
     }
 
     /* mixup all signals */
-    for (int i = 0; i < NUM_INPUTS; i++) {
+    for (int i = 0; i < NUM_INPUTS - 1; i++) {
         out += inputs[i].value * quadraticBipolar(params[i].value);
     }
 
@@ -122,11 +122,10 @@ void QuickMix::step() {
     if (inputs[CV_INPUT].active) {
         float cv = inputs[CV_INPUT].value / 5;
 
-        out = vca.getWeightedGain(cv, params[SHAPE_PARAM].value);
+        out *= vca.getWeightedGain(cv, params[SHAPE_PARAM].value);
     }
 
-//    out *= quadraticBipolar(params[LEVELM_PARAM].value) * 2;
-    out *= params[LEVELM_PARAM].value;
+    out *= quadraticBipolar(params[LEVELM_PARAM].value) * 2;
 
     outputs[MASTER_OUTPUT].value = out;
 }
