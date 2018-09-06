@@ -157,10 +157,10 @@ VCOWidget::VCOWidget(VCO *module) : LRModuleWidget(module) {
 
 
     // ***** INPUTS **********
-    addInput(Port::create<LRIOPort>(Vec(20.8, 67.9), Port::INPUT, module, VCO::VOCT1_INPUT));
-    addInput(Port::create<LRIOPort>(Vec(68.0, 67.9), Port::INPUT, module, VCO::VOCT2_INPUT));
-    addInput(Port::create<LRIOPort>(Vec(20.8, 121.5), Port::INPUT, module, VCO::FM_CV_INPUT));
-    addInput(Port::create<LRIOPort>(Vec(20.8, 174.8), Port::INPUT, module, VCO::PW_CV_INPUT));
+    addInput(Port::create<LRIOPortC>(Vec(20.8, 67.9), Port::INPUT, module, VCO::VOCT1_INPUT));
+    addInput(Port::create<LRIOPortC>(Vec(68.0, 67.9), Port::INPUT, module, VCO::VOCT2_INPUT));
+    addInput(Port::create<LRIOPortC>(Vec(20.8, 121.5), Port::INPUT, module, VCO::FM_CV_INPUT));
+    addInput(Port::create<LRIOPortC>(Vec(20.8, 174.8), Port::INPUT, module, VCO::PW_CV_INPUT));
     // ***** INPUTS **********
 
 
