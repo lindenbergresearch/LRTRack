@@ -172,7 +172,7 @@ QuickMixWidget::QuickMixWidget(QuickMix *module) : LRModuleWidget(module) {
     addInput(Port::create<LRIOPort>(Vec(16.5, 157.6), Port::INPUT, module, QuickMix::M4_INPUT));
     addInput(Port::create<LRIOPort>(Vec(16.5, 192.6), Port::INPUT, module, QuickMix::M5_INPUT));
 
-    addInput(Port::create<LRIOPort>(Vec(16.5, 240.8f), Port::INPUT, module, QuickMix::CV_INPUT));
+    addInput(Port::create<LRIOPortC>(Vec(16.5, 240.8f), Port::INPUT, module, QuickMix::CV_INPUT));
     // ***** INPUTS **********
 
     // ***** OUTPUTS *********
