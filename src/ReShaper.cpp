@@ -80,7 +80,7 @@ ReShaperWidget::ReShaperWidget(ReShaper *module) : LRModuleWidget(module) {
 
     // ***** INPUTS **********
     addInput(Port::create<LRIOPort>(Vec(21, 60), Port::INPUT, module, ReShaper::RESHAPER_INPUT));
-    addInput(Port::create<LRIOPort>(Vec(71, 60), Port::INPUT, module, ReShaper::RESHAPER_CV_INPUT));
+    addInput(Port::create<LRIOPortC>(Vec(71, 60), Port::INPUT, module, ReShaper::RESHAPER_CV_INPUT));
     // ***** INPUTS **********
 
     // ***** OUTPUTS *********

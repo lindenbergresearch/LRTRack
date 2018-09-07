@@ -161,8 +161,8 @@ SimpleFilterWidget::SimpleFilterWidget(SimpleFilter *module) : LRModuleWidget(mo
     addParam(ParamWidget::create<LRSmallKnob>(Vec(39 - 12, 120), module, SimpleFilter::CUTOFF_CV_PARAM, 0.f, 1.f, 0.f));
     addParam(ParamWidget::create<LRSmallKnob>(Vec(111 - 12, 120), module, SimpleFilter::RESONANCE_CV_PARAM, 0.f, 1.f, 0.f));
 
-    addInput(Port::create<LRIOPort>(Vec(39 - 14, 60), Port::INPUT, module, SimpleFilter::CUTOFF_CV_INPUT));
-    addInput(Port::create<LRIOPort>(Vec(111 - 14, 60), Port::INPUT, module, SimpleFilter::RESONANCE_CV_INPUT));
+    addInput(Port::create<LRIOPortC>(Vec(39 - 14, 60), Port::INPUT, module, SimpleFilter::CUTOFF_CV_INPUT));
+    addInput(Port::create<LRIOPortC>(Vec(111 - 14, 60), Port::INPUT, module, SimpleFilter::RESONANCE_CV_INPUT));
     // ***** CV INPUTS *******
 
     // ***** INPUTS **********
