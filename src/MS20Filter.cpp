@@ -119,7 +119,6 @@ MS20FilterWidget::MS20FilterWidget(MS20Filter *module) : LRModuleWidget(module) 
     addParam(module->frqKnob);
     addParam(module->peakKnob);
     addParam(module->driveKnob);
-
     // ***** MAIN KNOBS ******
 
     // ***** CV INPUTS *******
