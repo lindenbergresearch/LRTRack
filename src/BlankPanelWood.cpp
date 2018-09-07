@@ -57,7 +57,7 @@ struct BlankPanelWood : Module {
 
         json_t *logoJ = json_object_get(rootJ, "logo");
         if (logoJ)
-            screws = json_boolean_value(logoJ);
+            logo = json_boolean_value(logoJ);
 
         updateComponents();
     }
