@@ -60,6 +60,16 @@ struct DiodeLadderFilter : DSPEffect {
     void setSamplerate(float sr) override;
 
 
+    float getFc() const;
+    void setFc(float fc);
+    float getK() const;
+    void setK(float k);
+    float getIn() const;
+    void setIn(float in);
+    float getOut() const;
+    void setOut(float out);
+
+
     void reset() {
         lpf1->resetZ1();
         lpf2->resetZ1();

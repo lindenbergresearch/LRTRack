@@ -76,7 +76,9 @@ void DiodeLadderFilter::init() {
 void DiodeLadderFilter::invalidate() {
     float G1, G2, G3, G4;
 
-    float wd = TWOPI * fc;
+    float freqHz = 20.f * powf(950.f, fc) - 20.f;
+
+    float wd = TWOPI * freqHz;
     float T = 1 / sr;
     float wa = (2 / T) * tanf(wd * T / 2);
     float g = wa * T / 2;
@@ -155,4 +157,44 @@ void DiodeLadderFilter::setSamplerate(float sr) {
     lpf2->setSamplerate(sr);
     lpf3->setSamplerate(sr);
     lpf4->setSamplerate(sr);
+}
+
+
+float DiodeLadderFilter::getFc() const {
+    return fc;
+}
+
+
+void DiodeLadderFilter::setFc(float fc) {
+    DiodeLadderFilter::fc = fc;
+}
+
+
+float DiodeLadderFilter::getK() const {
+    return k;
+}
+
+
+void DiodeLadderFilter::setK(float k) {
+    DiodeLadderFilter::k = k;
+}
+
+
+float DiodeLadderFilter::getIn() const {
+    return in;
+}
+
+
+void DiodeLadderFilter::setIn(float in) {
+    DiodeLadderFilter::in = in;
+}
+
+
+float DiodeLadderFilter::getOut() const {
+    return out;
+}
+
+
+void DiodeLadderFilter::setOut(float out) {
+    DiodeLadderFilter::out = out;
 }
