@@ -68,6 +68,8 @@ DiodeLadderFilter::DiodeLadderFilter(float sr) : DSPEffect(sr) {
 
 void DiodeLadderFilter::init() {
     DSPEffect::init();
+    reset();
+    invalidate();
 }
 
 
@@ -117,4 +119,40 @@ void DiodeLadderFilter::invalidate() {
 
 void DiodeLadderFilter::process() {
     DSPEffect::process();
+
+    lpf3->setFeedback(lpf4->getFeedbackOutput());
+    lpf2->setFeedback(lpf3->getFeedbackOutput());
+    lpf1->setFeedback(lpf2->getFeedbackOutput());
+
+    float sigma = sg1 * lpf1->getFeedbackOutput() +
+                  sg2 * lpf2->getFeedbackOutput() +
+                  sg3 * lpf3->getFeedbackOutput() +
+                  sg4 * lpf4->getFeedbackOutput();
+
+    float y = (1.0f / tanh(saturation)) * tanh(saturation * in);
+    float u = (y - k * sigma) / (1 + k * gamma);
+
+    lpf1->in = u;
+    lpf1->process();
+
+    lpf2->in = lpf1->out;
+    lpf2->process();
+
+    lpf3->in = lpf2->out;
+    lpf3->process();
+
+    lpf4->in = lpf3->out;
+    lpf4->process();
+
+    out = lpf4->out;
+}
+
+
+void DiodeLadderFilter::setSamplerate(float sr) {
+    DSPEffect::setSamplerate(sr);
+
+    lpf1->setSamplerate(sr);
+    lpf2->setSamplerate(sr);
+    lpf3->setSamplerate(sr);
+    lpf4->setSamplerate(sr);
 }
