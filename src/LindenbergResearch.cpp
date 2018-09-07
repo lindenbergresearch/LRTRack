@@ -14,6 +14,7 @@ void init(rack::Plugin *p) {
     p->addModel(modelReShaper);
     p->addModel(modelWestcoast);
     p->addModel(modelQuickMix);
+    p->addModel(modelDiodeVCF);
 
     p->addModel(modelVCO);
 

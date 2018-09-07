@@ -20,3 +20,4 @@ extern Model *modelBlankPanelSmall;
 extern Model *modelBlankPanelWood;
 extern Model *modelWestcoast;
 extern Model *modelQuickMix;
+extern Model *modelDiodeVCF;
