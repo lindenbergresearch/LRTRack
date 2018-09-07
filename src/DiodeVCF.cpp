@@ -28,16 +28,32 @@ struct DiodeVCF : Module {
     DiodeVCF() : Module(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS) {}
 
 
+    dsp::DiodeLadderFilter *lpf = new dsp::DiodeLadderFilter(engineGetSampleRate());
+
     LRBigKnob *frqKnob = NULL;
     LRMiddleKnob *resKnob = NULL;
     LRMiddleKnob *saturateKnob = NULL;
 
     void step() override;
+    void onSampleRateChange() override;
 };
 
 
 void DiodeVCF::step() {
+    lpf->setFc(params[FREQUENCY_PARAM].value);
+    lpf->setK(params[RES_PARAM].value);
 
+    lpf->setIn(inputs[FILTER_INPUT].value);
+
+    lpf->process();
+
+    outputs[FILTER_OUTPUT].value = lpf->getOut();
+}
+
+
+void DiodeVCF::onSampleRateChange() {
+    Module::onSampleRateChange();
+    lpf->setSamplerate(engineGetSampleRate());
 }
 
 
