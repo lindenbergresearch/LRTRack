@@ -23,9 +23,14 @@ struct BlankPanelWood : Module {
     BlankPanelWood() : Module(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS) {}
 
 
+    void updateComponents();
+
     SVGWidget *patina;
+    ScrewDarkA *screw1, *screw2;
+
     bool aged = true;
     bool screws = true;
+
 
     void step() override;
     void randomize() override;
@@ -47,6 +52,8 @@ struct BlankPanelWood : Module {
         json_t *screwsJ = json_object_get(rootJ, "screws");
         if (screwsJ)
             screws = json_boolean_value(screwsJ);
+
+        updateComponents();
     }
 };
 
@@ -54,6 +61,16 @@ struct BlankPanelWood : Module {
 void BlankPanelWood::step() {
 }
 
+
+void BlankPanelWood::updateComponents() {
+    randomize();
+    screw1->visible = screws;
+    screw2->visible = screws;
+
+    patina->visible = aged;
+
+    //debug("updateComponents");
+}
 
 void BlankPanelWood::randomize() {
     Module::randomize();
@@ -81,14 +98,15 @@ BlankPanelWidgetWood::BlankPanelWidgetWood(BlankPanelWood *module) : LRModuleWid
     module->patina = new SVGWidget();
     module->patina->setSVG(SVG::load(assetPlugin(plugin, "res/WoodPatina.svg")));
 
+    addChild(module->patina);
     module->randomize();
-    panel->addChild(module->patina);
 
     // ***** SCREWS **********
-    addChild(Widget::create<ScrewDarkA>(Vec(23, 6)));
-    //  addChild(Widget::create<ScrewDarkA>(Vec(box.size.x - 30, 1)));
-    addChild(Widget::create<ScrewDarkA>(Vec(23, box.size.y - 20)));
-    //  addChild(Widget::create<ScrewDarkA>(Vec(box.size.x - 30, 366)));
+    module->screw1 = Widget::create<ScrewDarkA>(Vec(23, 6));
+    addChild(module->screw1);
+
+    module->screw2 = Widget::create<ScrewDarkA>(Vec(23, box.size.y - 20));
+    addChild(module->screw2);
     // ***** SCREWS **********
 }
 
@@ -103,6 +121,8 @@ struct BlankPanelWoodAged : MenuItem {
         } else {
             blankPanelWood->aged = true;
         }
+
+        blankPanelWood->updateComponents();
     }
 
 
@@ -122,6 +142,8 @@ struct BlankPanelWoodScrews : MenuItem {
         } else {
             blankPanelWood->screws = true;
         }
+
+        blankPanelWood->updateComponents();
     }
 
 
