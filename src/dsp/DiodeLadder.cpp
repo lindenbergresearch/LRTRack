@@ -79,7 +79,39 @@ void DiodeLadderFilter::invalidate() {
     float wa = (2 / T) * tanf(wd * T / 2);
     float g = wa * T / 2;
 
+    G4 = 0.5f * g / (1.0f + g);
+    G3 = 0.5f * g / (1.0f + g - 0.5f * g * G4);
+    G2 = 0.5f * g / (1.0f + g - 0.5f * g * G3);
+    G1 = g / (1.0f + g - g * G2);
 
+    gamma = G4 * G3 * G2 * G1;
+
+    sg1 = G4 * G3 * G2;
+    sg2 = G4 * G3;
+    sg3 = G4;
+    sg4 = 1.0f;
+
+    lpf1->alpha = g / (1.0f + g);
+    lpf2->alpha = g / (1.0f + g);
+    lpf3->alpha = g / (1.0f + g);
+    lpf4->alpha = g / (1.0f + g);
+
+    lpf1->beta = 1.0f / (1.0f + g - g * G2);
+    lpf2->beta = 1.0f / (1.0f + g - 0.5f * g * G3);
+    lpf3->beta = 1.0f / (1.0f + g - 0.5f * g * G4);
+    lpf4->beta = 1.0f / (1.0f + g);
+
+    lpf1->gamma = 1.0f + G1 * G2;
+    lpf2->gamma = 1.0f + G2 * G3;
+    lpf3->gamma = 1.0f + G3 * G4;
+
+    lpf1->delta = g;
+    lpf2->delta = 0.5f * g;
+    lpf3->delta = 0.5f * g;
+
+    lpf1->epsilon = G2;
+    lpf2->epsilon = G3;
+    lpf3->epsilon = G4;
 }
 
 
