@@ -562,6 +562,18 @@ struct ScrewLight : SVGScrew {
 
 
 /**
+ * @brief Alternative screw head A
+ */
+struct ScrewDarkB : SVGScrew {
+    ScrewDarkB() {
+        sw->svg = SVG::load(assetPlugin(plugin, "res/ScrewDarkB.svg"));
+        sw->wrap();
+        box.size = sw->box.size;
+    }
+};
+
+
+/**
  * @brief Custom switch based on original Rack files
  */
 struct LRSwitch : SVGSwitch, ToggleSwitch {
