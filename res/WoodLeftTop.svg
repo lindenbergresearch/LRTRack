@@ -13,9 +13,9 @@
         </g>
     </g>
     <g id="Shadow" transform="matrix(1.15556,0,0,1.01304,0,0)">
-        <rect x="0" y="0" width="60" height="760" style="fill:none;stroke:#c6c6c6;stroke-opacity:0.0627451;stroke-width:4.6px;stroke-linejoin:round;stroke-miterlimit:1.5;"/>
+        <rect x="0" y="0" width="60" height="760" style="fill:none;stroke:#c6c6c6;stroke-opacity:0.0941176;stroke-width:4.6px;stroke-linejoin:round;stroke-miterlimit:1.5;"/>
     </g>
     <g id="Shadow1" serif:id="Shadow" transform="matrix(1.15556,0,0,1.01304,-9.33333,-9.91406)">
-        <rect x="0" y="0" width="60" height="760" style="fill:none;stroke:#000;stroke-opacity:0.0627451;stroke-width:4.6px;stroke-linejoin:round;stroke-miterlimit:1.5;"/>
+        <rect x="0" y="0" width="60" height="760" style="fill:none;stroke:#000;stroke-opacity:0.0941176;stroke-width:4.6px;stroke-linejoin:round;stroke-miterlimit:1.5;"/>
     </g>
 </svg>
