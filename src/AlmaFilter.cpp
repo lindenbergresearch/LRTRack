@@ -102,7 +102,7 @@ struct AlmaFilterWidget : LRModuleWidget {
 
 AlmaFilterWidget::AlmaFilterWidget(AlmaFilter *module) : LRModuleWidget(module) {
     panel = new LRPanel();
-    panel->setBackground(SVG::load(assetPlugin(plugin, "res/VCF.svg")));
+    panel->setBackground(SVG::load(assetPlugin(plugin, "res/panels/VCF.svg")));
     addChild(panel);
 
     box.size = panel->box.size;

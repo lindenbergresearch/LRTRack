@@ -141,7 +141,7 @@ struct QuickMixWidget : LRModuleWidget {
 
 QuickMixWidget::QuickMixWidget(QuickMix *module) : LRModuleWidget(module) {
     panel = new LRPanel();
-    panel->setBackground(SVG::load(assetPlugin(plugin, "res/QuickMix.svg")));
+    panel->setBackground(SVG::load(assetPlugin(plugin, "res/panels/QuickMix.svg")));
     addChild(panel);
 
     box.size = panel->box.size;

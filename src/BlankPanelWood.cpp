@@ -97,7 +97,7 @@ struct BlankPanelWidgetWood : LRModuleWidget {
 
 BlankPanelWidgetWood::BlankPanelWidgetWood(BlankPanelWood *module) : LRModuleWidget(module) {
     panel = new LRPanel(0, 0);
-    panel->setBackground(SVG::load(assetPlugin(plugin, "res/WoodLeftTop.svg")));
+    panel->setBackground(SVG::load(assetPlugin(plugin, "res/panels/WoodLeftTop.svg")));
     addChild(panel);
 
     module->panel = panel;
@@ -108,11 +108,11 @@ BlankPanelWidgetWood::BlankPanelWidgetWood(BlankPanelWood *module) : LRModuleWid
     panel->setOuter(nvgRGBAf(0.f, 0.f, 0.f, 0.15f));
 
     module->patina = new SVGWidget();
-    module->patina->setSVG(SVG::load(assetPlugin(plugin, "res/WoodPatina.svg")));
+    module->patina->setSVG(SVG::load(assetPlugin(plugin, "res/panels/WoodPatina.svg")));
     panel->addChild(module->patina);
 
     module->logoStamp = new SVGWidget();
-    module->logoStamp->setSVG(SVG::load(assetPlugin(plugin, "res/LogoSmallPlate.svg")));
+    module->logoStamp->setSVG(SVG::load(assetPlugin(plugin, "res/elements/LogoSmallPlate.svg")));
     module->logoStamp->box.pos = Vec(8.5, 348.8);
     addChild(module->logoStamp);
 

@@ -152,7 +152,7 @@ struct BlankPanelWidgetSmall : LRModuleWidget {
 
 BlankPanelWidgetM1::BlankPanelWidgetM1(BlankPanelM1 *module) : LRModuleWidget(module) {
     panel = new LRPanel();
-    panel->setBackground(SVG::load(assetPlugin(plugin, "res/BlankPanelM1.svg")));
+    panel->setBackground(SVG::load(assetPlugin(plugin, "res/panels/BlankPanelM1.svg")));
     addChild(panel);
 
     box.size = panel->box.size;
@@ -185,7 +185,7 @@ void BlankPanelSmall::createPorts() {
 
 BlankPanelWidgetSmall::BlankPanelWidgetSmall(BlankPanelSmall *module) : LRModuleWidget(module) {
     panel = new LRPanel();
-    panel->setBackground(SVG::load(assetPlugin(plugin, "res/BlankPanelSmall.svg")));
+    panel->setBackground(SVG::load(assetPlugin(plugin, "res/panels/BlankPanelSmall.svg")));
     addChild(panel);
 
     box.size = panel->box.size;

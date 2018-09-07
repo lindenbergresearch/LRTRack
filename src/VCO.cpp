@@ -119,7 +119,7 @@ struct VCOWidget : LRModuleWidget {
 
 VCOWidget::VCOWidget(VCO *module) : LRModuleWidget(module) {
     panel = new LRPanel(20, 40);
-    panel->setBackground(SVG::load(assetPlugin(plugin, "res/VCO.svg")));
+    panel->setBackground(SVG::load(assetPlugin(plugin, "res/panels/VCO.svg")));
     addChild(panel);
 
     box.size = panel->box.size;

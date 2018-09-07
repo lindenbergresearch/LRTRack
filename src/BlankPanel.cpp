@@ -41,7 +41,7 @@ struct BlankPanelWidget : LRModuleWidget {
 
 BlankPanelWidget::BlankPanelWidget(BlankPanel *module) : LRModuleWidget(module) {
     panel = new LRPanel();
-    panel->setBackground(SVG::load(assetPlugin(plugin, "res/BlankPanel.svg")));
+    panel->setBackground(SVG::load(assetPlugin(plugin, "res/panels/BlankPanel.svg")));
     addChild(panel);
 
     box.size = panel->box.size;
@@ -51,8 +51,8 @@ BlankPanelWidget::BlankPanelWidget(BlankPanel *module) : LRModuleWidget(module) 
 
     float speed = 0.004;
 
-    addChild(SVGRotator::create(Vec(140.5, 65), SVG::load(assetPlugin(plugin, "res/CogBig.svg")), speed));
-    addChild(SVGRotator::create(Vec(120, 96.7), SVG::load(assetPlugin(plugin, "res/CogSmall.svg")), -speed * 1.6));
+    addChild(SVGRotator::create(Vec(140.5, 65), SVG::load(assetPlugin(plugin, "res/elements/CogBig.svg")), speed));
+    addChild(SVGRotator::create(Vec(120, 96.7), SVG::load(assetPlugin(plugin, "res/elements/CogSmall.svg")), -speed * 1.6));
 
 
     // ***** SCREWS **********

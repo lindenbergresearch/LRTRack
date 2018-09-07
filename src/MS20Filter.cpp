@@ -99,7 +99,7 @@ MS20FilterWidget::MS20FilterWidget(MS20Filter *module) : LRModuleWidget(module) 
     //setPanel(SVG::load(assetPlugin(plugin, "res/MS20.svg")));
 
     panel = new LRPanel();
-    panel->setBackground(SVG::load(assetPlugin(plugin, "res/MS20.svg")));
+    panel->setBackground(SVG::load(assetPlugin(plugin, "res/panels/MS20.svg")));
     addChild(panel);
 
     box.size = panel->box.size;
