@@ -29,7 +29,7 @@ public:
     }
 
 
-    void setSamplerate(float sr) {
+    virtual void setSamplerate(float sr) {
         DSPEffect::sr = sr;
         invalidate();
     }
