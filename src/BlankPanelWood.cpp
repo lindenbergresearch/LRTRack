@@ -27,6 +27,7 @@ struct BlankPanelWood : Module {
 
     SVGWidget *patina;
     ScrewDarkA *screw1, *screw2;
+    LRPanel *panel;
 
     bool aged = true;
     bool screws = true;
@@ -69,12 +70,13 @@ void BlankPanelWood::updateComponents() {
 
     patina->visible = aged;
 
-    //debug("updateComponents");
+    panel->dirty = true;
 }
 
 void BlankPanelWood::randomize() {
     Module::randomize();
     patina->box.pos = Vec(-randomUniform() * 1000, -randomUniform() * 200);
+    panel->dirty = true;
 }
 
 
@@ -86,19 +88,21 @@ struct BlankPanelWidgetWood : LRModuleWidget {
 
 
 BlankPanelWidgetWood::BlankPanelWidgetWood(BlankPanelWood *module) : LRModuleWidget(module) {
-    panel = new LRPanel();
+    panel = new LRPanel(0, 0);
     panel->setBackground(SVG::load(assetPlugin(plugin, "res/WoodLeftTop.svg")));
     addChild(panel);
 
+    module->panel = panel;
+
     box.size = panel->box.size;
 
-    panel->setInner(nvgRGBAf(1.5f * .369f, 1.5f * 0.357f, 1.5f * 0.3333f, 0.05f));
+    panel->setInner(nvgRGBAf(1.4f * .369f, 1.4f * 0.357f, 1.4f * 0.3333f, 0.05f));
     panel->setOuter(nvgRGBAf(0.f, 0.f, 0.f, 0.15f));
 
     module->patina = new SVGWidget();
     module->patina->setSVG(SVG::load(assetPlugin(plugin, "res/WoodPatina.svg")));
 
-    addChild(module->patina);
+    panel->addChild(module->patina);
     module->randomize();
 
     // ***** SCREWS **********
