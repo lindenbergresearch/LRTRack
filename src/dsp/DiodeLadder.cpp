@@ -132,13 +132,13 @@ void DiodeLadderFilter::process() {
                   sg3 * lpf3->getFeedbackOutput() +
                   sg4 * lpf4->getFeedbackOutput();
 
-    float y = (1.0f / tanh(saturation)) * tanh(saturation * in);
+    float y = (1.0f / fastatan(saturation)) * fastatan(saturation * in);
 
-    y += noise.nextFloat(0.00001);
+    y += noise.nextFloat(NOISE_GAIN);
 
     float u = (y - k * sigma) / (1 + k * gamma);
 
-    u = tanh(u / 70) * 70;
+    u = fastatan(u / 60) * 60;
 
     lpf1->in = u;
     lpf1->process();
