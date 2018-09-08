@@ -45,7 +45,7 @@ void DiodeVCF::step() {
     lpf->setResonance(params[RES_PARAM].value * 16);
     lpf->setSaturation(params[SATURATE_PARAM].value * 5 + 1);
 
-    lcd->value = 20 * powf(1000.f, params[FREQUENCY_PARAM].value);
+    lcd->value = lpf->getFreqHz();
 
     lpf->setIn(inputs[FILTER_INPUT].value / 10.f);
 
