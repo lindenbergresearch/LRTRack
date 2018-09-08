@@ -42,7 +42,7 @@ struct DiodeLadderStage : DSPEffect {
 
 struct DiodeLadderFilter : DSPEffect {
 
-    float fc, k, saturation;
+    float fc, k, saturation, freqHz;
 
     DiodeLadderStage *lpf1, *lpf2, *lpf3, *lpf4;
     float gamma;
@@ -66,6 +66,10 @@ struct DiodeLadderFilter : DSPEffect {
     float getOut() const;
     void setSaturation(float saturation);
 
+
+    float getFreqHz() {
+        return freqHz;
+    }
 
     void reset() {
         lpf1->resetZ1();

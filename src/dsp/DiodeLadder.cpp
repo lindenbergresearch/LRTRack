@@ -79,7 +79,7 @@ void DiodeLadderFilter::init() {
 void DiodeLadderFilter::invalidate() {
     float G1, G2, G3, G4;
 
-    float freqHz = 20.f * powf(1000.f, fc);
+    freqHz = 20.f * powf(1000.f, fc);
 
     float wd = TWOPI * freqHz;
     float T = 1 / sr;
