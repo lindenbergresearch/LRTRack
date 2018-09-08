@@ -79,7 +79,7 @@ void DiodeLadderFilter::init() {
 void DiodeLadderFilter::invalidate() {
     float G1, G2, G3, G4;
 
-    float freqHz = 20.f * powf(950.f, fc) - 20.f;
+    float freqHz = 20.f * powf(1000.f, fc);
 
     float wd = TWOPI * freqHz;
     float T = 1 / sr;
@@ -123,8 +123,6 @@ void DiodeLadderFilter::invalidate() {
 
 
 void DiodeLadderFilter::process() {
-    DSPEffect::process();
-
     lpf3->setFeedback(lpf4->getFeedbackOutput());
     lpf2->setFeedback(lpf3->getFeedbackOutput());
     lpf1->setFeedback(lpf2->getFeedbackOutput());
@@ -134,7 +132,8 @@ void DiodeLadderFilter::process() {
                   sg3 * lpf3->getFeedbackOutput() +
                   sg4 * lpf4->getFeedbackOutput();
 
-    float y = in;// (1.0f / tanh(saturation)) * tanh(saturation * in);
+    float y = (1.0f / tanh(saturation)) * tanh(saturation * in);
+
     float u = (y - k * sigma) / (1 + k * gamma);
 
     lpf1->in = u;
@@ -156,6 +155,7 @@ void DiodeLadderFilter::process() {
 void DiodeLadderFilter::setSamplerate(float sr) {
     DSPEffect::setSamplerate(sr);
 
+    /* set samplerate for all submodules */
     lpf1->setSamplerate(sr);
     lpf2->setSamplerate(sr);
     lpf3->setSamplerate(sr);
@@ -163,28 +163,13 @@ void DiodeLadderFilter::setSamplerate(float sr) {
 }
 
 
-float DiodeLadderFilter::getFc() const {
-    return fc;
-}
-
-
-void DiodeLadderFilter::setFc(float fc) {
+void DiodeLadderFilter::setFrequency(float fc) {
     DiodeLadderFilter::fc = fc;
 }
 
 
-float DiodeLadderFilter::getK() const {
-    return k;
-}
-
-
-void DiodeLadderFilter::setK(float k) {
+void DiodeLadderFilter::setResonance(float k) {
     DiodeLadderFilter::k = k;
-}
-
-
-float DiodeLadderFilter::getIn() const {
-    return in;
 }
 
 
@@ -198,6 +183,8 @@ float DiodeLadderFilter::getOut() const {
 }
 
 
-void DiodeLadderFilter::setOut(float out) {
-    DiodeLadderFilter::out = out;
+void DiodeLadderFilter::setSaturation(float saturation) {
+    DiodeLadderFilter::saturation = saturation;
 }
+
+

@@ -7,7 +7,7 @@ namespace dsp {
 
 struct DiodeLadderStage : DSPEffect {
 
-    float fc; // cutoff frq
+    float fc; // cutoff frq ????
     float alpha, beta, gamma, delta, epsilon;
     float gain;
     float feedback;
@@ -60,14 +60,11 @@ struct DiodeLadderFilter : DSPEffect {
     void setSamplerate(float sr) override;
 
 
-    float getFc() const;
-    void setFc(float fc);
-    float getK() const;
-    void setK(float k);
-    float getIn() const;
+    void setFrequency(float fc);
+    void setResonance(float k);
     void setIn(float in);
     float getOut() const;
-    void setOut(float out);
+    void setSaturation(float saturation);
 
 
     void reset() {
