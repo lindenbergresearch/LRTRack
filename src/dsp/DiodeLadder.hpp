@@ -42,13 +42,15 @@ struct DiodeLadderStage : DSPEffect {
 
 struct DiodeLadderFilter : DSPEffect {
 
+    static constexpr float NOISE_GAIN = 10e-9f;    // internal noise gain used for self-oscillation
+
     float fc, k, saturation, freqHz;
 
     DiodeLadderStage *lpf1, *lpf2, *lpf3, *lpf4;
+    Noise noise;
+
     float gamma;
-
     float sg1, sg2, sg3, sg4;
-
     float in, out;
 
     explicit DiodeLadderFilter(float sr);

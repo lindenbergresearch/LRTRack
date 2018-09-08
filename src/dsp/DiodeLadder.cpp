@@ -134,7 +134,11 @@ void DiodeLadderFilter::process() {
 
     float y = (1.0f / tanh(saturation)) * tanh(saturation * in);
 
+    y += noise.nextFloat(0.00001);
+
     float u = (y - k * sigma) / (1 + k * gamma);
+
+    u = tanh(u / 70) * 70;
 
     lpf1->in = u;
     lpf1->process();
