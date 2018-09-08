@@ -17,6 +17,7 @@ void DiodeLadderStage::init() {
     feedback = 0.f;
     gain = 1.f;
 
+
     resetZ1();
 }
 
@@ -29,7 +30,8 @@ void DiodeLadderStage::invalidate() {
 void DiodeLadderStage::process() {
     float x = (in * gamma + feedback + epsilon * getFeedbackOutput());
     float vn = (gain * x - z1) * alpha;
-    float out = vn + z1;
+
+    out = vn + z1;
 
     z1 = vn + out;
 }
@@ -48,6 +50,7 @@ DiodeLadderFilter::DiodeLadderFilter(float sr) : DSPEffect(sr) {
 
     gamma = 0.f;
     k = 0.f;
+    saturation = 1.f;
 
     sg1 = 0.f;
     sg2 = 0.f;
@@ -131,7 +134,7 @@ void DiodeLadderFilter::process() {
                   sg3 * lpf3->getFeedbackOutput() +
                   sg4 * lpf4->getFeedbackOutput();
 
-    float y = (1.0f / tanh(saturation)) * tanh(saturation * in);
+    float y = in;// (1.0f / tanh(saturation)) * tanh(saturation * in);
     float u = (y - k * sigma) / (1 + k * gamma);
 
     lpf1->in = u;
