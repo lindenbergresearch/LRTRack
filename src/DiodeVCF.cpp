@@ -28,7 +28,7 @@ struct DiodeVCF : Module {
     DiodeVCF() : Module(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS) {}
 
 
-    LRLCDWidget *lcd = new LRLCDWidget(nvgRGBAf(0.2, 0.99, 0.33, 1.0), 12, "%00004.3f Hz", LRLCDWidget::NUMERIC);
+    LRLCDWidget *lcd = new LRLCDWidget(nvgRGBAf(0.2, 0.09, 0.03, 1.0), 12, "%00004.3f Hz", LRLCDWidget::NUMERIC);
     dsp::DiodeLadderFilter *lpf = new dsp::DiodeLadderFilter(engineGetSampleRate());
 
     LRBigKnob *frqKnob = NULL;
@@ -42,7 +42,7 @@ struct DiodeVCF : Module {
 
 void DiodeVCF::step() {
     lpf->setFrequency(params[FREQUENCY_PARAM].value);
-    lpf->setResonance(params[RES_PARAM].value * 16);
+    lpf->setResonance(params[RES_PARAM].value * 17.1);
     lpf->setSaturation(params[SATURATE_PARAM].value * 5 + 1);
 
     lcd->value = lpf->getFreqHz();
@@ -78,10 +78,10 @@ DiodeVCFWidget::DiodeVCFWidget(DiodeVCF *module) : LRModuleWidget(module) {
     box.size = panel->box.size;
 
     // ***** SCREWS **********
-    addChild(Widget::create<ScrewDarkA>(Vec(15, 1)));
-    addChild(Widget::create<ScrewDarkA>(Vec(box.size.x - 30, 1)));
-    addChild(Widget::create<ScrewDarkA>(Vec(15, 366)));
-    addChild(Widget::create<ScrewDarkA>(Vec(box.size.x - 30, 366)));
+    addChild(Widget::create<ScrewSilver>(Vec(15, 1)));
+    addChild(Widget::create<ScrewSilver>(Vec(box.size.x - 30, 1)));
+    addChild(Widget::create<ScrewSilver>(Vec(15, 366)));
+    addChild(Widget::create<ScrewSilver>(Vec(box.size.x - 30, 366)));
     // ***** SCREWS **********
 
     // ***** MAIN KNOBS ******
