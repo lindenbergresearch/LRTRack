@@ -1,5 +1,6 @@
 #include "LindenbergResearch.hpp"
 #include "dsp/DiodeLadder.hpp"
+#include "dsp/Hardclip.hpp"
 
 using namespace rack;
 using namespace lrt;
@@ -10,6 +11,7 @@ struct DiodeVCF : Module {
         FREQUENCY_PARAM,
         RES_PARAM,
         SATURATE_PARAM,
+        GAIN_PARAM,
         FREQUENCY_CV_PARAM,
         MODE_SWITCH_PARAM,
         NUM_PARAMS
@@ -32,6 +34,7 @@ struct DiodeVCF : Module {
 
     LRLCDWidget *lcd = new LRLCDWidget(nvgRGBAf(0.2, 0.09, 0.03, 1.0), 12, "%00004.3f Hz", LRLCDWidget::NUMERIC);
     dsp::DiodeLadderFilter *lpf = new dsp::DiodeLadderFilter(engineGetSampleRate());
+    dsp::Hardclip *hardclip = new dsp::Hardclip(engineGetSampleRate());
 
     LRAlternateBigLight *frqKnob = NULL;
     LRAlternateMiddleLight *resKnob = NULL;
@@ -45,14 +48,13 @@ struct DiodeVCF : Module {
 void DiodeVCF::step() {
     lpf->setFrequency(params[FREQUENCY_PARAM].value);
     lpf->setResonance(params[RES_PARAM].value * 17.1);
-    lpf->setSaturation(params[SATURATE_PARAM].value * 5 + 1);
+    lpf->setSaturation(quarticBipolar(params[SATURATE_PARAM].value) * 14 + 1);
 
     lpf->low = params[MODE_SWITCH_PARAM].value != 0;
 
     lcd->value = lpf->getFreqHz();
 
     lpf->setIn(inputs[FILTER_INPUT].value / 10.f);
-
     lpf->invalidate();
     lpf->process();
 
