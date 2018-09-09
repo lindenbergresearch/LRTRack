@@ -11,6 +11,7 @@ struct DiodeVCF : Module {
         RES_PARAM,
         SATURATE_PARAM,
         FREQUENCY_CV_PARAM,
+        MODE_SWITCH_PARAM,
         NUM_PARAMS
     };
     enum InputIds {
@@ -45,6 +46,8 @@ void DiodeVCF::step() {
     lpf->setFrequency(params[FREQUENCY_PARAM].value);
     lpf->setResonance(params[RES_PARAM].value * 17.1);
     lpf->setSaturation(params[SATURATE_PARAM].value * 5 + 1);
+
+    lpf->low = params[MODE_SWITCH_PARAM].value != 0;
 
     lcd->value = lpf->getFreqHz();
 
@@ -116,6 +119,9 @@ DiodeVCFWidget::DiodeVCFWidget(DiodeVCF *module) : LRModuleWidget(module) {
     module->lcd->format = "%4.3f Hz";
     addChild(module->lcd);
     // **** SETUP LCD ********
+
+    addParam(ParamWidget::create<LRSwitch>(Vec(119, 331), module, DiodeVCF::MODE_SWITCH_PARAM, 0.0, 1.0, 1.0));
+
 
 }
 
