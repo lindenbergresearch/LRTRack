@@ -10,6 +10,7 @@ struct DiodeVCF : Module {
         FREQUENCY_PARAM,
         RES_PARAM,
         SATURATE_PARAM,
+        FREQUENCY_CV_PARAM,
         NUM_PARAMS
     };
     enum InputIds {
@@ -31,9 +32,9 @@ struct DiodeVCF : Module {
     LRLCDWidget *lcd = new LRLCDWidget(nvgRGBAf(0.2, 0.09, 0.03, 1.0), 12, "%00004.3f Hz", LRLCDWidget::NUMERIC);
     dsp::DiodeLadderFilter *lpf = new dsp::DiodeLadderFilter(engineGetSampleRate());
 
-    LRBigKnob *frqKnob = NULL;
-    LRMiddleKnob *resKnob = NULL;
-    LRMiddleKnob *saturateKnob = NULL;
+    LRAlternateBigLight *frqKnob = NULL;
+    LRAlternateMiddleLight *resKnob = NULL;
+    LRAlternateMiddleLight *saturateKnob = NULL;
 
     void step() override;
     void onSampleRateChange() override;
@@ -77,22 +78,29 @@ DiodeVCFWidget::DiodeVCFWidget(DiodeVCF *module) : LRModuleWidget(module) {
 
     box.size = panel->box.size;
 
+    panel->setInner(nvgRGBAf(0.2, 0.2, 0.f, 0.10f));
+    panel->setOuter(nvgRGBAf(0.f, 0.f, 0.f, 0.38f));
+
     // ***** SCREWS **********
-    addChild(Widget::create<ScrewSilver>(Vec(15, 1)));
-    addChild(Widget::create<ScrewSilver>(Vec(box.size.x - 30, 1)));
-    addChild(Widget::create<ScrewSilver>(Vec(15, 366)));
-    addChild(Widget::create<ScrewSilver>(Vec(box.size.x - 30, 366)));
+    /*   addChild(Widget::create<AlternateScrewLight>(Vec(15, 1)));
+       addChild(Widget::create<AlternateScrewLight>(Vec(box.size.x - 30, 1)));
+       addChild(Widget::create<AlternateScrewLight>(Vec(15, 366)));
+       addChild(Widget::create<AlternateScrewLight>(Vec(box.size.x - 30, 366)));*/
     // ***** SCREWS **********
 
     // ***** MAIN KNOBS ******
-    module->frqKnob = LRKnob::create<LRBigKnob>(Vec(102, 64.9), module, DiodeVCF::FREQUENCY_PARAM, 0.f, 1.f, 1.f);
-    module->resKnob = LRKnob::create<LRMiddleKnob>(Vec(100, 160.8), module, DiodeVCF::RES_PARAM, 0.0f, 1.0, 0.0f);
-    module->saturateKnob = LRKnob::create<LRMiddleKnob>(Vec(115, 230.6), module, DiodeVCF::SATURATE_PARAM, 0.f, 1.0, 0.0f);
+    module->frqKnob = LRKnob::create<LRAlternateBigLight>(Vec(102, 64.9), module, DiodeVCF::FREQUENCY_PARAM, 0.f, 1.f, 1.f);
+    module->resKnob = LRKnob::create<LRAlternateMiddleLight>(Vec(100, 160.8), module, DiodeVCF::RES_PARAM, 0.0f, 1.0, 0.0f);
+    module->saturateKnob = LRKnob::create<LRAlternateMiddleLight>(Vec(115, 230.6), module, DiodeVCF::SATURATE_PARAM, 0.f, 1.0, 0.0f);
 
     addParam(module->frqKnob);
     addParam(module->resKnob);
     addParam(module->saturateKnob);
     // ***** MAIN KNOBS ******
+
+    // ***** CV INPUTS *******
+    addParam(ParamWidget::create<LRAlternateSmallLight>(Vec(61, 169.3), module, DiodeVCF::FREQUENCY_CV_PARAM, -1.f, 1.0f, 0.f));
+    // ***** CV INPUTS *******
 
 
     // ***** INPUTS **********
