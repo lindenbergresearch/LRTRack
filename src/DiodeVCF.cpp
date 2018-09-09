@@ -77,14 +77,14 @@ struct DiodeVCFWidget : LRModuleWidget {
 
 
 DiodeVCFWidget::DiodeVCFWidget(DiodeVCF *module) : LRModuleWidget(module) {
-    panel = new LRPanel();
+    panel = new LRPanel(-10, -10);
     panel->setBackground(SVG::load(assetPlugin(plugin, "res/panels/DiodeLadderVCF.svg")));
     addChild(panel);
 
     box.size = panel->box.size;
 
-    panel->setInner(nvgRGBAf(0.2, 0.2, 0.f, 0.10f));
-    panel->setOuter(nvgRGBAf(0.f, 0.f, 0.f, 0.38f));
+    panel->setInner(nvgRGBAf(0.1, 0.1, 0.f, 0.09f));
+    panel->setOuter(nvgRGBAf(0.f, 0.f, 0.f, 0.28f));
 
     // ***** SCREWS **********
     /*   addChild(Widget::create<AlternateScrewLight>(Vec(15, 1)));
@@ -94,9 +94,9 @@ DiodeVCFWidget::DiodeVCFWidget(DiodeVCF *module) : LRModuleWidget(module) {
     // ***** SCREWS **********
 
     // ***** MAIN KNOBS ******
-    module->frqKnob = LRKnob::create<LRAlternateBigLight>(Vec(102, 64.9), module, DiodeVCF::FREQUENCY_PARAM, 0.f, 1.f, 1.f);
-    module->resKnob = LRKnob::create<LRAlternateMiddleLight>(Vec(100, 160.8), module, DiodeVCF::RES_PARAM, 0.0f, 1.0, 0.0f);
-    module->saturateKnob = LRKnob::create<LRAlternateMiddleLight>(Vec(115, 230.6), module, DiodeVCF::SATURATE_PARAM, 0.f, 1.0, 0.0f);
+    module->frqKnob = LRKnob::create<LRAlternateBigLight>(Vec(149.4, 75.8), module, DiodeVCF::FREQUENCY_PARAM, 0.f, 1.f, 1.f);
+    module->resKnob = LRKnob::create<LRAlternateMiddleLight>(Vec(159.2, 171.5), module, DiodeVCF::RES_PARAM, 0.0f, 1.0, 0.0f);
+    module->saturateKnob = LRKnob::create<LRAlternateMiddleLight>(Vec(159.2, 251.5), module, DiodeVCF::SATURATE_PARAM, 0.f, 1.0, 0.0f);
 
     addParam(module->frqKnob);
     addParam(module->resKnob);
@@ -104,16 +104,16 @@ DiodeVCFWidget::DiodeVCFWidget(DiodeVCF *module) : LRModuleWidget(module) {
     // ***** MAIN KNOBS ******
 
     // ***** CV INPUTS *******
-    addParam(ParamWidget::create<LRAlternateSmallLight>(Vec(61, 169.3), module, DiodeVCF::FREQUENCY_CV_PARAM, -1.f, 1.0f, 0.f));
+    addParam(ParamWidget::create<LRAlternateSmallLight>(Vec(84.9, 91.3), module, DiodeVCF::FREQUENCY_CV_PARAM, -1.f, 1.0f, 0.f));
     // ***** CV INPUTS *******
 
 
     // ***** INPUTS **********
-    addInput(Port::create<LRIOPort>(Vec(17.999, 326.05), Port::INPUT, module, DiodeVCF::FILTER_INPUT));
+    addInput(Port::create<LRIOPortBLight>(Vec(17.999, 326.05), Port::INPUT, module, DiodeVCF::FILTER_INPUT));
     // ***** INPUTS **********
 
     // ***** OUTPUTS *********
-    addOutput(Port::create<LRIOPort>(Vec(58.544, 326.05), Port::OUTPUT, module, DiodeVCF::FILTER_OUTPUT));
+    addOutput(Port::create<LRIOPortBLight>(Vec(58.544, 326.05), Port::OUTPUT, module, DiodeVCF::FILTER_OUTPUT));
     // ***** OUTPUTS *********
 
     // **** SETUP LCD ********
