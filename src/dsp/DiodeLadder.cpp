@@ -151,7 +151,7 @@ void DiodeLadderFilter::process1() {
 
     float u = (y - k * sigma) / (1 + k * gamma);
 
-    u = fastatan(u / 60) * 60;
+    u = fastatan(u / 25) * 25;
 
     lpf1->in = u;
     lpf1->process();
@@ -165,7 +165,9 @@ void DiodeLadderFilter::process1() {
     lpf4->in = lpf3->out;
     lpf4->process();
 
-    out = lpf4->out;
+    out = out * (1 + k * 9);
+
+    out = tanh(lpf4->out);
 }
 
 
