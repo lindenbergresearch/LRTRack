@@ -562,6 +562,40 @@ public:
 /**
  * @brief Alternative IO Port
  */
+struct LRIOPortBLight : SVGPort {
+private:
+    LRShadow *shader;
+
+public:
+    LRIOPortBLight() {
+        background->svg = SVG::load(assetPlugin(plugin, "res/elements/IOPortBLight.svg"));
+        background->wrap();
+        box.size = background->box.size;
+
+        shader = new LRShadow();
+        //  addChild(shadow);
+
+        /** inherit dimensions */
+        shader->setBox(box);
+        shader->setSize(0.55);
+        shader->setStrength(0.1);
+        shader->setShadowPosition(2, 3);
+    }
+
+
+    /**
+     * @brief Hook into draw method
+     * @param vg
+     */
+    void draw(NVGcontext *vg) override {
+        shader->draw(vg);
+        SVGPort::draw(vg);
+    }
+};
+
+/**
+ * @brief Alternative IO Port
+ */
 struct LRIOPortC : SVGPort {
 private:
     LRShadow *shader;
@@ -592,6 +626,40 @@ public:
     }
 };
 
+
+/**
+ * @brief Alternative IO Port
+ */
+struct LRIOPortCLight : SVGPort {
+private:
+    LRShadow *shader;
+
+public:
+    LRIOPortCLight() {
+        background->svg = SVG::load(assetPlugin(plugin, "res/elements/IOPortC.svg"));
+        background->wrap();
+        box.size = background->box.size;
+
+        shader = new LRShadow();
+        // addChild(shader);
+
+        /** inherit dimensions */
+        shader->setBox(box);
+        shader->setSize(0.50);
+        shader->setStrength(0.1);
+        shader->setShadowPosition(3, 2);
+    }
+
+
+    /**
+     * @brief Hook into draw method
+     * @param vg
+     */
+    void draw(NVGcontext *vg) override {
+        shader->draw(vg);
+        SVGPort::draw(vg);
+    }
+};
 
 /**
  * @brief Alternative screw head A
