@@ -470,6 +470,43 @@ struct LRAlternateBigKnob : LRKnob {
 
 
 /**
+ * @brief LR Big Knob
+ */
+struct LRAlternateBigLight : LRKnob {
+    LRAlternateBigLight() {
+        setSVG(SVG::load(assetPlugin(plugin, "res/knobs/AlternateBigLight.svg")));
+        setIndicatorDistance(15);
+        setIndicatorShape(4.8, 0.12);
+
+
+        shader->setShadowPosition(5, 6);
+
+        shader->setStrength(0.4f);
+        shader->setSize(0.6f);
+
+    }
+};
+
+
+/**
+ * @brief LR Big Knob
+ */
+struct LRAlternateMiddleLight : LRKnob {
+    LRAlternateMiddleLight() {
+        setSVG(SVG::load(assetPlugin(plugin, "res/knobs/AlternateMiddleLight.svg")));
+        setIndicatorDistance(15);
+        setIndicatorShape(4.8, 0.12);
+
+
+        shader->setShadowPosition(3, 4);
+
+        shader->setStrength(0.4f);
+        shader->setSize(0.6f);
+
+    }
+};
+
+/**
  * @brief Alternative IO Port
  */
 struct LRIOPort : SVGPort {
