@@ -506,6 +506,25 @@ struct LRAlternateMiddleLight : LRKnob {
     }
 };
 
+
+/**
+ * @brief LR Small Knob
+ */
+struct LRAlternateSmallLight : LRKnob {
+    LRAlternateSmallLight() {
+        setSVG(SVG::load(assetPlugin(plugin, "res/knobs/AlternateSmallLight.svg")));
+        shader->setShadowPosition(3, 3);
+        setSnap(0.0f, 0.02f);
+
+        shader->setShadowPosition(1, 2);
+
+        shader->setStrength(0.4f);
+        shader->setSize(0.6f);
+
+        speed = 0.9f;
+    }
+};
+
 /**
  * @brief Alternative IO Port
  */
@@ -597,6 +616,17 @@ struct ScrewLight : SVGScrew {
     }
 };
 
+
+/**
+ * @brief Alternative screw head A
+ */
+struct AlternateScrewLight : SVGScrew {
+    AlternateScrewLight() {
+        sw->svg = SVG::load(assetPlugin(plugin, "res/elements/AlternateScrewLight.svg"));
+        sw->wrap();
+        box.size = sw->box.size;
+    }
+};
 
 /**
  * @brief Alternative screw head A
