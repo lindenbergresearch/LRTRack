@@ -48,6 +48,8 @@ DiodeLadderFilter::DiodeLadderFilter(float sr) : DSPEffect(sr) {
     lpf3 = new DiodeLadderStage(sr);
     lpf4 = new DiodeLadderStage(sr);
 
+    rs = new Resampler<1>(OVERSAMPLE, 4);
+
     gamma = 0.f;
     k = 0.f;
     saturation = 1.f;
@@ -79,10 +81,12 @@ void DiodeLadderFilter::init() {
 void DiodeLadderFilter::invalidate() {
     float G1, G2, G3, G4;
 
+    float SR = low ? sr : sr * OVERSAMPLE;
+
     freqHz = 20.f * powf(1000.f, fc);
 
     float wd = TWOPI * freqHz;
-    float T = 1 / sr;
+    float T = 1 / SR;
     float wa = (2 / T) * tanf(wd * T / 2);
     float g = wa * T / 2;
 
@@ -123,6 +127,15 @@ void DiodeLadderFilter::invalidate() {
 
 
 void DiodeLadderFilter::process() {
+    if (low) {
+        process1();
+    } else {
+        process2();
+    }
+}
+
+
+void DiodeLadderFilter::process1() {
     lpf3->setFeedback(lpf4->getFeedbackOutput());
     lpf2->setFeedback(lpf3->getFeedbackOutput());
     lpf1->setFeedback(lpf2->getFeedbackOutput());
@@ -153,6 +166,20 @@ void DiodeLadderFilter::process() {
     lpf4->process();
 
     out = lpf4->out;
+}
+
+
+void DiodeLadderFilter::process2() {
+    rs->doUpsample(IN, in);
+    for (int i = 0; i < rs->getFactor(); i++) {
+        in = (float) rs->getUpsampled(IN)[i];
+
+        process1();
+
+        rs->data[IN][i] = out;
+    }
+
+    out = (float) rs->getDownsampled(IN);;
 }
 
 

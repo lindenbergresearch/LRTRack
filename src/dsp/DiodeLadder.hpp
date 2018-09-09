@@ -2,7 +2,9 @@
 
 #include "DSPEffect.hpp"
 #include "DSPMath.hpp"
+#include "HQTrig.hpp"
 
+static const int OVERSAMPLE = 2;
 namespace dsp {
 
 struct DiodeLadderStage : DSPEffect {
@@ -41,13 +43,16 @@ struct DiodeLadderStage : DSPEffect {
 
 
 struct DiodeLadderFilter : DSPEffect {
-
     static constexpr float NOISE_GAIN = 10e-9f;    // internal noise gain used for self-oscillation
+    static const int IN = 0;
 
     float fc, k, saturation, freqHz;
 
     DiodeLadderStage *lpf1, *lpf2, *lpf3, *lpf4;
     Noise noise;
+    Resampler<1> *rs;
+
+    bool low = false;
 
     float gamma;
     float sg1, sg2, sg3, sg4;
@@ -57,6 +62,9 @@ struct DiodeLadderFilter : DSPEffect {
     void init() override;
     void invalidate() override;
     void process() override;
+
+    void process1();
+    void process2();
 
 
     void setSamplerate(float sr) override;
