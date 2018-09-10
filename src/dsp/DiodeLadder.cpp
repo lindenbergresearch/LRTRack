@@ -151,7 +151,7 @@ void DiodeLadderFilter::process1() {
 
     float u = (y - k * sigma) / (1 + k * gamma);
 
-    u = fastatan(u / 25) * 25;
+    u = fastatan(u / FEEDBACK_LIMITER_GAIN) * FEEDBACK_LIMITER_GAIN; // limit feedback gain of resonance
 
     lpf1->in = u;
     lpf1->process();
@@ -165,6 +165,7 @@ void DiodeLadderFilter::process1() {
     lpf4->in = lpf3->out;
     lpf4->process();
 
+    // compensate output level drop down by resonance
     out = out * (1 + k * 9);
 
     out = tanh(lpf4->out);

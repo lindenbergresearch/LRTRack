@@ -5,6 +5,7 @@
 #include "HQTrig.hpp"
 
 static const int OVERSAMPLE = 2;
+static const int FEEDBACK_LIMITER_GAIN = 25;
 namespace dsp {
 
 struct DiodeLadderStage : DSPEffect {
