@@ -83,7 +83,7 @@ void DiodeLadderFilter::invalidate() {
 
     float SR = low ? sr : sr * OVERSAMPLE;
 
-    freqHz = 20.f * powf(1000.f, fc);
+    freqHz = 22.f * powf(1000.f, fc);
 
     float wd = TWOPI * freqHz;
     float T = 1 / SR;
@@ -164,9 +164,6 @@ void DiodeLadderFilter::process1() {
 
     lpf4->in = lpf3->out;
     lpf4->process();
-
-    // compensate output level drop down by resonance
-    out = out * (1 + k * 9);
 
     out = tanh(lpf4->out);
 }
