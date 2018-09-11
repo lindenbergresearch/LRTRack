@@ -275,6 +275,17 @@ public:
 
 
     /**
+     * @brief Set new colors for the indicator (default red overflow)
+     * @param normal Normal indicator color
+     * @param overflow Optional overflow color
+     */
+    void setIndicatorColors(NVGcolor normal, NVGcolor overflow = nvgRGBA(0xBB, 0x00, 0x00, 0xBB)) {
+        indicator->normalColor = normal;
+        indicator->overflowColor = overflow;
+    }
+
+
+    /**
      * @brief Hook into setSVG() method to setup box dimensions correct for indicator
      * @param svg
      */
@@ -475,8 +486,8 @@ struct LRAlternateBigKnob : LRKnob {
 struct LRAlternateBigLight : LRKnob {
     LRAlternateBigLight() {
         setSVG(SVG::load(assetPlugin(plugin, "res/knobs/AlternateBigLight.svg")));
-        setIndicatorDistance(15);
-        setIndicatorShape(4.8, 0.12);
+        setIndicatorDistance(17);
+        setIndicatorShape(4.1, 0.08);
 
 
         shader->setShadowPosition(4, 5);
@@ -494,8 +505,8 @@ struct LRAlternateBigLight : LRKnob {
 struct LRAlternateMiddleLight : LRKnob {
     LRAlternateMiddleLight() {
         setSVG(SVG::load(assetPlugin(plugin, "res/knobs/AlternateMiddleLight.svg")));
-        setIndicatorDistance(15);
-        setIndicatorShape(4.8, 0.12);
+        setIndicatorDistance(11);
+        setIndicatorShape(4.3, 0.11);
 
 
         shader->setShadowPosition(2, 3);
@@ -524,6 +535,7 @@ struct LRAlternateSmallLight : LRKnob {
         speed = 0.9f;
     }
 };
+
 
 /**
  * @brief Alternative IO Port
@@ -592,6 +604,7 @@ public:
         SVGPort::draw(vg);
     }
 };
+
 
 /**
  * @brief Alternative IO Port
@@ -662,6 +675,7 @@ public:
     }
 };
 
+
 /**
  * @brief Alternative screw head A
  */
@@ -696,6 +710,7 @@ struct AlternateScrewLight : SVGScrew {
         box.size = sw->box.size;
     }
 };
+
 
 /**
  * @brief Alternative screw head A
