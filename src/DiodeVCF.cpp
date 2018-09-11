@@ -42,7 +42,6 @@ struct DiodeVCF : Module {
 
     LRLCDWidget *lcd = new LRLCDWidget(nvgRGBAf(0.2, 0.09, 0.03, 1.0), 12, "%00004.3f Hz", LRLCDWidget::NUMERIC);
     dsp::DiodeLadderFilter *lpf = new dsp::DiodeLadderFilter(engineGetSampleRate());
-    dsp::Hardclip *hardclip = new dsp::Hardclip(engineGetSampleRate());
 
     LRAlternateBigLight *frqKnob = NULL;
     LRAlternateBigLight *resKnob = NULL;
@@ -50,12 +49,14 @@ struct DiodeVCF : Module {
 
     SVGWidget *patina;
     LRPanel *panel, *panelAged;
-    bool aged = true;
+    bool aged = false;
+    bool hidef = false;
 
 
     json_t *toJson() override {
         json_t *rootJ = json_object();
         json_object_set_new(rootJ, "aged", json_boolean(aged));
+        json_object_set_new(rootJ, "hidef", json_boolean(hidef));
         return rootJ;
     }
 
@@ -64,6 +65,10 @@ struct DiodeVCF : Module {
         json_t *agedJ = json_object_get(rootJ, "aged");
         if (agedJ)
             aged = json_boolean_value(agedJ);
+
+        json_t *hidefJ = json_object_get(rootJ, "hidef");
+        if (agedJ)
+            hidef = json_boolean_value(hidefJ);
 
         updateComponents();
     }
@@ -111,16 +116,11 @@ void DiodeVCF::step() {
         saturateKnob->setIndicatorValue(params[SATURATE_PARAM].value + satcv);
     }
 
-
-    if (res < 0) {
-        debug("%f", res);
-    }
-
     lpf->setFrequency(frq);
     lpf->setResonance(res);
     lpf->setSaturation(sat);
 
-    lpf->low = params[MODE_SWITCH_PARAM].value != 0;
+    lpf->low = !hidef;
 
     lcd->value = lpf->getFreqHz();
 
@@ -151,8 +151,9 @@ void DiodeVCF::onSampleRateChange() {
 
 void DiodeVCF::onRandomize() {
     Module::randomize();
-    //  patina->box.pos = Vec(-randomUniform() * 1000, -randomUniform() * 200);
-    panel->dirty = true;
+    patina->box.pos = Vec(-randomUniform() * 1000, -randomUniform() * 200);
+
+    updateComponents();
 }
 
 
@@ -183,8 +184,10 @@ DiodeVCFWidget::DiodeVCFWidget(DiodeVCF *module) : LRModuleWidget(module) {
     module->patina->setSVG(SVG::load(assetPlugin(plugin, "res/panels/LaikaPatina.svg")));
     module->panelAged->addChild(module->patina);
 
+    module->patina->box.pos = Vec(-randomUniform() * 1000, -randomUniform() * 200);
+
     panel->setInner(nvgRGBAf(0.3, 0.3, 0.f, 0.09f));
-    panel->setOuter(nvgRGBAf(0.f, 0.f, 0.f, 0.63f));
+    panel->setOuter(nvgRGBAf(0.f, 0.f, 0.f, 0.66f));
 
     module->panelAged->setInner(nvgRGBAf(0.5, 0.5, 0.f, 0.1f));
     module->panelAged->setOuter(nvgRGBAf(0.f, 0.f, 0.f, 0.73f));
@@ -222,23 +225,13 @@ DiodeVCFWidget::DiodeVCFWidget(DiodeVCF *module) : LRModuleWidget(module) {
 
 
     // ***** INPUTS **********
-    addInput(Port::create<LRIOPortBLight>(Vec(37.4, 325.5), Port::INPUT, module, DiodeVCF::FILTER_INPUT));
+    addInput(Port::create<LRIOPortBLight>(Vec(37.4, 318.5), Port::INPUT, module, DiodeVCF::FILTER_INPUT));
     // ***** INPUTS **********
 
     // ***** OUTPUTS *********
-    addOutput(Port::create<LRIOPortBLight>(Vec(175.3, 325.5), Port::OUTPUT, module, DiodeVCF::FILTER_OUTPUT));
-    addOutput(Port::create<LRIOPortBLight>(Vec(145, 325.5), Port::OUTPUT, module, DiodeVCF::HP_OUTPUT));
+    addOutput(Port::create<LRIOPortBLight>(Vec(175.3, 318.5), Port::OUTPUT, module, DiodeVCF::FILTER_OUTPUT));
+    addOutput(Port::create<LRIOPortBLight>(Vec(106.4, 318.5), Port::OUTPUT, module, DiodeVCF::HP_OUTPUT));
     // ***** OUTPUTS *********
-
-    /**** SETUP LCD ********
-    module->lcd->box.pos = Vec(14, 155);
-    module->lcd->format = "%4.3f Hz";
-    addChild(module->lcd);
-    // **** SETUP LCD ********/
-
-    addParam(ParamWidget::create<LRSwitch>(Vec(121.1, 131.8), module, DiodeVCF::MODE_SWITCH_PARAM, 0.0, 1.0, 1.0));
-
-
 }
 
 
@@ -263,15 +256,40 @@ struct DiodeVCFAged : MenuItem {
 };
 
 
+struct DiodeVCFHiDef : MenuItem {
+    DiodeVCF *diodeVCF;
+
+
+    void onAction(EventAction &e) override {
+        if (diodeVCF->hidef) {
+            diodeVCF->hidef = false;
+        } else {
+            diodeVCF->hidef = true;
+        }
+
+        diodeVCF->updateComponents();
+    }
+
+
+    void step() override {
+        rightText = CHECKMARK(diodeVCF->hidef);
+    }
+};
+
+
 void DiodeVCFWidget::appendContextMenu(Menu *menu) {
     menu->addChild(MenuEntry::create());
 
     DiodeVCF *diodeVCF = dynamic_cast<DiodeVCF *>(module);
     assert(diodeVCF);
 
-    DiodeVCFAged *mergeItemAged = MenuItem::create<DiodeVCFAged>("Aged");
+    DiodeVCFAged *mergeItemAged = MenuItem::create<DiodeVCFAged>("Use aged look");
     mergeItemAged->diodeVCF = diodeVCF;
     menu->addChild(mergeItemAged);
+
+    DiodeVCFHiDef *mergeItemHiDef = MenuItem::create<DiodeVCFHiDef>("Use 4x oversampling");
+    mergeItemHiDef->diodeVCF = diodeVCF;
+    menu->addChild(mergeItemHiDef);
 }
 
 
