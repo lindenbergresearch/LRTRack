@@ -128,7 +128,7 @@ void DiodeVCF::step() {
     lpf->invalidate();
     lpf->process();
 
-    outputs[HP_OUTPUT].value = lpf->out12db * 10.f;
+    outputs[HP_OUTPUT].value = lpf->outhp * 10.f;
     outputs[FILTER_OUTPUT].value = lpf->getOut() * 10.f;
 }
 

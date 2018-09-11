@@ -57,7 +57,7 @@ struct DiodeLadderFilter : DSPEffect {
 
     float gamma;
     float sg1, sg2, sg3, sg4;
-    float in, out, out12db;
+    float in, out, outhp;
 
     explicit DiodeLadderFilter(float sr);
     void init() override;
