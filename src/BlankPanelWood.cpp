@@ -198,7 +198,7 @@ void BlankPanelWidgetWood::appendContextMenu(Menu *menu) {
     BlankPanelWood *blankPanelWood = dynamic_cast<BlankPanelWood *>(module);
     assert(blankPanelWood);
 
-    BlankPanelWoodAged *mergeItemAged = MenuItem::create<BlankPanelWoodAged>("Aged");
+    BlankPanelWoodAged *mergeItemAged = MenuItem::create<BlankPanelWoodAged>("Use aged look");
     mergeItemAged->blankPanelWood = blankPanelWood;
     menu->addChild(mergeItemAged);
 
