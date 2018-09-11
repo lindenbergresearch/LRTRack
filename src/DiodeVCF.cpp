@@ -186,8 +186,8 @@ DiodeVCFWidget::DiodeVCFWidget(DiodeVCF *module) : LRModuleWidget(module) {
     panel->setInner(nvgRGBAf(0.3, 0.3, 0.f, 0.09f));
     panel->setOuter(nvgRGBAf(0.f, 0.f, 0.f, 0.63f));
 
-    module->panelAged->setInner(nvgRGBAf(0.3, 0.3, 0.f, 0.09f));
-    module->panelAged->setOuter(nvgRGBAf(0.f, 0.f, 0.f, 0.63f));
+    module->panelAged->setInner(nvgRGBAf(0.5, 0.5, 0.f, 0.1f));
+    module->panelAged->setOuter(nvgRGBAf(0.f, 0.f, 0.f, 0.73f));
 
     // ***** SCREWS **********
     addChild(Widget::create<AlternateScrewLight>(Vec(15, 1)));
