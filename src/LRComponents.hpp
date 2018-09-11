@@ -479,9 +479,9 @@ struct LRAlternateBigLight : LRKnob {
         setIndicatorShape(4.8, 0.12);
 
 
-        shader->setShadowPosition(5, 6);
+        shader->setShadowPosition(4, 5);
 
-        shader->setStrength(0.4f);
+        shader->setStrength(0.5f);
         shader->setSize(0.6f);
 
     }
@@ -498,9 +498,9 @@ struct LRAlternateMiddleLight : LRKnob {
         setIndicatorShape(4.8, 0.12);
 
 
-        shader->setShadowPosition(3, 4);
+        shader->setShadowPosition(2, 3);
 
-        shader->setStrength(0.4f);
+        shader->setStrength(0.5f);
         shader->setSize(0.6f);
 
     }
@@ -516,10 +516,10 @@ struct LRAlternateSmallLight : LRKnob {
         shader->setShadowPosition(3, 3);
         setSnap(0.0f, 0.02f);
 
-        shader->setShadowPosition(1, 2);
+        shader->setShadowPosition(2, 3);
 
-        shader->setStrength(0.4f);
-        shader->setSize(0.6f);
+        shader->setStrength(0.5f);
+        shader->setSize(0.7f);
 
         speed = 0.9f;
     }
@@ -578,8 +578,8 @@ public:
         /** inherit dimensions */
         shader->setBox(box);
         shader->setSize(0.55);
-        shader->setStrength(0.1);
-        shader->setShadowPosition(2, 3);
+        shader->setStrength(0.3);
+        shader->setShadowPosition(1, 2);
     }
 
 
@@ -612,7 +612,8 @@ public:
         /** inherit dimensions */
         shader->setBox(box);
         shader->setSize(0.50);
-        shader->setShadowPosition(3, 2);
+        shader->setStrength(0.1);
+        shader->setShadowPosition(3, 4);
     }
 
 
@@ -636,7 +637,7 @@ private:
 
 public:
     LRIOPortCLight() {
-        background->svg = SVG::load(assetPlugin(plugin, "res/elements/IOPortC.svg"));
+        background->svg = SVG::load(assetPlugin(plugin, "res/elements/IOPortCLight.svg"));
         background->wrap();
         box.size = background->box.size;
 
@@ -645,9 +646,9 @@ public:
 
         /** inherit dimensions */
         shader->setBox(box);
-        shader->setSize(0.50);
-        shader->setStrength(0.1);
-        shader->setShadowPosition(3, 2);
+        shader->setSize(0.55);
+        shader->setStrength(0.3);
+        shader->setShadowPosition(1, 2);
     }
 
 
