@@ -49,7 +49,7 @@ struct DiodeVCF : Module {
     LRAlternateMiddleLight *saturateKnob = NULL;
 
     SVGWidget *patina;
-    LRPanel *panel;
+    LRPanel *panel, *panelAged;
     bool aged = true;
 
 
@@ -75,7 +75,7 @@ struct DiodeVCF : Module {
 
 
 void DiodeVCF::step() {
-    float freqcv, rescv, satcv;
+    float freqcv = 0, rescv = 0, satcv = 0;
 
     /* not connected */
     if (!inputs[FILTER_INPUT].active) {
@@ -84,10 +84,41 @@ void DiodeVCF::step() {
         return;
     }
 
+    if (inputs[FREQUCENCY_CV_INPUT].active) {
+        freqcv = inputs[FREQUCENCY_CV_INPUT].value / 10 * quadraticBipolar(params[FREQUENCY_CV_PARAM].value);
+    }
 
-    lpf->setFrequency(params[FREQUENCY_PARAM].value);
-    lpf->setResonance(params[RES_PARAM].value * 17.288888f);
-    lpf->setSaturation(quarticBipolar(params[SATURATE_PARAM].value) * 14 + 1);
+
+    if (inputs[RESONANCE_CV_INPUT].active) {
+        rescv = inputs[RESONANCE_CV_INPUT].value / 10 * quadraticBipolar(params[RESONANCE_CV_PARAM].value);
+    }
+
+    if (inputs[SATURATE_CV_INPUT].active) {
+        satcv = inputs[SATURATE_CV_INPUT].value / 10 * quadraticBipolar(params[SATURATE_CV_PARAM].value);
+    }
+
+    float frq = clamp(params[FREQUENCY_PARAM].value + freqcv, 0.f, 1.f);
+    float res = clamp((params[RES_PARAM].value + rescv) * 17.28f, 0.f, 17.28f);
+    float sat = clamp(quarticBipolar((params[SATURATE_PARAM].value) + satcv) * 14 + 1, 0.f, 15.f);
+
+    if (frqKnob != nullptr && resKnob != nullptr && saturateKnob != nullptr) {
+        frqKnob->setIndicatorActive(inputs[FREQUCENCY_CV_INPUT].active);
+        resKnob->setIndicatorActive(inputs[RESONANCE_CV_INPUT].active);
+        saturateKnob->setIndicatorActive(inputs[SATURATE_CV_INPUT].active);
+
+        frqKnob->setIndicatorValue(params[FREQUENCY_PARAM].value + freqcv);
+        resKnob->setIndicatorValue(params[RES_PARAM].value + rescv);
+        saturateKnob->setIndicatorValue(params[SATURATE_PARAM].value + satcv);
+    }
+
+
+    if (res < 0) {
+        debug("%f", res);
+    }
+
+    lpf->setFrequency(frq);
+    lpf->setResonance(res);
+    lpf->setSaturation(sat);
 
     lpf->low = params[MODE_SWITCH_PARAM].value != 0;
 
@@ -104,7 +135,10 @@ void DiodeVCF::step() {
 
 void DiodeVCF::updateComponents() {
     patina->visible = aged;
+    panelAged->visible = aged;
+    panel->visible = !aged;
 
+    panelAged->dirty = true;
     panel->dirty = true;
 }
 
@@ -138,14 +172,22 @@ DiodeVCFWidget::DiodeVCFWidget(DiodeVCF *module) : LRModuleWidget(module) {
 
     module->panel = panel;
 
+    module->panelAged = new LRPanel(-10, -10);
+    module->panelAged->setBackground(SVG::load(assetPlugin(plugin, "res/panels/DiodeLadderVCFAged.svg")));
+    module->panelAged->visible = false;
+    addChild(module->panelAged);
+
     box.size = panel->box.size;
 
     module->patina = new SVGWidget();
     module->patina->setSVG(SVG::load(assetPlugin(plugin, "res/panels/LaikaPatina.svg")));
-    module->panel->addChild(module->patina);
+    module->panelAged->addChild(module->patina);
 
     panel->setInner(nvgRGBAf(0.3, 0.3, 0.f, 0.09f));
     panel->setOuter(nvgRGBAf(0.f, 0.f, 0.f, 0.63f));
+
+    module->panelAged->setInner(nvgRGBAf(0.3, 0.3, 0.f, 0.09f));
+    module->panelAged->setOuter(nvgRGBAf(0.f, 0.f, 0.f, 0.63f));
 
     // ***** SCREWS **********
     addChild(Widget::create<AlternateScrewLight>(Vec(15, 1)));
@@ -158,6 +200,10 @@ DiodeVCFWidget::DiodeVCFWidget(DiodeVCF *module) : LRModuleWidget(module) {
     module->frqKnob = LRKnob::create<LRAlternateBigLight>(Vec(32.5, 74.4), module, DiodeVCF::FREQUENCY_PARAM, 0.f, 1.f, 1.f);
     module->resKnob = LRKnob::create<LRAlternateBigLight>(Vec(151.5, 74.4), module, DiodeVCF::RES_PARAM, 0.0f, 1.0, 0.0f);
     module->saturateKnob = LRKnob::create<LRAlternateMiddleLight>(Vec(99.5, 164.4), module, DiodeVCF::SATURATE_PARAM, 0.f, 1.0, 0.0f);
+
+    module->frqKnob->setIndicatorColors(nvgRGBAf(0.9f, 0.9f, 0.9f, 1.0f));
+    module->resKnob->setIndicatorColors(nvgRGBAf(0.9f, 0.9f, 0.9f, 1.0f));
+    module->saturateKnob->setIndicatorColors(nvgRGBAf(0.9f, 0.9f, 0.9f, 1.0f));
 
     addParam(module->frqKnob);
     addParam(module->resKnob);
