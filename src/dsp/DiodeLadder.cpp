@@ -83,7 +83,8 @@ void DiodeLadderFilter::invalidate() {
 
     float SR = low ? sr : sr * OVERSAMPLE;
 
-    freqHz = 22.f * powf(1000.f, fc);
+    freqHz = MAX_FREQUENCY / 1000.f * powf(1000.f, fc);
+    // freqHz = 40.f * powf(500.f, fc);
 
     float wd = TWOPI * freqHz;
     float T = 1 / SR;
@@ -166,6 +167,7 @@ void DiodeLadderFilter::process1() {
     lpf4->in = lpf3->out;
     lpf4->process();
 
+
     out = tanh(lpf4->out);
     outhp = u2 - out;
 }
@@ -218,6 +220,11 @@ float DiodeLadderFilter::getOut() const {
 
 void DiodeLadderFilter::setSaturation(float saturation) {
     DiodeLadderFilter::saturation = saturation;
+}
+
+
+float DiodeLadderFilter::getOuthp() const {
+    return outhp;
 }
 
 
