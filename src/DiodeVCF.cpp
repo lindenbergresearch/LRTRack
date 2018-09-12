@@ -132,7 +132,6 @@ void DiodeVCF::step() {
     /* compensate gain drop on resonance inc. */
     float mu = params[RES_PARAM].value * 3.0f + 1;
 
-    outputs[HP_OUTPUT].value = lpf->getOuthp() * 10.f;
     outputs[FILTER_OUTPUT].value = lpf->getOut() * 10.f * mu;
 }
 
@@ -191,7 +190,7 @@ DiodeVCFWidget::DiodeVCFWidget(DiodeVCF *module) : LRModuleWidget(module) {
     module->patina->box.pos = Vec(-randomUniform() * 1000, -randomUniform() * 200);
 
     panel->setInner(nvgRGBAf(0.3, 0.3, 0.f, 0.09f));
-    panel->setOuter(nvgRGBAf(0.f, 0.f, 0.f, 0.66f));
+    panel->setOuter(nvgRGBAf(0.f, 0.f, 0.f, 0.7f));
 
     module->panelAged->setInner(nvgRGBAf(0.5, 0.5, 0.f, 0.1f));
     module->panelAged->setOuter(nvgRGBAf(0.f, 0.f, 0.f, 0.73f));
@@ -234,7 +233,7 @@ DiodeVCFWidget::DiodeVCFWidget(DiodeVCF *module) : LRModuleWidget(module) {
 
     // ***** OUTPUTS *********
     addOutput(Port::create<LRIOPortBLight>(Vec(175.3, 318.5), Port::OUTPUT, module, DiodeVCF::FILTER_OUTPUT));
-    addOutput(Port::create<LRIOPortBLight>(Vec(106.4, 318.5), Port::OUTPUT, module, DiodeVCF::HP_OUTPUT));
+    //   addOutput(Port::create<LRIOPortBLight>(Vec(106.4, 318.5), Port::OUTPUT, module, DiodeVCF::HP_OUTPUT));
     // ***** OUTPUTS *********
 }
 

@@ -59,7 +59,7 @@ struct DiodeLadderFilter : DSPEffect {
 
     float gamma;
     float sg1, sg2, sg3, sg4;
-    float in, out, outhp;
+    float in, out;
 
     explicit DiodeLadderFilter(float sr);
     void init() override;
@@ -77,7 +77,6 @@ struct DiodeLadderFilter : DSPEffect {
     void setResonance(float k);
     void setIn(float in);
     float getOut() const;
-    float getOuthp() const;
     void setSaturation(float saturation);
 
 
