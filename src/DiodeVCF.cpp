@@ -5,6 +5,8 @@
 using namespace rack;
 using namespace lrt;
 
+using dsp::DiodeLadderFilter;
+
 
 struct DiodeVCF : Module {
     enum ParamIds {
@@ -14,7 +16,6 @@ struct DiodeVCF : Module {
         FREQUENCY_CV_PARAM,
         RESONANCE_CV_PARAM,
         SATURATE_CV_PARAM,
-        MODE_SWITCH_PARAM,
         NUM_PARAMS
     };
     enum InputIds {
@@ -41,7 +42,7 @@ struct DiodeVCF : Module {
     void updateComponents();
 
     LRLCDWidget *lcd = new LRLCDWidget(nvgRGBAf(0.2, 0.09, 0.03, 1.0), 12, "%00004.3f Hz", LRLCDWidget::NUMERIC);
-    dsp::DiodeLadderFilter *lpf = new dsp::DiodeLadderFilter(engineGetSampleRate());
+    DiodeLadderFilter *lpf = new DiodeLadderFilter(engineGetSampleRate());
 
     LRAlternateBigLight *frqKnob = NULL;
     LRAlternateBigLight *resKnob = NULL;
@@ -103,7 +104,7 @@ void DiodeVCF::step() {
     }
 
     float frq = clamp(params[FREQUENCY_PARAM].value + freqcv, 0.f, 1.f);
-    float res = clamp((params[RES_PARAM].value + rescv) * 17.28f, 0.f, 17.28f);
+    float res = clamp((params[RES_PARAM].value + rescv) * DiodeLadderFilter::MAX_RESONANCE, 0.f, DiodeLadderFilter::MAX_RESONANCE);
     float sat = clamp(quarticBipolar((params[SATURATE_PARAM].value) + satcv) * 14 + 1, 0.f, 15.f);
 
     if (frqKnob != nullptr && resKnob != nullptr && saturateKnob != nullptr) {
@@ -128,8 +129,11 @@ void DiodeVCF::step() {
     lpf->invalidate();
     lpf->process();
 
-    outputs[HP_OUTPUT].value = lpf->outhp * 10.f;
-    outputs[FILTER_OUTPUT].value = lpf->getOut() * 10.f;
+    /* compensate gain drop on resonance inc. */
+    float mu = params[RES_PARAM].value * 3.0f + 1;
+
+    outputs[HP_OUTPUT].value = lpf->getOuthp() * 10.f;
+    outputs[FILTER_OUTPUT].value = lpf->getOut() * 10.f * mu;
 }
 
 
