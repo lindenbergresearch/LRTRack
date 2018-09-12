@@ -20,8 +20,8 @@ void FontIconWidget::draw(NVGcontext *vg) {
     nvgFontFaceId(vg, iconFont->handle);
     nvgTextLetterSpacing(vg, 0);
 
+
     nvgFillColor(vg, color);
-
-
-    nvgTextBox(vg, 0, 0, 0, "LAIHDJOUSADZ/SDZ", nullptr);
+    nvgTextBox(vg, parent->box.size.x / 2 - fontSize / 2, parent->box.size.y / 2 - fontSize / 2, 0, "H", nullptr);
+    //  nvgTextBox(vg, 0, 0, 0, "Ldfgjsndfklgjhbsdfkljhgsdkfjgh", nullptr);
 }
