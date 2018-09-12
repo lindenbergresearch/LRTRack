@@ -10,7 +10,7 @@ set(SOURCE_FILES
         src/SimpleFilter.cpp
         src/ReShaper.cpp
         src/BlankPanel.cpp
-        src/BlankPanelM1.cpp
+        src/BlankPanelEmpty.cpp
         src/VCO.cpp
         src/dsp/DSPMath.cpp
         src/dsp/DSPMath.hpp
