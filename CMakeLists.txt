@@ -56,7 +56,9 @@ set(SOURCE_FILES
         src/BlankPanelWood.cpp
         src/dsp/DiodeLadder.cpp
         src/dsp/DiodeLadder.hpp
-        src/DiodeVCF.cpp)
+        src/DiodeVCF.cpp
+        src/widgets/FontIconWidget.cpp
+        src/BlankPanelSmall.cpp)
 
 include_directories(.)
 include_directories(src)
