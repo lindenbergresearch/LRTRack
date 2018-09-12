@@ -132,8 +132,8 @@ void DiodeVCF::step() {
     /* compensate gain drop on resonance inc. */
     float q = params[RES_PARAM].value * 3.0f + 1;
 
-    outputs[HP_OUTPUT].value = lpf->getOut2() * 6.5f;      // hipass
-    outputs[LP_OUTPUT].value = lpf->getOut() * 10.f * q;   // lowpass
+    outputs[HP_OUTPUT].value = lpf->getOut2() * 6.5f;  // hipass
+    outputs[LP_OUTPUT].value = lpf->getOut() * 10.f;   // lowpass
 }
 
 
