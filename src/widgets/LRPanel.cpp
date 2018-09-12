@@ -9,6 +9,13 @@ namespace lrt {
 void LRPanel::draw(NVGcontext *vg) {
     FramebufferWidget::draw(vg);
 
+    if (colorOnly) {
+        nvgBeginPath(vg);
+        nvgFillColor(vg, bgColor);
+        nvgRect(vg, 0, 0, box.size.x, box.size.y);
+        nvgFill(vg);
+    }
+
     nvgBeginPath(vg);
     nvgRect(vg, -MARGIN, -MARGIN, box.size.x + MARGIN * 2, box.size.y + MARGIN * 2);
 
