@@ -12,7 +12,7 @@ void LRPanel::draw(NVGcontext *vg) {
     if (colorOnly) {
         nvgBeginPath(vg);
         nvgFillColor(vg, bgColor);
-        nvgRect(vg, 0, 0, box.size.x, box.size.y);
+        nvgRect(vg, 2, 2, box.size.x - 4, box.size.y - 4);
         nvgFill(vg);
     }
 
