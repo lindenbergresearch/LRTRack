@@ -167,7 +167,7 @@ void DiodeLadderFilter::process1() {
     lpf4->in = lpf3->out;
     lpf4->process();
 
-
+    out2 = tanh(u - lpf4->out);
     out = tanh(lpf4->out);
 }
 
@@ -219,4 +219,9 @@ float DiodeLadderFilter::getOut() const {
 
 void DiodeLadderFilter::setSaturation(float saturation) {
     DiodeLadderFilter::saturation = saturation;
+}
+
+
+float DiodeLadderFilter::getOut2() const {
+    return out2;
 }

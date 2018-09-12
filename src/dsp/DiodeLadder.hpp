@@ -46,7 +46,7 @@ struct DiodeLadderStage : DSPEffect {
 struct DiodeLadderFilter : DSPEffect {
     static constexpr float NOISE_GAIN = 10e-9f;     // internal noise gain used for self-oscillation
     static constexpr float MAX_RESONANCE = 17.28f;  // max resonance value
-    static constexpr float MAX_FREQUENCY = 22000.f; //
+    static constexpr float MAX_FREQUENCY = 20000.f; //
     static const int IN = 0;
 
     float fc, k, saturation, freqHz;
@@ -59,7 +59,7 @@ struct DiodeLadderFilter : DSPEffect {
 
     float gamma;
     float sg1, sg2, sg3, sg4;
-    float in, out;
+    float in, out, out2;
 
     explicit DiodeLadderFilter(float sr);
     void init() override;
@@ -77,6 +77,7 @@ struct DiodeLadderFilter : DSPEffect {
     void setResonance(float k);
     void setIn(float in);
     float getOut() const;
+    float getOut2() const;
     void setSaturation(float saturation);
 
 
