@@ -15,7 +15,7 @@ extern Model *modelAlmaFilter;
 extern Model *modelReShaper;
 extern Model *modelVCO;
 extern Model *modelBlankPanel;
-extern Model *modelBlankPanelM1;
+extern Model *modelBlankPanelEmpty;
 extern Model *modelBlankPanelSmall;
 extern Model *modelBlankPanelWood;
 extern Model *modelWestcoast;
