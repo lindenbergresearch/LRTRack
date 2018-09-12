@@ -753,9 +753,13 @@ private:
     /** margin of gradient box */
     static constexpr float MARGIN = 10;
 
+    NVGcolor bgColor = nvgRGBAf(0.0859375f, 0.0859375f, 0.0859375f, 1.f);
+    bool colorOnly = false;
+
     /** gradient colors */
     NVGcolor inner = nvgRGBAf(1.5f * .369f, 1.5f * 0.357f, 1.5f * 0.3333f, 0.33f);
     NVGcolor outer = nvgRGBAf(0.0f, 0.0f, 0.0f, 0.1f);;
+
 
     /** gradient offset */
     Vec offset = Vec(30, -50);
@@ -764,12 +768,15 @@ private:
 public:
     LRPanel();
 
-
     LRPanel(float x, float y) {
         offset.x = x;
         offset.y = y;
     }
 
+
+    void setColorOnly() {
+        colorOnly = true;
+    }
 
     void setInner(const NVGcolor &inner);
     void setOuter(const NVGcolor &outer);
@@ -832,5 +839,83 @@ struct SVGRotator : FramebufferWidget {
 
     void setSVG(std::shared_ptr<SVG> svg);
     void step() override;
+};
+
+
+struct FontIconWidget : FramebufferWidget {
+    TrueType iconFont;
+    float fontSize;
+    NVGcolor color;
+
+    explicit FontIconWidget(float fontSize = 12.f, NVGcolor color = nvgRGBAf(1.f, 1.f, 1.f, 1.f));
+
+    void draw(NVGcontext *vg) override;
+};
+
+
+/**
+ * Utility widget for resize action on modules
+ */
+struct ModuleResizeWidget : Widget {
+
+    float minWidth;
+    bool right = false;
+    float dragX;
+    float dragY;
+    Rect originalBox;
+
+
+    ModuleResizeWidget(float _minWidth) {
+        box.size = Vec(RACK_GRID_WIDTH * 1, RACK_GRID_HEIGHT);
+        minWidth = _minWidth;
+    }
+
+
+    void onMouseDown(EventMouseDown &e) override {
+        if (e.button == 0) {
+            e.consumed = true;
+            e.target = this;
+        }
+    }
+
+
+    void onDragStart(EventDragStart &e) override {
+        dragX = gRackWidget->lastMousePos.x;
+        dragY = gRackWidget->lastMousePos.y;
+        ModuleWidget *m = getAncestorOfType<ModuleWidget>();
+        originalBox = m->box;
+    }
+
+
+    void onDragMove(EventDragMove &e) override {
+        ModuleWidget *m = getAncestorOfType<ModuleWidget>();
+
+        float newDragX = gRackWidget->lastMousePos.x;
+        float deltaX = newDragX - dragX;
+        float newDragY = gRackWidget->lastMousePos.y;
+        float deltaY = newDragY - dragY;
+
+        Rect newBox = originalBox;
+
+        // resize width
+        if (right) {
+            newBox.size.x += deltaX;
+            newBox.size.x = fmaxf(newBox.size.x, minWidth);
+            newBox.size.x = roundf(newBox.size.x / RACK_GRID_WIDTH) * RACK_GRID_WIDTH;
+        } else {
+            newBox.size.x -= deltaX;
+            newBox.size.x = fmaxf(newBox.size.x, minWidth);
+            newBox.size.x = roundf(newBox.size.x / RACK_GRID_WIDTH) * RACK_GRID_WIDTH;
+            newBox.pos.x = originalBox.pos.x + originalBox.size.x - newBox.size.x;
+        }
+
+        // resize height
+        newBox.size.y += deltaY;
+        newBox.size.y = fmaxf(newBox.size.y, RACK_GRID_HEIGHT);
+        newBox.size.y = roundf(newBox.size.y / RACK_GRID_HEIGHT) * RACK_GRID_HEIGHT;
+
+        gRackWidget->requestModuleBox(m, newBox);
+    }
+
 };
 }

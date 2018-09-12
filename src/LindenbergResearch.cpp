@@ -19,7 +19,7 @@ void init(rack::Plugin *p) {
     p->addModel(modelVCO);
 
     p->addModel(modelBlankPanel);
-    p->addModel(modelBlankPanelM1);
+    p->addModel(modelBlankPanelEmpty);
     p->addModel(modelBlankPanelSmall);
     p->addModel(modelBlankPanelWood);
 }
