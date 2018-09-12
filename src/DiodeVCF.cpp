@@ -26,7 +26,7 @@ struct DiodeVCF : Module {
         NUM_INPUTS
     };
     enum OutputIds {
-        FILTER_OUTPUT,
+        LP_OUTPUT,
         HP_OUTPUT,
         NUM_OUTPUTS
     };
@@ -85,7 +85,7 @@ void DiodeVCF::step() {
 
     /* not connected */
     if (!inputs[FILTER_INPUT].active) {
-        outputs[FILTER_OUTPUT].value = 0.f;
+        outputs[LP_OUTPUT].value = 0.f;
 
         return;
     }
@@ -130,9 +130,10 @@ void DiodeVCF::step() {
     lpf->process();
 
     /* compensate gain drop on resonance inc. */
-    float mu = params[RES_PARAM].value * 3.0f + 1;
+    float q = params[RES_PARAM].value * 3.0f + 1;
 
-    outputs[FILTER_OUTPUT].value = lpf->getOut() * 10.f * mu;
+    outputs[HP_OUTPUT].value = lpf->getOut2() * 6.5f;      // hipass
+    outputs[LP_OUTPUT].value = lpf->getOut() * 10.f * q;   // lowpass
 }
 
 
@@ -232,8 +233,8 @@ DiodeVCFWidget::DiodeVCFWidget(DiodeVCF *module) : LRModuleWidget(module) {
     // ***** INPUTS **********
 
     // ***** OUTPUTS *********
-    addOutput(Port::create<LRIOPortBLight>(Vec(175.3, 318.5), Port::OUTPUT, module, DiodeVCF::FILTER_OUTPUT));
-    //   addOutput(Port::create<LRIOPortBLight>(Vec(106.4, 318.5), Port::OUTPUT, module, DiodeVCF::HP_OUTPUT));
+    addOutput(Port::create<LRIOPortBLight>(Vec(175.3, 318.5), Port::OUTPUT, module, DiodeVCF::LP_OUTPUT));
+    addOutput(Port::create<LRIOPortBLight>(Vec(106.4, 318.5), Port::OUTPUT, module, DiodeVCF::HP_OUTPUT));
     // ***** OUTPUTS *********
 }
 
