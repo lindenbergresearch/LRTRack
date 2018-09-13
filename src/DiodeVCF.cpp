@@ -83,13 +83,6 @@ struct DiodeVCF : Module {
 void DiodeVCF::step() {
     float freqcv = 0, rescv = 0, satcv = 0;
 
-    /* not connected */
-    if (!inputs[FILTER_INPUT].active) {
-        outputs[LP_OUTPUT].value = 0.f;
-
-        return;
-    }
-
     if (inputs[FREQUCENCY_CV_INPUT].active) {
         freqcv = inputs[FREQUCENCY_CV_INPUT].value / 10 * quadraticBipolar(params[FREQUENCY_CV_PARAM].value);
     }
@@ -129,8 +122,8 @@ void DiodeVCF::step() {
     lpf->invalidate();
     lpf->process();
 
-    /* compensate gain drop on resonance inc. */
-    float q = params[RES_PARAM].value * 3.0f + 1;
+    /* compensate gain drop on resonance inc.
+    float q = params[RES_PARAM].value * 1.8f + 1;*/
 
     outputs[HP_OUTPUT].value = lpf->getOut2() * 6.5f;  // hipass
     outputs[LP_OUTPUT].value = lpf->getOut() * 10.f;   // lowpass
