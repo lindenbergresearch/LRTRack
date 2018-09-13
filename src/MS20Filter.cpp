@@ -5,7 +5,7 @@ using namespace rack;
 using namespace lrt;
 
 
-struct MS20Filter : LRModule {
+struct MS20Filter : Module {
 
     enum ParamIds {
         FREQUENCY_PARAM,
@@ -42,7 +42,7 @@ struct MS20Filter : LRModule {
     LRMiddleKnob *driveKnob = NULL;
 
 
-    MS20Filter() : LRModule(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS) {}
+    MS20Filter() : Module(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS) {}
 
 
     void step() override;

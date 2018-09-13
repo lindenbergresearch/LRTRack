@@ -25,33 +25,6 @@ typedef std::shared_ptr<rack::Font> TrueType;
 
 
 /**
- * @brief Standard LRT module
- */
-struct LRModule : Module {
-    long cnt = 0;
-
-
-    /**
-     * @brief Overtake default constructor for module to be compatible
-     * @param numParams
-     * @param numInputs
-     * @param numOutputs
-     * @param numLights
-     */
-    LRModule(int numParams, int numInputs, int numOutputs, int numLights = 0) :
-            Module(numParams, numInputs, numOutputs, numLights) {}
-
-
-    void step() override {
-        Module::step();
-
-        // increment counter
-        cnt++;
-    }
-};
-
-
-/**
  * @brief Emulation of a LCD monochrome display
  */
 struct LRLCDWidget : Label {

@@ -5,7 +5,7 @@ using namespace rack;
 using namespace lrt;
 
 
-struct AlmaFilter : LRModule {
+struct AlmaFilter : Module {
 
     enum ParamIds {
         CUTOFF_PARAM,
@@ -43,7 +43,7 @@ struct AlmaFilter : LRModule {
     LRMiddleKnob *driveKnob = NULL;
 
 
-    AlmaFilter() : LRModule(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS) {}
+    AlmaFilter() : Module(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS) {}
 
 
     void step() override;

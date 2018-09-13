@@ -5,7 +5,7 @@ using namespace rack;
 using namespace lrt;
 
 
-struct VCO : LRModule {
+struct VCO : Module {
     enum ParamIds {
         FREQUENCY_PARAM,
         OCTAVE_PARAM,
@@ -43,7 +43,7 @@ struct VCO : LRModule {
     LRBigKnob *frqKnob = NULL;
 
 
-    VCO() : LRModule(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS) {}
+    VCO() : Module(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS) {}
 
 
     void step() override;
@@ -52,7 +52,7 @@ struct VCO : LRModule {
 
 
 void VCO::step() {
-    LRModule::step();
+    Module::step();
 
     float fm = clamp(inputs[FM_CV_INPUT].value, -CV_BOUNDS, CV_BOUNDS) * 0.4f * quadraticBipolar(params[FM_CV_PARAM].value);
     float tune = params[FREQUENCY_PARAM].value;
