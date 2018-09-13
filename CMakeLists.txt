@@ -58,11 +58,14 @@ set(SOURCE_FILES
         src/dsp/DiodeLadder.hpp
         src/DiodeVCF.cpp
         src/widgets/FontIconWidget.cpp
-        src/BlankPanelSmall.cpp)
+        src/BlankPanelSmall.cpp
+        src/Speck.cpp
+        )
 
 include_directories(.)
 include_directories(src)
 include_directories(src/dsp)
+include_directories(src/dsp/kiss_fft)
 include_directories(../../include)
 include_directories(../../include)
 include_directories(../../include/dsp)

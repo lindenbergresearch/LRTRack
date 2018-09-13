@@ -15,8 +15,9 @@ void init(Plugin *p) {
     p->addModel(modelWestcoast);
     p->addModel(modelQuickMix);
     p->addModel(modelDiodeVCF);
-
     p->addModel(modelVCO);
+
+    p->addModel(modelSpeck);
 
     p->addModel(modelBlankPanel);
     p->addModel(modelBlankPanelEmpty);
