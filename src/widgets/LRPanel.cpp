@@ -17,7 +17,12 @@ void LRPanel::draw(NVGcontext *vg) {
     }
 
     nvgBeginPath(vg);
-    nvgRect(vg, -MARGIN, -MARGIN, box.size.x + MARGIN * 2, box.size.y + MARGIN * 2);
+
+    if (limit.isZero()) {
+        nvgRect(vg, -MARGIN, -MARGIN, box.size.x + MARGIN * 2, box.size.y + MARGIN * 2);
+    } else {
+        nvgRect(vg, 0, 0, limit.x, limit.y);
+    }
 
     NVGpaint paint = nvgLinearGradient(vg, offset.x, offset.y, box.size.x, box.size.y, inner, outer);
     nvgFillPaint(vg, paint);

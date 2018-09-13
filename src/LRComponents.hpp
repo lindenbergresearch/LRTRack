@@ -737,19 +737,25 @@ private:
     /** gradient offset */
     Vec offset = Vec(30, -50);
 
+    /* if gradient should be limited */
+    Vec limit;
 
 public:
     LRPanel();
 
-    LRPanel(float x, float y) {
+
+    LRPanel(float x, float y, Vec limit = Vec(0.f, 0.f)) {
         offset.x = x;
         offset.y = y;
+
+        LRPanel::limit = limit;
     }
 
 
     void setColorOnly() {
         colorOnly = true;
     }
+
 
     void setInner(const NVGcolor &inner);
     void setOuter(const NVGcolor &outer);
