@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:serif="http://www.serif.com/" width="1020px" height="380px" version="1.1" xmlns="http://www.w3.org/2000/svg" xml:space="preserve" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:1.41421;">
+    <g id="SpeckAnalyzer" transform="matrix(0.276024,0,0,0.276024,571.042,23.7214)">
+        <g id="MainPanel" transform="matrix(3.62858,0,0,3.62288,-2068.82,-85.9398)">
+            <rect x="0" y="0" width="299.528" height="379.971" style="fill:#fff;"/>
+        </g>
+        <g id="Display" transform="matrix(2.39713,0,0,2.35209,851.614,-262.351)">
+            <rect x="-764.902" y="75.002" width="1088.16" height="585.307" style="fill:#4e4e4e;fill-rule:nonzero;"/>
+        </g>
+    </g>
+</svg>
