@@ -151,7 +151,6 @@ void DiodeLadderFilter::process1() {
     y += noise.nextFloat(NOISE_GAIN);
 
     float u = (y - k * sigma) / (1 + k * gamma);
-    float u2 = u;
 
     u = fastatan(u / FEEDBACK_LIMITER_GAIN) * FEEDBACK_LIMITER_GAIN; // limit feedback gain of resonance
 
