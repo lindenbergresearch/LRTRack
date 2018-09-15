@@ -11,7 +11,7 @@
  * Todo: precise f0 estimate
  */
 
-#define BUFFER_SIZE 512
+#define BUFFER_SIZE 1024
 #define FFT_POINTS BUFFER_SIZE
 #define FFT_POINTS_NYQ FFT_POINTS/2+1
 #define DIR_FFT 0
@@ -125,21 +125,28 @@ Speck::~Speck() {
 void Speck::step() {
     int n;
     kiss_fft_cpx cBufIn[FFT_POINTS], cBufOut[FFT_POINTS];
-    // Modes
-    if (onOffTrig.process(params[ONOFF_PARAM].value)) {
+
+    /*if (onOffTrig.process(params[ONOFF_PARAM].value)) {
         forceOff = !forceOff;
-    }
+    }*/
+
+    if (params[ONOFF_PARAM].value == 1)
+        forceOff = true;
+    else
+        forceOff = false;
+
 
     if (inputs[INPUT_1].active || inputs[INPUT_2].active) {
-        if (onOff == false && forceOff == false) {
+        if (!onOff && !forceOff) {
             onOff = true;
-        } else if (onOff == true && forceOff == true) {
+        } else if (onOff && forceOff) {
             onOff = false;
         }
     } else {
         onOff = false;
         forceOff = false;
     }
+
     lights[LIGHTS_2_ON].value = onOff;
 
     if (linLogTrig.process(params[LINLOG_PARAM].value)) {
@@ -174,7 +181,7 @@ void Speck::step() {
         } else {
             // TIME TO COMPUTE FFT
             for (n = 0; n < FFT_POINTS; n++) {
-                cBufIn[n].r = HannW[n] * buffer1[n];
+                cBufIn[n].r = /*HannW[n] **/ buffer1[n];
                 cBufIn[n].i = 0.0; // forse devo copiare anche qui?
             }
             kiss_fft(cfg_for_FFT, cBufIn, cBufOut);
@@ -183,7 +190,7 @@ void Speck::step() {
             }
 
             for (n = 0; n < FFT_POINTS; n++) {
-                cBufIn[n].r = HannW[n] * buffer2[n];
+                cBufIn[n].r = /*HannW[n] */ buffer2[n];
                 cBufIn[n].i = 0.0; // forse devo copiare anche qui?
             }
             kiss_fft(cfg_for_FFT, cBufIn, cBufOut);
@@ -253,7 +260,7 @@ struct SpeckDisplay : TransparentWidget {
 
 
     SpeckDisplay() {
-        font = Font::load(assetPlugin(plugin, "res/DejaVuSansMono.ttf"));
+        font = Font::load(assetPlugin(plugin, "res/OneSlot.ttf"));
     }
 
 
@@ -499,7 +506,8 @@ struct SpeckDisplay : TransparentWidget {
             stats1.calculate(module->FFT1);
             stats2.calculate(module->FFT2);
         }
-        drawStats(vg, Vec(0, 0), "IN1", &stats1);
+
+        drawStats(vg, Vec(0, 4), "IN1", &stats1);
         drawStats(vg, Vec(0, box.size.y - 15), "IN2", &stats2);
         drawGrid(vg, zoom, freqOffs, module->linLog, negOffs);
     }
@@ -518,13 +526,15 @@ SpeckWidget::SpeckWidget(Speck *module) : LRModuleWidget(module) {
 
     box.size = panel->box.size;
 
-    panel->setInner(nvgRGBAf(0.34, 0.2, 0.f, 0.12f));
-    panel->setOuter(nvgRGBAf(0.f, 0.f, 0.f, 0.83f));
+    panel->setInner(nvgRGBAf(0.34, 0.3, 0.2f, 0.15f));
+    panel->setOuter(nvgRGBAf(0.f, 0.f, 0.f, 0.89f));
 
-    addChild(Widget::create<AlternateScrewLight>(Vec(15, 0)));
-    addChild(Widget::create<AlternateScrewLight>(Vec(300 - 30, 0)));
-    addChild(Widget::create<AlternateScrewLight>(Vec(15, 365)));
-    addChild(Widget::create<AlternateScrewLight>(Vec(300 - 30, 365)));
+    addChild(Widget::create<AlternateScrewLight>(Vec(15, 1)));
+    addChild(Widget::create<AlternateScrewLight>(Vec(300 - 30, 1)));
+    addChild(Widget::create<AlternateScrewLight>(Vec(15, 364)));
+    addChild(Widget::create<AlternateScrewLight>(Vec(300 - 30, 364)));
+    addChild(Widget::create<AlternateScrewLight>(Vec(box.size.x - 30, 1)));
+    addChild(Widget::create<AlternateScrewLight>(Vec(box.size.x - 30, 366)));
 
     SpeckDisplay *display = new SpeckDisplay();
     display->module = module;
@@ -532,30 +542,31 @@ SpeckWidget::SpeckWidget(Speck *module) : LRModuleWidget(module) {
     display->box.size = Vec(box.size.x - 300, 380);
     addChild(display);
 
-    addParam(ParamWidget::create<BefacoSwitch>(Vec(33, 340), module, Speck::ONOFF_PARAM, 0.0, 1.0, 0.0));
+    addParam(ParamWidget::create<LRSwitch>(Vec(33, 340), module, Speck::ONOFF_PARAM, 0.0, 1.0, 0.0));
 
 
-    addParam(ParamWidget::create<RoundBlackSnapKnob>(Vec(118, 244), module, Speck::SCALE_1_PARAM, -10.0f, 20.0, -1.0f));
-    addParam(ParamWidget::create<RoundSmallBlackKnob>(Vec(118, 297), module, Speck::POS_1_PARAM, -1.0f, 1.0, 0.0));
+    addParam(ParamWidget::create<LRAlternateMiddleLight>(Vec(118 - 50, 124), module, Speck::SCALE_1_PARAM, -10.0f, 20.0, -1.0f));
+    addParam(ParamWidget::create<LRAlternateMiddleLight>(Vec(118 - 50, 177), module, Speck::POS_1_PARAM, -1.0f, 1.0, 0.0));
 
-    addParam(ParamWidget::create<RoundBlackSnapKnob>(Vec(167, 244), module, Speck::SCALE_2_PARAM, -10.0f, 20.0, -1.0f));
-    addParam(ParamWidget::create<RoundSmallBlackKnob>(Vec(167, 297), module, Speck::POS_2_PARAM, -1.0f, 1.0, 0.0));
+    addParam(ParamWidget::create<LRAlternateMiddleLight>(Vec(197 - 50, 124), module, Speck::SCALE_2_PARAM, -10.0f, 20.0, -1.0f));
+    addParam(ParamWidget::create<LRAlternateMiddleLight>(Vec(197 - 50, 177), module, Speck::POS_2_PARAM, -1.0f, 1.0, 0.0));
 
-    addParam(ParamWidget::create<RoundSmallBlackKnob>(Vec(213, 244), module, Speck::ZOOM_PARAM, 1.0, ZOOM_RANGE, 1.0));
+    addParam(ParamWidget::create<LRAlternateMiddleLight>(Vec(253 - 50, 124), module, Speck::ZOOM_PARAM, 1.0, ZOOM_RANGE, 1.0));
+
+    addParam(ParamWidget::create<LRAlternateMiddleLight>(Vec(253 - 50, 177), module, Speck::FOFFS_PARAM, 0.0, FOFFS_RANGE, 0.0));
 
     addParam(ParamWidget::create<CKD6>(Vec(258, 244), module, Speck::LINLOG_PARAM, 0.0, 1.0, 0.0));
-    addParam(ParamWidget::create<RoundSmallBlackKnob>(Vec(213, 297), module, Speck::FOFFS_PARAM, 0.0, FOFFS_RANGE, 0.0));
 
 
-    addInput(Port::create<PJ301MPort>(Vec(12, 240), Port::INPUT, module, Speck::INPUT_1));
-    addInput(Port::create<PJ301MPort>(Vec(59, 240), Port::INPUT, module, Speck::INPUT_2));
+    addInput(Port::create<LRIOPortBLight>(Vec(12, 240), Port::INPUT, module, Speck::INPUT_1));
+    addInput(Port::create<LRIOPortBLight>(Vec(59, 240), Port::INPUT, module, Speck::INPUT_2));
 
-    addOutput(Port::create<PJ3410Port>(Vec(9, 306), Port::OUTPUT, module, Speck::OUTPUT_1));
-    addOutput(Port::create<PJ3410Port>(Vec(56, 306), Port::OUTPUT, module, Speck::OUTPUT_2));
+    addOutput(Port::create<LRIOPortBLight>(Vec(9, 306), Port::OUTPUT, module, Speck::OUTPUT_1));
+    addOutput(Port::create<LRIOPortBLight>(Vec(56, 306), Port::OUTPUT, module, Speck::OUTPUT_2));
 
-    addChild(ModuleLightWidget::create<TinyLight<GreenLight>>(Vec(286, 230), module, Speck::LIGHTS_0_LIN));
-    addChild(ModuleLightWidget::create<TinyLight<GreenLight>>(Vec(286, 280), module, Speck::LIGHTS_1_LOG));
-    addChild(ModuleLightWidget::create<MediumLight<GreenLight>>(Vec(265, 20), module, Speck::LIGHTS_2_ON));
+    addChild(ModuleLightWidget::create<MediumLight<GreenLight>>(Vec(286, 230), module, Speck::LIGHTS_0_LIN));
+    addChild(ModuleLightWidget::create<MediumLight<GreenLight>>(Vec(286, 280), module, Speck::LIGHTS_1_LOG));
+    addChild(ModuleLightWidget::create<MediumLight<GreenLight>>(Vec(265, 30), module, Speck::LIGHTS_2_ON));
 
 }
 
