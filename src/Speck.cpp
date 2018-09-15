@@ -130,10 +130,7 @@ void Speck::step() {
         forceOff = !forceOff;
     }*/
 
-    if (params[ONOFF_PARAM].value == 1)
-        forceOff = true;
-    else
-        forceOff = false;
+    forceOff = params[ONOFF_PARAM].value == 1;
 
 
     if (inputs[INPUT_1].active || inputs[INPUT_2].active) {
