@@ -11,7 +11,7 @@
  * Todo: precise f0 estimate
  */
 
-#define BUFFER_SIZE 1024
+#define BUFFER_SIZE 8192
 #define FFT_POINTS BUFFER_SIZE
 #define FFT_POINTS_NYQ FFT_POINTS/2+1
 #define DIR_FFT 0
@@ -69,16 +69,14 @@ struct Speck : Module {
 
     float buffer1[BUFFER_SIZE] = {};
     float buffer2[BUFFER_SIZE] = {};
-    float FFT1[FFT_POINTS_NYQ] = {}; // poi cambiare il numero di punti in maniera arbitraria
+    float FFT1[FFT_POINTS_NYQ] = {};
     float FFT2[FFT_POINTS_NYQ] = {};
     int bufferIndex = 0;
     float frameIndex = 0;
 
-    SchmittTrigger linLogTrig;
-    SchmittTrigger onOffTrig;
     bool forceOff = false;
     bool linLog = false; // lin = 0, log = 1
-    bool onOff = false;
+    bool powered = false;
     kiss_fft_cfg cfg_for_FFT, cfg_for_IFFT;
     float HannW[BUFFER_SIZE];
 
@@ -86,7 +84,6 @@ struct Speck : Module {
     Speck() : Module(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS) {
         cfg_for_FFT = kiss_fft_alloc(FFT_POINTS, DIR_FFT, 0, 0);
         cfg_for_IFFT = kiss_fft_alloc(FFT_POINTS, INV_FFT, 0, 0);
-        //HannW = NULL;
         HannWindow(&HannW[0], BUFFER_SIZE);
     }
 
@@ -111,7 +108,7 @@ struct Speck : Module {
 
     void reset() override {
         linLog = false;
-        onOff = false;
+        powered = false;
     }
 };
 
@@ -126,33 +123,28 @@ void Speck::step() {
     int n;
     kiss_fft_cpx cBufIn[FFT_POINTS], cBufOut[FFT_POINTS];
 
-    /*if (onOffTrig.process(params[ONOFF_PARAM].value)) {
-        forceOff = !forceOff;
-    }*/
-
     forceOff = params[ONOFF_PARAM].value == 1;
 
 
     if (inputs[INPUT_1].active || inputs[INPUT_2].active) {
-        if (!onOff && !forceOff) {
-            onOff = true;
-        } else if (onOff && forceOff) {
-            onOff = false;
+        if (!powered && !forceOff) {
+            powered = true;
+        } else if (powered && forceOff) {
+            powered = false;
         }
     } else {
-        onOff = false;
+        powered = false;
         forceOff = false;
     }
 
-    lights[LIGHTS_2_ON].value = onOff;
+    lights[LIGHTS_2_ON].value = powered;
 
-    if (linLogTrig.process(params[LINLOG_PARAM].value)) {
-        linLog = !linLog;
-    }
-    lights[LIGHTS_0_LIN].value = linLog ? 0.0 : 1.0;
-    lights[LIGHTS_1_LOG].value = linLog ? 1.0 : 0.0;
+    linLog = params[LINLOG_PARAM].value != 0.0;
 
-    // copy in to out
+    lights[LIGHTS_0_LIN].value = linLog ? 0.f : 1.f;
+    lights[LIGHTS_1_LOG].value = linLog ? 1.f : 0.f;
+
+    // pass through
     if (outputs[OUTPUT_1].active) {
         outputs[OUTPUT_1].value = (inputs[INPUT_1].value);
     }
@@ -160,50 +152,52 @@ void Speck::step() {
         outputs[OUTPUT_2].value = (inputs[INPUT_2].value);
     }
 
+    /* power off */
+    if (!powered) return;
 
-    // Compute time
-    if (onOff) {
-        //float deltaTime = powf(2.0, -14.0); // this could be the NFFT in the future (if rounded to nearest 2^N)
-        //int frameCount = (int)ceilf(deltaTime * engineGetSampleRate());
-        int frameCount = 1;
+    //float deltaTime = powf(2.0, -14.0); // this could be the NFFT in the future (if rounded to nearest 2^N)
+    //int frameCount = (int)ceilf(deltaTime * engineGetSampleRate());
+    int frameCount = 1;
 
-        // Add frame to buffer
-        if (bufferIndex < BUFFER_SIZE) {
-            if (++frameIndex > frameCount) {
-                frameIndex = 0;
-                buffer1[bufferIndex] = (inputs[INPUT_1].value);
-                buffer2[bufferIndex] = (inputs[INPUT_2].value);
-                bufferIndex++;
-            }
-        } else {
-            // TIME TO COMPUTE FFT
-            for (n = 0; n < FFT_POINTS; n++) {
-                cBufIn[n].r = /*HannW[n] **/ buffer1[n];
-                cBufIn[n].i = 0.0; // forse devo copiare anche qui?
-            }
-            kiss_fft(cfg_for_FFT, cBufIn, cBufOut);
-            for (n = 0; n < FFT_POINTS_NYQ; n++) {
-                FFT1[n] = logf(cabsf_LG(cBufOut[n]));
-            }
-
-            for (n = 0; n < FFT_POINTS; n++) {
-                cBufIn[n].r = /*HannW[n] */ buffer2[n];
-                cBufIn[n].i = 0.0; // forse devo copiare anche qui?
-            }
-            kiss_fft(cfg_for_FFT, cBufIn, cBufOut);
-            for (n = 0; n < FFT_POINTS_NYQ; n++) {
-                FFT2[n] = logf(cabsf_LG(cBufOut[n]));
-            }
-            bufferIndex = 0;
-            frameIndex = 0; // reset all. remove for future overlaps
+    if (bufferIndex < BUFFER_SIZE) {
+        if (++frameIndex > frameCount) {
+            frameIndex = 0;
+            buffer1[bufferIndex] = (inputs[INPUT_1].value);
+            buffer2[bufferIndex] = (inputs[INPUT_2].value);
+            bufferIndex++;
         }
-        /*
-        // Reset buffer
-        if (bufferIndex >= BUFFER_SIZE) {
-            bufferIndex = 0; frameIndex = 0; return;
+    } else {
+        for (n = 0; n < FFT_POINTS; n++) {
+            cBufIn[n].r = HannW[n] * buffer1[n];
+            cBufIn[n].i = 0.0;
         }
-        */
+
+        kiss_fft(cfg_for_FFT, cBufIn, cBufOut);
+
+        for (n = 0; n < FFT_POINTS_NYQ; n++) {
+            FFT1[n] = logf(cabsf_LG(cBufOut[n]));
+        }
+
+        for (n = 0; n < FFT_POINTS; n++) {
+            cBufIn[n].r = HannW[n] * buffer2[n];
+            cBufIn[n].i = 0.0;
+        }
+
+        kiss_fft(cfg_for_FFT, cBufIn, cBufOut);
+
+        for (n = 0; n < FFT_POINTS_NYQ; n++) {
+            FFT2[n] = logf(cabsf_LG(cBufOut[n]));
+        }
+
+        bufferIndex = 0;
+        frameIndex = 0; // reset all. remove for future overlaps
     }
+    /*
+    // Reset buffer
+    if (bufferIndex >= BUFFER_SIZE) {
+        bufferIndex = 0; frameIndex = 0; return;
+    }
+    */
 }
 
 
@@ -228,27 +222,9 @@ struct SpeckDisplay : TransparentWidget {
                     peakx = i;
                 }
             }
-            // f0 heuristic: descend from peakx and look for salient derivative change
-#ifdef FO_HEUR
-            for (int i = 1; i < peakx+10; i++) {
-                float * diff = new float(peakx+10);
-                diff[i-1] = values[i] - values[i-1];
-            }
-            int new_f0;
-            for (int i = peakx; i > 1; i--) {
-                if (values[i] < 0.0-MIN_DELTA) {
-                    int i_neg = findLocalMinBackw(&values[i], i);
-                    int i_pos = findLocalMaxBackw(&values[i], i);
-                    if (i_neg - i_pos < PK_DIST) {
-                        new_f0 = findZero(&values[i_neg], i_neg-i_pos);
-                    }
-                    i = i_pos; // go on but skip the data processed here
-                }
-            }
-#endif
 
-            peakx = engineGetSampleRate() / 2.0 * ((float) (peakx) / (float) (FFT_POINTS_NYQ));
-            f0 = peakx; // todo calculate the real f0
+            peakx = engineGetSampleRate() / 2.0f * ((peakx) / (float) (FFT_POINTS_NYQ));
+            f0 = peakx;
         }
     };
 
@@ -345,6 +321,7 @@ struct SpeckDisplay : TransparentWidget {
                     nvgLineTo(vg, p.x, p.y);
             }
         }
+
         //printf("xpos %d, bsize %f, zoomPts %d, bpos %f, x %f\n", xpos, b.size.x, zoomPoints, b.pos.x, p.x);
         nvgLineCap(vg, NVG_ROUND);
         nvgMiterLimit(vg, 2.0);
@@ -552,7 +529,7 @@ SpeckWidget::SpeckWidget(Speck *module) : LRModuleWidget(module) {
 
     addParam(ParamWidget::create<LRAlternateMiddleLight>(Vec(253 - 50, 177), module, Speck::FOFFS_PARAM, 0.0, FOFFS_RANGE, 0.0));
 
-    addParam(ParamWidget::create<CKD6>(Vec(258, 244), module, Speck::LINLOG_PARAM, 0.0, 1.0, 0.0));
+    addParam(ParamWidget::create<LRSwitch>(Vec(258, 244), module, Speck::LINLOG_PARAM, 0.0, 1.0, 0.0));
 
 
     addInput(Port::create<LRIOPortBLight>(Vec(12, 240), Port::INPUT, module, Speck::INPUT_1));
