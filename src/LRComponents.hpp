@@ -344,6 +344,35 @@ struct LRToggleKnob : LRKnob {
 /**
  * @brief Quantize position to odd numbers to simulate a toggle switch
  */
+struct LRAlternateToggleKnobLight : LRKnob {
+    LRAlternateToggleKnobLight(float length = 0.5f) {
+        //TODO: parametrize start and end angle
+        minAngle = -0.666666f * (float) M_PI;
+        maxAngle = length * (float) M_PI;
+
+        setSVG(SVG::load(assetPlugin(plugin, "res/knobs/AlternateToggleKnobLight.svg")));
+        setIndicatorDistance(11);
+        setIndicatorShape(4.3, 0.11);
+
+
+        shader->setShadowPosition(2, 3);
+
+        shader->setStrength(0.5f);
+        shader->setSize(0.6f);
+
+        speed = 2.f;
+    }
+
+
+    void onChange(EventChange &e) override {
+        value = round(value);
+        SVGKnob::onChange(e);
+    }
+};
+
+/**
+ * @brief Quantize position to odd numbers to simulate a toggle switch
+ */
 struct LRMiddleIncremental : LRKnob {
     LRMiddleIncremental(float length = 0.5f) {
         minAngle = -length * (float) M_PI;
