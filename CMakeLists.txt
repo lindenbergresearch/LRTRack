@@ -60,7 +60,7 @@ set(SOURCE_FILES
         src/widgets/FontIconWidget.cpp
         src/BlankPanelSmall.cpp
         src/Speck.cpp
-        )
+        src/widgets/LRGradientWidget.cpp)
 
 include_directories(.)
 include_directories(src)

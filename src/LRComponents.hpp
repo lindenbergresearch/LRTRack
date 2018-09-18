@@ -370,6 +370,7 @@ struct LRAlternateToggleKnobLight : LRKnob {
     }
 };
 
+
 /**
  * @brief Quantize position to odd numbers to simulate a toggle switch
  */
@@ -755,34 +756,23 @@ private:
     /** margin of gradient box */
     static constexpr float MARGIN = 10;
 
-    NVGcolor bgColor = nvgRGBAf(0.0859375f, 0.0859375f, 0.0859375f, 1.f);
-    bool colorOnly = false;
-
     /** gradient colors */
     NVGcolor inner = nvgRGBAf(1.5f * .369f, 1.5f * 0.357f, 1.5f * 0.3333f, 0.33f);
     NVGcolor outer = nvgRGBAf(0.0f, 0.0f, 0.0f, 0.1f);;
 
-
     /** gradient offset */
     Vec offset = Vec(30, -50);
 
-    /* if gradient should be limited */
-    Vec limit;
+    /* possible overlay, maybe for patina used-look */
+    SVGWidget *overlay = nullptr;
 
 public:
     LRPanel();
 
 
-    LRPanel(float x, float y, Vec limit = Vec(0.f, 0.f)) {
+    LRPanel(float x, float y) {
         offset.x = x;
         offset.y = y;
-
-        LRPanel::limit = limit;
-    }
-
-
-    void setColorOnly() {
-        colorOnly = true;
     }
 
 
@@ -790,6 +780,43 @@ public:
     void setOuter(const NVGcolor &outer);
     const NVGcolor &getInner() const;
     const NVGcolor &getOuter() const;
+
+    void draw(NVGcontext *vg) override;
+};
+
+
+/**
+ * @brief Standard linear gradient widget
+ */
+struct LRGradientWidget : FramebufferWidget {
+private:
+    /* gradient vectors */
+    Vec v1, v2;
+
+    /* standard margin */
+    float margin = 10;
+
+    /* gradient colors */
+    NVGcolor innerColor, outerColor;
+
+public:
+
+    LRGradientWidget(const Vec &size) {
+        box.size = size;
+    }
+
+
+    LRGradientWidget(const Vec &size, const NVGcolor &innerColor, const NVGcolor &outerColor) :
+            innerColor(innerColor), outerColor(outerColor) {
+        box.size = size;
+    }
+
+
+    void setGradientOffset(const Vec &v1, const Vec &v2) {
+        LRGradientWidget::v1 = v1;
+        LRGradientWidget::v2 = v2;
+    }
+
 
     void draw(NVGcontext *vg) override;
 };
