@@ -39,12 +39,35 @@ struct VCO : Module {
     };
 
     dsp::DSPBLOscillator *osc = new dsp::DSPBLOscillator(engineGetSampleRate());
-    LRLCDWidget *lcd = new LRLCDWidget(nvgRGBAf(0.9, 0.2, 0.1, 1.0), 9, "%00004.3f Hz", LRLCDWidget::NUMERIC);
-    LRBigKnob *frqKnob = NULL;
+    LRLCDWidget *lcd = new LRLCDWidget(nvgRGBAf(0.0, 0.1, 0.1, 1.0), 10, "%00004.3f Hz", LRLCDWidget::NUMERIC);
+    LRAlternateBigLight *frqKnob = NULL;
+
+    SVGWidget *patina;
+    LRPanel *panel, *panelAged;
+    bool aged = true;
 
 
     VCO() : Module(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS) {}
 
+
+    json_t *toJson() override {
+        json_t *rootJ = json_object();
+        json_object_set_new(rootJ, "aged", json_boolean(aged));
+        return rootJ;
+    }
+
+
+    void fromJson(json_t *rootJ) override {
+        json_t *agedJ = json_object_get(rootJ, "aged");
+        if (agedJ)
+            aged = json_boolean_value(agedJ);
+
+        updateComponents();
+    }
+
+
+    void onRandomize() override;
+    void updateComponents();
 
     void step() override;
     void onSampleRateChange() override;
@@ -103,9 +126,27 @@ void VCO::step() {
 }
 
 
+void VCO::updateComponents() {
+    patina->visible = aged;
+    panelAged->visible = aged;
+    panel->visible = !aged;
+
+    panelAged->dirty = true;
+    panel->dirty = true;
+}
+
+
 void VCO::onSampleRateChange() {
     Module::onSampleRateChange();
     osc->updateSampleRate(engineGetSampleRate());
+}
+
+
+void VCO::onRandomize() {
+    Module::randomize();
+    patina->box.pos = Vec(-randomUniform() * 1000, -randomUniform() * 200);
+
+    updateComponents();
 }
 
 
@@ -114,69 +155,124 @@ void VCO::onSampleRateChange() {
  */
 struct VCOWidget : LRModuleWidget {
     VCOWidget(VCO *module);
+    void appendContextMenu(Menu *menu) override;
 };
 
 
 VCOWidget::VCOWidget(VCO *module) : LRModuleWidget(module) {
-    panel = new LRPanel(20, 40);
-    panel->setBackground(SVG::load(assetPlugin(plugin, "res/panels/VCO.svg")));
+    panel = new LRPanel(-10, -10);
+    panel->setBackground(SVG::load(assetPlugin(plugin, "res/panels/Woldemar.svg")));
     addChild(panel);
+
+    module->panel = panel;
+
+    module->panelAged = new LRPanel(-10, -10);
+    module->panelAged->setBackground(SVG::load(assetPlugin(plugin, "res/panels/WoldemarAged.svg")));
+    module->panelAged->visible = false;
+    addChild(module->panelAged);
 
     box.size = panel->box.size;
 
+
+    module->patina = new SVGWidget();
+    module->patina->setSVG(SVG::load(assetPlugin(plugin, "res/panels/LaikaPatina.svg")));
+    module->panelAged->addChild(module->patina);
+
+    module->patina->box.pos = Vec(-randomUniform() * 1000, -randomUniform() * 200);
+
+    panel->setInner(nvgRGBAf(0.3, 0.3, 0.f, 0.09f));
+    panel->setOuter(nvgRGBAf(0.f, 0.f, 0.f, 0.7f));
+
+    module->panelAged->setInner(nvgRGBAf(0.5, 0.5, 0.f, 0.1f));
+    module->panelAged->setOuter(nvgRGBAf(0.f, 0.f, 0.f, 0.73f));
+
+
     // **** SETUP LCD ********
-    module->lcd->box.pos = Vec(24, 239);
+    module->lcd->box.pos = Vec(24, 242);
     module->lcd->format = "%00004.3f Hz";
     addChild(module->lcd);
     // **** SETUP LCD ********
 
 
     // ***** SCREWS **********
-    addChild(Widget::create<ScrewDarkA>(Vec(15, 1)));
-    addChild(Widget::create<ScrewDarkA>(Vec(box.size.x - 30, 1)));
-    addChild(Widget::create<ScrewDarkA>(Vec(15, 366)));
-    addChild(Widget::create<ScrewDarkA>(Vec(box.size.x - 30, 366)));
+    addChild(Widget::create<AlternateScrewLight>(Vec(15, 1)));
+    addChild(Widget::create<AlternateScrewLight>(Vec(box.size.x - 30, 1)));
+    addChild(Widget::create<AlternateScrewLight>(Vec(15, 366)));
+    addChild(Widget::create<AlternateScrewLight>(Vec(box.size.x - 30, 366)));
     // ***** SCREWS **********
 
 
     // ***** MAIN KNOBS ******
-    module->frqKnob = LRKnob::create<LRBigKnob>(Vec(126.0, 64.7), module, VCO::FREQUENCY_PARAM, -1.f, 1.f, 0.f);
+    module->frqKnob = LRKnob::create<LRAlternateBigLight>(Vec(126.0, 64.7), module, VCO::FREQUENCY_PARAM, -1.f, 1.f, 0.f);
 
     addParam(module->frqKnob);
-    addParam(ParamWidget::create<LRToggleKnob>(Vec(134.6, 171.9), module, VCO::OCTAVE_PARAM, -4.f, 3.f, 0.f));
+    addParam(ParamWidget::create<LRAlternateToggleKnobLight>(Vec(134.6, 171.9), module, VCO::OCTAVE_PARAM, -4.f, 3.f, 0.f));
 
-    addParam(ParamWidget::create<LRSmallKnob>(Vec(69.5, 121.5), module, VCO::FM_CV_PARAM, -1.f, 1.f, 0.f));
-    addParam(ParamWidget::create<LRSmallKnob>(Vec(69.5, 174.8), module, VCO::PW_CV_PARAM, -1, 1, 0.f));
+    addParam(ParamWidget::create<LRAlternateSmallLight>(Vec(69.5, 122), module, VCO::FM_CV_PARAM, -1.f, 1.f, 0.f));
+    addParam(ParamWidget::create<LRAlternateSmallLight>(Vec(69.5, 175), module, VCO::PW_CV_PARAM, -1, 1, 0.f));
 
 
-    addParam(ParamWidget::create<LRSmallKnob>(Vec(22.8, 270.1), module, VCO::SAW_PARAM, -1.f, 1.f, 0.f));
-    addParam(ParamWidget::create<LRSmallKnob>(Vec(58.3, 270.1), module, VCO::PULSE_PARAM, -1.f, 1.f, 0.f));
-    addParam(ParamWidget::create<LRSmallKnob>(Vec(93.1, 270.1), module, VCO::SINE_PARAM, -1.f, 1.f, 0.f));
-    addParam(ParamWidget::create<LRSmallKnob>(Vec(128.1, 270.1), module, VCO::TRI_PARAM, -1.f, 1.f, 0.f));
+    addParam(ParamWidget::create<LRAlternateSmallLight>(Vec(22.8, 270.1), module, VCO::SAW_PARAM, -1.f, 1.f, 0.f));
+    addParam(ParamWidget::create<LRAlternateSmallLight>(Vec(58.3, 270.1), module, VCO::PULSE_PARAM, -1.f, 1.f, 0.f));
+    addParam(ParamWidget::create<LRAlternateSmallLight>(Vec(93.1, 270.1), module, VCO::SINE_PARAM, -1.f, 1.f, 0.f));
+    addParam(ParamWidget::create<LRAlternateSmallLight>(Vec(128.1, 270.1), module, VCO::TRI_PARAM, -1.f, 1.f, 0.f));
     // ***** MAIN KNOBS ******
 
 
     // ***** INPUTS **********
-    addInput(Port::create<LRIOPortC>(Vec(20.8, 67.9), Port::INPUT, module, VCO::VOCT1_INPUT));
-    addInput(Port::create<LRIOPortC>(Vec(68.0, 67.9), Port::INPUT, module, VCO::VOCT2_INPUT));
-    addInput(Port::create<LRIOPortC>(Vec(20.8, 121.5), Port::INPUT, module, VCO::FM_CV_INPUT));
-    addInput(Port::create<LRIOPortC>(Vec(20.8, 174.8), Port::INPUT, module, VCO::PW_CV_INPUT));
+    addInput(Port::create<LRIOPortCLight>(Vec(20.8, 67.9), Port::INPUT, module, VCO::VOCT1_INPUT));
+    addInput(Port::create<LRIOPortCLight>(Vec(68.0, 67.9), Port::INPUT, module, VCO::VOCT2_INPUT));
+    addInput(Port::create<LRIOPortCLight>(Vec(20.8, 121.5), Port::INPUT, module, VCO::FM_CV_INPUT));
+    addInput(Port::create<LRIOPortCLight>(Vec(20.8, 174.8), Port::INPUT, module, VCO::PW_CV_INPUT));
     // ***** INPUTS **********
 
 
     // ***** OUTPUTS *********
-    addOutput(Port::create<LRIOPort>(Vec(21, 305.8), Port::OUTPUT, module, VCO::SAW_OUTPUT));
-    addOutput(Port::create<LRIOPort>(Vec(56.8, 305.8), Port::OUTPUT, module, VCO::PULSE_OUTPUT));
-    addOutput(Port::create<LRIOPort>(Vec(91.6, 305.8), Port::OUTPUT, module, VCO::SINE_OUTPUT));
-    addOutput(Port::create<LRIOPort>(Vec(126.6, 305.8), Port::OUTPUT, module, VCO::TRI_OUTPUT));
-    addOutput(Port::create<LRIOPort>(Vec(162.0, 305.8), Port::OUTPUT, module, VCO::NOISE_OUTPUT));
-    addOutput(Port::create<LRIOPort>(Vec(162.0, 269.1), Port::OUTPUT, module, VCO::MIX_OUTPUT));
+    addOutput(Port::create<LRIOPortBLight>(Vec(21, 305.8), Port::OUTPUT, module, VCO::SAW_OUTPUT));
+    addOutput(Port::create<LRIOPortBLight>(Vec(56.8, 305.8), Port::OUTPUT, module, VCO::PULSE_OUTPUT));
+    addOutput(Port::create<LRIOPortBLight>(Vec(91.6, 305.8), Port::OUTPUT, module, VCO::SINE_OUTPUT));
+    addOutput(Port::create<LRIOPortBLight>(Vec(126.6, 305.8), Port::OUTPUT, module, VCO::TRI_OUTPUT));
+    addOutput(Port::create<LRIOPortBLight>(Vec(162.0, 305.8), Port::OUTPUT, module, VCO::NOISE_OUTPUT));
+    addOutput(Port::create<LRIOPortBLight>(Vec(162.0, 269.1), Port::OUTPUT, module, VCO::MIX_OUTPUT));
     // ***** OUTPUTS *********
 
 
     // ***** LIGHTS **********
     addChild(ModuleLightWidget::create<LRLight>(Vec(181.8, 210), module, VCO::LFO_LIGHT));
     // ***** LIGHTS **********
+}
+
+
+struct VCOAged : MenuItem {
+    VCO *vco;
+
+
+    void onAction(EventAction &e) override {
+        if (vco->aged) {
+            vco->aged = false;
+        } else {
+            vco->aged = true;
+        }
+
+        vco->updateComponents();
+    }
+
+
+    void step() override {
+        rightText = CHECKMARK(vco->aged);
+    }
+};
+
+
+void VCOWidget::appendContextMenu(Menu *menu) {
+    menu->addChild(MenuEntry::create());
+
+    VCO *vco = dynamic_cast<VCO *>(module);
+    assert(vco);
+
+    VCOAged *mergeItemAged = MenuItem::create<VCOAged>("Use aged look");
+    mergeItemAged->vco = vco;
+    menu->addChild(mergeItemAged);
 }
 
 
