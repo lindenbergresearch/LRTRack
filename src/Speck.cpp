@@ -494,7 +494,7 @@ struct SpeckWidget : LRModuleWidget {
 
 
 SpeckWidget::SpeckWidget(Speck *module) : LRModuleWidget(module) {
-    panel = new LRPanel(-10, -10, Vec(300, 380));
+    panel = new LRPanel(-10, -10);
     panel->setBackground(SVG::load(assetPlugin(plugin, "res/panels/SpeckAnalyzer.svg")));
     addChild(panel);
 
