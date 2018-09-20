@@ -24,6 +24,8 @@
 #define DEBUG_VALUES false
 
 using namespace rack;
+using std::vector;
+using std::shared_ptr;
 
 extern Plugin *plugin;
 
@@ -189,6 +191,8 @@ struct LRGestaltModifier {
     /* holds the last used ID for recognizing changes */
     int prevID;
 
+    /* SVG pool - Holds all needed SVG images */
+    vector<shared_ptr<SVG>> pool;
 
     /*
      * Check if gestalt has been changed and fire change event
@@ -200,11 +204,34 @@ struct LRGestaltModifier {
         }
     }
 
-
     /**
      * @brief To be overridden
      */
     virtual void onGestaltChange();
+
+
+    /**
+     * @brief Push new SVG to image pool
+     * @param svg
+     */
+    void pushSVG(shared_ptr<SVG> svg) {
+        pool.push_back(svg);
+    }
+
+
+    /**
+     * @brief Get SVG from pool by index
+     * @param index Index starting at 0
+     * @return
+     */
+    shared_ptr<SVG> getSVGAt(int index) {
+        if (index > pool.capacity()) {
+            return pool[index];
+        } else {
+            return nullptr;
+        }
+    }
+
 };
 
 
