@@ -18,6 +18,8 @@
 #define PANEL_AGEDGRADIENT_INNER nvgRGBAf(0.5, 0.5, 0.f, 0.1f)
 #define PANEL_AGEDGRADIENT_OUTER nvgRGBAf(0.f, 0.f, 0.f, 0.73f)
 
+#define DEFAULT_SKIN_MODE 0
+
 /* show values of all knobs */
 #define DEBUG_VALUES false
 
@@ -27,7 +29,9 @@ extern Plugin *plugin;
 
 namespace lrt {
 
+/* Type definitions for common used data structures */
 typedef std::shared_ptr<rack::Font> TrueType;
+typedef std::vector<std::string> StringVector;
 
 
 /**
@@ -171,6 +175,36 @@ public:
     void drawShadow(NVGcontext *vg, float strength, float size);
 
     void draw(NVGcontext *vg) override;
+};
+
+
+/**
+ * Represents all data needed by skinned versions of UI
+ */
+struct LRGestaltModifier {
+
+    /* pointer to current skin id */
+    int *gestaltID = nullptr;
+
+    /* holds the last used ID for recognizing changes */
+    int prevID;
+
+
+    /*
+     * Check if gestalt has been changed and fire change event
+     */
+    void invalidateGestalt() {
+        if (gestaltID != nullptr && *gestaltID != prevID) {
+            onGestaltChange();
+            prevID = *gestaltID;
+        }
+    }
+
+
+    /**
+     * @brief To be overridden
+     */
+    virtual void onGestaltChange();
 };
 
 
@@ -844,6 +878,7 @@ public:
 
     void draw(NVGcontext *vg) override;
 };
+
 
 /**
  * @brief Standard LRT ModuleWidget definition
