@@ -12,6 +12,12 @@
 #define LED_RED_COLOR nvgRGBAf(0.9, 0.1, 0.1, 0.99)
 #define LED_GREEN_COLOR nvgRGBAf(0.1, 0.9, 0.3, 0.99)
 
+#define PANEL_GRADIENT_INNER nvgRGBAf(0.3, 0.3, 0.f, 0.09f)
+#define PANEL_GRADIENT_OUTER nvgRGBAf(0.f, 0.f, 0.f, 0.7f)
+
+#define PANEL_AGEDGRADIENT_INNER nvgRGBAf(0.5, 0.5, 0.f, 0.1f)
+#define PANEL_AGEDGRADIENT_OUTER nvgRGBAf(0.f, 0.f, 0.f, 0.73f)
+
 /* show values of all knobs */
 #define DEBUG_VALUES false
 
@@ -749,43 +755,6 @@ struct LRLight : ModuleLightWidget {
 
 
 /**
- * @brief Standard LR module Panel
- */
-struct LRPanel : SVGPanel {
-private:
-    /** margin of gradient box */
-    static constexpr float MARGIN = 10;
-
-    /** gradient colors */
-    NVGcolor inner = nvgRGBAf(1.5f * .369f, 1.5f * 0.357f, 1.5f * 0.3333f, 0.33f);
-    NVGcolor outer = nvgRGBAf(0.0f, 0.0f, 0.0f, 0.1f);;
-
-    /** gradient offset */
-    Vec offset = Vec(30, -50);
-
-    /* possible overlay, maybe for patina used-look */
-    SVGWidget *overlay = nullptr;
-
-public:
-    LRPanel();
-
-
-    LRPanel(float x, float y) {
-        offset.x = x;
-        offset.y = y;
-    }
-
-
-    void setInner(const NVGcolor &inner);
-    void setOuter(const NVGcolor &outer);
-    const NVGcolor &getInner() const;
-    const NVGcolor &getOuter() const;
-
-    void draw(NVGcontext *vg) override;
-};
-
-
-/**
  * @brief Standard linear gradient widget
  */
 struct LRGradientWidget : FramebufferWidget {
@@ -794,7 +763,7 @@ private:
     Vec v1, v2;
 
     /* standard margin */
-    float margin = 10;
+    float margin = 10.f;
 
     /* gradient colors */
     NVGcolor innerColor, outerColor;
@@ -802,6 +771,7 @@ private:
 public:
 
     LRGradientWidget(const Vec &size) {
+        box.pos = Vec(0, 0);
         box.size = size;
     }
 
@@ -809,6 +779,12 @@ public:
     LRGradientWidget(const Vec &size, const NVGcolor &innerColor, const NVGcolor &outerColor) :
             innerColor(innerColor), outerColor(outerColor) {
         box.size = size;
+
+        box.pos = Vec(0, 0);
+
+        /* initialise with standard dimensions */
+        v1 = Vec(0, 0);
+        v2 = Vec(size.x, size.y);
     }
 
 
@@ -821,6 +797,53 @@ public:
     void draw(NVGcontext *vg) override;
 };
 
+
+/**
+ * @brief Standard LR module Panel
+ */
+struct LRPanel : SVGPanel {
+private:
+    /** margin of gradient box */
+    static constexpr float MARGIN = 10;
+
+    NVGcolor bgColor = nvgRGBAf(0.0859375f, 0.0859375f, 0.0859375f, 1.f);
+    bool colorOnly = false;
+
+    /** gradient colors */
+    NVGcolor inner = nvgRGBAf(1.5f * .369f, 1.5f * 0.357f, 1.5f * 0.3333f, 0.33f);
+    NVGcolor outer = nvgRGBAf(0.0f, 0.0f, 0.0f, 0.1f);;
+
+
+    /** gradient offset */
+    Vec offset = Vec(30, -50);
+
+    /* if gradient should be limited */
+    Vec limit;
+
+public:
+    LRPanel();
+
+
+    LRPanel(float x, float y, Vec limit = Vec(0.f, 0.f)) {
+        offset.x = x;
+        offset.y = y;
+
+        LRPanel::limit = limit;
+    }
+
+
+    void setColorOnly() {
+        colorOnly = true;
+    }
+
+
+    void setInner(const NVGcolor &inner);
+    void setOuter(const NVGcolor &outer);
+    const NVGcolor &getInner() const;
+    const NVGcolor &getOuter() const;
+
+    void draw(NVGcontext *vg) override;
+};
 
 /**
  * @brief Standard LRT ModuleWidget definition
