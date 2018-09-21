@@ -164,13 +164,13 @@ struct DiodeVCFWidget : LRModuleWidget {
 
 
 DiodeVCFWidget::DiodeVCFWidget(DiodeVCF *module) : LRModuleWidget(module) {
-    panel = new LRPanel(-10, -10);
+    panel = new LRPanel();
     panel->setBackground(SVG::load(assetPlugin(plugin, "res/panels/DiodeLadderVCF.svg")));
     addChild(panel);
 
     module->panel = panel;
 
-    module->panelAged = new LRPanel(-10, -10);
+    module->panelAged = new LRPanel();
     module->panelAged->setBackground(SVG::load(assetPlugin(plugin, "res/panels/DiodeLadderVCFAged.svg")));
     module->panelAged->visible = false;
     addChild(module->panelAged);
@@ -183,11 +183,11 @@ DiodeVCFWidget::DiodeVCFWidget(DiodeVCF *module) : LRModuleWidget(module) {
 
     module->patina->box.pos = Vec(-randomUniform() * 1000, -randomUniform() * 200);
 
-    panel->setInner(nvgRGBAf(0.3, 0.3, 0.f, 0.09f));
-    panel->setOuter(nvgRGBAf(0.f, 0.f, 0.f, 0.7f));
+    /*  panel->setInner(nvgRGBAf(0.3, 0.3, 0.f, 0.09f));
+      panel->setOuter(nvgRGBAf(0.f, 0.f, 0.f, 0.7f));
 
-    module->panelAged->setInner(nvgRGBAf(0.5, 0.5, 0.f, 0.1f));
-    module->panelAged->setOuter(nvgRGBAf(0.f, 0.f, 0.f, 0.73f));
+      module->panelAged->setInner(nvgRGBAf(0.5, 0.5, 0.f, 0.1f));
+      module->panelAged->setOuter(nvgRGBAf(0.f, 0.f, 0.f, 0.73f));*/
 
     // ***** SCREWS **********
     addChild(Widget::create<AlternateScrewLight>(Vec(15, 1)));

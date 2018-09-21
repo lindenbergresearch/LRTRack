@@ -48,7 +48,7 @@ struct BlankPanelEmptyWidget : LRModuleWidget {
 
 
 BlankPanelEmptyWidget::BlankPanelEmptyWidget(BlankPanelEmpty *module) : LRModuleWidget(module) {
-    panel = new LRPanel(0, -200);
+    panel = new LRPanel();
     panel->setBackground(SVG::load(assetPlugin(plugin, "res/panels/BlankPanelM1.svg")));
     //panel->setColorOnly();
     addChild(panel);

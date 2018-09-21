@@ -96,7 +96,7 @@ struct BlankPanelWidgetWood : LRModuleWidget {
 
 
 BlankPanelWidgetWood::BlankPanelWidgetWood(BlankPanelWood *module) : LRModuleWidget(module) {
-    panel = new LRPanel(0, 0);
+    panel = new LRPanel();
     panel->setBackground(SVG::load(assetPlugin(plugin, "res/panels/WoodLeftTop.svg")));
     addChild(panel);
 
@@ -104,8 +104,8 @@ BlankPanelWidgetWood::BlankPanelWidgetWood(BlankPanelWood *module) : LRModuleWid
 
     box.size = panel->box.size;
 
-    panel->setInner(nvgRGBAf(1.4f * .369f, 1.4f * 0.357f, 1.4f * 0.3333f, 0.05f));
-    panel->setOuter(nvgRGBAf(0.f, 0.f, 0.f, 0.15f));
+    /* panel->setInner(nvgRGBAf(1.4f * .369f, 1.4f * 0.357f, 1.4f * 0.3333f, 0.05f));
+     panel->setOuter(nvgRGBAf(0.f, 0.f, 0.f, 0.15f));*/
 
     module->patina = new SVGWidget();
     module->patina->setSVG(SVG::load(assetPlugin(plugin, "res/panels/WoodPatina.svg")));
