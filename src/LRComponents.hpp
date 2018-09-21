@@ -189,7 +189,7 @@ struct LRGestaltModifier {
     int *gestaltID = nullptr;
 
     /* holds the last used ID for recognizing changes */
-    int prevID;
+    int prevID = -1;
 
     /* SVG pool - Holds all needed SVG images */
     vector<shared_ptr<SVG>> pool;
