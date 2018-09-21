@@ -3,7 +3,7 @@
 #include <math.h>
 #include <float.h>
 #include "LindenbergResearch.hpp"
-#include "dsp/kiss_fft.h"
+#include "dsp/kiss_fft/kiss_fft.h"
 #include "dsp/digital.hpp"
 
 /*
@@ -19,6 +19,8 @@
 #define FOFFS_RANGE 1.0
 #define ZOOM_RANGE 8.0
 
+using namespace rack;
+using namespace lrt;
 
 float cabsf_LG(kiss_fft_cpx v) {
     return sqrtf((v.r * v.r + v.i * v.i));
@@ -494,14 +496,12 @@ struct SpeckWidget : LRModuleWidget {
 
 
 SpeckWidget::SpeckWidget(Speck *module) : LRModuleWidget(module) {
-    panel = new LRPanel(-10, -10);
+    panel = new LRPanel();
     panel->setBackground(SVG::load(assetPlugin(plugin, "res/panels/SpeckAnalyzer.svg")));
     addChild(panel);
 
     box.size = panel->box.size;
 
-    panel->setInner(nvgRGBAf(0.34, 0.3, 0.2f, 0.15f));
-    panel->setOuter(nvgRGBAf(0.f, 0.f, 0.f, 0.89f));
 
     addChild(Widget::create<AlternateScrewLight>(Vec(15, 1)));
     addChild(Widget::create<AlternateScrewLight>(Vec(300 - 30, 1)));
