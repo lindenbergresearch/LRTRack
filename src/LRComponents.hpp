@@ -194,21 +194,25 @@ struct LRGestaltModifier {
     /* SVG pool - Holds all needed SVG images */
     vector<shared_ptr<SVG>> pool;
 
+
     /*
-     * Check if gestalt has been changed and fire change event
+     * Check if gestalt has been changed
      */
-    void invalidateGestalt() {
-        if (gestaltID != nullptr && *gestaltID != prevID) {
-            onGestaltChange();
-            prevID = *gestaltID;
+    bool invalidGestalt() {
+        if (gestaltID != nullptr) {
+            return *gestaltID != prevID;
         }
+
+        return false;
     }
 
-    /**
-     * @brief To be overridden
-     */
-    virtual void onGestaltChange();
 
+    /**
+     * @brief Synchronize local gestalt ID
+     */
+    void syncGestalt() {
+        prevID = *gestaltID;
+    }
 
     /**
      * @brief Push new SVG to image pool
@@ -224,7 +228,7 @@ struct LRGestaltModifier {
      * @param index Index starting at 0
      * @return
      */
-    shared_ptr<SVG> getSVGAt(int index) {
+    shared_ptr<SVG> getSVGAt(unsigned long index) {
         if (index > pool.capacity()) {
             return pool[index];
         } else {
