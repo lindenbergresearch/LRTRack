@@ -62,13 +62,16 @@ struct BlankPanelSmall : LRModule {
 
 
     json_t *toJson() override {
-        json_t *rootJ = json_object();
+        json_t *rootJ = LRModule::toJson();
+
         json_object_set_new(rootJ, "multiple", json_boolean(multiple));
         return rootJ;
     }
 
 
     void fromJson(json_t *rootJ) override {
+        LRModule::fromJson(rootJ);
+
         json_t *multJ = json_object_get(rootJ, "multiple");
         if (multJ)
             multiple = json_boolean_value(multJ);

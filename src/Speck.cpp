@@ -96,13 +96,16 @@ struct Speck : LRModule {
 
 
     json_t *toJson() override {
-        json_t *rootJ = json_object();
+        json_t *rootJ = LRModule::toJson();
+
         json_object_set_new(rootJ, "linLog", json_integer((int) linLog));
         return rootJ;
     }
 
 
     void fromJson(json_t *rootJ) override {
+        LRModule::fromJson(rootJ);
+
         json_t *sumJ = json_object_get(rootJ, "linLog");
         if (sumJ)
             linLog = json_integer_value(sumJ);

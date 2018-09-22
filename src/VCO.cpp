@@ -54,13 +54,15 @@ struct VCO : LRModule {
 
 
     json_t *toJson() override {
-        json_t *rootJ = json_object();
+        json_t *rootJ = LRModule::toJson();
         json_object_set_new(rootJ, "aged", json_boolean(aged));
         return rootJ;
     }
 
 
     void fromJson(json_t *rootJ) override {
+        LRModule::fromJson(rootJ);
+
         json_t *agedJ = json_object_get(rootJ, "aged");
         if (agedJ)
             aged = json_boolean_value(agedJ);

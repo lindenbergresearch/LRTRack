@@ -72,13 +72,16 @@ struct Westcoast : LRModule {
 
 
     json_t *toJson() override {
-        json_t *rootJ = json_object();
+        json_t *rootJ = LRModule::toJson();
+
         json_object_set_new(rootJ, "agedmode", json_boolean(patina->visible));
         return rootJ;
     }
 
 
     void fromJson(json_t *rootJ) override {
+        LRModule::fromJson(rootJ);
+
         json_t *agedmodeJ = json_object_get(rootJ, "agedmode");
         if (agedmodeJ)
             patina->visible = json_boolean_value(agedmodeJ);
