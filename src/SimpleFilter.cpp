@@ -4,7 +4,7 @@ using namespace rack;
 using namespace lrt;
 
 
-struct SimpleFilter : Module {
+struct SimpleFilter : LRModule {
     enum ParamIds {
         CUTOFF_PARAM,
         RESONANCE_PARAM,
@@ -32,7 +32,7 @@ struct SimpleFilter : Module {
     float frequency, resonance, in;
 
 
-    SimpleFilter() : Module(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS) {
+    SimpleFilter() : LRModule(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS) {
         f = 0;
         p = 0;
         q = 0;

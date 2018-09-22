@@ -40,7 +40,7 @@ void HannWindow(float *w, int size) {
 }
 
 
-struct Speck : Module {
+struct Speck : LRModule {
     enum ParamIds {
         SCALE_1_PARAM,
         POS_1_PARAM,
@@ -83,7 +83,7 @@ struct Speck : Module {
     float HannW[BUFFER_SIZE];
 
 
-    Speck() : Module(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS) {
+    Speck() : LRModule(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS) {
         cfg_for_FFT = kiss_fft_alloc(FFT_POINTS, DIR_FFT, 0, 0);
         cfg_for_IFFT = kiss_fft_alloc(FFT_POINTS, INV_FFT, 0, 0);
         HannWindow(&HannW[0], BUFFER_SIZE);

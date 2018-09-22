@@ -4,7 +4,7 @@ using namespace rack;
 using namespace lrt;
 
 
-struct BlankPanel : Module {
+struct BlankPanel : LRModule {
     enum ParamIds {
         NUM_PARAMS
     };
@@ -19,7 +19,7 @@ struct BlankPanel : Module {
     };
 
 
-    BlankPanel() : Module(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS) {}
+    BlankPanel() : LRModule(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS) {}
 
 
     void step() override;

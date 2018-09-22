@@ -11,7 +11,7 @@ using namespace rack;
 using namespace lrt;
 
 
-struct Westcoast : Module {
+struct Westcoast : LRModule {
 
     enum RotaryStages {
         SERGE = 1,
@@ -49,7 +49,7 @@ struct Westcoast : Module {
     };
 
 
-    Westcoast() : Module(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS) {}
+    Westcoast() : LRModule(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS) {}
 
 
     dsp::LockhartWavefolder *hs = new dsp::LockhartWavefolder(engineGetSampleRate());

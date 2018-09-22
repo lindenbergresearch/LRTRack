@@ -5,7 +5,7 @@ using namespace rack;
 using namespace lrt;
 
 
-struct BlankPanelSmall : Module {
+struct BlankPanelSmall : LRModule {
     enum ParamIds {
         NUM_PARAMS
     };
@@ -28,7 +28,7 @@ struct BlankPanelSmall : Module {
     };
 
 
-    BlankPanelSmall() : Module(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS) {}
+    BlankPanelSmall() : LRModule(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS) {}
 
 
     LRIOPort *ioports[8] = {NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL};

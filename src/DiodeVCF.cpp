@@ -8,7 +8,7 @@ using namespace lrt;
 using dsp::DiodeLadderFilter;
 
 
-struct DiodeVCF : Module {
+struct DiodeVCF : LRModule {
     enum ParamIds {
         FREQUENCY_PARAM,
         RES_PARAM,
@@ -35,7 +35,7 @@ struct DiodeVCF : Module {
     };
 
 
-    DiodeVCF() : Module(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS) {}
+    DiodeVCF() : LRModule(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS) {}
 
 
     void onRandomize() override;

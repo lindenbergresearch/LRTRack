@@ -18,7 +18,7 @@
 #define PANEL_AGEDGRADIENT_INNER nvgRGBAf(0.5, 0.5, 0.f, 0.1f)
 #define PANEL_AGEDGRADIENT_OUTER nvgRGBAf(0.f, 0.f, 0.f, 0.73f)
 
-#define DEFAULT_SKIN_MODE 0
+#define DEFAULT_GESTALT_ID 0
 
 /* show values of all knobs */
 #define DEBUG_VALUES false
@@ -866,64 +866,46 @@ public:
 /**
  * @brief Standard LR module Panel
  */
-struct LRPanel : SVGPanel {
+struct LRPanel : SVGPanel, LRGestaltModifier {
 private:
     /** margin of gradient box */
     static constexpr float MARGIN = 10;
 
-    NVGcolor bgColor = nvgRGBAf(0.0859375f, 0.0859375f, 0.0859375f, 1.f);
-    bool colorOnly = false;
-
-    /** gradient colors */
-    NVGcolor inner = nvgRGBAf(1.5f * .369f, 1.5f * 0.357f, 1.5f * 0.3333f, 0.33f);
-    NVGcolor outer = nvgRGBAf(0.0f, 0.0f, 0.0f, 0.1f);;
-
-
-    /** gradient offset */
-    Vec offset = Vec(30, -50);
-
-    /* if gradient should be limited */
-    Vec limit;
 
 public:
     LRPanel();
 
 
-    LRPanel(float x, float y, Vec limit = Vec(0.f, 0.f)) {
-        offset.x = x;
-        offset.y = y;
-
-        LRPanel::limit = limit;
-    }
-
-
-    void setColorOnly() {
-        colorOnly = true;
-    }
-
-
-    void setInner(const NVGcolor &inner);
-    void setOuter(const NVGcolor &outer);
-    const NVGcolor &getInner() const;
-    const NVGcolor &getOuter() const;
 
     void draw(NVGcontext *vg) override;
 };
 
 
+struct LRModule : public Module {
+    int *gestaltID = nullptr;
+
+    LRModule(int numParams, int numInputs, int numOutputs, int numLights);
+};
+
+
 /**
- * @brief Standard LRT ModuleWidget definition
+ * @brief Standard LR ModuleWidget definition
  */
 struct LRModuleWidget : ModuleWidget {
 
+    /* standard module panel */
     LRPanel *panel;
+
+    /* Gestalt ID which represents the current theme */
+    int gestaltID = DEFAULT_GESTALT_ID;
 
 
     /**
      * @brief
      * @param module
      */
-    LRModuleWidget(Module *module) : ModuleWidget(module) {
+    explicit LRModuleWidget(LRModule *module) : ModuleWidget(module) {
+        module->gestaltID = &gestaltID;
     }
 };
 

@@ -55,7 +55,7 @@ struct ShapedVCA {
 };
 
 
-struct QuickMix : Module {
+struct QuickMix : LRModule {
     enum ParamIds {
         LEVEL1_PARAM,
         LEVEL2_PARAM,
@@ -92,7 +92,8 @@ struct QuickMix : Module {
     float lightVals[NUM_LIGHTS];
     ShapedVCA vca;
 
-    QuickMix() : Module(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS) {}
+
+    QuickMix() : LRModule(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS) {}
 
 
     void step() override;

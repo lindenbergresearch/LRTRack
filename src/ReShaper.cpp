@@ -4,7 +4,7 @@ using namespace rack;
 using namespace lrt;
 
 
-struct ReShaper : Module {
+struct ReShaper : LRModule {
     enum ParamIds {
         RESHAPER_AMOUNT,
         RESHAPER_CV_AMOUNT,
@@ -27,7 +27,7 @@ struct ReShaper : Module {
     };
 
 
-    ReShaper() : Module(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS) {}
+    ReShaper() : LRModule(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS) {}
 
 
     void step() override;

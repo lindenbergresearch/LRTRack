@@ -5,7 +5,7 @@ using namespace rack;
 using namespace lrt;
 
 
-struct BlankPanelWood : Module {
+struct BlankPanelWood : LRModule {
     enum ParamIds {
         NUM_PARAMS
     };
@@ -20,7 +20,7 @@ struct BlankPanelWood : Module {
     };
 
 
-    BlankPanelWood() : Module(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS) {}
+    BlankPanelWood() : LRModule(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS) {}
 
 
     void updateComponents();

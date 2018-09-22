@@ -4,8 +4,10 @@
 using namespace rack;
 using namespace lrt;
 
+using dsp::DSPBLOscillator;
 
-struct VCO : Module {
+
+struct VCO : LRModule {
     enum ParamIds {
         FREQUENCY_PARAM,
         OCTAVE_PARAM,
@@ -38,7 +40,7 @@ struct VCO : Module {
         NUM_LIGHTS
     };
 
-    dsp::DSPBLOscillator *osc = new dsp::DSPBLOscillator(engineGetSampleRate());
+    DSPBLOscillator *osc = new DSPBLOscillator(engineGetSampleRate());
     LRLCDWidget *lcd = new LRLCDWidget(nvgRGBAf(0.0, 0.1, 0.1, 1.0), 10, "%00004.3f Hz", LRLCDWidget::NUMERIC);
     LRAlternateBigLight *frqKnob = NULL;
 
@@ -47,7 +49,7 @@ struct VCO : Module {
     bool aged = true;
 
 
-    VCO() : Module(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS) {}
+    VCO() : LRModule(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS) {}
 
 
     json_t *toJson() override {
@@ -160,15 +162,16 @@ struct VCOWidget : LRModuleWidget {
 
 
 VCOWidget::VCOWidget(VCO *module) : LRModuleWidget(module) {
-    panel = new LRPanel(-10, -10);
+    panel = new LRPanel();
     panel->setBackground(SVG::load(assetPlugin(plugin, "res/panels/Woldemar.svg")));
     addChild(panel);
 
     module->panel = panel;
 
-    module->panelAged = new LRPanel(-10, -10);
+    module->panelAged = new LRPanel();
     module->panelAged->setBackground(SVG::load(assetPlugin(plugin, "res/panels/WoldemarAged.svg")));
     module->panelAged->visible = false;
+
     addChild(module->panelAged);
 
     box.size = panel->box.size;
@@ -180,11 +183,11 @@ VCOWidget::VCOWidget(VCO *module) : LRModuleWidget(module) {
 
     module->patina->box.pos = Vec(-randomUniform() * 1000, -randomUniform() * 200);
 
-    panel->setInner(nvgRGBAf(0.3, 0.3, 0.f, 0.09f));
-    panel->setOuter(nvgRGBAf(0.f, 0.f, 0.f, 0.7f));
+    /* panel->setInner(nvgRGBAf(0.3, 0.3, 0.f, 0.09f));
+     panel->setOuter(nvgRGBAf(0.f, 0.f, 0.f, 0.7f));
 
-    module->panelAged->setInner(nvgRGBAf(0.5, 0.5, 0.f, 0.1f));
-    module->panelAged->setOuter(nvgRGBAf(0.f, 0.f, 0.f, 0.73f));
+     module->panelAged->setInner(nvgRGBAf(0.5, 0.5, 0.f, 0.1f));
+     module->panelAged->setOuter(nvgRGBAf(0.f, 0.f, 0.f, 0.73f));*/
 
 
     // **** SETUP LCD ********
