@@ -18,8 +18,6 @@
 #define PANEL_AGEDGRADIENT_INNER nvgRGBAf(0.5, 0.5, 0.f, 0.1f)
 #define PANEL_AGEDGRADIENT_OUTER nvgRGBAf(0.f, 0.f, 0.f, 0.73f)
 
-#define DEFAULT_GESTALT_ID 0
-
 /* show values of all knobs */
 #define DEBUG_VALUES false
 
@@ -35,6 +33,15 @@ namespace lrt {
 typedef std::shared_ptr<rack::Font> TrueType;
 typedef std::vector<std::string> StringVector;
 
+
+/**
+ * @brief Gestalt IDs
+ */
+enum LRGestalt : int {
+    dark,   // dark theme (as standard)
+    light,  // light theme
+    used    // light theme with used look
+};
 
 /**
  * @brief Emulation of a LCD monochrome display
@@ -186,10 +193,10 @@ public:
 struct LRGestaltModifier {
 
     /* pointer to current skin id */
-    int *gestaltID = nullptr;
+    LRGestalt *gestalt = nullptr;
 
     /* holds the last used ID for recognizing changes */
-    int prevID = -1;
+    LRGestalt prevID;
 
     /* SVG pool - Holds all needed SVG images */
     vector<shared_ptr<SVG>> pool;
@@ -199,8 +206,8 @@ struct LRGestaltModifier {
      * Check if gestalt has been changed
      */
     bool invalidGestalt() {
-        if (gestaltID != nullptr) {
-            return *gestaltID != prevID;
+        if (gestalt != nullptr) {
+            return *gestalt != prevID;
         }
 
         return false;
@@ -211,7 +218,7 @@ struct LRGestaltModifier {
      * @brief Synchronize local gestalt ID
      */
     void syncGestalt() {
-        prevID = *gestaltID;
+        prevID = *gestalt;
     }
 
     /**
