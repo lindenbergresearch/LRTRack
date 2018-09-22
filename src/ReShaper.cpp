@@ -27,7 +27,7 @@ struct ReShaper : LRModule {
     };
 
 
-    ReShaper() : LRModule(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS) {}
+    ReShaper() : LRModule(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS) {}
 
 
     void step() override;
