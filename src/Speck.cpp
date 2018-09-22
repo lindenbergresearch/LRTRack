@@ -239,7 +239,7 @@ struct SpeckDisplay : TransparentWidget {
 
 
     SpeckDisplay() {
-        font = Font::load(assetPlugin(plugin, "res/OneSlot.ttf"));
+        font = Font::load(assetPlugin(plugin, "res/ibm-plex-mono/IBMPlexMono-Medium.ttf"));
     }
 
 
