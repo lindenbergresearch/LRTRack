@@ -40,7 +40,7 @@ typedef std::vector<std::string> StringVector;
 enum LRGestalt : int {
     dark,   // dark theme (as standard)
     light,  // light theme
-    used    // light theme with used look
+    aged    // light theme with used look
 };
 
 /**
