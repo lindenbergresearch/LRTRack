@@ -2,7 +2,7 @@
 plugin.dylib
 
 *.[oa]
-.idea/
+.idea/*
 build/
 cmake-build-debug/
 dist/
