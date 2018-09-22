@@ -1,6 +1,6 @@
-#include "dsp/Oscillator.hpp"
-#include "LindenbergResearch.hpp"
-#include "LRModel.hpp"
+#include "../dsp/Oscillator.hpp"
+#include "../LindenbergResearch.hpp"
+#include "../LRModel.hpp"
 
 using namespace rack;
 using namespace lrt;
@@ -45,14 +45,13 @@ struct VCO : LRModule {
     LRLCDWidget *lcd = new LRLCDWidget(nvgRGBAf(0.0, 0.1, 0.1, 1.0), 10, "%00004.3f Hz", LRLCDWidget::NUMERIC);
     LRAlternateBigLight *frqKnob = NULL;
 
-    SVGWidget *patina;
-    LRPanel *panel, *panelAged;
-    bool aged = true;
+    LRPanel *panel;
 
 
     VCO() : LRModule(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS) {}
 
 
+    /*
     json_t *toJson() override {
         json_t *rootJ = LRModule::toJson();
         json_object_set_new(rootJ, "aged", json_boolean(aged));
@@ -68,7 +67,7 @@ struct VCO : LRModule {
             aged = json_boolean_value(agedJ);
 
         updateComponents();
-    }
+    }*/
 
 
     void onRandomize() override;
@@ -132,12 +131,7 @@ void VCO::step() {
 
 
 void VCO::updateComponents() {
-    patina->visible = aged;
-    panelAged->visible = aged;
-    panel->visible = !aged;
 
-    panelAged->dirty = true;
-    panel->dirty = true;
 }
 
 
@@ -149,9 +143,9 @@ void VCO::onSampleRateChange() {
 
 void VCO::onRandomize() {
     Module::randomize();
-    patina->box.pos = Vec(-randomUniform() * 1000, -randomUniform() * 200);
+    // patina->box.pos = Vec(-randomUniform() * 1000, -randomUniform() * 200);
 
-    updateComponents();
+    // updateComponents();
 }
 
 
@@ -160,31 +154,24 @@ void VCO::onRandomize() {
  */
 struct VCOWidget : LRModuleWidget {
     VCOWidget(VCO *module);
-    void appendContextMenu(Menu *menu) override;
 };
 
 
 VCOWidget::VCOWidget(VCO *module) : LRModuleWidget(module) {
     panel = new LRPanel();
-    panel->setBackground(SVG::load(assetPlugin(plugin, "res/panels/Woldemar.svg")));
+    panel->gestalt = &gestalt;
+
+    panel->pushSVG(SVG::load(assetPlugin(plugin, "res/panels/VCO.svg")));
+    panel->pushSVG(SVG::load(assetPlugin(plugin, "res/panels/Woldemar.svg")));
+    panel->pushSVG(SVG::load(assetPlugin(plugin, "res/panels/WoldemarAged.svg")));
+
     addChild(panel);
 
     module->panel = panel;
 
-    module->panelAged = new LRPanel();
-    module->panelAged->setBackground(SVG::load(assetPlugin(plugin, "res/panels/WoldemarAged.svg")));
-    module->panelAged->visible = false;
-
-    addChild(module->panelAged);
 
     box.size = panel->box.size;
 
-
-    module->patina = new SVGWidget();
-    module->patina->setSVG(SVG::load(assetPlugin(plugin, "res/panels/LaikaPatina.svg")));
-    module->panelAged->addChild(module->patina);
-
-    module->patina->box.pos = Vec(-randomUniform() * 1000, -randomUniform() * 200);
 
     /* panel->setInner(nvgRGBAf(0.3, 0.3, 0.f, 0.09f));
      panel->setOuter(nvgRGBAf(0.f, 0.f, 0.f, 0.7f));
@@ -249,6 +236,7 @@ VCOWidget::VCOWidget(VCO *module) : LRModuleWidget(module) {
 }
 
 
+/*
 struct VCOAged : MenuItem {
     VCO *vco;
 
@@ -279,7 +267,7 @@ void VCOWidget::appendContextMenu(Menu *menu) {
     VCOAged *mergeItemAged = MenuItem::create<VCOAged>("Use aged look");
     mergeItemAged->vco = vco;
     menu->addChild(mergeItemAged);
-}
+}*/
 
 
 Model *modelVCO = Model::create<VCO, VCOWidget>("Lindenberg Research", "VCO", "Woldemar VCO", OSCILLATOR_TAG);

@@ -2,11 +2,9 @@
 #include <complex.h>
 #include <math.h>
 #include <float.h>
-#include "LindenbergResearch.hpp"
-#include "LRModel.hpp"
-#include "dsp/kiss_fft/kiss_fft.h"
-#include "dsp/digital.hpp"
-
+#include "../LindenbergResearch.hpp"
+#include "../LRModel.hpp"
+#include "../dsp/kiss_fft/kiss_fft.h"
 /*
  * FFT SCOPE, BASED ON SCOPE
  * Todo: precise f0 estimate

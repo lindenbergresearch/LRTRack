@@ -6,12 +6,12 @@ set(CMAKE_CXX_STANDARD 11)
 set(SOURCE_FILES
         src/LindenbergResearch.cpp
         src/LindenbergResearch.hpp
-        src/AlmaFilter.cpp
-        src/SimpleFilter.cpp
-        src/ReShaper.cpp
-        src/BlankPanel.cpp
-        src/BlankPanelEmpty.cpp
-        src/VCO.cpp
+        src/modules/AlmaFilter.cpp
+        src/modules/SimpleFilter.cpp
+        src/modules/ReShaper.cpp
+        src/modules/BlankPanel.cpp
+        src/modules/BlankPanelEmpty.cpp
+        src/modules/VCO.cpp
         src/dsp/DSPMath.cpp
         src/dsp/DSPMath.hpp
         src/dsp/Oscillator.cpp
@@ -21,13 +21,13 @@ set(SOURCE_FILES
         src/dsp/LadderFilter.cpp
         src/dsp/MS20zdf.hpp
         src/dsp/MS20zdf.cpp
-        src/MS20Filter.cpp
+        src/modules/MS20Filter.cpp
         src/LRComponents.hpp
         src/dsp/WaveShaper.cpp
         src/dsp/WaveShaper.hpp
         src/dsp/Lockhart.cpp
         src/dsp/Lockhart.hpp
-        src/Westcoast.cpp
+        src/modules/Westcoast.cpp
         src/dsp/HQTrig.hpp
         src/dsp/Serge.cpp
         src/dsp/Serge.hpp
@@ -50,16 +50,16 @@ set(SOURCE_FILES
         src/dsp/RShaper.hpp
         src/dsp/Overdrive.cpp
         src/dsp/Overdrive.hpp
-        src/QuickMix.cpp
+        src/modules/QuickMix.cpp
         src/dsp/FastTanWF.cpp
         src/dsp/FastTanWF.hpp
-        src/BlankPanelWood.cpp
+        src/modules/BlankPanelWood.cpp
         src/dsp/DiodeLadder.cpp
         src/dsp/DiodeLadder.hpp
-        src/DiodeVCF.cpp
+        src/modules/DiodeVCF.cpp
         src/widgets/FontIconWidget.cpp
-        src/BlankPanelSmall.cpp
-        src/Speck.cpp
+        src/modules/BlankPanelSmall.cpp
+        src/modules/Speck.cpp
         src/widgets/LRGradientWidget.cpp src/LRModule.cpp src/LRModuleWidget.cpp src/LRModel.hpp)
 
 include_directories(.)

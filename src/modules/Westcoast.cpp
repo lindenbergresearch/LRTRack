@@ -1,12 +1,12 @@
-#include "dsp/FastTanWF.hpp"
-#include "dsp/Overdrive.hpp"
-#include "dsp/Hardclip.hpp"
-#include "dsp/RShaper.hpp"
-#include "dsp/Serge.hpp"
-#include "dsp/Lockhart.hpp"
-#include "dsp/Saturator.hpp"
-#include "LindenbergResearch.hpp"
-#include "LRModel.hpp"
+#include "../dsp/FastTanWF.hpp"
+#include "../dsp/Overdrive.hpp"
+#include "../dsp/Hardclip.hpp"
+#include "../dsp/RShaper.hpp"
+#include "../dsp/Serge.hpp"
+#include "../dsp/Lockhart.hpp"
+#include "../dsp/Saturator.hpp"
+#include "../LindenbergResearch.hpp"
+#include "../LRModel.hpp"
 
 
 using namespace rack;
