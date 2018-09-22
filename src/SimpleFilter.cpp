@@ -32,7 +32,7 @@ struct SimpleFilter : LRModule {
     float frequency, resonance, in;
 
 
-    SimpleFilter() : LRModule(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS) {
+    SimpleFilter() : LRModule(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS) {
         f = 0;
         p = 0;
         q = 0;
