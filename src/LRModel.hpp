@@ -12,7 +12,7 @@ namespace lrt {
  * @brief Standard LR Module definition
  */
 struct LRModule : public Module {
-    int *gestaltID = nullptr;
+    LRGestalt *gestalt = nullptr;
 
     /**
      * @brief Default constructor derived from rack
@@ -34,15 +34,16 @@ struct LRModuleWidget : ModuleWidget {
     LRPanel *panel = nullptr;
 
     /* Gestalt ID which represents the current theme */
-    int gestaltID = DEFAULT_GESTALT_ID;
-
+    LRGestalt gestalt = dark;
 
     /**
      * @brief Default constructor derived from rack
      * @param module LRModule instance
      */
     explicit LRModuleWidget(LRModule *module) : ModuleWidget(module) {
-        module->gestaltID = &gestaltID;
+        module->gestalt = &gestalt;
     }
 };
+
+
 }
