@@ -40,12 +40,68 @@ struct LRModuleWidget : ModuleWidget {
     /* Gestalt ID which represents the current theme */
     LRGestalt gestalt = dark;
 
+
     /**
      * @brief Default constructor derived from rack
      * @param module LRModule instance
      */
     explicit LRModuleWidget(LRModule *module) : ModuleWidget(module) {
         module->gestalt = &gestalt;
+    }
+
+
+    /**
+     * @brief Represents an Item for selecting the gestalt
+     */
+    struct GestaltItem : MenuItem {
+        LRGestalt gestaltM;
+        LRModuleWidget *widget;
+
+
+        GestaltItem(LRGestalt gestaltM, LRModuleWidget *widget) : gestaltM(gestaltM), widget(widget) {}
+
+
+        void onAction(EventAction &e) override {
+            if (widget != nullptr) {
+                // set new global gestalt to current ID of selected menu item
+                widget->gestalt = gestaltM;
+            }
+        }
+
+
+        void step() override {
+            rightText = (widget->gestalt == gestaltM) ? "✔" : "";
+        }
+    };
+
+
+    /**
+     * @brief Create standard menu for all modules
+     * @return
+     */
+    Menu *createContextMenu() override {
+        Menu *menu = ModuleWidget::createContextMenu();
+
+        auto *spacerLabel = new MenuLabel();
+        menu->addChild(spacerLabel);
+
+        auto *sectionLabel = new MenuLabel();
+        sectionLabel->text = "Module Gestalt";
+        menu->addChild(sectionLabel);
+
+        auto *darkGestaltItem = new GestaltItem(dark, this);
+        darkGestaltItem->text = "Dark";
+        menu->addChild(darkGestaltItem);
+
+        auto *lightGestaltItem = new GestaltItem(light, this);
+        lightGestaltItem->text = "Light";
+        menu->addChild(lightGestaltItem);
+
+        auto *agedGestaltItem = new GestaltItem(aged, this);
+        agedGestaltItem->text = "Aged";
+        menu->addChild(agedGestaltItem);
+
+        return menu;
     }
 };
 
