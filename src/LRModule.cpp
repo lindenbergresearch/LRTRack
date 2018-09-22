@@ -46,7 +46,7 @@ void LRModule::fromJson(json_t *root) {
                 *gestalt = light;
                 break;
             case 2:
-                *gestalt = used;
+                *gestalt = aged;
                 break;
             default:
                 *gestalt = dark;
