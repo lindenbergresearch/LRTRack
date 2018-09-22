@@ -1,4 +1,6 @@
 #include "LindenbergResearch.hpp"
+#include "LRModel.hpp"
+
 
 using namespace rack;
 using namespace lrt;

@@ -3,6 +3,7 @@
 #include <math.h>
 #include <float.h>
 #include "LindenbergResearch.hpp"
+#include "LRModel.hpp"
 #include "dsp/kiss_fft/kiss_fft.h"
 #include "dsp/digital.hpp"
 

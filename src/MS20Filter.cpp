@@ -1,5 +1,7 @@
 #include "dsp/MS20zdf.hpp"
 #include "LindenbergResearch.hpp"
+#include "LRModel.hpp"
+
 
 using namespace rack;
 using namespace lrt;

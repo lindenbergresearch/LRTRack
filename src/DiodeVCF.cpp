@@ -1,6 +1,8 @@
 #include "LindenbergResearch.hpp"
 #include "dsp/DiodeLadder.hpp"
 #include "dsp/Hardclip.hpp"
+#include "LRModel.hpp"
+
 
 using namespace rack;
 using namespace lrt;

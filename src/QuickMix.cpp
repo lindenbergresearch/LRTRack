@@ -1,6 +1,8 @@
 #include "dsp/functions.hpp"
 #include "dsp/DSPMath.hpp"
 #include "LindenbergResearch.hpp"
+#include "LRModel.hpp"
+
 
 using namespace rack;
 using namespace lrt;

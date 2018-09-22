@@ -881,35 +881,6 @@ public:
 };
 
 
-struct LRModule : public Module {
-    int *gestaltID = nullptr;
-
-    LRModule(int numParams, int numInputs, int numOutputs, int numLights);
-};
-
-
-/**
- * @brief Standard LR ModuleWidget definition
- */
-struct LRModuleWidget : ModuleWidget {
-
-    /* standard module panel */
-    LRPanel *panel;
-
-    /* Gestalt ID which represents the current theme */
-    int gestaltID = DEFAULT_GESTALT_ID;
-
-
-    /**
-     * @brief
-     * @param module
-     */
-    explicit LRModuleWidget(LRModule *module) : ModuleWidget(module) {
-        module->gestaltID = &gestaltID;
-    }
-};
-
-
 /**
  * @brief Passive rotating SVG image
  */

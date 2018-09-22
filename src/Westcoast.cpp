@@ -6,6 +6,8 @@
 #include "dsp/Lockhart.hpp"
 #include "dsp/Saturator.hpp"
 #include "LindenbergResearch.hpp"
+#include "LRModel.hpp"
+
 
 using namespace rack;
 using namespace lrt;
