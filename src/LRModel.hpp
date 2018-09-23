@@ -82,6 +82,8 @@ struct LRModuleWidget : ModuleWidget {
     Menu *createContextMenu() override {
         Menu *menu = ModuleWidget::createContextMenu();
 
+        unsigned long count = panel->pool.size();
+
         auto *spacerLabel = new MenuLabel();
         menu->addChild(spacerLabel);
 
@@ -93,13 +95,25 @@ struct LRModuleWidget : ModuleWidget {
         darkGestaltItem->text = "Dark";
         menu->addChild(darkGestaltItem);
 
-        auto *lightGestaltItem = new GestaltItem(light, this);
-        lightGestaltItem->text = "Light";
-        menu->addChild(lightGestaltItem);
+        if (count > 1) {
+            auto *lightGestaltItem = new GestaltItem(light, this);
+            lightGestaltItem->text = "Light";
+            menu->addChild(lightGestaltItem);
+        } else {
+            auto *lightGestaltLabel = new MenuLabel();
+            lightGestaltLabel->text = "Light";
+            menu->addChild(lightGestaltLabel);
+        }
 
-        auto *agedGestaltItem = new GestaltItem(aged, this);
-        agedGestaltItem->text = "Aged";
-        menu->addChild(agedGestaltItem);
+        if (count > 2) {
+            auto *agedGestaltItem = new GestaltItem(aged, this);
+            agedGestaltItem->text = "Aged";
+            menu->addChild(agedGestaltItem);
+        } else {
+            auto *agedGestaltLabel = new MenuLabel();
+            agedGestaltLabel->text = "Aged";
+            menu->addChild(agedGestaltLabel);
+        }
 
         return menu;
     }
