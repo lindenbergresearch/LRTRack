@@ -201,7 +201,7 @@ VCOWidget::VCOWidget(VCO *module) : LRModuleWidget(module) {
     module->frqKnob = LRKnob::create<LRAlternateBigLight>(Vec(126.0, 64.7), module, VCO::FREQUENCY_PARAM, -1.f, 1.f, 0.f);
 
     addParam(module->frqKnob);
-    addParam(ParamWidget::create<LRAlternateToggleKnobLight>(Vec(134.6, 171.9), module, VCO::OCTAVE_PARAM, -4.f, 3.f, 0.f));
+    addParam(ParamWidget::create<LRAlternateToggleKnobLight>(Vec(133, 170.5), module, VCO::OCTAVE_PARAM, -4.f, 3.f, 0.f));
 
     addParam(ParamWidget::create<LRAlternateSmallLight>(Vec(69.5, 122), module, VCO::FM_CV_PARAM, -1.f, 1.f, 0.f));
     addParam(ParamWidget::create<LRAlternateSmallLight>(Vec(69.5, 175), module, VCO::PW_CV_PARAM, -1, 1, 0.f));
