@@ -161,9 +161,11 @@ VCOWidget::VCOWidget(VCO *module) : LRModuleWidget(module) {
     panel = new LRPanel();
     panel->gestalt = &gestalt;
 
-    panel->pushSVG(SVG::load(assetPlugin(plugin, "res/panels/VCO.svg")));
-    panel->pushSVG(SVG::load(assetPlugin(plugin, "res/panels/Woldemar.svg")));
-    panel->pushSVG(SVG::load(assetPlugin(plugin, "res/panels/WoldemarAged.svg")));
+    panel->addSVGVariant(SVG::load(assetPlugin(plugin, "res/panels/VCO.svg")));
+    panel->addSVGVariant(SVG::load(assetPlugin(plugin, "res/panels/Woldemar.svg")));
+    panel->addSVGVariant(SVG::load(assetPlugin(plugin, "res/panels/WoldemarAged.svg")));
+
+    panel->init();
 
     addChild(panel);
 

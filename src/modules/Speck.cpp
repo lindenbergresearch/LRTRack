@@ -499,7 +499,13 @@ struct SpeckWidget : LRModuleWidget {
 
 SpeckWidget::SpeckWidget(Speck *module) : LRModuleWidget(module) {
     panel = new LRPanel();
-    panel->setBackground(SVG::load(assetPlugin(plugin, "res/panels/SpeckAnalyzer.svg")));
+
+    panel->addSVGVariant(SVG::load(assetPlugin(plugin, "res/panels/SpeckAnalyzer.svg")));
+    panel->addSVGVariant(SVG::load(assetPlugin(plugin, "res/panels/SpeckAnalyzer.svg")));
+    panel->addSVGVariant(SVG::load(assetPlugin(plugin, "res/panels/SpeckAnalyzer.svg")));
+
+    panel->init();
+
     addChild(panel);
 
     box.size = panel->box.size;

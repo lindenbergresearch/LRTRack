@@ -211,17 +211,14 @@ struct WestcoastWidget : LRModuleWidget {
 
 WestcoastWidget::WestcoastWidget(Westcoast *module) : LRModuleWidget(module) {
     panel = new LRPanel();
-    panel->setBackground(SVG::load(assetPlugin(plugin, "res/panels/Westcoast.svg")));
 
-    /* panel->setInner(nvgRGBAf(1.5f * .369f, 1.5f * 0.357f, 1.5f * 0.3333f, 0.45f));
-     panel->setOuter(nvgRGBAf(0.f, 0.f, 0.f, 0.25f));*/
+    panel->addSVGVariant(SVG::load(assetPlugin(plugin, "res/panels/Westcoast.svg")));
+    panel->addSVGVariant(SVG::load(assetPlugin(plugin, "res/panels/Westcoast.svg")));
+    panel->addSVGVariant(SVG::load(assetPlugin(plugin, "res/panels/WestcoastAged.svg")));
+
+    panel->init();
 
     addChild(panel);
-
-    module->patina = new LRPanel();
-    module->patina->setBackground(SVG::load(assetPlugin(plugin, "res/panels/WestcoastAged.svg")));
-    module->patina->visible = false;
-    addChild(module->patina);
 
     box.size = panel->box.size;
 

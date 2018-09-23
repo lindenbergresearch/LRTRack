@@ -50,8 +50,8 @@ struct DiodeVCF : LRModule {
     LRAlternateBigLight *resKnob = NULL;
     LRAlternateMiddleLight *saturateKnob = NULL;
 
-    SVGWidget *patina;
-    LRPanel *panel, *panelAged;
+    LRPanel *panel;
+
     bool aged = false;
     bool hidef = false;
 
@@ -136,12 +136,7 @@ void DiodeVCF::step() {
 
 
 void DiodeVCF::updateComponents() {
-    patina->visible = aged;
-    panelAged->visible = aged;
-    panel->visible = !aged;
 
-    panelAged->dirty = true;
-    panel->dirty = true;
 }
 
 
@@ -153,7 +148,7 @@ void DiodeVCF::onSampleRateChange() {
 
 void DiodeVCF::onRandomize() {
     Module::randomize();
-    patina->box.pos = Vec(-randomUniform() * 1000, -randomUniform() * 200);
+    // patina->box.pos = Vec(-randomUniform() * 1000, -randomUniform() * 200);
 
     updateComponents();
 }
@@ -170,23 +165,19 @@ struct DiodeVCFWidget : LRModuleWidget {
 
 DiodeVCFWidget::DiodeVCFWidget(DiodeVCF *module) : LRModuleWidget(module) {
     panel = new LRPanel();
-    panel->setBackground(SVG::load(assetPlugin(plugin, "res/panels/DiodeLadderVCF.svg")));
+
+    panel->addSVGVariant(SVG::load(assetPlugin(plugin, "res/panels/DiodeLadderVCF.svg")));
+    panel->addSVGVariant(SVG::load(assetPlugin(plugin, "res/panels/DiodeLadderVCF.svg")));
+    panel->addSVGVariant(SVG::load(assetPlugin(plugin, "res/panels/DiodeLadderVCFAged.svg")));
+
+    panel->init();
+
     addChild(panel);
 
     module->panel = panel;
-
-    module->panelAged = new LRPanel();
-    module->panelAged->setBackground(SVG::load(assetPlugin(plugin, "res/panels/DiodeLadderVCFAged.svg")));
-    module->panelAged->visible = false;
-    addChild(module->panelAged);
-
     box.size = panel->box.size;
 
-    module->patina = new SVGWidget();
-    module->patina->setSVG(SVG::load(assetPlugin(plugin, "res/panels/LaikaPatina.svg")));
-    module->panelAged->addChild(module->patina);
 
-    module->patina->box.pos = Vec(-randomUniform() * 1000, -randomUniform() * 200);
 
     /*  panel->setInner(nvgRGBAf(0.3, 0.3, 0.f, 0.09f));
       panel->setOuter(nvgRGBAf(0.f, 0.f, 0.f, 0.7f));

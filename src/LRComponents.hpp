@@ -225,7 +225,7 @@ struct LRGestaltModifier {
      * @brief Push new SVG to image pool
      * @param svg
      */
-    void pushSVG(shared_ptr<SVG> svg) {
+    void addSVGVariant(shared_ptr<SVG> svg) {
         pool.push_back(svg);
     }
 
@@ -235,8 +235,8 @@ struct LRGestaltModifier {
      * @param index Index starting at 0
      * @return
      */
-    shared_ptr<SVG> getSVGAt(unsigned long index) {
-        if (index > pool.capacity()) {
+    shared_ptr<SVG> getSVGVariant(unsigned long index) {
+        if (index <= pool.capacity()) {
             return pool[index];
         } else {
             return nullptr;
@@ -871,18 +871,35 @@ public:
 
 
 /**
+ * @brief Default panel border
+ */
+struct PanelBorder : TransparentWidget {
+    void draw(NVGcontext *vg) override {
+        NVGcolor borderColor = nvgRGBAf(0.5, 0.5, 0.5, 0.5);
+        nvgBeginPath(vg);
+        nvgRect(vg, 0.5, 0.5, box.size.x - 1.0, box.size.y - 1.0);
+        nvgStrokeColor(vg, borderColor);
+        nvgStrokeWidth(vg, 1.0);
+        nvgStroke(vg);
+    }
+};
+
+/**
  * @brief Standard LR module Panel
  */
-struct LRPanel : SVGPanel, LRGestaltModifier {
+struct LRPanel : FramebufferWidget, LRGestaltModifier {
 private:
     /** margin of gradient box */
     static constexpr float MARGIN = 10;
 
+    SVGWidget *panel;
 
 public:
     LRPanel();
 
+    void init();
 
+    void step() override;
 
     void draw(NVGcontext *vg) override;
 };

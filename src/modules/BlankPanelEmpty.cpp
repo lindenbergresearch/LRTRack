@@ -51,8 +51,12 @@ struct BlankPanelEmptyWidget : LRModuleWidget {
 
 BlankPanelEmptyWidget::BlankPanelEmptyWidget(BlankPanelEmpty *module) : LRModuleWidget(module) {
     panel = new LRPanel();
-    panel->setBackground(SVG::load(assetPlugin(plugin, "res/panels/BlankPanelM1.svg")));
-    //panel->setColorOnly();
+
+    panel->addSVGVariant(SVG::load(assetPlugin(plugin, "res/panels/BlankPanelM1.svg")));
+    panel->addSVGVariant(SVG::load(assetPlugin(plugin, "res/panels/BlankPanelM1.svg")));
+    panel->addSVGVariant(SVG::load(assetPlugin(plugin, "res/panels/BlankPanelM1.svg")));
+
+    panel->init();
     addChild(panel);
 
     module->icons = new FontIconWidget(60.f);

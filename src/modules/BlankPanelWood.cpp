@@ -102,7 +102,13 @@ struct BlankPanelWidgetWood : LRModuleWidget {
 
 BlankPanelWidgetWood::BlankPanelWidgetWood(BlankPanelWood *module) : LRModuleWidget(module) {
     panel = new LRPanel();
-    panel->setBackground(SVG::load(assetPlugin(plugin, "res/panels/WoodLeftTop.svg")));
+
+    panel->addSVGVariant(SVG::load(assetPlugin(plugin, "res/panels/WoodLeftTop.svg")));
+    panel->addSVGVariant(SVG::load(assetPlugin(plugin, "res/panels/WoodLeftTop.svg")));
+    panel->addSVGVariant(SVG::load(assetPlugin(plugin, "res/panels/WoodLeftTop.svg")));
+
+    panel->init();
+
     addChild(panel);
 
     module->panel = panel;
