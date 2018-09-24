@@ -75,48 +75,34 @@ struct LRModuleWidget : ModuleWidget {
     };
 
 
+    struct GradientItem : MenuItem {
+        LRModuleWidget *widget;
+
+
+        GradientItem(LRModuleWidget *widget) : widget(widget) {}
+
+
+        void onAction(EventAction &e) override {
+            if (widget != nullptr) {
+                // swap bool
+                widget->panel->setGradient(!widget->panel->isGradient());
+                widget->panel->setGradientVariant(widget->panel->isGradient());
+                widget->panel->dirty = true;
+            }
+        }
+
+
+        void step() override {
+            rightText = widget->panel->isGradient() ? "✔" : "";
+        }
+    };
+
+
     /**
      * @brief Create standard menu for all modules
      * @return
      */
-    Menu *createContextMenu() override {
-        Menu *menu = ModuleWidget::createContextMenu();
-
-        unsigned long count = panel->pool.size();
-
-        auto *spacerLabel = new MenuLabel();
-        menu->addChild(spacerLabel);
-
-        auto *sectionLabel = new MenuLabel();
-        sectionLabel->text = "Module Gestalt";
-        menu->addChild(sectionLabel);
-
-        auto *darkGestaltItem = new GestaltItem(dark, this);
-        darkGestaltItem->text = "Dark";
-        menu->addChild(darkGestaltItem);
-
-        if (count > 1) {
-            auto *lightGestaltItem = new GestaltItem(light, this);
-            lightGestaltItem->text = "Light";
-            menu->addChild(lightGestaltItem);
-        } else {
-            auto *lightGestaltLabel = new MenuLabel();
-            lightGestaltLabel->text = "Light";
-            menu->addChild(lightGestaltLabel);
-        }
-
-        if (count > 2) {
-            auto *agedGestaltItem = new GestaltItem(aged, this);
-            agedGestaltItem->text = "Aged";
-            menu->addChild(agedGestaltItem);
-        } else {
-            auto *agedGestaltLabel = new MenuLabel();
-            agedGestaltLabel->text = "Aged";
-            menu->addChild(agedGestaltLabel);
-        }
-
-        return menu;
-    }
+    Menu *createContextMenu() override;
 };
 
 
