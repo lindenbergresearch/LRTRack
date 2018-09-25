@@ -38,9 +38,9 @@ typedef std::vector<std::string> StringVector;
  * @brief Gestalt IDs
  */
 enum LRGestalt : int {
-    dark,   // dark theme (as standard)
-    light,  // light theme
-    aged    // light theme with used look
+    DARK,   // DARK theme (as standard)
+    LIGHT,  // LIGHT theme
+    AGED    // LIGHT theme with AGED look
 };
 
 /**
@@ -893,6 +893,11 @@ private:
     static constexpr float MARGIN = 10;
 
     SVGWidget *panel;
+    vector<LRGradientWidget *> gradients;
+
+    bool gradient = true;
+    bool aged = false;
+
 
 public:
     LRPanel();
@@ -900,6 +905,13 @@ public:
     void init();
 
     void step() override;
+
+    bool isGradient() const;
+    void setGradient(bool gradient);
+    bool isAged() const;
+    void setAged(bool aged);
+
+    void setGradientVariant(bool enabled);
 
     void draw(NVGcontext *vg) override;
 };
