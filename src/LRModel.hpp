@@ -128,6 +128,9 @@ struct LRModuleWidget : ModuleWidget {
      * @return
      */
     Menu *createContextMenu() override;
+
+    json_t *toJson() override;
+    void fromJson(json_t *rootJ) override;
 };
 
 
