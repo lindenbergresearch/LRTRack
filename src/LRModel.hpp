@@ -24,6 +24,11 @@
 #include "LRComponents.hpp"
 
 
+static const char *const JSON_GESTALT_KEY = "gestaltID";
+static const char *const JSON_GRADIENT_KEY = "gradient";
+static const char *const JSON_PATINA_KEY = "patina";
+
+
 namespace lrt {
 
 using std::string;
@@ -60,8 +65,8 @@ struct LRModuleWidget : ModuleWidget {
 
     /* Gestalt ID and UI settings */
     LRGestalt gestalt = DARK;   // DARK == default
-    bool gradient;              // gradient used at panel
-    bool patina;                // patina used at panel
+    bool gradient = true;       // gradient used at panel
+    bool patina = false;        // patina used at panel
 
     /**
      * @brief Default constructor derived from rack
@@ -118,6 +123,29 @@ struct LRModuleWidget : ModuleWidget {
 
         void step() override {
             rightText = panel->gradient ? STR_CHECKMARK_UNICODE : "";
+        }
+    };
+
+
+    /**
+     * @brief Represents a gradient select item
+     */
+    struct PatinaItem : MenuItem {
+        LRPanel *panel;
+
+
+        explicit PatinaItem(LRPanel *panel) : panel(panel) {}
+
+
+        void onAction(EventAction &e) override {
+            if (panel != nullptr) {
+                //TODO: set patina
+            }
+        }
+
+
+        void step() override {
+            rightText = panel->patina ? STR_CHECKMARK_UNICODE : "";
         }
     };
 
