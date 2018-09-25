@@ -71,7 +71,7 @@ json_t *LRModuleWidget::toJson() {
 
     json_object_set_new(rootJ, JSON_GESTALT_KEY, json_integer(gestaltid));
     json_object_set_new(rootJ, JSON_GRADIENT_KEY, json_boolean(gradient));
-    json_object_set_new(rootJ, JSON_PATINA_KEY, json_integer(patina));
+    json_object_set_new(rootJ, JSON_PATINA_KEY, json_boolean(patina));
 
     debug("[%p] write module json", this);
 
