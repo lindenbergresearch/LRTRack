@@ -122,7 +122,7 @@ struct LRModuleWidget : ModuleWidget {
 
 
         void step() override {
-            rightText = panel->gradient ? STR_CHECKMARK_UNICODE : "";
+            rightText = *panel->gradient ? STR_CHECKMARK_UNICODE : "";
         }
     };
 
@@ -139,13 +139,13 @@ struct LRModuleWidget : ModuleWidget {
 
         void onAction(EventAction &e) override {
             if (panel != nullptr) {
-                //TODO: set patina
+                //TODO: patina
             }
         }
 
 
         void step() override {
-            rightText = panel->patina ? STR_CHECKMARK_UNICODE : "";
+            rightText = *panel->patina ? STR_CHECKMARK_UNICODE : "";
         }
     };
 
