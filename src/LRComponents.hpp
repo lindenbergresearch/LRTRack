@@ -38,10 +38,12 @@ typedef std::vector<std::string> StringVector;
  * @brief Gestalt IDs
  */
 enum LRGestalt : int {
+    NIL,    // virtuell element to mark unset
     DARK,   // DARK theme (as standard)
     LIGHT,  // LIGHT theme
     AGED    // LIGHT theme with AGED look
 };
+
 
 /**
  * @brief Emulation of a LCD monochrome display
@@ -196,7 +198,7 @@ struct LRGestaltModifier {
     LRGestalt *gestalt = nullptr;
 
     /* holds the last used ID for recognizing changes */
-    LRGestalt prevID;
+    LRGestalt prevID = NIL; //init with unset to trigger first invalidation
 
     /* SVG pool - Holds all needed SVG images */
     vector<shared_ptr<SVG>> pool;
@@ -220,6 +222,7 @@ struct LRGestaltModifier {
     void syncGestalt() {
         prevID = *gestalt;
     }
+
 
     /**
      * @brief Push new SVG to image pool
@@ -883,6 +886,7 @@ struct PanelBorder : TransparentWidget {
         nvgStroke(vg);
     }
 };
+
 
 /**
  * @brief Standard LR module Panel
