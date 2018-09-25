@@ -57,41 +57,44 @@ Menu *LRModuleWidget::createContextMenu() {
 
 
 /**
- * @brief Save default settings for a Module
+ * @brief Load UI relevant settings
  * @return
  */
 json_t *LRModuleWidget::toJson() {
-    json_t *root = json_object();
+    auto *rootJ = ModuleWidget::toJson();
 
     LRGestalt gestaltid = gestalt;
 
     // Gestalt ID
-    json_object_set_new(root, "gestaltID", json_integer(gestaltid));
+    json_object_set_new(rootJ, "gestaltID", json_integer(gestaltid));
 
     debug("[%p] write module json", this);
 
-    return root;
+
+    return rootJ;
 }
 
 
 /**
- * @brief Load default settings from a module
- * @param root
+ * @brief Save UI relevant settings
+ * @param rootJ
  */
-void LRModuleWidget::fromJson(json_t *root) {
-    json_t *gestaltID = json_object_get(root, "gestaltID");
+void LRModuleWidget::fromJson(json_t *rootJ) {
+    ModuleWidget::fromJson(rootJ);
 
-    debug("[%p] read module json", this);
+    debug("[%p] read module json: ", this);
+    json_t *gestaltID = json_object_get(rootJ, "gestaltID");
+
 
     if (gestaltID) {
         switch (json_integer_value(gestaltID)) {
-            case 0:
+            case 1:
                 gestalt = DARK;
                 break;
-            case 1:
+            case 2:
                 gestalt = LIGHT;
                 break;
-            case 2:
+            case 3:
                 gestalt = AGED;
                 break;
             default:

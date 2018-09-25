@@ -57,7 +57,7 @@ struct LRModuleWidget : ModuleWidget {
     LRPanel *panel = nullptr;
 
     /* Gestalt ID which represents the current theme */
-    LRGestalt gestalt = DARK;
+    LRGestalt gestalt = DARK; // DARK == default
 
 
     /**
