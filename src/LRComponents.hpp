@@ -907,30 +907,22 @@ struct PanelBorder : TransparentWidget {
  * @brief Standard LR module Panel
  */
 struct LRPanel : FramebufferWidget, LRGestaltModifier {
-private:
-    /** margin of gradient box */
-    static constexpr float MARGIN = 10;
-
     SVGWidget *panelWidget;
     vector<LRGradientWidget *> gradients;
 
-    bool gradient = true;
-    bool aged = false;
+    bool *gradient;
+    bool *patina;
 
 
-public:
     LRPanel();
 
     void init();
 
     void step() override;
 
-    bool isGradient() const;
-    void setGradient(bool gradient);
-    bool isAged() const;
-    void setAged(bool aged);
-
     void setGradientVariant(bool enabled);
+
+    void setupGestalt(LRGestalt *gestalt, bool *gradient, bool *patina);
 
     void draw(NVGcontext *vg) override;
 };
