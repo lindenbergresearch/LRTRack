@@ -12,8 +12,8 @@
 #define LED_RED_COLOR nvgRGBAf(0.9, 0.1, 0.1, 0.99)
 #define LED_GREEN_COLOR nvgRGBAf(0.1, 0.9, 0.3, 0.99)
 
-#define PANEL_GRADIENT_INNER nvgRGBAf(0.3, 0.3, 0.f, 0.09f)
-#define PANEL_GRADIENT_OUTER nvgRGBAf(0.f, 0.f, 0.f, 0.7f)
+#define PANEL_GRADIENT_INNER nvgRGBAf(1.5f * .369f, 1.5f * 0.357f, 1.5f * 0.3333f, 0.33f)
+#define PANEL_GRADIENT_OUTER nvgRGBAf(0.0f, 0.0f, 0.0f, 0.1f)
 
 #define PANEL_AGEDGRADIENT_INNER nvgRGBAf(0.5, 0.5, 0.f, 0.1f)
 #define PANEL_AGEDGRADIENT_OUTER nvgRGBAf(0.f, 0.f, 0.f, 0.73f)
@@ -24,6 +24,7 @@
 using namespace rack;
 using std::vector;
 using std::shared_ptr;
+using std::string;
 
 extern Plugin *plugin;
 
@@ -858,7 +859,7 @@ public:
         box.pos = Vec(0, 0);
 
         /* initialise with standard dimensions */
-        v1 = Vec(0, 0);
+        v1 = Vec(30, -50);
         v2 = Vec(size.x, size.y);
     }
 
@@ -874,15 +875,29 @@ public:
 
 
 /**
+ * @brief Widget for simulating used look
+ */
+struct LRPatinaWidget : FramebufferWidget {
+
+    SVGWidget *svg;
+
+    LRPatinaWidget(const string &filename, const Vec &size);
+
+    void randomize();
+
+};
+
+
+/**
  * @brief Default panel border
  */
 struct PanelBorder : TransparentWidget {
     void draw(NVGcontext *vg) override {
-        NVGcolor borderColor = nvgRGBAf(0.5, 0.5, 0.5, 0.5);
+        NVGcolor borderColor = nvgRGBAf(0.99, 0.5, 0.5, 0.9);
         nvgBeginPath(vg);
-        nvgRect(vg, 0.5, 0.5, box.size.x - 1.0, box.size.y - 1.0);
+        nvgRect(vg, .5f, .5f, box.size.x - 1.f, box.size.y - 1.f);
         nvgStrokeColor(vg, borderColor);
-        nvgStrokeWidth(vg, 1.0);
+        nvgStrokeWidth(vg, 1.f);
         nvgStroke(vg);
     }
 };
@@ -896,7 +911,7 @@ private:
     /** margin of gradient box */
     static constexpr float MARGIN = 10;
 
-    SVGWidget *panel;
+    SVGWidget *panelWidget;
     vector<LRGradientWidget *> gradients;
 
     bool gradient = true;
