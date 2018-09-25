@@ -58,9 +58,10 @@ struct LRModuleWidget : ModuleWidget {
     /* standard module panel */
     LRPanel *panel = nullptr;
 
-    /* Gestalt ID which represents the current theme */
-    LRGestalt gestalt = DARK; // DARK == default
-
+    /* Gestalt ID and UI settings */
+    LRGestalt gestalt = DARK;   // DARK == default
+    bool gradient;              // gradient used at panel
+    bool patina;                // patina used at panel
 
     /**
      * @brief Default constructor derived from rack
@@ -116,7 +117,7 @@ struct LRModuleWidget : ModuleWidget {
 
 
         void step() override {
-            rightText = panel->isGradient() ? STR_CHECKMARK_UNICODE : "";
+            rightText = panel->gradient ? STR_CHECKMARK_UNICODE : "";
         }
     };
 
