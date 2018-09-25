@@ -69,11 +69,11 @@ json_t *LRModuleWidget::toJson() {
 
     LRGestalt gestaltid = gestalt;
 
-    // Gestalt ID
-    json_object_set_new(rootJ, "gestaltID", json_integer(gestaltid));
+    json_object_set_new(rootJ, JSON_GESTALT_KEY, json_integer(gestaltid));
+    json_object_set_new(rootJ, JSON_GRADIENT_KEY, json_boolean(gradient));
+    json_object_set_new(rootJ, JSON_PATINA_KEY, json_integer(patina));
 
     debug("[%p] write module json", this);
-
 
     return rootJ;
 }
@@ -87,7 +87,16 @@ void LRModuleWidget::fromJson(json_t *rootJ) {
     ModuleWidget::fromJson(rootJ);
 
     debug("[%p] read module json: ", this);
-    json_t *gestaltID = json_object_get(rootJ, "gestaltID");
+    json_t *gestaltID = json_object_get(rootJ, JSON_GESTALT_KEY);
+    json_t *gradientJ = json_object_get(rootJ, JSON_GRADIENT_KEY);
+    json_t *patinaJ = json_object_get(rootJ, JSON_PATINA_KEY);
+
+
+    if (gradientJ)
+        gradient = json_is_true(gradientJ);
+
+    if (patinaJ)
+        patina = json_is_true(patinaJ);
 
 
     if (gestaltID) {
