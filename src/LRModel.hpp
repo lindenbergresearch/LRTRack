@@ -1,3 +1,18 @@
+/*                                                                     *\
+**       __   ___                                                      **
+**      / /  / _ \                                                     **
+**     / /__/ , _/  Lindenberg                                         **
+**    /____/_/|_|   Research                                           **
+**                                                                     **
+**	  https://github.com/lindenbergresearch/LRTRack	                   **
+**		                                                               **
+**    Sound Modules for VCV Rack                                       **
+**    Copyright 2017/2018 by Lindenberg Research / LR                  **
+**                                                                     **
+**    For Redistribution and use in source and binary forms,           **
+**    with or without modification please see LICENSE.                 **
+\*                                                                     */
+
 #pragma once
 
 #include "rack.hpp"
@@ -7,6 +22,13 @@
 
 
 namespace lrt {
+
+using std::string;
+using std::vector;
+
+
+static const string STR_CHECKMARK_UNICODE = "✔";
+
 
 /**
  * @brief Standard LR Module definition
@@ -38,7 +60,7 @@ struct LRModuleWidget : ModuleWidget {
     LRPanel *panel = nullptr;
 
     /* Gestalt ID which represents the current theme */
-    LRGestalt gestalt = dark;
+    LRGestalt gestalt = DARK;
 
 
     /**
@@ -46,7 +68,9 @@ struct LRModuleWidget : ModuleWidget {
      * @param module LRModule instance
      */
     explicit LRModuleWidget(LRModule *module) : ModuleWidget(module) {
+        // pass gestalt pointer to module, to point to the origin at the widget
         module->gestalt = &gestalt;
+        debug("[%p] construct widget", module);
     }
 
 
@@ -70,30 +94,30 @@ struct LRModuleWidget : ModuleWidget {
 
 
         void step() override {
-            rightText = (widget->gestalt == gestaltM) ? "✔" : "";
+            rightText = (widget->gestalt == gestaltM) ? STR_CHECKMARK_UNICODE : "";
         }
     };
 
 
+    /**
+     * @brief Represents a gradient select item
+     */
     struct GradientItem : MenuItem {
-        LRModuleWidget *widget;
+        LRPanel *panel;
 
 
-        GradientItem(LRModuleWidget *widget) : widget(widget) {}
+        explicit GradientItem(LRPanel *panel) : panel(panel) {}
 
 
         void onAction(EventAction &e) override {
-            if (widget != nullptr) {
-                // swap bool
-                widget->panel->setGradient(!widget->panel->isGradient());
-                widget->panel->setGradientVariant(widget->panel->isGradient());
-                widget->panel->dirty = true;
+            if (panel != nullptr) {
+                panel->setGradientVariant(true);
             }
         }
 
 
         void step() override {
-            rightText = widget->panel->isGradient() ? "✔" : "";
+            rightText = panel->isGradient() ? STR_CHECKMARK_UNICODE : "";
         }
     };
 
