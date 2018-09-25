@@ -1,13 +1,15 @@
 /*                                                                     *\
-**       __   ___                                                      **
-**      / /  / _ \                                                     **
-**     / /__/ , _/  Lindenberg                                         **
-**    /____/_/|_|   Research                                           **
+**       __   ___  ______                                              **
+**      / /  / _ \/_  __/                                              **
+**     / /__/ , _/ / /    Lindenberg                                   **
+**    /____/_/|_| /_/  Research Tec.                                   **
+**                                                                     **
 **                                                                     **
 **	  https://github.com/lindenbergresearch/LRTRack	                   **
+**    heapdump@icloud.com                                              **
 **		                                                               **
 **    Sound Modules for VCV Rack                                       **
-**    Copyright 2017/2018 by Lindenberg Research / LR                  **
+**    Copyright 2017/2018 by Patrick Lindenberg / LRT                  **
 **                                                                     **
 **    For Redistribution and use in source and binary forms,           **
 **    with or without modification please see LICENSE.                 **
