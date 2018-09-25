@@ -59,7 +59,7 @@ struct DiodeVCF : LRModule {
     json_t *toJson() override {
         json_t *rootJ = LRModule::toJson();
 
-        json_object_set_new(rootJ, "aged", json_boolean(aged));
+        json_object_set_new(rootJ, "AGED", json_boolean(aged));
         json_object_set_new(rootJ, "hidef", json_boolean(hidef));
         return rootJ;
     }
@@ -68,7 +68,7 @@ struct DiodeVCF : LRModule {
     void fromJson(json_t *rootJ) override {
         LRModule::fromJson(rootJ);
 
-        json_t *agedJ = json_object_get(rootJ, "aged");
+        json_t *agedJ = json_object_get(rootJ, "AGED");
         if (agedJ)
             aged = json_boolean_value(agedJ);
 
@@ -165,6 +165,7 @@ struct DiodeVCFWidget : LRModuleWidget {
 
 DiodeVCFWidget::DiodeVCFWidget(DiodeVCF *module) : LRModuleWidget(module) {
     panel = new LRPanel();
+    panel->setupGestalt(&gestalt, &gradient, &patina);
 
     panel->addSVGVariant(SVG::load(assetPlugin(plugin, "res/panels/DiodeLadderVCF.svg")));
     panel->addSVGVariant(SVG::load(assetPlugin(plugin, "res/panels/DiodeLadderVCF.svg")));
@@ -276,7 +277,7 @@ void DiodeVCFWidget::appendContextMenu(Menu *menu) {
     DiodeVCF *diodeVCF = dynamic_cast<DiodeVCF *>(module);
     assert(diodeVCF);
 
-    DiodeVCFAged *mergeItemAged = MenuItem::create<DiodeVCFAged>("Use aged look");
+    DiodeVCFAged *mergeItemAged = MenuItem::create<DiodeVCFAged>("Use AGED look");
     mergeItemAged->diodeVCF = diodeVCF;
     menu->addChild(mergeItemAged);
 

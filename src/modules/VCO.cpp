@@ -54,7 +54,7 @@ struct VCO : LRModule {
     /*
     json_t *toJson() override {
         json_t *rootJ = LRModule::toJson();
-        json_object_set_new(rootJ, "aged", json_boolean(aged));
+        json_object_set_new(rootJ, "AGED", json_boolean(AGED));
         return rootJ;
     }
 
@@ -62,9 +62,9 @@ struct VCO : LRModule {
     void fromJson(json_t *rootJ) override {
         LRModule::fromJson(rootJ);
 
-        json_t *agedJ = json_object_get(rootJ, "aged");
+        json_t *agedJ = json_object_get(rootJ, "AGED");
         if (agedJ)
-            aged = json_boolean_value(agedJ);
+            AGED = json_boolean_value(agedJ);
 
         updateComponents();
     }*/
@@ -159,7 +159,7 @@ struct VCOWidget : LRModuleWidget {
 
 VCOWidget::VCOWidget(VCO *module) : LRModuleWidget(module) {
     panel = new LRPanel();
-    panel->gestalt = &gestalt;
+    panel->setupGestalt(&gestalt, &gradient, &patina);
 
     panel->addSVGVariant(SVG::load(assetPlugin(plugin, "res/panels/VCO.svg")));
     panel->addSVGVariant(SVG::load(assetPlugin(plugin, "res/panels/Woldemar.svg")));
@@ -167,11 +167,10 @@ VCOWidget::VCOWidget(VCO *module) : LRModuleWidget(module) {
 
     panel->init();
 
+    debug("[%p] construct widget!!!", module);
+
     addChild(panel);
-
     module->panel = panel;
-
-
     box.size = panel->box.size;
 
 
@@ -244,10 +243,10 @@ struct VCOAged : MenuItem {
 
 
     void onAction(EventAction &e) override {
-        if (vco->aged) {
-            vco->aged = false;
+        if (vco->AGED) {
+            vco->AGED = false;
         } else {
-            vco->aged = true;
+            vco->AGED = true;
         }
 
         vco->updateComponents();
@@ -255,7 +254,7 @@ struct VCOAged : MenuItem {
 
 
     void step() override {
-        rightText = CHECKMARK(vco->aged);
+        rightText = CHECKMARK(vco->AGED);
     }
 };
 
@@ -266,7 +265,7 @@ void VCOWidget::appendContextMenu(Menu *menu) {
     VCO *vco = dynamic_cast<VCO *>(module);
     assert(vco);
 
-    VCOAged *mergeItemAged = MenuItem::create<VCOAged>("Use aged look");
+    VCOAged *mergeItemAged = MenuItem::create<VCOAged>("Use AGED look");
     mergeItemAged->vco = vco;
     menu->addChild(mergeItemAged);
 }*/

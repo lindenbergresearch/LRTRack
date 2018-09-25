@@ -140,6 +140,7 @@ void BlankPanelSmall::createPorts() {
 
 BlankPanelWidgetSmall::BlankPanelWidgetSmall(BlankPanelSmall *module) : LRModuleWidget(module) {
     panel = new LRPanel();
+    panel->setupGestalt(&gestalt, &gradient, &patina);
 
     panel->addSVGVariant(SVG::load(assetPlugin(plugin, "res/panels/BlankPanelSmall.svg")));
     panel->addSVGVariant(SVG::load(assetPlugin(plugin, "res/panels/BlankPanelSmall.svg")));

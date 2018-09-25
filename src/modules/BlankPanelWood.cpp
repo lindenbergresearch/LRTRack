@@ -42,7 +42,7 @@ struct BlankPanelWood : LRModule {
     json_t *toJson() override {
         json_t *rootJ = LRModule::toJson();
 
-        json_object_set_new(rootJ, "aged", json_boolean(aged));
+        json_object_set_new(rootJ, "AGED", json_boolean(aged));
         json_object_set_new(rootJ, "screws", json_boolean(screws));
         json_object_set_new(rootJ, "logo", json_boolean(logo));
         return rootJ;
@@ -52,7 +52,7 @@ struct BlankPanelWood : LRModule {
     void fromJson(json_t *rootJ) override {
         LRModule::fromJson(rootJ);
 
-        json_t *agedJ = json_object_get(rootJ, "aged");
+        json_t *agedJ = json_object_get(rootJ, "AGED");
         if (agedJ)
             aged = json_boolean_value(agedJ);
 
@@ -209,7 +209,7 @@ void BlankPanelWidgetWood::appendContextMenu(Menu *menu) {
     BlankPanelWood *blankPanelWood = dynamic_cast<BlankPanelWood *>(module);
     assert(blankPanelWood);
 
-    BlankPanelWoodAged *mergeItemAged = MenuItem::create<BlankPanelWoodAged>("Use aged look");
+    BlankPanelWoodAged *mergeItemAged = MenuItem::create<BlankPanelWoodAged>("Use AGED look");
     mergeItemAged->blankPanelWood = blankPanelWood;
     menu->addChild(mergeItemAged);
 

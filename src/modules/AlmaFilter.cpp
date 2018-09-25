@@ -104,6 +104,7 @@ struct AlmaFilterWidget : LRModuleWidget {
 
 AlmaFilterWidget::AlmaFilterWidget(AlmaFilter *module) : LRModuleWidget(module) {
     panel = new LRPanel();
+    panel->setupGestalt(&gestalt, &gradient, &patina);
 
     panel->addSVGVariant(SVG::load(assetPlugin(plugin, "res/panels/VCF.svg")));
     panel->addSVGVariant(SVG::load(assetPlugin(plugin, "res/panels/VCF.svg")));
