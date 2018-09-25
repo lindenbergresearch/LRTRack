@@ -52,6 +52,10 @@ Menu *LRModuleWidget::createContextMenu() {
     gradientItem->text = "Metallic Look";
     menu->addChild(gradientItem);
 
+    auto *patinaItem = new PatinaItem(this->panel);
+    patinaItem->text = "Used Look";
+    menu->addChild(patinaItem);
+
     return menu;
 }
 
