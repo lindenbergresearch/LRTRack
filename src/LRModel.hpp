@@ -37,10 +37,6 @@ static const string STR_CHECKMARK_UNICODE = "✔";
 struct LRModule : public Module {
     LRGestalt *gestalt = nullptr;
 
-
-    json_t *toJson() override;
-    void fromJson(json_t *root) override;
-
     /**
      * @brief Default constructor derived from rack
      * @param numParams
