@@ -81,9 +81,9 @@ void LRPanel::init() {
  * @param invert Automaticaly invert state
  */
 void LRPanel::setGradientVariant(bool invert) {
-    *gradient = invert ? !*gradient : *gradient;
+    *gradient = invert == !*gradient;
 
-    for (auto i = 0; i < gradients.size(); i++) {
+    for (auto i = 0u; i < gradients.size(); i++) {
         if (*gestalt - 1 == i) gradients[i]->visible = *gradient;
         else gradients[i]->visible = false;
         //debug("gradient:%i gest:%i index:%i isVisable:%i", *gradient, *gestalt, i, gradients[i]->visible);
