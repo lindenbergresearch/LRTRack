@@ -92,13 +92,13 @@ void LRModuleWidget::fromJson(json_t *rootJ) {
     json_t *patinaJ = json_object_get(rootJ, JSON_PATINA_KEY);
 
 
-    if (gradientJ)
-        gradient = json_is_true(gradientJ);
+    /* load gradient flag */
+    gradient = gradientJ ? json_is_true(gradientJ) : true;
 
-    if (patinaJ)
-        patina = json_is_true(patinaJ);
+    /* load patina flag */
+    patina = patinaJ ? json_is_true(patinaJ) : false;
 
-
+    /* load and assign gestalt */
     if (gestaltID) {
         switch (json_integer_value(gestaltID)) {
             case 1:
