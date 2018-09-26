@@ -152,7 +152,6 @@ QuickMixWidget::QuickMixWidget(QuickMix *module) : LRModuleWidget(module) {
     panel->init();
 
     addChild(panel);
-
     box.size = panel->box.size;
 
     // ***** SCREWS **********

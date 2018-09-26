@@ -8,7 +8,7 @@ using namespace lrt;
 Menu *LRModuleWidget::createContextMenu() {
     Menu *menu = ModuleWidget::createContextMenu();
 
-    unsigned long count = panel->pool.size();
+    auto count = panel->pool.size();
 
     auto *spacerLabel = new MenuLabel();
     menu->addChild(spacerLabel);
