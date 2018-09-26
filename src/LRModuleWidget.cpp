@@ -116,3 +116,13 @@ void LRModuleWidget::fromJson(json_t *rootJ) {
     }
 
 }
+
+
+/**
+ * @brief Randomize parameters
+ */
+void LRModuleWidget::randomize() {
+    ModuleWidget::randomize();
+    panel->patinaWidget->randomize();
+    panel->dirty = true;
+}

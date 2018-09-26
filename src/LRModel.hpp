@@ -159,6 +159,7 @@ struct LRModuleWidget : ModuleWidget {
 
     json_t *toJson() override;
     void fromJson(json_t *rootJ) override;
+    void randomize() override;
 };
 
 
