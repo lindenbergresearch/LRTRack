@@ -45,8 +45,6 @@ struct VCO : LRModule {
     LRLCDWidget *lcd = new LRLCDWidget(nvgRGBAf(0.0, 0.1, 0.1, 1.0), 10, "%00004.3f Hz", LRLCDWidget::NUMERIC);
     LRAlternateBigLight *frqKnob = NULL;
 
-    LRPanel *panel;
-
 
     VCO() : LRModule(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS) {}
 
@@ -71,7 +69,6 @@ struct VCO : LRModule {
 
 
     void onRandomize() override;
-    void updateComponents();
 
     void step() override;
     void onSampleRateChange() override;
@@ -130,11 +127,6 @@ void VCO::step() {
 }
 
 
-void VCO::updateComponents() {
-
-}
-
-
 void VCO::onSampleRateChange() {
     Module::onSampleRateChange();
     osc->updateSampleRate(engineGetSampleRate());
@@ -143,9 +135,6 @@ void VCO::onSampleRateChange() {
 
 void VCO::onRandomize() {
     Module::randomize();
-    // patina->box.pos = Vec(-randomUniform() * 1000, -randomUniform() * 200);
-
-    // updateComponents();
 }
 
 
@@ -168,7 +157,6 @@ VCOWidget::VCOWidget(VCO *module) : LRModuleWidget(module) {
     panel->init();
 
     addChild(panel);
-    module->panel = panel;
     box.size = panel->box.size;
 
 
