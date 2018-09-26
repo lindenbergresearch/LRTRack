@@ -38,11 +38,12 @@ LRPanel::LRPanel() {
  * @brief Initialize a Panel and setup gestalt and UI
  */
 void LRPanel::init() {
-    auto svg = getSVGVariant(DARK);
+    auto svg = getSVGVariant(NIL); // INIT
 
     if (svg != nullptr) {
         panelWidget->setSVG(svg);
     }
+
 
     box.size = panelWidget->box.size.div(RACK_GRID_SIZE).round().mult(RACK_GRID_SIZE);
 
