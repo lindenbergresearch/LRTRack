@@ -58,12 +58,12 @@ void LRPanel::init() {
     addChild(gradientDark);
     gradients.push_back(gradientDark);
 
-    auto gradientLight = new LRGradientWidget(box.size, PANEL_GRADIENT_INNER, PANEL_GRADIENT_OUTER);
+    auto gradientLight = new LRGradientWidget(box.size, PANEL_GRADIENT_INNER, PANEL_GRADIENT_OUTER, Vec(-10, -10));
     gradientLight->visible = false;
     addChild(gradientLight);
     gradients.push_back(gradientLight);
 
-    auto gradientAged = new LRGradientWidget(box.size, PANEL_AGEDGRADIENT_INNER, PANEL_AGEDGRADIENT_OUTER);
+    auto gradientAged = new LRGradientWidget(box.size, PANEL_AGEDGRADIENT_INNER, PANEL_AGEDGRADIENT_OUTER, Vec(-10, -10));
     gradientAged->visible = false;
     addChild(gradientAged);
     gradients.push_back(gradientAged);
