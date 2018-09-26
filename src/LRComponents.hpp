@@ -852,14 +852,21 @@ public:
     }
 
 
-    LRGradientWidget(const Vec &size, const NVGcolor &innerColor, const NVGcolor &outerColor) :
+    /**
+     * @brief Create a new gradient widget
+     * @param size box size (derived from parent widget)
+     * @param innerColor The inner color (v1)
+     * @param outerColor The outher color (v2)
+     * @param offset The offset of the left-top corner (optional)
+     */
+    LRGradientWidget(const Vec &size, const NVGcolor &innerColor, const NVGcolor &outerColor, const Vec &offset = Vec(30, -50)) :
             innerColor(innerColor), outerColor(outerColor) {
         box.size = size;
 
         box.pos = Vec(0, 0);
 
         /* initialise with standard dimensions */
-        v1 = Vec(30, -50);
+        v1 = offset;
         v2 = Vec(size.x, size.y);
     }
 
