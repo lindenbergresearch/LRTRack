@@ -833,7 +833,7 @@ struct LRLight : ModuleLightWidget {
 /**
  * @brief Standard linear gradient widget
  */
-struct LRGradientWidget : FramebufferWidget {
+struct LRGradientWidget : TransparentWidget {
 private:
     /* gradient vectors */
     Vec v1, v2;
@@ -877,11 +877,14 @@ public:
 /**
  * @brief Widget for simulating used look
  */
-struct LRPatinaWidget : FramebufferWidget {
+struct LRPatinaWidget : TransparentWidget {
 
     SVGWidget *svg;
+    float strength = 0.5f;
 
     LRPatinaWidget(const string &filename, const Vec &size);
+
+    void draw(NVGcontext *vg) override;
 
     void randomize();
 
@@ -893,7 +896,7 @@ struct LRPatinaWidget : FramebufferWidget {
  */
 struct PanelBorder : TransparentWidget {
     void draw(NVGcontext *vg) override {
-        NVGcolor borderColor = nvgRGBAf(0.99, 0.5, 0.5, 0.9);
+        NVGcolor borderColor = nvgRGBAf(0.5, 0.5, 0.5, 0.5);
         nvgBeginPath(vg);
         nvgRect(vg, .5f, .5f, box.size.x - 1.f, box.size.y - 1.f);
         nvgStrokeColor(vg, borderColor);
@@ -909,6 +912,7 @@ struct PanelBorder : TransparentWidget {
 struct LRPanel : FramebufferWidget, LRGestaltModifier {
     SVGWidget *panelWidget;
     vector<LRGradientWidget *> gradients;
+    LRPatinaWidget *patinaWidget;
 
     bool *gradient;
     bool *patina;
@@ -921,6 +925,8 @@ struct LRPanel : FramebufferWidget, LRGestaltModifier {
     void step() override;
 
     void setGradientVariant(bool enabled);
+
+    void setPatina(bool enabled);
 
     void setupGestalt(LRGestalt *gestalt, bool *gradient, bool *patina);
 

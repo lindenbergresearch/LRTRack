@@ -28,6 +28,8 @@ LRPatinaWidget::LRPatinaWidget(const string &filename, const Vec &size) {
     svg = new SVGWidget();
     svg->setSVG(SVG::load(assetPlugin(plugin, filename)));
 
+    addChild(svg);
+
     box.size = size;
 }
 
@@ -40,6 +42,14 @@ void LRPatinaWidget::randomize() {
     float maxy = svg->box.size.y - box.size.y;
 
     svg->box.pos = Vec(-randomUniform() * maxx, -randomUniform() * maxy);
+}
 
-    dirty = true;
+
+/**
+ * @brief Override draw to set global (widget) transparency (strength)
+ * @param vg
+ */
+void LRPatinaWidget::draw(NVGcontext *vg) {
+    nvgGlobalAlpha(vg, strength);
+    Widget::draw(vg);
 }
