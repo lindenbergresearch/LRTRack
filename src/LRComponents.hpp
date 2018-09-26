@@ -9,14 +9,6 @@
 #define LCD_LETTER_SPACING 0
 
 #define LED_DEFAULT_COLOR nvgRGBAf(0.1, 0.3, 0.9, 0.99)
-#define LED_RED_COLOR nvgRGBAf(0.9, 0.1, 0.1, 0.99)
-#define LED_GREEN_COLOR nvgRGBAf(0.1, 0.9, 0.3, 0.99)
-
-#define PANEL_GRADIENT_INNER nvgRGBAf(1.5f * .369f, 1.5f * 0.357f, 1.5f * 0.3333f, 0.33f)
-#define PANEL_GRADIENT_OUTER nvgRGBAf(0.0f, 0.0f, 0.0f, 0.1f)
-
-#define PANEL_AGEDGRADIENT_INNER nvgRGBAf(0.5, 0.5, 0.f, 0.1f)
-#define PANEL_AGEDGRADIENT_OUTER nvgRGBAf(0.f, 0.f, 0.f, 0.73f)
 
 /* show values of all knobs */
 #define DEBUG_VALUES false

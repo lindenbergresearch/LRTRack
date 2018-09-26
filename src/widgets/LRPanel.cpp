@@ -53,17 +53,17 @@ void LRPanel::init() {
     addChild(patinaWidget);
 
     /* setup gradient variants */
-    auto gradientDark = new LRGradientWidget(box.size, PANEL_GRADIENT_INNER, PANEL_GRADIENT_OUTER);
+    auto gradientDark = new LRGradientWidget(box.size, nvgRGBAf(0.554, 0.535f, 0.5f, 0.33f), nvgRGBAf(0.0f, 0.0f, 0.0f, 0.1f));
     gradientDark->visible = false;
     addChild(gradientDark);
     gradients.push_back(gradientDark);
 
-    auto gradientLight = new LRGradientWidget(box.size, PANEL_GRADIENT_INNER, PANEL_GRADIENT_OUTER, Vec(-10, -10));
+    auto gradientLight = new LRGradientWidget(box.size, nvgRGBAf(0.3, 0.3, 0.f, 0.09f), nvgRGBAf(0.f, 0.f, 0.f, 0.7f), Vec(-10, -10));
     gradientLight->visible = false;
     addChild(gradientLight);
     gradients.push_back(gradientLight);
 
-    auto gradientAged = new LRGradientWidget(box.size, PANEL_AGEDGRADIENT_INNER, PANEL_AGEDGRADIENT_OUTER, Vec(-10, -10));
+    auto gradientAged = new LRGradientWidget(box.size, nvgRGBAf(0.5, 0.5, 0.f, 0.1f), nvgRGBAf(0.f, 0.f, 0.f, 0.73f), Vec(-10, -10));
     gradientAged->visible = false;
     addChild(gradientAged);
     gradients.push_back(gradientAged);
