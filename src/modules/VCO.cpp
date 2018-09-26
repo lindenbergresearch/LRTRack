@@ -167,8 +167,6 @@ VCOWidget::VCOWidget(VCO *module) : LRModuleWidget(module) {
 
     panel->init();
 
-    debug("[%p] construct widget!!!", module);
-
     addChild(panel);
     module->panel = panel;
     box.size = panel->box.size;

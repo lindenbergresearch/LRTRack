@@ -35,7 +35,7 @@ LRPanel::LRPanel() {
 
 
 /**
- * @brief Initialize a Panel and setup gestalt SVG
+ * @brief Initialize a Panel and setup gestalt and UI
  */
 void LRPanel::init() {
     auto svg = getSVGVariant(DARK);
@@ -45,6 +45,12 @@ void LRPanel::init() {
     }
 
     box.size = panelWidget->box.size.div(RACK_GRID_SIZE).round().mult(RACK_GRID_SIZE);
+
+    /* setup patina widget */
+    patinaWidget = new LRPatinaWidget("res/panels/LaikaPatina.svg", box.size);
+    patinaWidget->randomize();
+    patinaWidget->visible = *patina;
+    addChild(patinaWidget);
 
     /* setup gradient variants */
     auto gradientDark = new LRGradientWidget(box.size, PANEL_GRADIENT_INNER, PANEL_GRADIENT_OUTER);
@@ -80,14 +86,27 @@ void LRPanel::setGradientVariant(bool invert) {
     for (auto i = 0; i < gradients.size(); i++) {
         if (*gestalt - 1 == i) gradients[i]->visible = *gradient;
         else gradients[i]->visible = false;
-        debug("gradient:%i gest:%i index:%i isVisable:%i", *gradient, *gestalt, i, gradients[i]->visible);
+        //debug("gradient:%i gest:%i index:%i isVisable:%i", *gradient, *gestalt, i, gradients[i]->visible);
     }
-
 
     dirty = true;
 }
 
 
+/**
+ * @brief Setup patina on / off
+ * @param enabled
+ */
+void LRPanel::setPatina(bool enabled) {
+    *patina = enabled;
+    patinaWidget->visible = *patina;
+    dirty = true;
+}
+
+
+/**
+ * @brief One frame increment from render engine triggered
+ */
 void LRPanel::step() {
     if (isNear(gPixelRatio, 1.0)) {
         // Small details draw poorly at low DPI, so oversample when drawing to the framebuffer
@@ -95,7 +114,7 @@ void LRPanel::step() {
     }
 
     if (invalidGestalt()) {
-        debug("gestalt about to change: %i ==> %i", this->prevID, *this->gestalt);
+        //debug("gestalt about to change: %i ==> %i", this->prevID, *this->gestalt);
         auto svg = getSVGVariant(*gestalt - 1);
 
         if (svg != nullptr) {
@@ -104,6 +123,7 @@ void LRPanel::step() {
         }
 
         setGradientVariant(false);
+        setPatina(*patina);
 
         dirty = true;
         syncGestalt();

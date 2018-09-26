@@ -75,7 +75,6 @@ struct LRModuleWidget : ModuleWidget {
     explicit LRModuleWidget(LRModule *module) : ModuleWidget(module) {
         // pass gestalt pointer to module, to point to the origin at the widget
         module->gestalt = &gestalt;
-        debug("[%p] construct widget", module);
     }
 
 
@@ -117,6 +116,7 @@ struct LRModuleWidget : ModuleWidget {
         void onAction(EventAction &e) override {
             if (panel != nullptr) {
                 panel->setGradientVariant(true);
+                panel->dirty = true;
             }
         }
 
@@ -139,7 +139,8 @@ struct LRModuleWidget : ModuleWidget {
 
         void onAction(EventAction &e) override {
             if (panel != nullptr) {
-                //TODO: patina
+                panel->setPatina(!*panel->patina); // invert flag on trigger
+                panel->dirty = true;
             }
         }
 
