@@ -1,5 +1,6 @@
 #pragma once
 
+#include <map>
 #include "rack.hpp"
 #include "asset.hpp"
 #include "widgets.hpp"
@@ -17,6 +18,8 @@ using namespace rack;
 using std::vector;
 using std::shared_ptr;
 using std::string;
+using std::map;
+
 
 extern Plugin *plugin;
 
@@ -194,7 +197,7 @@ struct LRGestaltModifier {
     LRGestalt prevID = NIL; //init with unset to trigger first invalidation
 
     /* SVG pool - Holds all needed SVG images */
-    vector<shared_ptr<SVG>> pool;
+    map<LRGestalt, shared_ptr<SVG>> pool;
 
 
     /*
@@ -218,25 +221,38 @@ struct LRGestaltModifier {
 
 
     /**
-     * @brief Push new SVG to image pool
-     * @param svg
+     * @brief Add new SVG to variant pool
+     * @param gestalt Matching ID for variant
+     * @param svg SVG Image
      */
-    void addSVGVariant(shared_ptr<SVG> svg) {
-        pool.push_back(svg);
+    void addSVGVariant(LRGestalt gestalt, shared_ptr<SVG> svg) {
+        pool[gestalt] = svg;
+
+        /* first element inserted => set default */
+        if (pool.size() == 1) {
+            pool[LRGestalt::NIL] = svg;
+        }
+    }
+
+
+    shared_ptr<SVG> getSVGVariant() {
+        return getSVGVariant(*gestalt);
     }
 
 
     /**
-     * @brief Get SVG from pool by index
-     * @param index Index starting at 0
-     * @return
+     * @brief Get SVG Image from pool matching the gestalt
+     * @param gestalt
+     * @return SVG Image if found, default if not found
      */
-    shared_ptr<SVG> getSVGVariant(unsigned long index) {
-        if (index <= pool.capacity()) {
-            return pool[index];
-        } else {
-            return nullptr;
+    shared_ptr<SVG> getSVGVariant(LRGestalt gestalt) {
+
+        /* return default value if key not found */
+        if (pool.count(gestalt) != 1) {
+            return pool[LRGestalt::NIL];
         }
+
+        return pool[gestalt];
     }
 
 };
