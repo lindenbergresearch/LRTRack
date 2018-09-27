@@ -213,9 +213,9 @@ WestcoastWidget::WestcoastWidget(Westcoast *module) : LRModuleWidget(module) {
     panel = new LRPanel();
     panel->setupGestalt(&gestalt, &gradient, &patina);
 
-    panel->addSVGVariant(SVG::load(assetPlugin(plugin, "res/panels/Westcoast.svg")));
-    panel->addSVGVariant(SVG::load(assetPlugin(plugin, "res/panels/Westcoast.svg")));
-    panel->addSVGVariant(SVG::load(assetPlugin(plugin, "res/panels/WestcoastAged.svg")));
+    panel->addSVGVariant(LRGestalt::DARK, SVG::load(assetPlugin(plugin, "res/panels/Westcoast.svg")));
+    panel->addSVGVariant(LRGestalt::LIGHT, SVG::load(assetPlugin(plugin, "res/panels/Westcoast.svg")));
+    panel->addSVGVariant(LRGestalt::AGED, SVG::load(assetPlugin(plugin, "res/panels/WestcoastAged.svg")));
 
     panel->init();
 

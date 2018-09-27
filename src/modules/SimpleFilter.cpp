@@ -143,9 +143,9 @@ SimpleFilterWidget::SimpleFilterWidget(SimpleFilter *module) : LRModuleWidget(mo
     panel = new LRPanel();
     panel->setupGestalt(&gestalt, &gradient, &patina);
 
-    panel->addSVGVariant(SVG::load(assetPlugin(plugin, "res/panels/SimpleFilter.svg")));
-    panel->addSVGVariant(SVG::load(assetPlugin(plugin, "res/panels/SimpleFilter.svg")));
-    panel->addSVGVariant(SVG::load(assetPlugin(plugin, "res/panels/SimpleFilter.svg")));
+    panel->addSVGVariant(LRGestalt::DARK, SVG::load(assetPlugin(plugin, "res/panels/SimpleFilter.svg")));
+    //panel->addSVGVariant(SVG::load(assetPlugin(plugin, "res/panels/SimpleFilter.svg")));
+    // panel->addSVGVariant(SVG::load(assetPlugin(plugin, "res/panels/SimpleFilter.svg")));
 
     panel->init();
 

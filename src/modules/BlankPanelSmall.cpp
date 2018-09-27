@@ -142,9 +142,9 @@ BlankPanelWidgetSmall::BlankPanelWidgetSmall(BlankPanelSmall *module) : LRModule
     panel = new LRPanel();
     panel->setupGestalt(&gestalt, &gradient, &patina);
 
-    panel->addSVGVariant(SVG::load(assetPlugin(plugin, "res/panels/BlankPanelSmall.svg")));
-    panel->addSVGVariant(SVG::load(assetPlugin(plugin, "res/panels/BlankPanelSmall.svg")));
-    panel->addSVGVariant(SVG::load(assetPlugin(plugin, "res/panels/BlankPanelSmall.svg")));
+    panel->addSVGVariant(LRGestalt::DARK, SVG::load(assetPlugin(plugin, "res/panels/BlankPanelSmall.svg")));
+    // panel->addSVGVariant(SVG::load(assetPlugin(plugin, "res/panels/BlankPanelSmall.svg")));
+    // panel->addSVGVariant(SVG::load(assetPlugin(plugin, "res/panels/BlankPanelSmall.svg")));
 
     panel->init();
 

@@ -103,9 +103,9 @@ MS20FilterWidget::MS20FilterWidget(MS20Filter *module) : LRModuleWidget(module) 
     panel->setupGestalt(&gestalt, &gradient, &patina);
 
 
-    panel->addSVGVariant(SVG::load(assetPlugin(plugin, "res/panels/MS20.svg")));
-    panel->addSVGVariant(SVG::load(assetPlugin(plugin, "res/panels/MS20.svg")));
-    panel->addSVGVariant(SVG::load(assetPlugin(plugin, "res/panels/MS20.svg")));
+    panel->addSVGVariant(LRGestalt::DARK, SVG::load(assetPlugin(plugin, "res/panels/MS20.svg")));
+    // panel->addSVGVariant(SVG::load(assetPlugin(plugin, "res/panels/MS20.svg")));
+    // panel->addSVGVariant(SVG::load(assetPlugin(plugin, "res/panels/MS20.svg")));
 
     panel->init();
 

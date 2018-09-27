@@ -145,7 +145,7 @@ QuickMixWidget::QuickMixWidget(QuickMix *module) : LRModuleWidget(module) {
     panel = new LRPanel();
     panel->setupGestalt(&gestalt, &gradient, &patina);
 
-    panel->addSVGVariant(SVG::load(assetPlugin(plugin, "res/panels/QuickMix.svg")));
+    panel->addSVGVariant(LRGestalt::DARK, SVG::load(assetPlugin(plugin, "res/panels/QuickMix.svg")));
     //  panel->addSVGVariant(SVG::load(assetPlugin(plugin, "res/panels/QuickMix.svg")));
     //  panel->addSVGVariant(SVG::load(assetPlugin(plugin, "res/panels/QuickMix.svg")));
 
