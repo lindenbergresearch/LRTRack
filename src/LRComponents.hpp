@@ -60,16 +60,16 @@ struct LRLCDWidget : Label {
     bool active = true;
     float value = 0.0;
     unsigned char length = 0;
-    std::string format;
-    std::vector<std::string> items;
+    string format;
+    vector<string> items;
 
-    std::string s1;
-    std::string s2;
+    string s1;
+    string s2;
 
     /**
      * @brief Constructor
      */
-    LRLCDWidget(NVGcolor fg, unsigned char length, std::string format, LCDType type, float fontsize = LCD_FONTSIZE);
+    LRLCDWidget(NVGcolor fg, unsigned char length, string format, LCDType type, float fontsize = LCD_FONTSIZE);
 
     /**
      * @brief Draw LCD display
@@ -78,7 +78,7 @@ struct LRLCDWidget : Label {
     void draw(NVGcontext *vg) override;
 
 
-    inline void addItem(std::string name) {
+    inline void addItem(string name) {
         items.push_back(name);
     }
 };
@@ -336,7 +336,7 @@ public:
      * @brief Hook into setSVG() method to setup box dimensions correct for indicator
      * @param svg
      */
-    void setSVG(std::shared_ptr<SVG> svg);
+    void setSVG(shared_ptr<SVG> svg);
 
 
     /**
@@ -955,7 +955,7 @@ struct SVGRotator : FramebufferWidget {
      * @param svg Pointer to SVG image
      * @param angle Increment angle per step
      */
-    SVGRotator static *create(Vec pos, std::shared_ptr<SVG> svg, float inc, float scale = 1.0f) {
+    SVGRotator static *create(Vec pos, shared_ptr<SVG> svg, float inc, float scale = 1.0f) {
         SVGRotator *rotator = FramebufferWidget::create<SVGRotator>(pos);
 
         rotator->setSVG(svg);
@@ -966,7 +966,7 @@ struct SVGRotator : FramebufferWidget {
     }
 
 
-    void setSVG(std::shared_ptr<SVG> svg);
+    void setSVG(shared_ptr<SVG> svg);
     void step() override;
 };
 
