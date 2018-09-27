@@ -116,7 +116,7 @@ void LRPanel::step() {
 
     if (invalidGestalt()) {
         //debug("gestalt about to change: %i ==> %i", this->prevID, *this->gestalt);
-        auto svg = getSVGVariant(*gestalt - 1);
+        auto svg = getSVGVariant(*gestalt);
 
         if (svg != nullptr) {
             panelWidget->setSVG(svg);
