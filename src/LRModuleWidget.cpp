@@ -8,7 +8,7 @@ using namespace lrt;
 Menu *LRModuleWidget::createContextMenu() {
     Menu *menu = ModuleWidget::createContextMenu();
 
-    auto count = panel->pool.size();
+    auto count = panel->pool.size() - 1; // NIL does not count!
 
     auto *spacerLabel = new MenuLabel();
     menu->addChild(spacerLabel);
@@ -18,26 +18,26 @@ Menu *LRModuleWidget::createContextMenu() {
     menu->addChild(sectionLabel);
 
     auto *darkGestaltItem = new GestaltItem(DARK, this);
-    darkGestaltItem->text = "Dark";
+    darkGestaltItem->text = "Classic Dark";
     menu->addChild(darkGestaltItem);
 
     if (count > 1) {
         auto *lightGestaltItem = new GestaltItem(LIGHT, this);
-        lightGestaltItem->text = "Light";
+        lightGestaltItem->text = "Bright Light";
         menu->addChild(lightGestaltItem);
     } else {
         auto *lightGestaltLabel = new MenuLabel();
-        lightGestaltLabel->text = "Light";
+        lightGestaltLabel->text = "Bright Light";
         menu->addChild(lightGestaltLabel);
     }
 
     if (count > 2) {
         auto *agedGestaltItem = new GestaltItem(AGED, this);
-        agedGestaltItem->text = "Aged";
+        agedGestaltItem->text = "Alternate/Aged";
         menu->addChild(agedGestaltItem);
     } else {
         auto *agedGestaltLabel = new MenuLabel();
-        agedGestaltLabel->text = "Aged";
+        agedGestaltLabel->text = "Alternate/Aged";
         menu->addChild(agedGestaltLabel);
     }
 
