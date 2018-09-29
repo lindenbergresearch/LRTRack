@@ -9,7 +9,7 @@
 #define LCD_FONTSIZE 11
 #define LCD_LETTER_SPACING 0
 
-#define LED_DEFAULT_COLOR nvgRGBAf(0.1, 0.3, 0.9, 0.99)
+#define LED_DEFAULT_COLOR nvgRGBAf(0.9, 0.1, 0.12, 1.0)
 
 /* show values of all knobs */
 #define DEBUG_VALUES false
@@ -895,7 +895,7 @@ public:
 struct LRPatinaWidget : TransparentWidget {
 
     SVGWidget *svg;
-    float strength = 0.5f;
+    float strength = 0.99f;
 
     LRPatinaWidget(const string &filename, const Vec &size);
 
