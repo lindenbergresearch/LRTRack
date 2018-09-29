@@ -68,6 +68,7 @@ struct LRModuleWidget : ModuleWidget {
     bool gradient = true;       // gradient used at panel
     bool patina = false;        // patina used at panel
 
+    bool noGestalt; // if set all gestalt options and menus are disabled
     /**
      * @brief Default constructor derived from rack
      * @param module LRModule instance

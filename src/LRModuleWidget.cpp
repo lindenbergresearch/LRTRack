@@ -10,6 +10,9 @@ Menu *LRModuleWidget::createContextMenu() {
 
     auto count = panel->pool.size() - 1; // NIL does not count!
 
+
+    if (noGestalt) return menu; // if gestalt is disabled do nothing
+
     auto *spacerLabel = new MenuLabel();
     menu->addChild(spacerLabel);
 
