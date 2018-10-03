@@ -4,6 +4,7 @@
 #include "rack.hpp"
 #include "asset.hpp"
 #include "widgets.hpp"
+#include "LRGestalt.hpp"
 
 #define LCD_FONT_DIG7 "res/digital-7.ttf"
 #define LCD_FONTSIZE 11
@@ -28,17 +29,6 @@ namespace lrt {
 /* Type definitions for common used data structures */
 typedef std::shared_ptr<rack::Font> TrueType;
 typedef std::vector<std::string> StringVector;
-
-
-/**
- * @brief Gestalt IDs
- */
-enum LRGestalt : int {
-    NIL,    // virtuell element to mark unset
-    DARK,   // DARK theme (as standard)
-    LIGHT,  // LIGHT theme
-    AGED    // LIGHT theme with AGED look
-};
 
 
 /**
@@ -184,78 +174,6 @@ public:
     void draw(NVGcontext *vg) override;
 };
 
-
-/**
- * Represents all data needed by skinned versions of UI
- */
-struct LRGestaltModifier {
-
-    /* pointer to current skin id */
-    LRGestalt *gestalt = nullptr;
-
-    /* holds the last used ID for recognizing changes */
-    LRGestalt prevID = NIL; //init with unset to trigger first invalidation
-
-    /* SVG pool - Holds all needed SVG images */
-    map<LRGestalt, shared_ptr<SVG>> pool;
-
-
-    /*
-     * Check if gestalt has been changed
-     */
-    bool invalidGestalt() {
-        if (gestalt != nullptr) {
-            return *gestalt != prevID;
-        }
-
-        return false;
-    }
-
-
-    /**
-     * @brief Synchronize local gestalt ID
-     */
-    void syncGestalt() {
-        prevID = *gestalt;
-    }
-
-
-    /**
-     * @brief Add new SVG to variant pool
-     * @param gestalt Matching ID for variant
-     * @param svg SVG Image
-     */
-    void addSVGVariant(LRGestalt gestalt, shared_ptr<SVG> svg) {
-        pool[gestalt] = svg;
-
-        /* first element inserted => set default */
-        if (pool.size() == 1) {
-            pool[LRGestalt::NIL] = svg;
-        }
-    }
-
-
-    shared_ptr<SVG> getSVGVariant() {
-        return getSVGVariant(*gestalt);
-    }
-
-
-    /**
-     * @brief Get SVG Image from pool matching the gestalt
-     * @param gestalt
-     * @return SVG Image if found, default if not found
-     */
-    shared_ptr<SVG> getSVGVariant(LRGestalt gestalt) {
-
-        /* return default value if key not found */
-        if (pool.count(gestalt) != 1) {
-            return pool[LRGestalt::NIL];
-        }
-
-        return pool[gestalt];
-    }
-
-};
 
 
 /**
@@ -960,6 +878,7 @@ struct SVGRotator : FramebufferWidget {
     float angle = 0;
     float inc;
     float scale;
+    float transperency;
 
 
     SVGRotator();
@@ -970,17 +889,22 @@ struct SVGRotator : FramebufferWidget {
      * @param pos Position
      * @param svg Pointer to SVG image
      * @param angle Increment angle per step
+     * @param scale Scaling of the SVG / default 100%
+     * @param transperency Transperancy of the SVG / default 100%
      */
-    SVGRotator static *create(Vec pos, shared_ptr<SVG> svg, float inc, float scale = 1.0f) {
+    SVGRotator static *create(Vec pos, shared_ptr<SVG> svg, float inc, float scale = 1.0f, float transperency = 1.f) {
         SVGRotator *rotator = FramebufferWidget::create<SVGRotator>(pos);
 
         rotator->setSVG(svg);
         rotator->inc = inc;
         rotator->scale = scale;
+        rotator->transperency = transperency;
 
         return rotator;
     }
 
+
+    void draw(NVGcontext *vg) override;
 
     void setSVG(shared_ptr<SVG> svg);
     void step() override;

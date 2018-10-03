@@ -28,15 +28,22 @@ void SVGRotator::setSVG(std::shared_ptr<SVG> svg) {
 void SVGRotator::step() {
     tw->identity();
 
-    angle = fmodf(angle + inc, 2 * M_PI);;
+    angle = fmodf(angle + inc, 2 * (float) M_PI);;
 
     Vec center = sw->box.getCenter();
     tw->translate(center);
     tw->rotate(angle);
+    tw->scale(Vec(scale, scale));
     tw->translate(center.neg());
 
     dirty = true;
 
     FramebufferWidget::step();
+}
+
+
+void SVGRotator::draw(NVGcontext *vg) {
+    nvgGlobalAlpha(vg, transperency);
+    FramebufferWidget::draw(vg);
 }
 }
