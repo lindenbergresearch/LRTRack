@@ -47,7 +47,7 @@ BlankPanelWidget::BlankPanelWidget(BlankPanel *module) : LRModuleWidget(module) 
 
     panel->addSVGVariant(LRGestalt::DARK, SVG::load(assetPlugin(plugin, "res/panels/BlankPanel.svg")));
     panel->addSVGVariant(LRGestalt::LIGHT, SVG::load(assetPlugin(plugin, "res/panels/BlankPanelLight.svg")));
-    panel->addSVGVariant(LRGestalt::AGED, SVG::load(assetPlugin(plugin, "res/panels/BlankPanelLight.svg")));
+    panel->addSVGVariant(LRGestalt::AGED, SVG::load(assetPlugin(plugin, "res/panels/BlankPanelAged.svg")));
 
     panel->init();
 
@@ -55,13 +55,21 @@ BlankPanelWidget::BlankPanelWidget(BlankPanel *module) : LRModuleWidget(module) 
 
     box.size = panel->box.size;
 
+    panel->patinaWidgetClassic->strength = .5f;
+    panel->patinaWidgetWhite->strength = .5f;
+
+    panel->gradients[DARK] = new LRGradientWidget(box.size, nvgRGBAf(0.5, 0.5, 0.54f, 0.87f), nvgRGBAf(0.f, 0.f, 0.f, 0.5f), Vec(10, -10));
+    //panel->gradients[LIGHT] = new LRGradientWidget(box.size, nvgRGBAf(0.3, 0.3, 0.f, 0.09f), nvgRGBAf(0.f, 0.f, 0.f, 0.7f), Vec(-10,
+    // -10));
+
     /* panel->setInner(nvgRGBAf(1.4f * .369f, 1.4f * 0.357f, 1.5f * 0.3333f, 0.17f));
      panel->setOuter(nvgRGBAf(0.f, 0.f, 0.f, 0.15f));*/
 
-    float speed = 0.004;
+    float speed = 0.007;
 
-    addChild(SVGRotator::create(Vec(140.5, 65), SVG::load(assetPlugin(plugin, "res/elements/CogBig.svg")), speed));
-    addChild(SVGRotator::create(Vec(120, 96.7), SVG::load(assetPlugin(plugin, "res/elements/CogSmall.svg")), -speed * 1.6f));
+    addChild(SVGRotator::create(Vec(105.5, 55), SVG::load(assetPlugin(plugin, "res/elements/CogBig.svg")), speed, 0.7, 0.4));
+    addChild(SVGRotator::create(Vec(139, 43.7), SVG::load(assetPlugin(plugin, "res/elements/CogMiddle.svg")), speed * 1.9f, 0.7, 0.4));
+    addChild(SVGRotator::create(Vec(120, 40), SVG::load(assetPlugin(plugin, "res/elements/CogSmall.svg")), -speed * 1.3f, 0.7, 0.4));
 
 
     // ***** SCREWS **********
