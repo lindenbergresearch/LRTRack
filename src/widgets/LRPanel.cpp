@@ -62,22 +62,20 @@ void LRPanel::init() {
 
 
     /* setup gradient variants */
-    auto gradientDark = new LRGradientWidget(box.size, nvgRGBAf(1.4f * .369f, 1.4f * 0.357f, 1.4f * 0.3333f, 0.2f), nvgRGBAf(0.0f, 0.0f,
-                                                                                                                             0.0f, 0.2f),
-                                             Vec(-10, 10));
+    auto gradientDark = new LRGradientWidget(box.size, nvgRGBAf(.5f, .5f, .5f, 0.2f), nvgRGBAf(0.0f, 0.0f, 0.0f, 0.2f), Vec(-10, 10));
     gradientDark->visible = false;
     addChild(gradientDark);
-    gradients.push_back(gradientDark);
+    gradients[LRGestalt::DARK] = gradientDark;
 
     auto gradientLight = new LRGradientWidget(box.size, nvgRGBAf(0.3, 0.3, 0.f, 0.09f), nvgRGBAf(0.f, 0.f, 0.f, 0.7f), Vec(-10, -10));
     gradientLight->visible = false;
     addChild(gradientLight);
-    gradients.push_back(gradientLight);
+    gradients[LRGestalt::LIGHT] = gradientLight;
 
     auto gradientAged = new LRGradientWidget(box.size, nvgRGBAf(0.5, 0.5, 0.f, 0.1f), nvgRGBAf(0.f, 0.f, 0.f, 0.73f), Vec(-10, -10));
     gradientAged->visible = false;
     addChild(gradientAged);
-    gradients.push_back(gradientAged);
+    gradients[LRGestalt::AGED] = gradientAged;
 
     auto *pb = new PanelBorder();
     pb->box.size = box.size;
@@ -95,8 +93,8 @@ void LRPanel::setGradientVariant(bool invert) {
     *gradient = invert == !*gradient;
 
     for (auto i = 0u; i < gradients.size(); i++) {
-        if (*gestalt - 1 == i) gradients[i]->visible = *gradient;
-        else gradients[i]->visible = false;
+        if (*gestalt - 1 == i) gradients[*gestalt]->visible = *gradient;
+        else gradients[*gestalt]->visible = false;
         //debug("gradient:%i gest:%i index:%i isVisable:%i", *gradient, *gestalt, i, gradients[i]->visible);
     }
 
