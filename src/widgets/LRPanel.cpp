@@ -92,11 +92,11 @@ void LRPanel::init() {
 void LRPanel::setGradientVariant(bool invert) {
     *gradient = invert == !*gradient;
 
-    for (auto i = 0u; i < gradients.size(); i++) {
-        if (*gestalt - 1 == i) gradients[*gestalt]->visible = *gradient;
-        else gradients[*gestalt]->visible = false;
-        //debug("gradient:%i gest:%i index:%i isVisable:%i", *gradient, *gestalt, i, gradients[i]->visible);
-    }
+    gradients[LRGestalt::DARK]->visible = false;
+    gradients[LRGestalt::LIGHT]->visible = false;
+    gradients[LRGestalt::AGED]->visible = false;
+
+    gradients[*gestalt]->visible = *gradient;
 
     dirty = true;
 }
