@@ -54,15 +54,15 @@ void LRPanel::init() {
     patinaWidgetWhite->visible = *patina;
     addChild(patinaWidgetWhite);
 
-    patinaWidgetClassic = new LRPatinaWidget("res/panels/ClassicPatina.svg", box.size);
+    patinaWidgetClassic = new LRPatinaWidget("res/panels/AlternatePatina.svg", box.size);
     patinaWidgetClassic->randomize();
-    patinaWidgetClassic->strength = .5f;
+    patinaWidgetClassic->strength = .4f;
     patinaWidgetClassic->visible = *patina;
     addChild(patinaWidgetClassic);
 
 
     /* setup gradient variants */
-    auto gradientDark = new LRGradientWidget(box.size, nvgRGBAf(.5f, .5f, .5f, 0.2f), nvgRGBAf(0.0f, 0.0f, 0.0f, 0.2f), Vec(-10, 10));
+    auto gradientDark = new LRGradientWidget(box.size, nvgRGBAf(.4f, .4f, .5f, 0.3f), nvgRGBAf(0.0f, 0.0f, 0.0f, 0.2f), Vec(-10, 10));
     gradientDark->visible = false;
     addChild(gradientDark);
     gradients[LRGestalt::DARK] = gradientDark;
