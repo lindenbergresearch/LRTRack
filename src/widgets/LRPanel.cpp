@@ -1,5 +1,6 @@
 #include <window.hpp>
 #include "../LRComponents.hpp"
+#include "../LRGestalt.hpp"
 
 namespace lrt {
 
@@ -48,13 +49,22 @@ void LRPanel::init() {
     box.size = panelWidget->box.size.div(RACK_GRID_SIZE).round().mult(RACK_GRID_SIZE);
 
     /* setup patina widget */
-    patinaWidget = new LRPatinaWidget("res/panels/LaikaPatina.svg", box.size);
-    patinaWidget->randomize();
-    patinaWidget->visible = *patina;
-    addChild(patinaWidget);
+    patinaWidgetWhite = new LRPatinaWidget("res/panels/WhitePatina.svg", box.size);
+    patinaWidgetWhite->randomize();
+    patinaWidgetWhite->visible = *patina;
+    addChild(patinaWidgetWhite);
+
+    patinaWidgetClassic = new LRPatinaWidget("res/panels/ClassicPatina.svg", box.size);
+    patinaWidgetClassic->randomize();
+    patinaWidgetClassic->strength = .5f;
+    patinaWidgetClassic->visible = *patina;
+    addChild(patinaWidgetClassic);
+
 
     /* setup gradient variants */
-    auto gradientDark = new LRGradientWidget(box.size, nvgRGBAf(0.5, 0.5f, 0.6f, 0.33f), nvgRGBAf(0.0f, 0.0f, 0.0f, 0.2f), Vec(-100, -30));
+    auto gradientDark = new LRGradientWidget(box.size, nvgRGBAf(1.4f * .369f, 1.4f * 0.357f, 1.4f * 0.3333f, 0.2f), nvgRGBAf(0.0f, 0.0f,
+                                                                                                                             0.0f, 0.2f),
+                                             Vec(-10, 10));
     gradientDark->visible = false;
     addChild(gradientDark);
     gradients.push_back(gradientDark);
@@ -100,7 +110,13 @@ void LRPanel::setGradientVariant(bool invert) {
  */
 void LRPanel::setPatina(bool enabled) {
     *patina = enabled;
-    patinaWidget->visible = *patina;
+
+    patinaWidgetClassic->visible = *patina && *gestalt == LRGestalt::DARK;
+
+    // TODO: extra patina for aged mode?
+    patinaWidgetWhite->visible = *patina && *gestalt != LRGestalt::DARK;
+
+
     dirty = true;
 }
 
