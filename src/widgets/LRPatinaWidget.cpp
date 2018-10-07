@@ -25,10 +25,13 @@ using std::string;
  * Standard constructor with a given filename
  */
 LRPatinaWidget::LRPatinaWidget(const string &filename, const Vec &size) {
+    tw = new TransformWidget();
+    addChild(tw);
+
     svg = new SVGWidget();
     svg->setSVG(SVG::load(assetPlugin(plugin, filename)));
 
-    addChild(svg);
+    tw->addChild(svg);
 
     box.size = size;
 }
@@ -40,6 +43,7 @@ LRPatinaWidget::LRPatinaWidget(const string &filename, const Vec &size) {
 void LRPatinaWidget::randomize() {
     float maxx = svg->box.size.x - box.size.x;
     float maxy = svg->box.size.y - box.size.y;
+
 
     svg->box.pos = Vec(-randomUniform() * maxx, -randomUniform() * maxy);
 }
