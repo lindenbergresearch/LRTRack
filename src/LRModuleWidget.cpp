@@ -126,6 +126,7 @@ void LRModuleWidget::fromJson(json_t *rootJ) {
  */
 void LRModuleWidget::randomize() {
     ModuleWidget::randomize();
-    panel->patinaWidget->randomize();
+    panel->patinaWidgetClassic->randomize();
+    panel->patinaWidgetWhite->randomize();
     panel->dirty = true;
 }
