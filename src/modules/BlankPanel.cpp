@@ -58,7 +58,11 @@ BlankPanelWidget::BlankPanelWidget(BlankPanel *module) : LRModuleWidget(module) 
     panel->patinaWidgetClassic->strength = .5f;
     panel->patinaWidgetWhite->strength = .5f;
 
-    panel->gradients[DARK] = new LRGradientWidget(box.size, nvgRGBAf(0.5, 0.5, 0.54f, 0.87f), nvgRGBAf(0.f, 0.f, 0.f, 0.5f), Vec(10, -10));
+    panel->gradients[DARK]->setInnerColor(nvgRGBAf(0.5, 0.5, 0.64f, 0.1f));
+    panel->gradients[DARK]->setOuterColor(nvgRGBAf(0.f, 0.f, 0.f, 0.3f));
+
+    panel->gradients[DARK]->setGradientOffset(Vec(0, 0), Vec(box.size.x * 0.8f, box.size.y * 0.8f));
+
     //panel->gradients[LIGHT] = new LRGradientWidget(box.size, nvgRGBAf(0.3, 0.3, 0.f, 0.09f), nvgRGBAf(0.f, 0.f, 0.f, 0.7f), Vec(-10,
     // -10));
 
