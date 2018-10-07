@@ -175,7 +175,6 @@ public:
 };
 
 
-
 /**
  * @brief The base of all knobs used in LR panels, includes a indicator
  */
@@ -813,7 +812,10 @@ public:
 struct LRPatinaWidget : TransparentWidget {
 
     SVGWidget *svg;
+    TransformWidget *tw;
+
     float strength = 0.99f;
+    bool rotate = true;
 
     LRPatinaWidget(const string &filename, const Vec &size);
 
@@ -844,8 +846,8 @@ struct PanelBorder : TransparentWidget {
  */
 struct LRPanel : FramebufferWidget, LRGestaltModifier {
     SVGWidget *panelWidget;
-    vector<LRGradientWidget *> gradients;
-    LRPatinaWidget *patinaWidget;
+    map<LRGestalt, LRGradientWidget *> gradients;
+    LRPatinaWidget *patinaWidgetClassic, *patinaWidgetWhite;
 
     bool *gradient;
     bool *patina;
