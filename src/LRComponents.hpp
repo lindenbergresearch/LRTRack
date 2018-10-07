@@ -802,6 +802,11 @@ public:
     }
 
 
+    const NVGcolor &getInnerColor() const;
+    void setInnerColor(const NVGcolor &innerColor);
+    const NVGcolor &getOuterColor() const;
+    void setOuterColor(const NVGcolor &outerColor);
+
     void draw(NVGcontext *vg) override;
 };
 

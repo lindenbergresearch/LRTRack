@@ -14,4 +14,24 @@ void LRGradientWidget::draw(NVGcontext *vg) {
     nvgFill(vg);
 }
 
+
+const NVGcolor &LRGradientWidget::getInnerColor() const {
+    return innerColor;
+}
+
+
+void LRGradientWidget::setInnerColor(const NVGcolor &innerColor) {
+    LRGradientWidget::innerColor = innerColor;
+}
+
+
+const NVGcolor &LRGradientWidget::getOuterColor() const {
+    return outerColor;
+}
+
+
+void LRGradientWidget::setOuterColor(const NVGcolor &outerColor) {
+    LRGradientWidget::outerColor = outerColor;
+}
+
 }
