@@ -5,6 +5,7 @@
 #include "asset.hpp"
 #include "widgets.hpp"
 #include "LRGestalt.hpp"
+#include "LRModel.hpp"
 
 #define LCD_FONT_DIG7 "res/digital-7.ttf"
 #define LCD_FONTSIZE 11
@@ -178,7 +179,7 @@ public:
 /**
  * @brief The base of all knobs used in LR panels, includes a indicator
  */
-struct LRKnob : SVGKnob {
+struct LRKnob : SVGKnob, LRGestaltModifier {
 private:
     static constexpr float ANGLE = 0.83f;
 
@@ -198,7 +199,7 @@ private:
 protected:
     /** shader */
     LRShadow *shader;
-
+    LRModule *module;
 
 public:
 
@@ -272,6 +273,9 @@ public:
     void setSVG(shared_ptr<SVG> svg);
 
 
+    void step() override;
+
+
     /**
      * @brief Creates a new instance of a LRKnob child
      * @tparam TParamWidget Subclass of LRKnob
@@ -284,7 +288,7 @@ public:
      * @return Pointer to new subclass of LRKnob
      */
     template<class TParamWidget>
-    static TParamWidget *create(Vec pos, Module *module, int paramId, float minValue, float maxValue, float defaultValue) {
+    static TParamWidget *create(Vec pos, LRModule *module, int paramId, float minValue, float maxValue, float defaultValue) {
         auto *param = new TParamWidget();
         param->box.pos = pos;
         param->module = module;
@@ -410,8 +414,12 @@ struct LRMiddleIncremental : LRKnob {
  * @brief LR Big Knob
  */
 struct LRBigKnob : LRKnob {
+
+
     LRBigKnob() {
         setSVG(SVG::load(assetPlugin(plugin, "res/knobs/BigKnob.svg")));
+
+
         setIndicatorDistance(15);
         setIndicatorShape(4.8, 0.12);
         shader->setShadowPosition(5, 6);

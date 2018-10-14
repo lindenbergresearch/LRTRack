@@ -7,6 +7,8 @@ LRKnob::LRKnob() {
     minAngle = -ANGLE * (float) M_PI;
     maxAngle = ANGLE * (float) M_PI;
 
+    gestalt = module->gestalt;
+
     shader = new LRShadow();
     removeChild(shadow); // uninstall default
 
@@ -64,6 +66,18 @@ void LRKnob::onChange(EventChange &e) {
     // if the value still inside snap-tolerance keep the value zero
     if (snap && value > -snapSens + snapAt && value < snapSens + snapAt) value = 0;
     SVGKnob::onChange(e);
+}
+
+
+void LRKnob::step() {
+    if (invalidGestalt()) {
+        setSVG(getSVGVariant());
+
+        dirty = true;
+        syncGestalt();
+    }
+
+    SVGKnob::step();
 }
 
 }
