@@ -104,8 +104,8 @@ MS20FilterWidget::MS20FilterWidget(MS20Filter *module) : LRModuleWidget(module) 
 
 
     panel->addSVGVariant(LRGestalt::DARK, SVG::load(assetPlugin(plugin, "res/panels/MS20.svg")));
-    // panel->addSVGVariant(SVG::load(assetPlugin(plugin, "res/panels/MS20.svg")));
-    // panel->addSVGVariant(SVG::load(assetPlugin(plugin, "res/panels/MS20.svg")));
+    panel->addSVGVariant(LRGestalt::LIGHT, SVG::load(assetPlugin(plugin, "res/panels/MS20Light.svg")));
+    panel->addSVGVariant(LRGestalt::AGED, SVG::load(assetPlugin(plugin, "res/panels/MS20Light.svg")));
 
     panel->init();
 
@@ -121,9 +121,9 @@ MS20FilterWidget::MS20FilterWidget(MS20Filter *module) : LRModuleWidget(module) 
     // ***** SCREWS **********
 
     // ***** MAIN KNOBS ******
-    module->frqKnob = LRKnob::create<LRBigKnob>(Vec(102, 64.9), module, MS20Filter::FREQUENCY_PARAM, 0.f, 1.f, 1.f);
-    module->peakKnob = LRKnob::create<LRMiddleKnob>(Vec(110, 160.8), module, MS20Filter::PEAK_PARAM, 0.0f, 1.0, 0.0f);
-    module->driveKnob = LRKnob::create<LRMiddleKnob>(Vec(110, 230.6), module, MS20Filter::DRIVE_PARAM, 0.f, 1.0, 0.0f);
+    module->frqKnob = LRKnob::create<LRBigKnob>(Vec(102, 64.9), module, &gestalt, MS20Filter::FREQUENCY_PARAM, 0.f, 1.f, 1.f);
+    module->peakKnob = LRKnob::create<LRMiddleKnob>(Vec(110, 160.8), module, &gestalt, MS20Filter::PEAK_PARAM, 0.0f, 1.0, 0.0f);
+    module->driveKnob = LRKnob::create<LRMiddleKnob>(Vec(110, 230.6), module, &gestalt, MS20Filter::DRIVE_PARAM, 0.f, 1.0, 0.0f);
 
     addParam(module->frqKnob);
     addParam(module->peakKnob);

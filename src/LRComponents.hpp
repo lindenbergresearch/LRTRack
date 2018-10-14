@@ -5,7 +5,6 @@
 #include "asset.hpp"
 #include "widgets.hpp"
 #include "LRGestalt.hpp"
-#include "LRModel.hpp"
 
 #define LCD_FONT_DIG7 "res/digital-7.ttf"
 #define LCD_FONTSIZE 11
@@ -199,7 +198,6 @@ private:
 protected:
     /** shader */
     LRShadow *shader;
-    LRModule *module;
 
 public:
 
@@ -288,10 +286,12 @@ public:
      * @return Pointer to new subclass of LRKnob
      */
     template<class TParamWidget>
-    static TParamWidget *create(Vec pos, LRModule *module, int paramId, float minValue, float maxValue, float defaultValue) {
+    static TParamWidget *create(Vec pos, Module *module, LRGestalt *gestalt, int paramId, float minValue, float maxValue, float
+    defaultValue) {
         auto *param = new TParamWidget();
         param->box.pos = pos;
         param->module = module;
+        param->gestalt = gestalt;
         param->paramId = paramId;
         param->setLimits(minValue, maxValue);
         param->setDefaultValue(defaultValue);

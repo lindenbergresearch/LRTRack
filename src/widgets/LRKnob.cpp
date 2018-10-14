@@ -7,7 +7,7 @@ LRKnob::LRKnob() {
     minAngle = -ANGLE * (float) M_PI;
     maxAngle = ANGLE * (float) M_PI;
 
-    gestalt = module->gestalt;
+    //gestalt = module->gestalt;
 
     shader = new LRShadow();
     removeChild(shadow); // uninstall default
@@ -70,8 +70,12 @@ void LRKnob::onChange(EventChange &e) {
 
 
 void LRKnob::step() {
-    if (invalidGestalt()) {
-        setSVG(getSVGVariant());
+    if (gestalt != nullptr && invalidGestalt()) {
+        auto svg = getSVGVariant();
+
+        if (svg != nullptr) {
+            setSVG(getSVGVariant());
+        }
 
         dirty = true;
         syncGestalt();

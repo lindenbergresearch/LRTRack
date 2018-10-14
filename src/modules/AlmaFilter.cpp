@@ -125,9 +125,9 @@ AlmaFilterWidget::AlmaFilterWidget(AlmaFilter *module) : LRModuleWidget(module) 
     // ***** SCREWS **********
 
     // ***** MAIN KNOBS ******
-    module->frqKnob = LRKnob::create<LRBigKnob>(Vec(62, 150), module, AlmaFilter::CUTOFF_PARAM, 0.f, 1.f, 0.8f);
-    module->peakKnob = LRKnob::create<LRMiddleKnob>(Vec(24, 229), module, AlmaFilter::RESONANCE_PARAM, -0.f, 1.5, 0.0f);
-    module->driveKnob = LRKnob::create<LRMiddleKnob>(Vec(116, 228), module, AlmaFilter::DRIVE_PARAM, 0.0f, 1.f, 0.0f);
+    module->frqKnob = LRKnob::create<LRBigKnob>(Vec(62, 150), module, &gestalt, AlmaFilter::CUTOFF_PARAM, 0.f, 1.f, 0.8f);
+    module->peakKnob = LRKnob::create<LRMiddleKnob>(Vec(24, 229), module, &gestalt, AlmaFilter::RESONANCE_PARAM, -0.f, 1.5, 0.0f);
+    module->driveKnob = LRKnob::create<LRMiddleKnob>(Vec(116, 228), module, &gestalt, AlmaFilter::DRIVE_PARAM, 0.0f, 1.f, 0.0f);
 
     addParam(module->frqKnob);
     addParam(module->peakKnob);

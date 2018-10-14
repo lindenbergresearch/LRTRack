@@ -231,16 +231,16 @@ WestcoastWidget::WestcoastWidget(Westcoast *module) : LRModuleWidget(module) {
     // ***** SCREWS **********
 
     // ***** MAIN KNOBS ******
-    module->gainBtn = LRKnob::create<LRAlternateBigKnob>(Vec(128.7, 63.0), module, Westcoast::GAIN_PARAM, 0.0, 20.f, 1.f);
-    module->biasBtn = LRKnob::create<LRAlternateMiddleKnob>(Vec(136.4, 153.3), module, Westcoast::BIAS_PARAM, -6.f, 6.f, 0.f);
+    module->gainBtn = LRKnob::create<LRAlternateBigKnob>(Vec(128.7, 63.0), module, &gestalt, Westcoast::GAIN_PARAM, 0.0, 20.f, 1.f);
+    module->biasBtn = LRKnob::create<LRAlternateMiddleKnob>(Vec(136.4, 153.3), module, &gestalt, Westcoast::BIAS_PARAM, -6.f, 6.f, 0.f);
 
     addParam(module->gainBtn);
     addParam(module->biasBtn);
 
-    addParam(LRKnob::create<LRMiddleIncremental>(Vec(85, 279.3), module, Westcoast::TYPE_PARAM, 1, 7, 1));
+    addParam(LRKnob::create<LRMiddleIncremental>(Vec(85, 279.3), module, &gestalt, Westcoast::TYPE_PARAM, 1, 7, 1));
 
-    addParam(LRKnob::create<LRAlternateSmallKnob>(Vec(83.4, 101.00), module, Westcoast::CV_GAIN_PARAM, -1.f, 1.f, 0.f));
-    addParam(LRKnob::create<LRAlternateSmallKnob>(Vec(83.4, 183.0), module, Westcoast::CV_BIAS_PARAM, -1.f, 1.f, 0.f));
+    addParam(LRKnob::create<LRAlternateSmallKnob>(Vec(83.4, 101.00), module, &gestalt, Westcoast::CV_GAIN_PARAM, -1.f, 1.f, 0.f));
+    addParam(LRKnob::create<LRAlternateSmallKnob>(Vec(83.4, 183.0), module, &gestalt, Westcoast::CV_BIAS_PARAM, -1.f, 1.f, 0.f));
     // ***** MAIN KNOBS ******
 
     // ***** CV INPUTS *******

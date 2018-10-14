@@ -18,10 +18,10 @@
 
 #pragma once
 
+#include "LRComponents.hpp"
 #include "rack.hpp"
 #include "asset.hpp"
 #include "widgets.hpp"
-#include "LRComponents.hpp"
 
 
 static const char *const JSON_GESTALT_KEY = "gestaltID";
@@ -62,6 +62,7 @@ struct LRModuleWidget : ModuleWidget {
 
     /* standard module panel */
     LRPanel *panel = nullptr;
+
 
     /* Gestalt ID and UI settings */
     LRGestalt gestalt = DARK;   // DARK == default
