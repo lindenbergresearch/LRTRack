@@ -414,10 +414,12 @@ struct LRMiddleIncremental : LRKnob {
  * @brief LR Big Knob
  */
 struct LRBigKnob : LRKnob {
-
-
     LRBigKnob() {
         setSVG(SVG::load(assetPlugin(plugin, "res/knobs/BigKnob.svg")));
+
+        addSVGVariant(LRGestalt::DARK, SVG::load(assetPlugin(plugin, "res/knobs/BigKnob.svg")));
+        addSVGVariant(LRGestalt::LIGHT, SVG::load(assetPlugin(plugin, "res/knobs/AlternateBigLight.svg")));
+        addSVGVariant(LRGestalt::AGED, SVG::load(assetPlugin(plugin, "res/knobs/AlternateBigLight.svg")));
 
 
         setIndicatorDistance(15);
@@ -433,6 +435,11 @@ struct LRBigKnob : LRKnob {
 struct LRMiddleKnob : LRKnob {
     LRMiddleKnob() {
         setSVG(SVG::load(assetPlugin(plugin, "res/knobs/MiddleKnob.svg")));
+
+        addSVGVariant(LRGestalt::DARK, SVG::load(assetPlugin(plugin, "res/knobs/MiddleKnob.svg")));
+        addSVGVariant(LRGestalt::LIGHT, SVG::load(assetPlugin(plugin, "res/knobs/AlternateMiddleLight.svg")));
+        addSVGVariant(LRGestalt::AGED, SVG::load(assetPlugin(plugin, "res/knobs/AlternateMiddleLight.svg")));
+
         setIndicatorDistance(13);
         setIndicatorShape(5, 0.13);
         shader->setShadowPosition(4, 4);
@@ -446,6 +453,11 @@ struct LRMiddleKnob : LRKnob {
 struct LRSmallKnob : LRKnob {
     LRSmallKnob() {
         setSVG(SVG::load(assetPlugin(plugin, "res/knobs/SmallKnob.svg")));
+
+        addSVGVariant(LRGestalt::DARK, SVG::load(assetPlugin(plugin, "res/knobs/SmallKnob.svg")));
+        addSVGVariant(LRGestalt::LIGHT, SVG::load(assetPlugin(plugin, "res/knobs/AlternateSmallLight.svg")));
+        addSVGVariant(LRGestalt::AGED, SVG::load(assetPlugin(plugin, "res/knobs/AlternateSmallLight.svg")));
+
         shader->setShadowPosition(3, 3);
         setSnap(0.0f, 0.02f);
 
