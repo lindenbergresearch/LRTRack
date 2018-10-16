@@ -131,9 +131,9 @@ MS20FilterWidget::MS20FilterWidget(MS20Filter *module) : LRModuleWidget(module) 
     // ***** MAIN KNOBS ******
 
     // ***** CV INPUTS *******
-    addParam(ParamWidget::create<LRSmallKnob>(Vec(61, 169.3), module, MS20Filter::PEAK_CV_PARAM, -1.f, 1.0f, 0.f));
-    addParam(ParamWidget::create<LRSmallKnob>(Vec(61, 82.4), module, MS20Filter::CUTOFF_CV_PARAM, -1.f, 1.f, 0.f));
-    addParam(ParamWidget::create<LRSmallKnob>(Vec(61, 239), module, MS20Filter::GAIN_CV_PARAM, -1.f, 1.f, 0.f));
+    addParam(LRKnob::create<LRSmallKnob>(Vec(61, 169.3), module, &gestalt, MS20Filter::PEAK_CV_PARAM, -1.f, 1.0f, 0.f));
+    addParam(LRKnob::create<LRSmallKnob>(Vec(61, 82.4), module, &gestalt, MS20Filter::CUTOFF_CV_PARAM, -1.f, 1.f, 0.f));
+    addParam(LRKnob::create<LRSmallKnob>(Vec(61, 239), module, &gestalt, MS20Filter::GAIN_CV_PARAM, -1.f, 1.f, 0.f));
 
     addInput(Port::create<LRIOPortC>(Vec(18, 168.5), Port::INPUT, module, MS20Filter::PEAK_CV_INPUT));
     addInput(Port::create<LRIOPortC>(Vec(18, 81.5), Port::INPUT, module, MS20Filter::CUTOFF_CV_INPUT));
