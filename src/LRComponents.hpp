@@ -336,10 +336,11 @@ struct LRToggleKnob : LRKnob {
         maxAngle = length * (float) M_PI;
 
         setSVG(SVG::load(assetPlugin(plugin, "res/knobs/ToggleKnob.svg")));
-        shader->setShadowPosition(3, 4);
 
-        shader->setStrength(1.2f);
-        shader->setSize(0.7f);
+        addSVGVariant(LRGestalt::DARK, SVG::load(assetPlugin(plugin, "res/knobs/ToggleKnob.svg")));
+        addSVGVariant(LRGestalt::LIGHT, SVG::load(assetPlugin(plugin, "res/knobs/AlternateToggleKnobLight.svg")));
+        addSVGVariant(LRGestalt::AGED, SVG::load(assetPlugin(plugin, "res/knobs/AlternateToggleKnobLight.svg")));
+
 
         speed = 2.f;
     }
@@ -348,6 +349,29 @@ struct LRToggleKnob : LRKnob {
     void onChange(EventChange &e) override {
         value = round(value);
         SVGKnob::onChange(e);
+    }
+
+
+    void onGestaltChange() override {
+        switch (*gestalt) {
+            case LRGestalt::DARK:
+                shader->setShadowPosition(3, 4);
+                shader->setStrength(1.2f);
+                shader->setSize(0.7f);
+                break;
+            case LRGestalt::LIGHT:
+                shader->setShadowPosition(2, 3);
+                shader->setStrength(0.5f);
+                shader->setSize(0.6f);
+                break;
+            case LRGestalt::AGED:
+                shader->setShadowPosition(2, 3);
+                shader->setStrength(0.5f);
+                shader->setSize(0.6f);
+                break;
+            default:
+                break;
+        }
     }
 };
 
@@ -523,14 +547,12 @@ struct LRSmallKnob : LRKnob {
                 break;
             case LRGestalt::LIGHT:
                 shader->setShadowPosition(3, 3);
-                setSnap(0.0f, 0.02f);
                 shader->setShadowPosition(2, 3);
                 shader->setStrength(0.5f);
                 shader->setSize(0.7f);
                 break;
             case LRGestalt::AGED:
                 shader->setShadowPosition(3, 3);
-                setSnap(0.0f, 0.02f);
                 shader->setShadowPosition(2, 3);
                 shader->setStrength(0.5f);
                 shader->setSize(0.7f);
