@@ -43,7 +43,7 @@ struct VCO : LRModule {
 
     DSPBLOscillator *osc = new DSPBLOscillator(engineGetSampleRate());
     LRLCDWidget *lcd = new LRLCDWidget(nvgRGBAf(0.0, 0.1, 0.1, 1.0), 10, "%00004.3f Hz", LRLCDWidget::NUMERIC);
-    LRAlternateBigLight *frqKnob = NULL;
+    LRBigKnob *frqKnob = NULL;
 
 
     VCO() : LRModule(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS) {}
@@ -183,19 +183,19 @@ VCOWidget::VCOWidget(VCO *module) : LRModuleWidget(module) {
 
 
     // ***** MAIN KNOBS ******
-    module->frqKnob = LRKnob::create<LRAlternateBigLight>(Vec(126.0, 64.7), module, &gestalt, VCO::FREQUENCY_PARAM, -1.f, 1.f, 0.f);
+    module->frqKnob = LRKnob::create<LRBigKnob>(Vec(126.0, 64.7), module, &gestalt, VCO::FREQUENCY_PARAM, -1.f, 1.f, 0.f);
 
     addParam(module->frqKnob);
-    addParam(ParamWidget::create<LRAlternateToggleKnobLight>(Vec(133, 170.5), module, VCO::OCTAVE_PARAM, -4.f, 3.f, 0.f));
+    addParam(LRKnob::create<LRToggleKnob>(Vec(133, 170.5), module, &gestalt, VCO::OCTAVE_PARAM, -4.f, 3.f, 0.f));
 
-    addParam(ParamWidget::create<LRAlternateSmallLight>(Vec(69.5, 122), module, VCO::FM_CV_PARAM, -1.f, 1.f, 0.f));
-    addParam(ParamWidget::create<LRAlternateSmallLight>(Vec(69.5, 175), module, VCO::PW_CV_PARAM, -1, 1, 0.f));
+    addParam(LRKnob::create<LRSmallKnob>(Vec(69.5, 122), module, &gestalt, VCO::FM_CV_PARAM, -1.f, 1.f, 0.f));
+    addParam(LRKnob::create<LRSmallKnob>(Vec(69.5, 175), module, &gestalt, VCO::PW_CV_PARAM, -1, 1, 0.f));
 
 
-    addParam(ParamWidget::create<LRAlternateSmallLight>(Vec(22.8, 270.1), module, VCO::SAW_PARAM, -1.f, 1.f, 0.f));
-    addParam(ParamWidget::create<LRAlternateSmallLight>(Vec(58.3, 270.1), module, VCO::PULSE_PARAM, -1.f, 1.f, 0.f));
-    addParam(ParamWidget::create<LRAlternateSmallLight>(Vec(93.1, 270.1), module, VCO::SINE_PARAM, -1.f, 1.f, 0.f));
-    addParam(ParamWidget::create<LRAlternateSmallLight>(Vec(128.1, 270.1), module, VCO::TRI_PARAM, -1.f, 1.f, 0.f));
+    addParam(LRKnob::create<LRSmallKnob>(Vec(22.8, 270.1), module, &gestalt, VCO::SAW_PARAM, -1.f, 1.f, 0.f));
+    addParam(LRKnob::create<LRSmallKnob>(Vec(58.3, 270.1), module, &gestalt, VCO::PULSE_PARAM, -1.f, 1.f, 0.f));
+    addParam(LRKnob::create<LRSmallKnob>(Vec(93.1, 270.1), module, &gestalt, VCO::SINE_PARAM, -1.f, 1.f, 0.f));
+    addParam(LRKnob::create<LRSmallKnob>(Vec(128.1, 270.1), module, &gestalt, VCO::TRI_PARAM, -1.f, 1.f, 0.f));
     // ***** MAIN KNOBS ******
 
 
