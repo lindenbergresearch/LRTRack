@@ -420,11 +420,35 @@ struct LRBigKnob : LRKnob {
         addSVGVariant(LRGestalt::DARK, SVG::load(assetPlugin(plugin, "res/knobs/BigKnob.svg")));
         addSVGVariant(LRGestalt::LIGHT, SVG::load(assetPlugin(plugin, "res/knobs/AlternateBigLight.svg")));
         addSVGVariant(LRGestalt::AGED, SVG::load(assetPlugin(plugin, "res/knobs/AlternateBigLight.svg")));
+    }
 
 
-        setIndicatorDistance(15);
-        setIndicatorShape(4.8, 0.12);
-        shader->setShadowPosition(5, 6);
+    void onGestaltChange() override {
+        switch (*gestalt) {
+            case LRGestalt::DARK:
+                setIndicatorDistance(15);
+                setIndicatorShape(4.8, 0.12);
+                shader->setShadowPosition(5, 6);
+                shader->setStrength(1.f);
+                shader->setSize(.65f);
+                break;
+            case LRGestalt::LIGHT:
+                setIndicatorDistance(17);
+                setIndicatorShape(4.1, 0.08);
+                shader->setShadowPosition(4, 5);
+                shader->setStrength(0.5f);
+                shader->setSize(0.6f);
+                break;
+            case LRGestalt::AGED:
+                setIndicatorDistance(17);
+                setIndicatorShape(4.1, 0.08);
+                shader->setShadowPosition(4, 5);
+                shader->setStrength(0.5f);
+                shader->setSize(0.6f);
+                break;
+            default:
+                break;
+        }
     }
 };
 
@@ -439,10 +463,35 @@ struct LRMiddleKnob : LRKnob {
         addSVGVariant(LRGestalt::DARK, SVG::load(assetPlugin(plugin, "res/knobs/MiddleKnob.svg")));
         addSVGVariant(LRGestalt::LIGHT, SVG::load(assetPlugin(plugin, "res/knobs/AlternateMiddleLight.svg")));
         addSVGVariant(LRGestalt::AGED, SVG::load(assetPlugin(plugin, "res/knobs/AlternateMiddleLight.svg")));
+    }
 
-        setIndicatorDistance(13);
-        setIndicatorShape(5, 0.13);
-        shader->setShadowPosition(4, 4);
+
+    void onGestaltChange() override {
+        switch (*gestalt) {
+            case LRGestalt::DARK:
+                setIndicatorDistance(13);
+                setIndicatorShape(5, 0.13);
+                shader->setShadowPosition(4, 4);
+                shader->setStrength(1.f);
+                shader->setSize(.65f);
+                break;
+            case LRGestalt::LIGHT:
+                setIndicatorDistance(11);
+                setIndicatorShape(4.3, 0.11);
+                shader->setShadowPosition(2, 3);
+                shader->setStrength(0.5f);
+                shader->setSize(0.6f);
+                break;
+            case LRGestalt::AGED:
+                setIndicatorDistance(11);
+                setIndicatorShape(4.3, 0.11);
+                shader->setShadowPosition(2, 3);
+                shader->setStrength(0.5f);
+                shader->setSize(0.6f);
+                break;
+            default:
+                break;
+        }
     }
 };
 
@@ -458,11 +507,37 @@ struct LRSmallKnob : LRKnob {
         addSVGVariant(LRGestalt::LIGHT, SVG::load(assetPlugin(plugin, "res/knobs/AlternateSmallLight.svg")));
         addSVGVariant(LRGestalt::AGED, SVG::load(assetPlugin(plugin, "res/knobs/AlternateSmallLight.svg")));
 
-        shader->setShadowPosition(3, 3);
         setSnap(0.0f, 0.02f);
-
-
         speed = 0.9f;
+    }
+
+
+    void onGestaltChange() override {
+        switch (*gestalt) {
+            case LRGestalt::DARK:
+                setIndicatorDistance(13);
+                setIndicatorShape(5, 0.13);
+                shader->setShadowPosition(3, 3);
+                shader->setStrength(1.f);
+                shader->setSize(.65f);
+                break;
+            case LRGestalt::LIGHT:
+                shader->setShadowPosition(3, 3);
+                setSnap(0.0f, 0.02f);
+                shader->setShadowPosition(2, 3);
+                shader->setStrength(0.5f);
+                shader->setSize(0.7f);
+                break;
+            case LRGestalt::AGED:
+                shader->setShadowPosition(3, 3);
+                setSnap(0.0f, 0.02f);
+                shader->setShadowPosition(2, 3);
+                shader->setStrength(0.5f);
+                shader->setSize(0.7f);
+                break;
+            default:
+                break;
+        }
     }
 };
 

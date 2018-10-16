@@ -74,7 +74,7 @@ void LRKnob::step() {
         auto svg = getSVGVariant();
 
         if (svg != nullptr) {
-            setSVG(getSVGVariant());
+            setSVG(svg);
         }
 
         dirty = true;

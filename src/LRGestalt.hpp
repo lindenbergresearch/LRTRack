@@ -64,7 +64,12 @@ struct LRGestaltModifier {
      */
     bool invalidGestalt() {
         if (gestalt != nullptr) {
-            return *gestalt != prevID;
+            auto changed = *gestalt != prevID;
+
+            // trigger event handler
+            if (changed) onGestaltChange();
+
+            return changed;
         }
 
         return false;
@@ -77,6 +82,9 @@ struct LRGestaltModifier {
     void syncGestalt() {
         prevID = *gestalt;
     }
+
+
+    virtual void onGestaltChange() {}
 
 
     /**
