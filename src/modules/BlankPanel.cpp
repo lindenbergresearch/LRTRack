@@ -49,6 +49,9 @@ BlankPanelWidget::BlankPanelWidget(BlankPanel *module) : LRModuleWidget(module) 
     panel->addSVGVariant(LRGestalt::LIGHT, SVG::load(assetPlugin(plugin, "res/panels/BlankPanelLight.svg")));
     panel->addSVGVariant(LRGestalt::AGED, SVG::load(assetPlugin(plugin, "res/panels/BlankPanelAged.svg")));
 
+    gestalt = LRGestalt::LIGHT;
+    noGestalt = true;
+
     panel->init();
 
     addChild(panel);
