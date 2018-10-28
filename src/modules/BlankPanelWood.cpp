@@ -108,6 +108,11 @@ BlankPanelWidgetWood::BlankPanelWidgetWood(BlankPanelWood *module) : LRModuleWid
     // panel->addSVGVariant(SVG::load(assetPlugin(plugin, "res/panels/WoodLeftTop.svg")));
     // panel->addSVGVariant(SVG::load(assetPlugin(plugin, "res/panels/WoodLeftTop.svg")));
 
+    noGestalt = true;
+    gestalt = LRGestalt::DARK;
+    patina = false;
+    gradient = false;
+
     panel->init();
 
     addChild(panel);
@@ -116,8 +121,11 @@ BlankPanelWidgetWood::BlankPanelWidgetWood(BlankPanelWood *module) : LRModuleWid
 
     box.size = panel->box.size;
 
-    /* panel->setInner(nvgRGBAf(1.4f * .369f, 1.4f * 0.357f, 1.4f * 0.3333f, 0.05f));
-     panel->setOuter(nvgRGBAf(0.f, 0.f, 0.f, 0.15f));*/
+    auto gradientDark = new LRGradientWidget(box.size, nvgRGBAf(1.4f * .369f, 1.4f * 0.357f, 1.4f * 0.3333f, 0.05f),
+                                             nvgRGBAf(0.f, 0.f, 0.f, 0.15f), Vec(-10, 10));
+    gradientDark->visible = true;
+
+    panel->addChild(gradientDark);
 
     module->patina = new SVGWidget();
     module->patina->setSVG(SVG::load(assetPlugin(plugin, "res/panels/WoodPatina.svg")));
