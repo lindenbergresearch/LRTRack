@@ -34,7 +34,7 @@ typedef std::vector<std::string> StringVector;
 /**
  * @brief Emulation of a LCD monochrome display
  */
-struct LRLCDWidget : Label {
+struct LRLCDWidget : Label, LRGestaltModifier {
 
     enum LCDType {
         NUMERIC,
@@ -286,7 +286,7 @@ public:
      * @return Pointer to new subclass of LRKnob
      */
     template<class TParamWidget>
-    static TParamWidget *create(Vec pos, Module *module, LRGestalt *gestalt, int paramId, float minValue, float maxValue, float
+    static TParamWidget *create(Vec pos, Module *module, const LRGestalt *gestalt, int paramId, float minValue, float maxValue, float
     defaultValue) {
         auto *param = new TParamWidget();
         param->box.pos = pos;
