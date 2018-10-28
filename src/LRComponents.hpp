@@ -62,7 +62,7 @@ struct LRLCDWidget : Label, LRGestaltModifier {
     /**
      * @brief Constructor
      */
-    LRLCDWidget(NVGcolor fg, unsigned char length, string format, LCDType type, float fontsize = LCD_FONTSIZE);
+    LRLCDWidget(NVGcolor fg, unsigned char length, string format, LCDType type, LRGestalt *gestalt, float fontsize = LCD_FONTSIZE);
 
     /**
      * @brief Draw LCD display
@@ -286,7 +286,7 @@ public:
      * @return Pointer to new subclass of LRKnob
      */
     template<class TParamWidget>
-    static TParamWidget *create(Vec pos, Module *module, const LRGestalt *gestalt, int paramId, float minValue, float maxValue, float
+    static TParamWidget *create(Vec pos, Module *module, LRGestalt *gestalt, int paramId, float minValue, float maxValue, float
     defaultValue) {
         auto *param = new TParamWidget();
         param->box.pos = pos;
