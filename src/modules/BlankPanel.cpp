@@ -50,6 +50,9 @@ BlankPanelWidget::BlankPanelWidget(BlankPanel *module) : LRModuleWidget(module) 
     panel->addSVGVariant(LRGestalt::AGED, SVG::load(assetPlugin(plugin, "res/panels/BlankPanelAged.svg")));
 
     gestalt = LRGestalt::LIGHT;
+    patina = false;
+    gradient = true;
+
     noGestalt = true;
 
     panel->init();
