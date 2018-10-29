@@ -44,7 +44,7 @@ void LRLight::draw(NVGcontext *vg) {
 LRLight::LRLight() {
     box.size = Vec(7.5f, 7.5f);
 
-    color = LED_DEFAULT_COLOR;
+    color = LED_DEFAULT_COLOR_DARK;
     addBaseColor(color);
     borderColor = nvgRGBAf(color.r / 100, color.g / 100, color.b / 100, 0.9);
     bgColor = nvgRGBAf(color.r, color.g, color.b, 0.3);
