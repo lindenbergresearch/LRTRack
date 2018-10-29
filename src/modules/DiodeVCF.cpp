@@ -43,7 +43,7 @@ struct DiodeVCF : LRModule {
     void onRandomize() override;
     void updateComponents();
 
-    LRLCDWidget *lcd = new LRLCDWidget(nvgRGBAf(0.2, 0.09, 0.03, 1.0), 12, "%00004.3f Hz", LRLCDWidget::NUMERIC);
+    LRLCDWidget *lcd = new LRLCDWidget(12, "%00004.3f Hz", LRLCDWidget::NUMERIC);
     DiodeLadderFilter *lpf = new DiodeLadderFilter(engineGetSampleRate());
 
     LRAlternateBigLight *frqKnob = NULL;

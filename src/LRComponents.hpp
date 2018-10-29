@@ -10,7 +10,8 @@
 #define LCD_FONTSIZE 11
 #define LCD_LETTER_SPACING 0
 
-#define LED_DEFAULT_COLOR nvgRGBAf(0.9, 0.1, 0.12, 1.0)
+#define LED_DEFAULT_COLOR_DARK nvgRGBAf(0.9, 0.1, 0.12, 1.0)
+#define LED_DEFAULT_COLOR_LIGHT nvgRGBAf(0.9, 0.9, 0.92, 1.0)
 
 /* show values of all knobs */
 #define DEBUG_VALUES false
@@ -34,7 +35,7 @@ typedef std::vector<std::string> StringVector;
 /**
  * @brief Emulation of a LCD monochrome display
  */
-struct LRLCDWidget : Label, LRGestaltModifier {
+struct LRLCDWidget : Label {
 
     enum LCDType {
         NUMERIC,
@@ -62,7 +63,7 @@ struct LRLCDWidget : Label, LRGestaltModifier {
     /**
      * @brief Constructor
      */
-    LRLCDWidget(NVGcolor fg, unsigned char length, string format, LCDType type, LRGestalt *gestalt, float fontsize = LCD_FONTSIZE);
+    LRLCDWidget(unsigned char length, string format, LCDType type, float fontsize = LCD_FONTSIZE);
 
     /**
      * @brief Draw LCD display
@@ -74,6 +75,10 @@ struct LRLCDWidget : Label, LRGestaltModifier {
     inline void addItem(string name) {
         items.push_back(name);
     }
+
+
+    void onChange(EventChange &e) override;
+
 };
 
 

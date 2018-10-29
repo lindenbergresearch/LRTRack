@@ -42,7 +42,7 @@ struct VCO : LRModule {
     };
 
     DSPBLOscillator *osc = new DSPBLOscillator(engineGetSampleRate());
-    LRLCDWidget *lcd = new LRLCDWidget(nvgRGBAf(0.0, 0.1, 0.1, 1.0), 10, "%00004.3f Hz", LRLCDWidget::NUMERIC);
+    LRLCDWidget *lcd = new LRLCDWidget(10, "%00004.3f Hz", LRLCDWidget::NUMERIC);
     LRBigKnob *frqKnob = NULL;
 
 
