@@ -41,7 +41,7 @@ void BlankPanelEmpty::step() {
  */
 struct BlankPanelEmptyWidget : LRModuleWidget {
     ModuleResizeWidget *resizeWidget, *resizeWidgetRight;
-    ScrewDarkA *screw1, *screw2;
+    AlternateScrewLight *screw1, *screw2;
 
     BlankPanelEmptyWidget(BlankPanelEmpty *module);
 
@@ -54,14 +54,14 @@ BlankPanelEmptyWidget::BlankPanelEmptyWidget(BlankPanelEmpty *module) : LRModule
     panel->setupGestalt(&gestalt, &gradient, &patina);
 
     panel->addSVGVariant(LRGestalt::DARK, SVG::load(assetPlugin(plugin, "res/panels/BlankPanelM1.svg")));
-    // panel->addSVGVariant(SVG::load(assetPlugin(plugin, "res/panels/BlankPanelM1.svg")));
-    // panel->addSVGVariant(SVG::load(assetPlugin(plugin, "res/panels/BlankPanelM1.svg")));
+    panel->addSVGVariant(LRGestalt::LIGHT, SVG::load(assetPlugin(plugin, "res/panels/BlankPanelM1Light.svg")));
+    panel->addSVGVariant(LRGestalt::AGED, SVG::load(assetPlugin(plugin, "res/panels/BlankPanelM1Aged.svg")));
 
     panel->init();
     addChild(panel);
 
     module->icons = new FontIconWidget(60.f);
-    // addChild(module->icons);
+    //addChild(module->icons);
 
     box.size = panel->box.size;
 
@@ -73,11 +73,11 @@ BlankPanelEmptyWidget::BlankPanelEmptyWidget(BlankPanelEmpty *module) : LRModule
 
 
     // ***** SCREWS **********
-    addChild(Widget::create<ScrewDarkA>(Vec(15, 1)));
-    addChild(Widget::create<ScrewDarkA>(Vec(15, 366)));
+    addChild(Widget::create<AlternateScrewLight>(Vec(15, 1)));
+    addChild(Widget::create<AlternateScrewLight>(Vec(15, 366)));
 
-    screw1 = Widget::create<ScrewDarkA>(Vec(box.size.x - 30, 1));
-    screw2 = Widget::create<ScrewDarkA>(Vec(box.size.x - 30, 366));
+    screw1 = Widget::create<AlternateScrewLight>(Vec(box.size.x - 30, 1));
+    screw2 = Widget::create<AlternateScrewLight>(Vec(box.size.x - 30, 366));
 
     addChild(screw1);
     addChild(screw2);
