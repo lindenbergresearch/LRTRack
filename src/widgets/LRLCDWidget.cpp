@@ -35,7 +35,9 @@ void LRLCDWidget::draw(NVGcontext *vg) {
     nvgFontFaceId(vg, ttfLCDDig7->handle);
     nvgTextLetterSpacing(vg, LCD_LETTER_SPACING);
 
-    nvgFillColor(vg, bg);
+    auto digitsColor = nvgRGBAf(fg.r, fg.b, fg.b, 0.1);
+
+    nvgFillColor(vg, digitsColor);
     std::string str;
 
     nvgTextBox(vg, 0, 0, 220, s1.c_str(), nullptr);
@@ -85,10 +87,12 @@ void LRLCDWidget::onChange(EventChange &e) {
 
     auto *ec = static_cast<LREventGestaltChange *>(&e);
 
-    debug("change event!");
-
     if (ec != nullptr) {
-        debug("gestalt has been changed: %i", ec->current);
+        if (ec->current == DARK) {
+            fg = LED_DEFAULT_COLOR_DARK;
+        } else {
+            fg = LED_DEFAULT_COLOR_LIGHT;
+        }
     }
 
     e.consumed = true;
