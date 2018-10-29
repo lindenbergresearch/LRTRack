@@ -42,6 +42,13 @@ enum LRGestalt : int {
 
 
 /**
+ * @brief
+ */
+struct LREventGestaltChange : EventChange {
+    LRGestalt current, last;
+};
+
+/**
  * Represents all data needed by skinned versions of UI
  */
 struct LRGestaltModifier {

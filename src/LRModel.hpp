@@ -66,6 +66,8 @@ struct LRModuleWidget : ModuleWidget {
 
     /* Gestalt ID and UI settings */
     LRGestalt gestalt = DARK;   // DARK == default
+    LRGestalt prevGestalt = DARK;   // for catching change events
+
     bool gradient = true;       // gradient used at panel
     bool patina = false;        // patina used at panel
 
@@ -152,6 +154,8 @@ struct LRModuleWidget : ModuleWidget {
         }
     };
 
+
+    void step() override;
 
     /**
      * @brief Create standard menu for all modules
