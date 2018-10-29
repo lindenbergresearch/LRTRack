@@ -1,11 +1,12 @@
 #include "../LRComponents.hpp"
+#include "../LRModel.hpp"
 
 namespace lrt {
 
 /**
  * @brief Constructor of LCD Widget
  */
-LRLCDWidget::LRLCDWidget(NVGcolor fg, unsigned char length, std::string format, LCDType type, float fontsize) {
+LRLCDWidget::LRLCDWidget(unsigned char length, std::string format, LCDType type, float fontsize) {
     /** load LCD ttf font */
     ttfLCDDig7 = Font::load(assetPlugin(plugin, LCD_FONT_DIG7));
     LRLCDWidget::fontsize = fontsize;
@@ -15,7 +16,7 @@ LRLCDWidget::LRLCDWidget(NVGcolor fg, unsigned char length, std::string format, 
     LRLCDWidget::length = length;
     LRLCDWidget::format = format;
 
-    LRLCDWidget::fg = fg;
+    LRLCDWidget::fg = LED_DEFAULT_COLOR_DARK;
     LRLCDWidget::bg = nvgRGBAf(fg.r, fg.g, fg.b, 0.15f);
 
     for (int i = 0; i < LRLCDWidget::length; ++i) {
@@ -77,4 +78,21 @@ void LRLCDWidget::draw(NVGcontext *vg) {
     nvgFillColor(vg, fg);
     nvgTextBox(vg, 0, 0, 220, str.c_str(), nullptr);
 }
+
+
+void LRLCDWidget::onChange(EventChange &e) {
+    Widget::onChange(e);
+
+    auto *ec = static_cast<LREventGestaltChange *>(&e);
+
+    debug("change event!");
+
+    if (ec != nullptr) {
+        debug("gestalt has been changed: %i", ec->current);
+    }
+
+    e.consumed = true;
+}
+
+
 }
