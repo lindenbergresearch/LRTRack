@@ -130,3 +130,28 @@ void LRModuleWidget::randomize() {
     panel->patinaWidgetWhite->randomize();
     panel->dirty = true;
 }
+
+
+/**
+ * @brief Detect gestalt change and fire event to all children
+ */
+void LRModuleWidget::step() {
+    Widget::step();
+
+    if (noGestalt) return;
+
+    bool modified = gestalt != prevGestalt;
+
+    if (modified) {
+        for (Widget *child : children) {
+            auto *e = new LREventGestaltChange();
+
+            e->last = prevGestalt;
+            e->current = gestalt;
+
+            child->onChange(*e);
+        }
+    }
+
+    prevGestalt = gestalt;
+}
