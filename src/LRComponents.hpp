@@ -984,8 +984,6 @@ struct LRPanel : FramebufferWidget, LRGestaltModifier {
 
     void init();
 
-    void step() override;
-
     void setGradientVariant(bool enabled);
 
     void setPatina(bool enabled);
@@ -993,6 +991,7 @@ struct LRPanel : FramebufferWidget, LRGestaltModifier {
     void setupGestalt(LRGestalt *gestalt, bool *gradient, bool *patina);
 
     void draw(NVGcontext *vg) override;
+    void onChange(EventChange &e) override;
 };
 
 

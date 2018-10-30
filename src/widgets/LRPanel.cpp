@@ -119,18 +119,13 @@ void LRPanel::setPatina(bool enabled) {
 }
 
 
-/**
- * @brief One frame increment from render engine triggered
- */
-void LRPanel::step() {
-    if (isNear(gPixelRatio, 1.0)) {
-        // Small details draw poorly at low DPI, so oversample when drawing to the framebuffer
-        oversample = 2.0;
-    }
+void LRPanel::onChange(EventChange &e) {
+    Widget::onChange(e);
 
-    if (invalidGestalt()) {
-        //debug("gestalt about to change: %i ==> %i", this->prevID, *this->gestalt);
-        auto svg = getSVGVariant(*gestalt);
+    auto *ec = static_cast<LREventGestaltChange *>(&e);
+
+    if (ec != nullptr) {
+        auto svg = getSVGVariant(ec->current);
 
         if (svg != nullptr) {
             panelWidget->setSVG(svg);
@@ -141,10 +136,9 @@ void LRPanel::step() {
         setPatina(*patina);
 
         dirty = true;
-        syncGestalt();
     }
 
+    e.consumed = true;
 }
-
 
 }
