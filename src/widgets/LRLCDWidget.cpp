@@ -93,9 +93,10 @@ void LRLCDWidget::onChange(EventChange &e) {
         } else {
             fg = LED_DEFAULT_COLOR_LIGHT;
         }
+
+        e.consumed = true;
     }
 
-    e.consumed = true;
 }
 
 

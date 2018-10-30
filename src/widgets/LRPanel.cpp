@@ -136,9 +136,11 @@ void LRPanel::onChange(EventChange &e) {
         setPatina(*patina);
 
         dirty = true;
+
+        e.consumed = true;
     }
 
-    e.consumed = true;
+
 }
 
 }
