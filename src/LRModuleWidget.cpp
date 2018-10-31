@@ -144,14 +144,21 @@ void LRModuleWidget::step() {
 
     if (modified) {
         for (Widget *child : children) {
-            auto *e = new LREventGestaltChange();
+            auto *gc = dynamic_cast<GestaltChangeEvent *>(child);
 
-            e->last = prevGestalt;
-            e->current = gestalt;
+            if (gc != nullptr) {
+                /* link variables */
+                gc->gestalt = &gestalt;
+                gc->patina = &patina;
+                gc->gradient = &gradient;
 
-            child->onChange(*e);
+                auto *e = new LREventGestaltChange();
+                gc->onGestaltChange(*e);
+            }
         }
+
+        prevGestalt = gestalt;
     }
 
-    prevGestalt = gestalt;
+
 }
