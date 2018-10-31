@@ -35,7 +35,7 @@ typedef std::vector<std::string> StringVector;
 /**
  * @brief Emulation of a LCD monochrome display
  */
-struct LRLCDWidget : Label {
+struct LRLCDWidget : Label, GestaltChangeEvent {
 
     enum LCDType {
         NUMERIC,
@@ -77,7 +77,7 @@ struct LRLCDWidget : Label {
     }
 
 
-    void onChange(EventChange &e) override;
+    void onGestaltChange(LREventGestaltChange &e) override;
 
 };
 
@@ -357,7 +357,7 @@ struct LRToggleKnob : LRKnob {
     }
 
 
-    void onGestaltChange() override {
+    void onGestaltChange(LREventGestaltChange &e) override {
         switch (*gestalt) {
             case LRGestalt::DARK:
                 shader->setShadowPosition(3, 4);
@@ -452,7 +452,7 @@ struct LRBigKnob : LRKnob {
     }
 
 
-    void onGestaltChange() override {
+    void onGestaltChange(LREventGestaltChange &e) override {
         switch (*gestalt) {
             case LRGestalt::DARK:
                 setIndicatorDistance(15);
@@ -495,7 +495,7 @@ struct LRMiddleKnob : LRKnob {
     }
 
 
-    void onGestaltChange() override {
+    void onGestaltChange(LREventGestaltChange &e) override {
         switch (*gestalt) {
             case LRGestalt::DARK:
                 setIndicatorDistance(13);
@@ -541,7 +541,7 @@ struct LRSmallKnob : LRKnob {
     }
 
 
-    void onGestaltChange() override {
+    void onGestaltChange(LREventGestaltChange &e) override {
         switch (*gestalt) {
             case LRGestalt::DARK:
                 setIndicatorDistance(13);
@@ -577,7 +577,6 @@ struct LRAlternateSmallKnob : LRKnob {
         setSVG(SVG::load(assetPlugin(plugin, "res/knobs/AlternateSmallKnob.svg")));
         shader->setShadowPosition(3, 3);
         setSnap(0.0f, 0.02f);
-
 
         speed = 0.9f;
     }
@@ -973,8 +972,12 @@ struct PanelBorder : TransparentWidget {
  */
 struct LRPanel : FramebufferWidget, LRGestaltVariant, GestaltChangeEvent {
     SVGWidget *panelWidget;
+
     map<LRGestalt, LRGradientWidget *> gradients;
-    LRPatinaWidget *patinaWidgetClassic, *patinaWidgetWhite;
+
+    LRPatinaWidget *patinaWidgetClassic = nullptr, *patinaWidgetWhite = nullptr;
+
+    bool initialized = false;
 
     LRPanel();
 
