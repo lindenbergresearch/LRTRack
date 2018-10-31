@@ -42,56 +42,34 @@ enum LRGestalt : int {
 
 
 /**
- * @brief
+ * @brief Empty change event for a gestalt change
  */
 struct LREventGestaltChange : EventChange {
-    LRGestalt current, last;
 };
+
+
+/**
+ * @brief Interface for catching gestalt change events
+ */
+struct GestaltChangeEvent {
+
+    /* vars filled automatic on change event */
+    LRGestalt *gestalt = nullptr;
+    bool *patina = nullptr;
+    bool *gradient = nullptr;
+
+
+    virtual void onGestaltChange(LREventGestaltChange &e) {};
+};
+
 
 /**
  * Represents all data needed by skinned versions of UI
  */
-struct LRGestaltModifier {
-
-    /* pointer to current skin id */
-    LRGestalt *gestalt = nullptr;
-
-    /* holds the last used ID for recognizing changes */
-    LRGestalt prevID = NIL; //init with unset to trigger first invalidation
+struct LRGestaltVariant {
 
     /* SVG pool - Holds all needed SVG images */
     map<LRGestalt, shared_ptr<SVG>> pool;
-
-
-    //LRGestaltModifier(LRGestalt *gestalt) : gestalt(gestalt) {}
-
-
-    /*
-     * Check if gestalt has been changed
-     */
-    bool invalidGestalt() {
-        if (gestalt != nullptr) {
-            auto changed = *gestalt != prevID;
-
-            // trigger event handler
-            if (changed) onGestaltChange();
-
-            return changed;
-        }
-
-        return false;
-    }
-
-
-    /**
-     * @brief Synchronize local gestalt ID
-     */
-    void syncGestalt() {
-        prevID = *gestalt;
-    }
-
-
-    virtual void onGestaltChange() {}
 
 
     /**
@@ -106,11 +84,6 @@ struct LRGestaltModifier {
         if (pool.size() == 1) {
             pool[LRGestalt::NIL] = svg;
         }
-    }
-
-
-    shared_ptr<SVG> getSVGVariant() {
-        return getSVGVariant(*gestalt);
     }
 
 
