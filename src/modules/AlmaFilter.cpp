@@ -106,9 +106,6 @@ AlmaFilterWidget::AlmaFilterWidget(AlmaFilter *module) : LRModuleWidget(module) 
     panel->addSVGVariant(LRGestalt::DARK, SVG::load(assetPlugin(plugin, "res/panels/VCF.svg")));
     // panel->addSVGVariant(SVG::load(assetPlugin(plugin, "res/panels/VCF.svg")));
     // panel->addSVGVariant(SVG::load(assetPlugin(plugin, "res/panels/VCF.svg")));
-
-    panel->init();
-
     addChild(panel);
 
 

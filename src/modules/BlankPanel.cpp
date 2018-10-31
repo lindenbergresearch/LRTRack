@@ -52,8 +52,6 @@ BlankPanelWidget::BlankPanelWidget(BlankPanel *module) : LRModuleWidget(module) 
 
     noGestalt = true;
 
-    panel->init();
-
     addChild(panel);
 
     box.size = panel->box.size;

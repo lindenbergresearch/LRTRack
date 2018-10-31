@@ -102,8 +102,6 @@ MS20FilterWidget::MS20FilterWidget(MS20Filter *module) : LRModuleWidget(module) 
     panel->addSVGVariant(LRGestalt::LIGHT, SVG::load(assetPlugin(plugin, "res/panels/MS20Light.svg")));
     panel->addSVGVariant(LRGestalt::AGED, SVG::load(assetPlugin(plugin, "res/panels/MS20Aged.svg")));
 
-    panel->init();
-
     addChild(panel);
 
     box.size = panel->box.size;

@@ -168,8 +168,6 @@ DiodeVCFWidget::DiodeVCFWidget(DiodeVCF *module) : LRModuleWidget(module) {
     panel->addSVGVariant(LRGestalt::LIGHT, SVG::load(assetPlugin(plugin, "res/panels/DiodeLadderVCF.svg")));
     panel->addSVGVariant(LRGestalt::AGED, SVG::load(assetPlugin(plugin, "res/panels/DiodeLadderVCFAged.svg")));
 
-    panel->init();
-
     addChild(panel);
 
     module->panel = panel;

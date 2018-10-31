@@ -110,8 +110,6 @@ BlankPanelWidgetWood::BlankPanelWidgetWood(BlankPanelWood *module) : LRModuleWid
     patina = false;
     gradient = false;
 
-    panel->init();
-
     addChild(panel);
 
     module->panel = panel;

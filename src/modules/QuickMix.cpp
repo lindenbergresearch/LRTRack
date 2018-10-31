@@ -146,8 +146,6 @@ QuickMixWidget::QuickMixWidget(QuickMix *module) : LRModuleWidget(module) {
     //  panel->addSVGVariant(SVG::load(assetPlugin(plugin, "res/panels/QuickMix.svg")));
     //  panel->addSVGVariant(SVG::load(assetPlugin(plugin, "res/panels/QuickMix.svg")));
 
-    panel->init();
-
     addChild(panel);
     box.size = panel->box.size;
 
