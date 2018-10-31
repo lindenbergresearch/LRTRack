@@ -183,7 +183,7 @@ public:
 /**
  * @brief The base of all knobs used in LR panels, includes a indicator
  */
-struct LRKnob : SVGKnob, LRGestaltModifier {
+struct LRKnob : SVGKnob, LRGestaltVariant, GestaltChangeEvent {
 private:
     static constexpr float ANGLE = 0.83f;
 
@@ -276,9 +276,6 @@ public:
     void setSVG(shared_ptr<SVG> svg);
 
 
-    void step() override;
-
-
     /**
      * @brief Creates a new instance of a LRKnob child
      * @tparam TParamWidget Subclass of LRKnob
@@ -328,6 +325,9 @@ public:
      * @param e
      */
     void onChange(EventChange &e) override;
+
+
+    void onGestaltChange(LREventGestaltChange &e) override;
 };
 
 
@@ -971,14 +971,10 @@ struct PanelBorder : TransparentWidget {
 /**
  * @brief Standard LR module Panel
  */
-struct LRPanel : FramebufferWidget, LRGestaltModifier {
+struct LRPanel : FramebufferWidget, LRGestaltVariant, GestaltChangeEvent {
     SVGWidget *panelWidget;
     map<LRGestalt, LRGradientWidget *> gradients;
     LRPatinaWidget *patinaWidgetClassic, *patinaWidgetWhite;
-
-    bool *gradient;
-    bool *patina;
-
 
     LRPanel();
 
@@ -988,10 +984,9 @@ struct LRPanel : FramebufferWidget, LRGestaltModifier {
 
     void setPatina(bool enabled);
 
-    void setupGestalt(LRGestalt *gestalt, bool *gradient, bool *patina);
-
     void draw(NVGcontext *vg) override;
     void onChange(EventChange &e) override;
+    void onGestaltChange(LREventGestaltChange &e) override;
 };
 
 
