@@ -58,10 +58,6 @@ struct ReShaperWidget : LRModuleWidget {
 
 
 ReShaperWidget::ReShaperWidget(ReShaper *module) : LRModuleWidget(module) {
-    // setPanel(SVG::load(assetPlugin(plugin, "res/ReShaper.svg")));
-    panel = new LRPanel();
-    panel->setupGestalt(&gestalt, &gradient, &patina);
-
     panel->addSVGVariant(LRGestalt::DARK, SVG::load(assetPlugin(plugin, "res/panels/ReShaper.svg")));
     // panel->addSVGVariant(SVG::load(assetPlugin(plugin, "res/panels/ReShaper.svg")));
     // panel->addSVGVariant(SVG::load(assetPlugin(plugin, "res/panels/ReShaper.svg")));
