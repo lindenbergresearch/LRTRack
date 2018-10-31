@@ -68,10 +68,11 @@ struct LRModuleWidget : ModuleWidget {
     LRGestalt gestalt = DARK;       // DARK == default
     LRGestalt prevGestalt = NIL;    // set to NIL to trigger change event on first start
 
-    bool gradient = true;       // gradient used at panel
-    bool patina = false;        // patina used at panel
+    bool gradient = true;           // gradient used at panel
+    bool patina = false;            // patina used at panel
 
-    bool noGestalt; // if set all gestalt options and menus are disabled
+    bool noGestalt;                 // if set all gestalt options and menus are disabled
+
     /**
      * @brief Default constructor derived from rack
      * @param module LRModule instance
@@ -79,6 +80,7 @@ struct LRModuleWidget : ModuleWidget {
     explicit LRModuleWidget(LRModule *module) : ModuleWidget(module) {
         // pass gestalt pointer to module, to point to the origin at the widget
         module->gestalt = &gestalt;
+        panel = new LRPanel();
     }
 
 
