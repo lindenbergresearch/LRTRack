@@ -14,19 +14,6 @@ void LRPanel::draw(NVGcontext *vg) {
 
 
 /**
- * @brief Setup UI interface
- * @param gestalt Pointer to gestalt id
- * @param gradient Pointer to grandient flag
- * @param patina Pointer to patina flag
- */
-void LRPanel::setupGestalt(LRGestalt *gestalt, bool *gradient, bool *patina) {
-    this->gestalt = gestalt;
-    this->gradient = gradient;
-    this->patina = patina;
-}
-
-
-/**
  * @brief Constructor
  */
 LRPanel::LRPanel() {
@@ -122,25 +109,25 @@ void LRPanel::setPatina(bool enabled) {
 void LRPanel::onChange(EventChange &e) {
     Widget::onChange(e);
 
-    auto *ec = static_cast<LREventGestaltChange *>(&e);
+}
 
-    if (ec != nullptr) {
-        auto svg = getSVGVariant(ec->current);
 
-        if (svg != nullptr) {
-            panelWidget->setSVG(svg);
-            box.size = panelWidget->box.size.div(RACK_GRID_SIZE).round().mult(RACK_GRID_SIZE);
-        }
+void LRPanel::onGestaltChange(LREventGestaltChange &e) {
+    debug("panel: %i", *gestalt);
 
-        setGradientVariant(false);
-        setPatina(*patina);
+    auto svg = getSVGVariant(*gestalt);
 
-        dirty = true;
-
-        e.consumed = true;
+    if (svg != nullptr) {
+        panelWidget->setSVG(svg);
+        box.size = panelWidget->box.size.div(RACK_GRID_SIZE).round().mult(RACK_GRID_SIZE);
     }
 
+    setGradientVariant(false);
+    setPatina(*patina);
 
+    dirty = true;
+    e.consumed = true;
 }
+
 
 }

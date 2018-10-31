@@ -69,19 +69,18 @@ void LRKnob::onChange(EventChange &e) {
 }
 
 
-void LRKnob::step() {
-    if (gestalt != nullptr && invalidGestalt()) {
-        auto svg = getSVGVariant();
+void LRKnob::onGestaltChange(LREventGestaltChange &e) {
 
-        if (svg != nullptr) {
-            setSVG(svg);
-        }
+    debug("knob:: %i", *gestalt);
 
-        dirty = true;
-        syncGestalt();
+    auto svg = getSVGVariant(*gestalt);
+
+    if (svg != nullptr) {
+        setSVG(svg);
     }
 
-    SVGKnob::step();
+    dirty = true;
+    e.consumed = true;
 }
 
 }
