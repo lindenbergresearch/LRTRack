@@ -793,10 +793,6 @@ private:
 
 public:
     LRIOPortD() {
-        addSVGVariant(DARK, SVG::load(assetPlugin(plugin, "res/elements/IOPortC.svg")));
-        addSVGVariant(LIGHT, SVG::load(assetPlugin(plugin, "res/elements/IOPortCLight.svg")));
-        addSVGVariant(AGED, SVG::load(assetPlugin(plugin, "res/elements/IOPortCLight.svg")));
-
         shader = new LRShadow();
     }
 
@@ -809,9 +805,9 @@ public:
                 box.size = background->box.size;
 
                 shader->setBox(box);
-                shader->setSize(0.50);
-                shader->setStrength(0.9);
-                shader->setShadowPosition(3, 4);
+                shader->setSize(0.57);
+                shader->setStrength(0.3);
+                shader->setShadowPosition(2, 3);
                 break;
             case LRGestalt::LIGHT:
                 background->svg = getSVGVariant(LIGHT);
@@ -819,8 +815,8 @@ public:
                 box.size = background->box.size;
 
                 shader->setBox(box);
-                shader->setSize(0.55);
-                shader->setStrength(0.3);
+                shader->setSize(0.52);
+                shader->setStrength(0.5);
                 shader->setShadowPosition(1, 2);
                 break;
             case LRGestalt::AGED:
@@ -829,8 +825,8 @@ public:
                 box.size = background->box.size;
 
                 shader->setBox(box);
-                shader->setSize(0.55);
-                shader->setStrength(0.3);
+                shader->setSize(0.52);
+                shader->setStrength(0.5);
                 shader->setShadowPosition(1, 2);
                 break;
             default:
@@ -851,6 +847,29 @@ public:
     }
 };
 
+
+/**
+ * @brief Audio variant of IO port
+ */
+struct LRIOPortAudio : LRIOPortD {
+    LRIOPortAudio() : LRIOPortD() {
+        addSVGVariant(DARK, SVG::load(assetPlugin(plugin, "res/elements/IOPortB.svg")));
+        addSVGVariant(LIGHT, SVG::load(assetPlugin(plugin, "res/elements/IOPortBLight.svg")));
+        addSVGVariant(AGED, SVG::load(assetPlugin(plugin, "res/elements/IOPortBLight.svg")));
+    }
+};
+
+
+/**
+ * @brief CV variant of IO port
+ */
+struct LRIOPortCV : LRIOPortD {
+    LRIOPortCV() : LRIOPortD() {
+        addSVGVariant(DARK, SVG::load(assetPlugin(plugin, "res/elements/IOPortC.svg")));
+        addSVGVariant(LIGHT, SVG::load(assetPlugin(plugin, "res/elements/IOPortCLight.svg")));
+        addSVGVariant(AGED, SVG::load(assetPlugin(plugin, "res/elements/IOPortCLight.svg")));
+    }
+};
 
 /**
  * @brief Alternative IO Port
