@@ -12,6 +12,8 @@ void LRGradientWidget::draw(NVGcontext *vg) {
     NVGpaint paint = nvgLinearGradient(vg, v1.x, v1.y, v2.x, v2.y, innerColor, outerColor);
     nvgFillPaint(vg, paint);
     nvgFill(vg);
+
+    nvgRestore(vg);
 }
 
 
