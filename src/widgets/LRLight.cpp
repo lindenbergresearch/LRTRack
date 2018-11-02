@@ -29,12 +29,23 @@ void LRLight::draw(NVGcontext *vg) {
     nvgRect(vg, radius - oradius, radius - oradius, 2 * oradius, 2 * oradius);
     NVGpaint paint;
     NVGcolor icol = color;
-    icol.a *= 0.30f;
+    icol.a *= 0.40f;
     NVGcolor ocol = color;
     ocol.a = 0.00f;
     paint = nvgRadialGradient(vg, radius, radius, radius, oradius, icol, ocol);
     nvgFillPaint(vg, paint);
     nvgFill(vg);
+}
+
+
+void LRLight::setColor(NVGcolor color) {
+    LRLight::color = color;
+
+    if (baseColors.empty()) addBaseColor(color);
+    else baseColors[0] = color;
+
+    borderColor = nvgRGBAf(color.r / 100, color.g / 100, color.b / 100, 0.9);
+    bgColor = nvgRGBAf(color.r, color.g, color.b, 0.3);
 }
 
 
@@ -44,10 +55,27 @@ void LRLight::draw(NVGcontext *vg) {
 LRLight::LRLight() {
     box.size = Vec(7.5f, 7.5f);
 
-    color = LED_DEFAULT_COLOR_DARK;
-    addBaseColor(color);
-    borderColor = nvgRGBAf(color.r / 100, color.g / 100, color.b / 100, 0.9);
-    bgColor = nvgRGBAf(color.r, color.g, color.b, 0.3);
+    setColor(LED_DEFAULT_COLOR_DARK);
+}
+
+
+void LRLight::onGestaltChange(LREventGestaltChange &e) {
+    LRGestaltChangeAction::onGestaltChange(e);
+
+    switch (*gestalt) {
+        case LRGestalt::DARK:
+            setColor(LED_DEFAULT_COLOR_DARK);
+            break;
+        case LRGestalt::LIGHT:
+            setColor(LED_DEFAULT_COLOR_LIGHT);
+            break;
+        case LRGestalt::AGED:
+            setColor(LED_DEFAULT_COLOR_LIGHT);
+            break;
+        default:
+            setColor(LED_DEFAULT_COLOR_DARK);
+            break;
+    }
 }
 
 }
