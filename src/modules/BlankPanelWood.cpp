@@ -82,14 +82,14 @@ void BlankPanelWood::updateComponents() {
 
     patina->visible = aged;
 
-    panel->dirty = true;
+    //panel->dirty = true;
 }
 
 
 void BlankPanelWood::randomize() {
     Module::randomize();
     patina->box.pos = Vec(-randomUniform() * 1000, -randomUniform() * 200);
-    panel->dirty = true;
+    //panel->dirty = true;
 }
 
 
@@ -110,6 +110,7 @@ BlankPanelWidgetWood::BlankPanelWidgetWood(BlankPanelWood *module) : LRModuleWid
     patina = false;
     gradient = false;
 
+    panel->init();
     addChild(panel);
 
     module->panel = panel;

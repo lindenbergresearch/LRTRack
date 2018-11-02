@@ -214,8 +214,8 @@ WestcoastWidget::WestcoastWidget(Westcoast *module) : LRModuleWidget(module) {
     panel->addSVGVariant(LRGestalt::LIGHT, SVG::load(assetPlugin(plugin, "res/panels/Westcoast.svg")));
     panel->addSVGVariant(LRGestalt::AGED, SVG::load(assetPlugin(plugin, "res/panels/WestcoastAged.svg")));
 
+    panel->init();
     addChild(panel);
-
     box.size = panel->box.size;
 
     // ***** SCREWS **********

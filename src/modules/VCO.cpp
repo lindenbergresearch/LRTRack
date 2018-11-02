@@ -151,9 +151,13 @@ VCOWidget::VCOWidget(VCO *module) : LRModuleWidget(module) {
     panel->addSVGVariant(LRGestalt::LIGHT, SVG::load(assetPlugin(plugin, "res/panels/Woldemar.svg")));
     panel->addSVGVariant(LRGestalt::AGED, SVG::load(assetPlugin(plugin, "res/panels/WoldemarAged.svg")));
 
-    addChild(panel);
+    panel->init();
     box.size = panel->box.size;
 
+    addChild(panel);
+
+    panel->visible = true;
+    panel->dirty = true;
 
     /* panel->setInner(nvgRGBAf(0.3, 0.3, 0.f, 0.09f));
      panel->setOuter(nvgRGBAf(0.f, 0.f, 0.f, 0.7f));
