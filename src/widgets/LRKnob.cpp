@@ -70,9 +70,6 @@ void LRKnob::onChange(EventChange &e) {
 
 
 void LRKnob::onGestaltChange(LREventGestaltChange &e) {
-
-    debug("knob:: %i", *gestalt);
-
     auto svg = getSVGVariant(*gestalt);
 
     if (svg != nullptr) {
