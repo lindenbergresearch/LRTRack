@@ -83,7 +83,7 @@ void LRLCDWidget::draw(NVGcontext *vg) {
 
 
 void LRLCDWidget::onGestaltChange(LREventGestaltChange &e) {
-    GestaltChangeEvent::onGestaltChange(e);
+    LRGestaltChangeAction::onGestaltChange(e);
 
     if (*gestalt == DARK) {
         fg = LED_DEFAULT_COLOR_DARK;
