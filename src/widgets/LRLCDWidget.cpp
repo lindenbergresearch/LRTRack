@@ -16,7 +16,7 @@ LRLCDWidget::LRLCDWidget(unsigned char length, std::string format, LCDType type,
     LRLCDWidget::length = length;
     LRLCDWidget::format = format;
 
-    LRLCDWidget::fg = LED_DEFAULT_COLOR_DARK;
+    LRLCDWidget::fg = LCD_DEFAULT_COLOR_DARK;
     LRLCDWidget::bg = nvgRGBAf(fg.r, fg.g, fg.b, 0.15f);
 
     for (int i = 0; i < LRLCDWidget::length; ++i) {
@@ -86,9 +86,9 @@ void LRLCDWidget::onGestaltChange(LREventGestaltChange &e) {
     LRGestaltChangeAction::onGestaltChange(e);
 
     if (*gestalt == DARK) {
-        fg = LED_DEFAULT_COLOR_DARK;
+        fg = LCD_DEFAULT_COLOR_DARK;
     } else {
-        fg = LED_DEFAULT_COLOR_LIGHT;
+        fg = LCD_DEFAULT_COLOR_LIGHT;
     }
 
     e.consumed = true;
