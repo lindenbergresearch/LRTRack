@@ -51,7 +51,7 @@ struct LREventGestaltChange : EventChange {
 /**
  * @brief Interface for catching gestalt change events
  */
-struct GestaltChangeEvent {
+struct LRGestaltChangeAction {
 
     /* vars filled automatic on change event */
     LRGestalt *gestalt = nullptr;
