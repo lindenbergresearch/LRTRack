@@ -129,17 +129,17 @@ MS20FilterWidget::MS20FilterWidget(MS20Filter *module) : LRModuleWidget(module) 
     addParam(LRKnob::create<LRSmallKnob>(Vec(61, 82.4), module, &gestalt, MS20Filter::CUTOFF_CV_PARAM, -1.f, 1.f, 0.f));
     addParam(LRKnob::create<LRSmallKnob>(Vec(61, 239), module, &gestalt, MS20Filter::GAIN_CV_PARAM, -1.f, 1.f, 0.f));
 
-    addInput(Port::create<LRIOPortC>(Vec(18, 168.5), Port::INPUT, module, MS20Filter::PEAK_CV_INPUT));
-    addInput(Port::create<LRIOPortC>(Vec(18, 81.5), Port::INPUT, module, MS20Filter::CUTOFF_CV_INPUT));
-    addInput(Port::create<LRIOPortC>(Vec(18, 239), Port::INPUT, module, MS20Filter::GAIN_CV_INPUT));
+    addInput(Port::create<LRIOPortD>(Vec(18, 168.5), Port::INPUT, module, MS20Filter::PEAK_CV_INPUT));
+    addInput(Port::create<LRIOPortD>(Vec(18, 81.5), Port::INPUT, module, MS20Filter::CUTOFF_CV_INPUT));
+    addInput(Port::create<LRIOPortD>(Vec(18, 239), Port::INPUT, module, MS20Filter::GAIN_CV_INPUT));
     // ***** CV INPUTS *******
 
     // ***** INPUTS **********
-    addInput(Port::create<LRIOPort>(Vec(17.999, 326.05), Port::INPUT, module, MS20Filter::FILTER_INPUT));
+    addInput(Port::create<LRIOPortD>(Vec(17.999, 326.05), Port::INPUT, module, MS20Filter::FILTER_INPUT));
     // ***** INPUTS **********
 
     // ***** OUTPUTS *********
-    addOutput(Port::create<LRIOPort>(Vec(58.544, 326.05), Port::OUTPUT, module, MS20Filter::FILTER_OUTPUT));
+    addOutput(Port::create<LRIOPortD>(Vec(58.544, 326.05), Port::OUTPUT, module, MS20Filter::FILTER_OUTPUT));
     // ***** OUTPUTS *********
 
     // ***** SWITCH  *********

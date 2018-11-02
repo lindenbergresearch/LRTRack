@@ -787,6 +787,74 @@ public:
 /**
  * @brief Alternative IO Port
  */
+struct LRIOPortD : SVGPort, LRGestaltVariant, LRGestaltChangeAction { //TODO: rename after migration
+private:
+    LRShadow *shader;
+
+public:
+    LRIOPortD() {
+        addSVGVariant(DARK, SVG::load(assetPlugin(plugin, "res/elements/IOPortC.svg")));
+        addSVGVariant(LIGHT, SVG::load(assetPlugin(plugin, "res/elements/IOPortCLight.svg")));
+        addSVGVariant(AGED, SVG::load(assetPlugin(plugin, "res/elements/IOPortCLight.svg")));
+
+        shader = new LRShadow();
+    }
+
+
+    void onGestaltChange(LREventGestaltChange &e) override {
+        switch (*gestalt) {
+            case LRGestalt::DARK:
+                background->svg = getSVGVariant(DARK);
+                background->wrap();
+                box.size = background->box.size;
+
+                shader->setBox(box);
+                shader->setSize(0.50);
+                shader->setStrength(0.9);
+                shader->setShadowPosition(3, 4);
+                break;
+            case LRGestalt::LIGHT:
+                background->svg = getSVGVariant(LIGHT);
+                background->wrap();
+                box.size = background->box.size;
+
+                shader->setBox(box);
+                shader->setSize(0.55);
+                shader->setStrength(0.3);
+                shader->setShadowPosition(1, 2);
+                break;
+            case LRGestalt::AGED:
+                background->svg = getSVGVariant(AGED);
+                background->wrap();
+                box.size = background->box.size;
+
+                shader->setBox(box);
+                shader->setSize(0.55);
+                shader->setStrength(0.3);
+                shader->setShadowPosition(1, 2);
+                break;
+            default:
+                break;
+        }
+
+        dirty = true;
+    }
+
+
+    /**
+     * @brief Hook into draw method
+     * @param vg
+     */
+    void draw(NVGcontext *vg) override {
+        shader->draw(vg);
+        SVGPort::draw(vg);
+    }
+};
+
+
+/**
+ * @brief Alternative IO Port
+ */
 struct LRIOPortCLight : SVGPort {
 private:
     LRShadow *shader;
