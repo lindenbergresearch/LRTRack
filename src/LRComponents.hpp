@@ -35,7 +35,7 @@ typedef std::vector<std::string> StringVector;
 /**
  * @brief Emulation of a LCD monochrome display
  */
-struct LRLCDWidget : Label, GestaltChangeEvent {
+struct LRLCDWidget : Label, LRGestaltChangeAction {
 
     enum LCDType {
         NUMERIC,
@@ -183,7 +183,7 @@ public:
 /**
  * @brief The base of all knobs used in LR panels, includes a indicator
  */
-struct LRKnob : SVGKnob, LRGestaltVariant, GestaltChangeEvent {
+struct LRKnob : SVGKnob, LRGestaltVariant, LRGestaltChangeAction {
 private:
     static constexpr float ANGLE = 0.83f;
 
@@ -358,6 +358,8 @@ struct LRToggleKnob : LRKnob {
 
 
     void onGestaltChange(LREventGestaltChange &e) override {
+        LRKnob::onGestaltChange(e);
+
         switch (*gestalt) {
             case LRGestalt::DARK:
                 shader->setShadowPosition(3, 4);
@@ -453,6 +455,8 @@ struct LRBigKnob : LRKnob {
 
 
     void onGestaltChange(LREventGestaltChange &e) override {
+        LRKnob::onGestaltChange(e);
+
         switch (*gestalt) {
             case LRGestalt::DARK:
                 setIndicatorDistance(15);
@@ -496,6 +500,8 @@ struct LRMiddleKnob : LRKnob {
 
 
     void onGestaltChange(LREventGestaltChange &e) override {
+        LRKnob::onGestaltChange(e);
+
         switch (*gestalt) {
             case LRGestalt::DARK:
                 setIndicatorDistance(13);
@@ -542,6 +548,8 @@ struct LRSmallKnob : LRKnob {
 
 
     void onGestaltChange(LREventGestaltChange &e) override {
+        LRKnob::onGestaltChange(e);
+
         switch (*gestalt) {
             case LRGestalt::DARK:
                 setIndicatorDistance(13);
@@ -970,25 +978,18 @@ struct PanelBorder : TransparentWidget {
 /**
  * @brief Standard LR module Panel
  */
-struct LRPanel : FramebufferWidget, LRGestaltVariant, GestaltChangeEvent {
+struct LRPanel : FramebufferWidget, LRGestaltVariant, LRGestaltChangeAction {
     SVGWidget *panelWidget;
 
     map<LRGestalt, LRGradientWidget *> gradients;
 
-    LRPatinaWidget *patinaWidgetClassic = nullptr, *patinaWidgetWhite = nullptr;
-
-    bool initialized = false;
-
-    LRPanel();
-
-    void init();
+    LRPatinaWidget *patinaWidgetClassic, *patinaWidgetWhite;
 
     void setGradientVariant(bool enabled);
 
     void setPatina(bool enabled);
-
-    void draw(NVGcontext *vg) override;
-    void onChange(EventChange &e) override;
+    void step() override;
+    void init();
     void onGestaltChange(LREventGestaltChange &e) override;
 };
 
