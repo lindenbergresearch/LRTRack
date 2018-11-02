@@ -4,49 +4,29 @@
 
 namespace lrt {
 
-/**
- * @brief Extention for panel background
- * @param vg
- */
-void LRPanel::draw(NVGcontext *vg) {
-    FramebufferWidget::draw(vg);
-}
-
-
-/**
- * @brief Constructor
- */
-LRPanel::LRPanel() {
-    panelWidget = new SVGWidget();
-    addChild(panelWidget);
-}
-
-
-/**
- * @brief Initialize a Panel and setup gestalt and UI
- */
 void LRPanel::init() {
-    auto svg = getSVGVariant(NIL); // INIT
+    /* set panel svg */
+    panelWidget = new SVGWidget();
+    auto svg = getSVGVariant(DARK); // INIT
 
     if (svg != nullptr) {
         panelWidget->setSVG(svg);
     }
 
-
     box.size = panelWidget->box.size.div(RACK_GRID_SIZE).round().mult(RACK_GRID_SIZE);
+    addChild(panelWidget);
 
     /* setup patina widget */
     patinaWidgetWhite = new LRPatinaWidget("res/panels/WhitePatina.svg", box.size);
     patinaWidgetWhite->randomize();
-    patinaWidgetWhite->visible = *patina;
+    patinaWidgetWhite->visible = false;
     addChild(patinaWidgetWhite);
 
     patinaWidgetClassic = new LRPatinaWidget("res/panels/AlternatePatina.svg", box.size);
     patinaWidgetClassic->randomize();
     patinaWidgetClassic->strength = .4f;
-    patinaWidgetClassic->visible = *patina;
+    patinaWidgetClassic->visible = false;
     addChild(patinaWidgetClassic);
-
 
     /* setup gradient variants */
     auto gradientDark = new LRGradientWidget(box.size, nvgRGBAf(.4f, .4f, .5f, 0.3f), nvgRGBAf(0.0f, 0.0f, 0.0f, 0.2f), Vec(-10, 10));
@@ -54,7 +34,7 @@ void LRPanel::init() {
     addChild(gradientDark);
     gradients[LRGestalt::DARK] = gradientDark;
 
-    auto gradientLight = new LRGradientWidget(box.size, nvgRGBAf(0.3, 0.3, 0.f, 0.09f), nvgRGBAf(0.f, 0.f, 0.f, 0.7f), Vec(-10, -10));
+    auto gradientLight = new LRGradientWidget(box.size, nvgRGBAf(0.3, 0.3, 0.3f, 0.09f), nvgRGBAf(0.f, 0.f, 0.f, 0.7f), Vec(-10, -10));
     gradientLight->visible = false;
     addChild(gradientLight);
     gradients[LRGestalt::LIGHT] = gradientLight;
@@ -64,6 +44,7 @@ void LRPanel::init() {
     addChild(gradientAged);
     gradients[LRGestalt::AGED] = gradientAged;
 
+    /* setup panel border */
     auto *pb = new PanelBorder();
     pb->box.size = box.size;
     addChild(pb);
@@ -101,20 +82,11 @@ void LRPanel::setPatina(bool enabled) {
     // TODO: extra patina for aged mode?
     patinaWidgetWhite->visible = *patina && *gestalt != LRGestalt::DARK;
 
-
     dirty = true;
 }
 
 
-void LRPanel::onChange(EventChange &e) {
-    Widget::onChange(e);
-
-}
-
-
 void LRPanel::onGestaltChange(LREventGestaltChange &e) {
-    debug("panel: %i", *gestalt);
-
     auto svg = getSVGVariant(*gestalt);
 
     if (svg != nullptr) {
@@ -129,5 +101,15 @@ void LRPanel::onGestaltChange(LREventGestaltChange &e) {
     e.consumed = true;
 }
 
+
+void LRPanel::step() {
+    if (isNear(gPixelRatio, 1.0)) {
+        // Small details draw poorly at low DPI, so oversample when drawing to the framebuffer
+        oversample = 2.0;
+    }
+
+
+    FramebufferWidget::step();
+}
 
 }
