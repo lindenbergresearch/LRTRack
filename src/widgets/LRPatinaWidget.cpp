@@ -34,6 +34,8 @@ LRPatinaWidget::LRPatinaWidget(const string &filename, const Vec &size) {
     tw->addChild(svg);
 
     box.size = size;
+
+    dirty = true;
 }
 
 
@@ -46,6 +48,8 @@ void LRPatinaWidget::randomize() {
 
 
     svg->box.pos = Vec(-randomUniform() * maxx, -randomUniform() * maxy);
+
+    dirty = true;
 }
 
 
@@ -55,5 +59,5 @@ void LRPatinaWidget::randomize() {
  */
 void LRPatinaWidget::draw(NVGcontext *vg) {
     nvgGlobalAlpha(vg, strength);
-    Widget::draw(vg);
+    FramebufferWidget::draw(vg);
 }
