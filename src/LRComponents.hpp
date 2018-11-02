@@ -10,8 +10,12 @@
 #define LCD_FONTSIZE 11
 #define LCD_LETTER_SPACING 0
 
-#define LED_DEFAULT_COLOR_DARK nvgRGBAf(0.1, 0.3, 0.92, 1.0)
-#define LED_DEFAULT_COLOR_LIGHT nvgRGBAf(0.0, 0.0, 0.12, 1.0)
+#define LCD_DEFAULT_COLOR_DARK nvgRGBAf(0.23, 0.6, 0.82, 1.0)
+#define LCD_DEFAULT_COLOR_LIGHT nvgRGBAf(0.0, 0.0, 0.0, 1.0)
+
+#define LED_DEFAULT_COLOR_DARK nvgRGBAf(0.23, 0.6, 0.82, 1.0)
+#define LED_DEFAULT_COLOR_LIGHT nvgRGBAf(0.0, 0.0, 0.92, 1.0)
+
 
 /* show values of all knobs */
 #define DEBUG_VALUES false
@@ -877,10 +881,14 @@ struct LRSwitch : SVGSwitch, ToggleSwitch {
 /**
  * @brief Standard LED
  */
-struct LRLight : ModuleLightWidget {
+struct LRLight : ModuleLightWidget, LRGestaltChangeAction {
     LRLight();
 
     void draw(NVGcontext *vg) override;
+
+    void setColor(NVGcolor color);
+
+    void onGestaltChange(LREventGestaltChange &e) override;
 };
 
 
