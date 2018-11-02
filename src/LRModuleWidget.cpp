@@ -144,7 +144,7 @@ void LRModuleWidget::step() {
 
     if (modified) {
         for (Widget *child : children) {
-            auto *gc = dynamic_cast<GestaltChangeEvent *>(child);
+            auto *gc = dynamic_cast<LRGestaltChangeAction *>(child);
 
             if (gc != nullptr) {
                 /* link variables */
@@ -159,6 +159,5 @@ void LRModuleWidget::step() {
 
         prevGestalt = gestalt;
     }
-
-
 }
+
