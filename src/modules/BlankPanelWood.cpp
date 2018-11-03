@@ -105,7 +105,7 @@ BlankPanelWidgetWood::BlankPanelWidgetWood(BlankPanelWood *module) : LRModuleWid
     // panel->addSVGVariant(SVG::load(assetPlugin(plugin, "res/panels/WoodLeftTop.svg")));
     // panel->addSVGVariant(SVG::load(assetPlugin(plugin, "res/panels/WoodLeftTop.svg")));
 
-    noGestalt = true;
+    noVariants = true;
     gestalt = LRGestalt::DARK;
     patina = false;
     gradient = false;
