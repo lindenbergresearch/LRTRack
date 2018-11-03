@@ -7,7 +7,7 @@ namespace lrt {
 void LRPanel::init() {
     /* set panel svg */
     panelWidget = new SVGWidget();
-    auto svg = getSVGVariant(DARK); // INIT
+    auto svg = (gestalt == nullptr) ? getSVGVariant(DARK) : getSVGVariant(*gestalt);  // INIT
 
     if (svg != nullptr) {
         panelWidget->setSVG(svg);
@@ -29,17 +29,17 @@ void LRPanel::init() {
     addChild(patinaWidgetClassic);
 
     /* setup gradient variants */
-    auto gradientDark = new LRGradientWidget(box.size, nvgRGBAf(.4f, .4f, .5f, 0.3f), nvgRGBAf(0.0f, 0.0f, 0.0f, 0.2f), Vec(-10, 10));
+    auto gradientDark = new LRGradientWidget(box.size, nvgRGBAf(.4f, .4f, .4f, 0.3f), nvgRGBAf(0.0f, 0.0f, 0.0f, 0.2f), Vec(100, -20));
     gradientDark->visible = false;
     addChild(gradientDark);
     gradients[LRGestalt::DARK] = gradientDark;
 
-    auto gradientLight = new LRGradientWidget(box.size, nvgRGBAf(0.3, 0.3, 0.3f, 0.09f), nvgRGBAf(0.f, 0.f, 0.f, 0.7f), Vec(-10, -10));
+    auto gradientLight = new LRGradientWidget(box.size, nvgRGBAf(0.3, 0.3, 0.3f, 0.09f), nvgRGBAf(0.f, 0.f, 0.f, 0.7f), Vec(100, -20));
     gradientLight->visible = false;
     addChild(gradientLight);
     gradients[LRGestalt::LIGHT] = gradientLight;
 
-    auto gradientAged = new LRGradientWidget(box.size, nvgRGBAf(0.5, 0.5, 0.f, 0.1f), nvgRGBAf(0.f, 0.f, 0.f, 0.73f), Vec(-10, -10));
+    auto gradientAged = new LRGradientWidget(box.size, nvgRGBAf(0.5, 0.5, 0.f, 0.1f), nvgRGBAf(0.f, 0.f, 0.f, 0.73f), Vec(100, -20));
     gradientAged->visible = false;
     addChild(gradientAged);
     gradients[LRGestalt::AGED] = gradientAged;
