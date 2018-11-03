@@ -94,5 +94,4 @@ void LRLCDWidget::onGestaltChange(LREventGestaltChange &e) {
     e.consumed = true;
 }
 
-
 }

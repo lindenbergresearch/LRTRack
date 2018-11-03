@@ -871,6 +871,7 @@ struct LRIOPortCV : LRIOPortD {
     }
 };
 
+
 /**
  * @brief Alternative IO Port
  */
@@ -1016,7 +1017,7 @@ public:
 
         /* initialise with standard dimensions */
         v1 = offset;
-        v2 = Vec(size.x, size.y);
+        v2 = Vec(v1.x, size.y);
     }
 
 
@@ -1039,17 +1040,12 @@ public:
  * @brief Widget for simulating used look
  */
 struct LRPatinaWidget : TransparentWidget {
-
     SVGWidget *svg;
-    TransformWidget *tw;
 
     float strength = 0.99f;
-    bool rotate = true;
 
     LRPatinaWidget(const string &filename, const Vec &size);
-
     void draw(NVGcontext *vg) override;
-
     void randomize();
 
 };
