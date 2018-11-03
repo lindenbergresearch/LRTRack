@@ -47,7 +47,7 @@ BlankPanelWidget::BlankPanelWidget(BlankPanel *module) : LRModuleWidget(module) 
     panel->addSVGVariant(LRGestalt::AGED, SVG::load(assetPlugin(plugin, "res/panels/BlankPanelAged.svg")));
 
     gestalt = LRGestalt::LIGHT;
-    patina = true;
+    patina = false;
     gradient = true;
 
     noVariants = true;
@@ -59,10 +59,8 @@ BlankPanelWidget::BlankPanelWidget(BlankPanel *module) : LRModuleWidget(module) 
     panel->patinaWidgetClassic->strength = .5f;
     panel->patinaWidgetWhite->strength = .5f;
 
-    panel->gradients[DARK]->setInnerColor(nvgRGBAf(0.5, 0.5, 0.64f, 0.1f));
-    panel->gradients[DARK]->setOuterColor(nvgRGBAf(0.f, 0.f, 0.f, 0.3f));
-    panel->gradients[DARK]->setGradientOffset(Vec(0, 0), Vec(box.size.x * 0.8f, box.size.y * 0.8f));
-
+    panel->gradients[LIGHT]->setInnerColor(nvgRGBAf(0.5, 0.5, 0.f, 0.1f));
+    panel->gradients[LIGHT]->setOuterColor(nvgRGBAf(0.f, 0.f, 0.f, 0.73f));
 
     float speed = 0.007;
 
@@ -72,10 +70,10 @@ BlankPanelWidget::BlankPanelWidget(BlankPanel *module) : LRModuleWidget(module) 
 
 
     // ***** SCREWS **********
-    addChild(Widget::create<ScrewDarkA>(Vec(15, 1)));
-    addChild(Widget::create<ScrewDarkA>(Vec(box.size.x - 30, 1)));
-    addChild(Widget::create<ScrewDarkA>(Vec(15, 366)));
-    addChild(Widget::create<ScrewDarkA>(Vec(box.size.x - 30, 366)));
+    addChild(Widget::create<AlternateScrewLight>(Vec(15, 1)));
+    addChild(Widget::create<AlternateScrewLight>(Vec(box.size.x - 30, 1)));
+    addChild(Widget::create<AlternateScrewLight>(Vec(15, 366)));
+    addChild(Widget::create<AlternateScrewLight>(Vec(box.size.x - 30, 366)));
     // ***** SCREWS **********
 }
 
