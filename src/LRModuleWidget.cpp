@@ -11,7 +11,7 @@ Menu *LRModuleWidget::createContextMenu() {
     auto count = panel->pool.size() - 1; // NIL does not count!
 
 
-    if (noGestalt) return menu; // if gestalt is disabled do nothing
+    if (noVariants) return menu; // if gestalt is disabled do nothing
 
     auto *spacerLabel = new MenuLabel();
     menu->addChild(spacerLabel);
@@ -76,7 +76,11 @@ json_t *LRModuleWidget::toJson() {
     json_object_set_new(rootJ, JSON_GRADIENT_KEY, json_boolean(gradient));
     json_object_set_new(rootJ, JSON_PATINA_KEY, json_boolean(patina));
 
-    //debug("[%p] write module json", this);
+    json_object_set_new(rootJ, JSON_PATINA_A_X, json_real(panel->patinaWidgetWhite->svg->box.pos.x));
+    json_object_set_new(rootJ, JSON_PATINA_A_Y, json_real(panel->patinaWidgetWhite->svg->box.pos.y));
+
+    json_object_set_new(rootJ, JSON_PATINA_B_X, json_real(panel->patinaWidgetClassic->svg->box.pos.x));
+    json_object_set_new(rootJ, JSON_PATINA_B_Y, json_real(panel->patinaWidgetClassic->svg->box.pos.y));
 
     return rootJ;
 }
@@ -94,12 +98,24 @@ void LRModuleWidget::fromJson(json_t *rootJ) {
     json_t *gradientJ = json_object_get(rootJ, JSON_GRADIENT_KEY);
     json_t *patinaJ = json_object_get(rootJ, JSON_PATINA_KEY);
 
+    json_t *patina_a_xJ = json_object_get(rootJ, JSON_PATINA_A_X);
+    json_t *patina_a_yJ = json_object_get(rootJ, JSON_PATINA_A_Y);
+
+    json_t *patina_b_xJ = json_object_get(rootJ, JSON_PATINA_B_X);
+    json_t *patina_b_yJ = json_object_get(rootJ, JSON_PATINA_B_Y);
 
     /* load gradient flag */
     gradient = gradientJ ? json_is_true(gradientJ) : true;
 
     /* load patina flag */
     patina = patinaJ ? json_is_true(patinaJ) : false;
+
+    /* load coordinates of patina layers */
+    panel->patinaWidgetWhite->svg->box.pos.x = (float) json_real_value(patina_a_xJ);
+    panel->patinaWidgetWhite->svg->box.pos.y = (float) json_real_value(patina_a_yJ);
+
+    panel->patinaWidgetClassic->svg->box.pos.x = (float) json_real_value(patina_b_xJ);
+    panel->patinaWidgetClassic->svg->box.pos.y = (float) json_real_value(patina_b_yJ);
 
     /* load and assign gestalt */
     if (gestaltID) {
@@ -137,8 +153,6 @@ void LRModuleWidget::randomize() {
  */
 void LRModuleWidget::step() {
     Widget::step();
-
-    if (noGestalt) return;
 
     bool modified = gestalt != prevGestalt;
 

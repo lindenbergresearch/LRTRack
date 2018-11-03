@@ -28,6 +28,11 @@ static const char *const JSON_GESTALT_KEY = "gestaltID";
 static const char *const JSON_GRADIENT_KEY = "gradient";
 static const char *const JSON_PATINA_KEY = "patina";
 
+static const char *const JSON_PATINA_A_X = "patina_a_x";
+static const char *const JSON_PATINA_A_Y = "patina_a_y";
+
+static const char *const JSON_PATINA_B_X = "patina_b_x";
+static const char *const JSON_PATINA_B_Y = "patina_b_y";
 
 namespace lrt {
 
@@ -70,9 +75,9 @@ struct LRModuleWidget : ModuleWidget {
 
     bool gradient = true;           // gradient used at panel
     bool patina = false;            // patina used at panel
+    bool noVariants = false;        // if set all gestalt options and menus are disabled
 
-    bool noGestalt;                 // if set all gestalt options and menus are disabled
-
+    Vec patinaXY = Vec(0, 0);        // randomized coordinates
     /**
      * @brief Default constructor derived from rack
      * @param module LRModule instance
