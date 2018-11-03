@@ -50,7 +50,7 @@ BlankPanelWidget::BlankPanelWidget(BlankPanel *module) : LRModuleWidget(module) 
     patina = true;
     gradient = true;
 
-    noGestalt = true;
+    noVariants = true;
 
     panel->init();
     addChild(panel);
@@ -61,14 +61,8 @@ BlankPanelWidget::BlankPanelWidget(BlankPanel *module) : LRModuleWidget(module) 
 
     panel->gradients[DARK]->setInnerColor(nvgRGBAf(0.5, 0.5, 0.64f, 0.1f));
     panel->gradients[DARK]->setOuterColor(nvgRGBAf(0.f, 0.f, 0.f, 0.3f));
-
     panel->gradients[DARK]->setGradientOffset(Vec(0, 0), Vec(box.size.x * 0.8f, box.size.y * 0.8f));
 
-    //panel->gradients[LIGHT] = new LRGradientWidget(box.size, nvgRGBAf(0.3, 0.3, 0.f, 0.09f), nvgRGBAf(0.f, 0.f, 0.f, 0.7f), Vec(-10,
-    // -10));
-
-    /* panel->setInner(nvgRGBAf(1.4f * .369f, 1.4f * 0.357f, 1.5f * 0.3333f, 0.17f));
-     panel->setOuter(nvgRGBAf(0.f, 0.f, 0.f, 0.15f));*/
 
     float speed = 0.007;
 
