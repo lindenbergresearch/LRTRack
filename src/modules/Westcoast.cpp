@@ -62,30 +62,11 @@ struct Westcoast : LRModule {
     dsp::Overdrive *overdrive = new dsp::Overdrive(engineGetSampleRate());
     dsp::FastTan *fastTan = new dsp::FastTan(engineGetSampleRate());
 
-    LRAlternateBigKnob *gainBtn = NULL;
-    LRAlternateMiddleKnob *biasBtn = NULL;
-
-    LRPanel *patina;
+    LRBigKnob *gainBtn = NULL;
+    LRMiddleKnob *biasBtn = NULL;
 
     void step() override;
     void onSampleRateChange() override;
-
-
-    json_t *toJson() override {
-        json_t *rootJ = LRModule::toJson();
-
-        json_object_set_new(rootJ, "agedmode", json_boolean(patina->visible));
-        return rootJ;
-    }
-
-
-    void fromJson(json_t *rootJ) override {
-        LRModule::fromJson(rootJ);
-
-        json_t *agedmodeJ = json_object_get(rootJ, "agedmode");
-        if (agedmodeJ)
-            patina->visible = json_boolean_value(agedmodeJ);
-    }
 };
 
 
@@ -205,7 +186,6 @@ void Westcoast::onSampleRateChange() {
 
 struct WestcoastWidget : LRModuleWidget {
     WestcoastWidget(Westcoast *module);
-    void appendContextMenu(Menu *menu) override;
 };
 
 
@@ -226,61 +206,34 @@ WestcoastWidget::WestcoastWidget(Westcoast *module) : LRModuleWidget(module) {
     // ***** SCREWS **********
 
     // ***** MAIN KNOBS ******
-    module->gainBtn = LRKnob::create<LRAlternateBigKnob>(Vec(128.7, 63.0), module, &gestalt, Westcoast::GAIN_PARAM, 0.0, 20.f, 1.f);
-    module->biasBtn = LRKnob::create<LRAlternateMiddleKnob>(Vec(136.4, 153.3), module, &gestalt, Westcoast::BIAS_PARAM, -6.f, 6.f, 0.f);
+    module->gainBtn = LRKnob::create<LRBigKnob>(Vec(128.7, 63.0), module, Westcoast::GAIN_PARAM, 0.0, 20.f, 1.f);
+    module->biasBtn = LRKnob::create<LRMiddleKnob>(Vec(136.4, 153.3), module, Westcoast::BIAS_PARAM, -6.f, 6.f, 0.f);
 
     addParam(module->gainBtn);
     addParam(module->biasBtn);
 
-    addParam(LRKnob::create<LRMiddleIncremental>(Vec(85, 279.3), module, &gestalt, Westcoast::TYPE_PARAM, 1, 7, 1));
+    addParam(LRKnob::create<LRToggleKnob>(Vec(85, 279.3), module, Westcoast::TYPE_PARAM, 1, 7, 1));
 
-    addParam(LRKnob::create<LRAlternateSmallKnob>(Vec(83.4, 101.00), module, &gestalt, Westcoast::CV_GAIN_PARAM, -1.f, 1.f, 0.f));
-    addParam(LRKnob::create<LRAlternateSmallKnob>(Vec(83.4, 183.0), module, &gestalt, Westcoast::CV_BIAS_PARAM, -1.f, 1.f, 0.f));
+    addParam(LRKnob::create<LRSmallKnob>(Vec(83.4, 101.00), module, Westcoast::CV_GAIN_PARAM, -1.f, 1.f, 0.f));
+    addParam(LRKnob::create<LRSmallKnob>(Vec(83.4, 183.0), module, Westcoast::CV_BIAS_PARAM, -1.f, 1.f, 0.f));
     // ***** MAIN KNOBS ******
 
     // ***** CV INPUTS *******
-    addInput(Port::create<LRIOPortC>(Vec(32.4, 99.0), Port::INPUT, module, Westcoast::CV_GAIN_INPUT));
-    addInput(Port::create<LRIOPortC>(Vec(32.4, 179.8), Port::INPUT, module, Westcoast::CV_BIAS_INPUT));
+    addInput(Port::create<LRIOPortCV>(Vec(32.4, 99.0), Port::INPUT, module, Westcoast::CV_GAIN_INPUT));
+    addInput(Port::create<LRIOPortCV>(Vec(32.4, 179.8), Port::INPUT, module, Westcoast::CV_BIAS_INPUT));
     // ***** CV INPUTS *******
 
     // ***** INPUTS **********
-    addInput(Port::create<LRIOPortC>(Vec(22.4, 326.05), Port::INPUT, module, Westcoast::SHAPER_INPUT));
+    addInput(Port::create<LRIOPortAudio>(Vec(22.4, 326.05), Port::INPUT, module, Westcoast::SHAPER_INPUT));
     // ***** INPUTS **********
 
     // ***** OUTPUTS *********
-    addOutput(Port::create<LRIOPortC>(Vec(159.4, 326.05), Port::OUTPUT, module, Westcoast::SHAPER_OUTPUT));
+    addOutput(Port::create<LRIOPortAudio>(Vec(159.4, 326.05), Port::OUTPUT, module, Westcoast::SHAPER_OUTPUT));
     // ***** OUTPUTS *********
 
     // ***** SWITCH  *********
     //addParam(ParamWidget::create<LRSwitch>(Vec(119, 331), module, Westcoast::DCBLOCK_PARAM, 0.0, 1.0, 1.0));
     // ***** SWITCH  *********
-}
-
-
-struct WestcoastShowPatina : MenuItem {
-    Westcoast *westcoast;
-
-
-    void onAction(EventAction &e) override {
-        westcoast->patina->visible ^= true;
-    }
-
-
-    void step() override {
-        rightText = CHECKMARK(westcoast->patina->visible);
-    }
-};
-
-
-void WestcoastWidget::appendContextMenu(Menu *menu) {
-    menu->addChild(MenuEntry::create());
-
-    auto *westcoast = dynamic_cast<Westcoast *>(module);
-    assert(westcoast);
-
-    auto *mergeItem = MenuItem::create<WestcoastShowPatina>("Aged Look");
-    mergeItem->westcoast = westcoast;
-    menu->addChild(mergeItem);
 }
 
 
