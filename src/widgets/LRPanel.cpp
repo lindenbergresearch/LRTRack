@@ -29,7 +29,7 @@ void LRPanel::init() {
     addChild(patinaWidgetClassic);
 
     /* setup gradient variants */
-    auto gradientDark = new LRGradientWidget(box.size, nvgRGBAf(.4f, .4f, .4f, 0.3f), nvgRGBAf(0.0f, 0.0f, 0.0f, 0.2f), Vec(100, -20));
+    auto gradientDark = new LRGradientWidget(box.size, nvgRGBAf(.6f, .6f, .6f, 0.3f), nvgRGBAf(0.0f, 0.0f, 0.0f, 0.2f), Vec(100, -120));
     gradientDark->visible = false;
     addChild(gradientDark);
     gradients[LRGestalt::DARK] = gradientDark;
