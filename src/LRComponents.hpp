@@ -292,12 +292,11 @@ public:
      * @return Pointer to new subclass of LRKnob
      */
     template<class TParamWidget>
-    static TParamWidget *create(Vec pos, Module *module, LRGestalt *gestalt, int paramId, float minValue, float maxValue, float
+    static TParamWidget *create(Vec pos, Module *module, int paramId, float minValue, float maxValue, float
     defaultValue) {
         auto *param = new TParamWidget();
         param->box.pos = pos;
         param->module = module;
-        param->gestalt = gestalt;
         param->paramId = paramId;
         param->setLimits(minValue, maxValue);
         param->setDefaultValue(defaultValue);
@@ -1054,13 +1053,13 @@ struct LRPatinaWidget : TransparentWidget {
 /**
  * @brief Default panel border
  */
-struct PanelBorder : TransparentWidget {
+struct LRPanelBorder : TransparentWidget {
     void draw(NVGcontext *vg) override {
-        NVGcolor borderColor = nvgRGBAf(0.5, 0.5, 0.5, 0.5);
+        NVGcolor borderColor = nvgRGBAf(0.5, 0.5, 0.5, 0.3);
         nvgBeginPath(vg);
         nvgRect(vg, .5f, .5f, box.size.x - 1.f, box.size.y - 1.f);
         nvgStrokeColor(vg, borderColor);
-        nvgStrokeWidth(vg, 1.f);
+        nvgStrokeWidth(vg, 0.8f);
         nvgStroke(vg);
     }
 };
@@ -1071,13 +1070,12 @@ struct PanelBorder : TransparentWidget {
  */
 struct LRPanel : FramebufferWidget, LRGestaltVariant, LRGestaltChangeAction {
     SVGWidget *panelWidget;
-
     map<LRGestalt, LRGradientWidget *> gradients;
-
     LRPatinaWidget *patinaWidgetClassic, *patinaWidgetWhite;
 
-    void setGradientVariant(bool enabled);
+    LRPanel();
 
+    void setGradientVariant(bool enabled);
     void setPatina(bool enabled);
     void step() override;
     void init();
