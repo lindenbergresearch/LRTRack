@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <svg xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:serif="http://www.serif.com/" width="56px" height="56px" version="1.1" xmlns="http://www.w3.org/2000/svg" xml:space="preserve" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:1.41421;">
-    <g id="BigKnob" transform="matrix(1.12,0,0,1.12,-3.36006,-3.29364)">
+    <g id="BigKnob"
+       transform="matrix(1.12,0,0,1.12,-3.36006,-2.74064)">
         <g>
             <g transform="matrix(0.933344,-4.93432e-17,4.93432e-17,0.933344,1.86638,1.86638)">
                 <circle cx="28"
