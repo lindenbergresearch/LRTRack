@@ -191,13 +191,21 @@ struct WestcoastWidget : LRModuleWidget {
 
 WestcoastWidget::WestcoastWidget(Westcoast *module) : LRModuleWidget(module) {
     panel->addSVGVariant(LRGestalt::DARK, SVG::load(assetPlugin(plugin, "res/panels/Westcoast.svg")));
-    panel->addSVGVariant(LRGestalt::LIGHT, SVG::load(assetPlugin(plugin, "res/panels/Westcoast.svg")));
+    panel->addSVGVariant(LRGestalt::LIGHT, SVG::load(assetPlugin(plugin, "res/panels/WestcoastLight.svg")));
     panel->addSVGVariant(LRGestalt::AGED, SVG::load(assetPlugin(plugin, "res/panels/WestcoastAged.svg")));
 
     panel->init();
     addChild(panel);
     box.size = panel->box.size;
 
+    //panel->gradients[DARK]->setInnerColor(nvgRGBAf(1.5f * .369f, 1.5f * 0.369f, 1.5f * 0.369f, 0.45f));
+    //panel->gradients[DARK]->setOuterColor(nvgRGBAf(0.f, 0.f, 0.f, 0.25f));
+
+    // panel->gradients[LIGHT]->setInnerColor(nvgRGBAf(1.5f * .369f, 1.5f * 0.369f, 1.5f * 0.369f, 0.45f));
+    // panel->gradients[LIGHT]->setOuterColor(nvgRGBAf(0.f, 0.f, 0.f, 0.25f));
+
+    panel->gradients[AGED]->setInnerColor(nvgRGBAf(1.5f * .369f, 1.5f * 0.369f, 1.5f * 0.369f, 0.45f));
+    panel->gradients[AGED]->setOuterColor(nvgRGBAf(0.f, 0.f, 0.f, 0.25f));
     // ***** SCREWS **********
     addChild(Widget::create<ScrewLight>(Vec(15, 1)));
     addChild(Widget::create<ScrewLight>(Vec(box.size.x - 30, 1)));
