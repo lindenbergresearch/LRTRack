@@ -77,85 +77,9 @@
               style="fill-rule:nonzero;stroke:#000;stroke-width:0.6px;"/>
     </g>
     <g id="Controls">
-        <g id="ScaleSmall"
-           transform="matrix(0.720434,0,0,0.720434,-54.9401,52.7486)">
-            <g id="Big_1_"
-               transform="matrix(0.410551,0,0,0.410551,76.6225,53.479)">
-                <path d="M129.99,118.265l0,-60.683"
-                      style="fill:none;stroke:#000;stroke-width:1.5px;"/>
-                <path d="M165.49,93.105l-71,0"
-                      style="fill:none;stroke:#000;stroke-width:1.5px;"/>
-                <path d="M99.247,110.867l61.488,-35.523"
-                      style="fill:none;stroke:#000;stroke-width:1.5px;"/>
-                <path d="M112.24,123.872l35.5,-61.53"
-                      style="fill:none;stroke:#000;stroke-width:1.5px;"/>
-                <path d="M160.735,110.867l-61.488,-35.523"
-                      style="fill:none;stroke:#000;stroke-width:1.5px;"/>
-                <path d="M147.74,123.872l-35.5,-61.53"
-                      style="fill:none;stroke:#000;stroke-width:1.5px;"/>
-            </g>
-            <g id="InnerCircle_1_"
-               transform="matrix(0.745435,0,0,0.745435,33.1524,21.6828)">
-                <path d="M117.435,116.771c-8.587,-4.523 -14.444,-13.541 -14.444,-23.928c0,-14.922 12.089,-27.018 27,-27.018c14.91,0 27,12.096 27,27.018c0,10.35 -5.814,19.338 -14.349,23.876"
-                      style="fill:#f9f9f9;stroke:#000;stroke-width:2.08px;"/>
-            </g>
-        </g>
-        <g id="ScaleSmall1"
-           serif:id="ScaleSmall"
-           transform="matrix(0.720434,0,0,0.720434,-3.87909,52.7486)">
-            <g id="Big_1_1"
-               serif:id="Big_1_"
-               transform="matrix(0.410551,0,0,0.410551,76.6225,53.479)">
-                <path d="M129.99,118.265l0,-60.683"
-                      style="fill:none;stroke:#000;stroke-width:1.5px;"/>
-                <path d="M165.49,93.105l-71,0"
-                      style="fill:none;stroke:#000;stroke-width:1.5px;"/>
-                <path d="M99.247,110.867l61.488,-35.523"
-                      style="fill:none;stroke:#000;stroke-width:1.5px;"/>
-                <path d="M112.24,123.872l35.5,-61.53"
-                      style="fill:none;stroke:#000;stroke-width:1.5px;"/>
-                <path d="M160.735,110.867l-61.488,-35.523"
-                      style="fill:none;stroke:#000;stroke-width:1.5px;"/>
-                <path d="M147.74,123.872l-35.5,-61.53"
-                      style="fill:none;stroke:#000;stroke-width:1.5px;"/>
-            </g>
-            <g id="InnerCircle_1_1"
-               serif:id="InnerCircle_1_"
-               transform="matrix(0.745435,0,0,0.745435,33.1524,21.6828)">
-                <path d="M117.435,116.771c-8.587,-4.523 -14.444,-13.541 -14.444,-23.928c0,-14.922 12.089,-27.018 27,-27.018c14.91,0 27,12.096 27,27.018c0,10.35 -5.814,19.338 -14.349,23.876"
-                      style="fill:#f9f9f9;stroke:#000;stroke-width:2.08px;"/>
-            </g>
-        </g>
-        <g id="ScaleSmall2"
-           serif:id="ScaleSmall"
-           transform="matrix(0.720434,0,0,0.720434,45.9709,52.7486)">
-            <g id="Big_1_2"
-               serif:id="Big_1_"
-               transform="matrix(0.410551,0,0,0.410551,76.6225,53.479)">
-                <path d="M129.99,118.265l0,-60.683"
-                      style="fill:none;stroke:#000;stroke-width:1.5px;"/>
-                <path d="M165.49,93.105l-71,0"
-                      style="fill:none;stroke:#000;stroke-width:1.5px;"/>
-                <path d="M99.247,110.867l61.488,-35.523"
-                      style="fill:none;stroke:#000;stroke-width:1.5px;"/>
-                <path d="M112.24,123.872l35.5,-61.53"
-                      style="fill:none;stroke:#000;stroke-width:1.5px;"/>
-                <path d="M160.735,110.867l-61.488,-35.523"
-                      style="fill:none;stroke:#000;stroke-width:1.5px;"/>
-                <path d="M147.74,123.872l-35.5,-61.53"
-                      style="fill:none;stroke:#000;stroke-width:1.5px;"/>
-            </g>
-            <g id="InnerCircle_1_2"
-               serif:id="InnerCircle_1_"
-               transform="matrix(0.745435,0,0,0.745435,33.1524,21.6828)">
-                <path d="M117.435,116.771c-8.587,-4.523 -14.444,-13.541 -14.444,-23.928c0,-14.922 12.089,-27.018 27,-27.018c14.91,0 27,12.096 27,27.018c0,10.35 -5.814,19.338 -14.349,23.876"
-                      style="fill:#f9f9f9;stroke:#000;stroke-width:2.08px;"/>
-            </g>
-        </g>
         <g id="ScaleBig"
            transform="matrix(0.936565,0,0,0.936565,-31.7863,90.8566)">
-            <g id="Big_1_3"
-               serif:id="Big_1_">
+            <g id="Big_1_">
                 <path d="M129.99,118.265l0,-60.683"
                       style="fill:none;stroke:#000;stroke-width:1.5px;"/>
                 <path d="M165.49,93.105l-71,0"
@@ -280,7 +204,7 @@
         </g>
         <g id="ScaleMiddle"
            transform="matrix(0.720434,0,0,0.720434,42.3059,181.083)">
-            <g id="Big_1_4"
+            <g id="Big_1_1"
                serif:id="Big_1_">
                 <path d="M129.99,118.265l0,-60.683"
                       style="fill:none;stroke:#000;stroke-width:1.5px;"/>
@@ -410,7 +334,7 @@
         <g id="ScaleMiddle1"
            serif:id="ScaleMiddle"
            transform="matrix(0.720434,0,0,0.720434,-3.87909,241.321)">
-            <g id="Big_1_5"
+            <g id="Big_1_2"
                serif:id="Big_1_">
                 <path d="M129.99,118.265l0,-60.683"
                       style="fill:none;stroke:#000;stroke-width:1.5px;"/>
@@ -540,7 +464,7 @@
         <g id="ScaleMiddle2"
            serif:id="ScaleMiddle"
            transform="matrix(0.720434,0,0,0.720434,-49.8236,182.2)">
-            <g id="Big_1_6"
+            <g id="Big_1_3"
                serif:id="Big_1_">
                 <path d="M129.99,118.265l0,-60.683"
                       style="fill:none;stroke:#000;stroke-width:1.5px;"/>
@@ -665,6 +589,82 @@
             <g transform="matrix(0.959459,0,0,0.959459,-14.2816,39.7691)">
                 <path d="M128.865,91.726c0,0.365 -0.039,0.7 -0.116,1.005c-0.077,0.305 -0.194,0.567 -0.353,0.786c-0.159,0.219 -0.356,0.389 -0.591,0.512c-0.236,0.122 -0.512,0.184 -0.829,0.184c-0.317,0 -0.594,-0.062 -0.829,-0.184c-0.236,-0.123 -0.433,-0.293 -0.591,-0.512c-0.159,-0.219 -0.277,-0.481 -0.353,-0.786c-0.077,-0.305 -0.116,-0.64 -0.116,-1.005c0,-0.366 0.039,-0.701 0.116,-1.006c0.076,-0.305 0.194,-0.567 0.353,-0.786c0.158,-0.218 0.355,-0.389 0.591,-0.512c0.235,-0.122 0.512,-0.183 0.829,-0.183c0.317,0 0.593,0.061 0.829,0.183c0.235,0.123 0.432,0.294 0.591,0.512c0.159,0.219 0.276,0.481 0.353,0.786c0.077,0.305 0.116,0.64 0.116,1.006Zm-0.995,0c0,-0.265 -0.016,-0.501 -0.047,-0.71c-0.031,-0.209 -0.083,-0.387 -0.155,-0.534c-0.072,-0.146 -0.165,-0.258 -0.278,-0.335c-0.113,-0.077 -0.251,-0.115 -0.414,-0.115c-0.163,0 -0.302,0.038 -0.415,0.115c-0.113,0.077 -0.205,0.189 -0.277,0.335c-0.072,0.147 -0.124,0.325 -0.155,0.534c-0.031,0.209 -0.047,0.445 -0.047,0.71c0,0.264 0.016,0.501 0.047,0.71c0.031,0.209 0.083,0.387 0.155,0.533c0.072,0.147 0.164,0.258 0.277,0.335c0.113,0.077 0.252,0.116 0.415,0.116c0.322,0 0.551,-0.151 0.688,-0.451c0.137,-0.3 0.206,-0.715 0.206,-1.243Z"
                       style="fill-rule:nonzero;"/>
+            </g>
+        </g>
+        <g id="ScaleSmall"
+           transform="matrix(0.720434,0,0,0.720434,-54.1941,52.7486)">
+            <g id="Big_1_4"
+               serif:id="Big_1_"
+               transform="matrix(0.410551,0,0,0.410551,76.6225,53.479)">
+                <path d="M129.99,118.265l0,-60.683"
+                      style="fill:none;stroke:#000;stroke-width:1.5px;"/>
+                <path d="M165.49,93.105l-71,0"
+                      style="fill:none;stroke:#000;stroke-width:1.5px;"/>
+                <path d="M99.247,110.867l61.488,-35.523"
+                      style="fill:none;stroke:#000;stroke-width:1.5px;"/>
+                <path d="M112.24,123.872l35.5,-61.53"
+                      style="fill:none;stroke:#000;stroke-width:1.5px;"/>
+                <path d="M160.735,110.867l-61.488,-35.523"
+                      style="fill:none;stroke:#000;stroke-width:1.5px;"/>
+                <path d="M147.74,123.872l-35.5,-61.53"
+                      style="fill:none;stroke:#000;stroke-width:1.5px;"/>
+            </g>
+            <g id="InnerCircle_1_"
+               transform="matrix(0.745435,0,0,0.745435,33.1524,21.6828)">
+                <path d="M117.435,116.771c-8.587,-4.523 -14.444,-13.541 -14.444,-23.928c0,-14.922 12.089,-27.018 27,-27.018c14.91,0 27,12.096 27,27.018c0,10.35 -5.814,19.338 -14.349,23.876"
+                      style="fill:none;stroke:#000;stroke-width:2.08px;"/>
+            </g>
+        </g>
+        <g id="ScaleSmall1"
+           serif:id="ScaleSmall"
+           transform="matrix(0.720434,0,0,0.720434,-3.87909,52.7486)">
+            <g id="Big_1_5"
+               serif:id="Big_1_"
+               transform="matrix(0.410551,0,0,0.410551,76.6225,53.479)">
+                <path d="M129.99,118.265l0,-60.683"
+                      style="fill:none;stroke:#000;stroke-width:1.5px;"/>
+                <path d="M165.49,93.105l-71,0"
+                      style="fill:none;stroke:#000;stroke-width:1.5px;"/>
+                <path d="M99.247,110.867l61.488,-35.523"
+                      style="fill:none;stroke:#000;stroke-width:1.5px;"/>
+                <path d="M112.24,123.872l35.5,-61.53"
+                      style="fill:none;stroke:#000;stroke-width:1.5px;"/>
+                <path d="M160.735,110.867l-61.488,-35.523"
+                      style="fill:none;stroke:#000;stroke-width:1.5px;"/>
+                <path d="M147.74,123.872l-35.5,-61.53"
+                      style="fill:none;stroke:#000;stroke-width:1.5px;"/>
+            </g>
+            <g id="InnerCircle_1_1"
+               serif:id="InnerCircle_1_"
+               transform="matrix(0.745435,0,0,0.745435,33.1524,21.6828)">
+                <path d="M117.435,116.771c-8.587,-4.523 -14.444,-13.541 -14.444,-23.928c0,-14.922 12.089,-27.018 27,-27.018c14.91,0 27,12.096 27,27.018c0,10.35 -5.814,19.338 -14.349,23.876"
+                      style="fill:none;stroke:#000;stroke-width:2.08px;"/>
+            </g>
+        </g>
+        <g id="ScaleSmall2"
+           serif:id="ScaleSmall"
+           transform="matrix(0.720434,0,0,0.720434,45.3059,52.7486)">
+            <g id="Big_1_6"
+               serif:id="Big_1_"
+               transform="matrix(0.410551,0,0,0.410551,76.6225,53.479)">
+                <path d="M129.99,118.265l0,-60.683"
+                      style="fill:none;stroke:#000;stroke-width:1.5px;"/>
+                <path d="M165.49,93.105l-71,0"
+                      style="fill:none;stroke:#000;stroke-width:1.5px;"/>
+                <path d="M99.247,110.867l61.488,-35.523"
+                      style="fill:none;stroke:#000;stroke-width:1.5px;"/>
+                <path d="M112.24,123.872l35.5,-61.53"
+                      style="fill:none;stroke:#000;stroke-width:1.5px;"/>
+                <path d="M160.735,110.867l-61.488,-35.523"
+                      style="fill:none;stroke:#000;stroke-width:1.5px;"/>
+                <path d="M147.74,123.872l-35.5,-61.53"
+                      style="fill:none;stroke:#000;stroke-width:1.5px;"/>
+            </g>
+            <g id="InnerCircle_1_2"
+               serif:id="InnerCircle_1_"
+               transform="matrix(0.745435,0,0,0.745435,33.1524,21.6828)">
+                <path d="M117.435,116.771c-8.587,-4.523 -14.444,-13.541 -14.444,-23.928c0,-14.922 12.089,-27.018 27,-27.018c14.91,0 27,12.096 27,27.018c0,10.35 -5.814,19.338 -14.349,23.876"
+                      style="fill:none;stroke:#000;stroke-width:2.08px;"/>
             </g>
         </g>
     </g>
