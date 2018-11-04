@@ -182,37 +182,37 @@ VCOWidget::VCOWidget(VCO *module) : LRModuleWidget(module) {
 
 
     // ***** MAIN KNOBS ******
-    module->frqKnob = LRKnob::create<LRBigKnob>(Vec(126.0, 64.7), module, &gestalt, VCO::FREQUENCY_PARAM, -1.f, 1.f, 0.f);
+    module->frqKnob = LRKnob::create<LRBigKnob>(Vec(126.0, 64.7), module, VCO::FREQUENCY_PARAM, -1.f, 1.f, 0.f);
 
     addParam(module->frqKnob);
-    addParam(LRKnob::create<LRToggleKnob>(Vec(133, 170.5), module, &gestalt, VCO::OCTAVE_PARAM, -4.f, 3.f, 0.f));
+    addParam(LRKnob::create<LRToggleKnob>(Vec(133, 170.5), module, VCO::OCTAVE_PARAM, -4.f, 3.f, 0.f));
 
-    addParam(LRKnob::create<LRSmallKnob>(Vec(69.5, 122), module, &gestalt, VCO::FM_CV_PARAM, -1.f, 1.f, 0.f));
-    addParam(LRKnob::create<LRSmallKnob>(Vec(69.5, 175), module, &gestalt, VCO::PW_CV_PARAM, -1, 1, 0.f));
+    addParam(LRKnob::create<LRSmallKnob>(Vec(69.5, 122), module, VCO::FM_CV_PARAM, -1.f, 1.f, 0.f));
+    addParam(LRKnob::create<LRSmallKnob>(Vec(69.5, 175), module, VCO::PW_CV_PARAM, -1, 1, 0.f));
 
 
-    addParam(LRKnob::create<LRSmallKnob>(Vec(22.8, 270.1), module, &gestalt, VCO::SAW_PARAM, -1.f, 1.f, 0.f));
-    addParam(LRKnob::create<LRSmallKnob>(Vec(58.3, 270.1), module, &gestalt, VCO::PULSE_PARAM, -1.f, 1.f, 0.f));
-    addParam(LRKnob::create<LRSmallKnob>(Vec(93.1, 270.1), module, &gestalt, VCO::SINE_PARAM, -1.f, 1.f, 0.f));
-    addParam(LRKnob::create<LRSmallKnob>(Vec(128.1, 270.1), module, &gestalt, VCO::TRI_PARAM, -1.f, 1.f, 0.f));
+    addParam(LRKnob::create<LRSmallKnob>(Vec(22.8, 270.1), module, VCO::SAW_PARAM, -1.f, 1.f, 0.f));
+    addParam(LRKnob::create<LRSmallKnob>(Vec(58.3, 270.1), module, VCO::PULSE_PARAM, -1.f, 1.f, 0.f));
+    addParam(LRKnob::create<LRSmallKnob>(Vec(93.1, 270.1), module, VCO::SINE_PARAM, -1.f, 1.f, 0.f));
+    addParam(LRKnob::create<LRSmallKnob>(Vec(128.1, 270.1), module, VCO::TRI_PARAM, -1.f, 1.f, 0.f));
     // ***** MAIN KNOBS ******
 
 
     // ***** INPUTS **********
-    addInput(Port::create<LRIOPortCLight>(Vec(20.8, 67.9), Port::INPUT, module, VCO::VOCT1_INPUT));
-    addInput(Port::create<LRIOPortCLight>(Vec(68.0, 67.9), Port::INPUT, module, VCO::VOCT2_INPUT));
-    addInput(Port::create<LRIOPortCLight>(Vec(20.8, 121.5), Port::INPUT, module, VCO::FM_CV_INPUT));
-    addInput(Port::create<LRIOPortCLight>(Vec(20.8, 174.8), Port::INPUT, module, VCO::PW_CV_INPUT));
+    addInput(Port::create<LRIOPortCV>(Vec(20.8, 67.9), Port::INPUT, module, VCO::VOCT1_INPUT));
+    addInput(Port::create<LRIOPortCV>(Vec(68.0, 67.9), Port::INPUT, module, VCO::VOCT2_INPUT));
+    addInput(Port::create<LRIOPortCV>(Vec(20.8, 121.5), Port::INPUT, module, VCO::FM_CV_INPUT));
+    addInput(Port::create<LRIOPortCV>(Vec(20.8, 174.8), Port::INPUT, module, VCO::PW_CV_INPUT));
     // ***** INPUTS **********
 
 
     // ***** OUTPUTS *********
-    addOutput(Port::create<LRIOPortBLight>(Vec(21, 305.8), Port::OUTPUT, module, VCO::SAW_OUTPUT));
-    addOutput(Port::create<LRIOPortBLight>(Vec(56.8, 305.8), Port::OUTPUT, module, VCO::PULSE_OUTPUT));
-    addOutput(Port::create<LRIOPortBLight>(Vec(91.6, 305.8), Port::OUTPUT, module, VCO::SINE_OUTPUT));
-    addOutput(Port::create<LRIOPortBLight>(Vec(126.6, 305.8), Port::OUTPUT, module, VCO::TRI_OUTPUT));
-    addOutput(Port::create<LRIOPortBLight>(Vec(162.0, 305.8), Port::OUTPUT, module, VCO::NOISE_OUTPUT));
-    addOutput(Port::create<LRIOPortBLight>(Vec(162.0, 269.1), Port::OUTPUT, module, VCO::MIX_OUTPUT));
+    addOutput(Port::create<LRIOPortAudio>(Vec(21, 305.8), Port::OUTPUT, module, VCO::SAW_OUTPUT));
+    addOutput(Port::create<LRIOPortAudio>(Vec(56.8, 305.8), Port::OUTPUT, module, VCO::PULSE_OUTPUT));
+    addOutput(Port::create<LRIOPortAudio>(Vec(91.6, 305.8), Port::OUTPUT, module, VCO::SINE_OUTPUT));
+    addOutput(Port::create<LRIOPortAudio>(Vec(126.6, 305.8), Port::OUTPUT, module, VCO::TRI_OUTPUT));
+    addOutput(Port::create<LRIOPortAudio>(Vec(162.0, 305.8), Port::OUTPUT, module, VCO::NOISE_OUTPUT));
+    addOutput(Port::create<LRIOPortAudio>(Vec(162.0, 269.1), Port::OUTPUT, module, VCO::MIX_OUTPUT));
     // ***** OUTPUTS *********
 
 

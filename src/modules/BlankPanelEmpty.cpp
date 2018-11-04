@@ -57,16 +57,16 @@ BlankPanelEmptyWidget::BlankPanelEmptyWidget(BlankPanelEmpty *module) : LRModule
     panel->init();
     addChild(panel);
 
-    module->icons = new FontIconWidget(60.f);
+    //module->icons = new FontIconWidget(60.f);
     //addChild(module->icons);
 
     box.size = panel->box.size;
 
-    /*resizeWidget = new ModuleResizeWidget(box.size.x);
+    resizeWidget = new ModuleResizeWidget(box.size.x);
     resizeWidgetRight = new ModuleResizeWidget(box.size.x);
     resizeWidgetRight->right = true;
     addChild(resizeWidget);
-    addChild(resizeWidgetRight);*/
+    addChild(resizeWidgetRight);
 
 
     // ***** SCREWS **********
@@ -83,15 +83,17 @@ BlankPanelEmptyWidget::BlankPanelEmptyWidget(BlankPanelEmpty *module) : LRModule
 
 
 void BlankPanelEmptyWidget::step() {
-    /* panel->box.size = box.size;
-     resizeWidgetRight->box.pos.x = box.size.x - resizeWidgetRight->box.size.x;
-     resizeWidgetRight->box.pos.y = box.size.y - resizeWidgetRight->box.size.y;
-     resizeWidget->box.pos.y = box.size.y - resizeWidget->box.size.y;
+    panel->box.size = box.size;
+    resizeWidgetRight->box.pos.x = box.size.x - resizeWidgetRight->box.size.x;
+    resizeWidgetRight->box.pos.y = box.size.y - resizeWidgetRight->box.size.y;
+    resizeWidget->box.pos.y = box.size.y - resizeWidget->box.size.y;
 
-     screw1->box.pos.x = box.size.x - 30;
-     screw2->box.pos.x = box.size.x - 30;*/
+    screw1->box.pos.x = box.size.x - 30;
+    screw2->box.pos.x = box.size.x - 30;
 
-    ModuleWidget::step();
+    panel->dirty = true;
+
+    LRModuleWidget::step();
 }
 
 

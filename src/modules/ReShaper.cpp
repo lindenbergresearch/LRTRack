@@ -62,6 +62,7 @@ ReShaperWidget::ReShaperWidget(ReShaper *module) : LRModuleWidget(module) {
     // panel->addSVGVariant(SVG::load(assetPlugin(plugin, "res/panels/ReShaper.svg")));
     // panel->addSVGVariant(SVG::load(assetPlugin(plugin, "res/panels/ReShaper.svg")));
 
+    noVariants = true;
     panel->init();
     addChild(panel);
     box.size = panel->box.size;

@@ -146,15 +146,16 @@ QuickMixWidget::QuickMixWidget(QuickMix *module) : LRModuleWidget(module) {
     //  panel->addSVGVariant(SVG::load(assetPlugin(plugin, "res/panels/QuickMix.svg")));
     //  panel->addSVGVariant(SVG::load(assetPlugin(plugin, "res/panels/QuickMix.svg")));
 
+    noVariants = true;
     panel->init();
     addChild(panel);
     box.size = panel->box.size;
 
     // ***** SCREWS **********
-    addChild(Widget::create<ScrewDarkA>(Vec(15, 1)));
-    addChild(Widget::create<ScrewDarkA>(Vec(box.size.x - 30, 1)));
-    addChild(Widget::create<ScrewDarkA>(Vec(15, 366)));
-    addChild(Widget::create<ScrewDarkA>(Vec(box.size.x - 30, 366)));
+    addChild(Widget::create<AlternateScrewLight>(Vec(15, 1)));
+    addChild(Widget::create<AlternateScrewLight>(Vec(box.size.x - 30, 1)));
+    addChild(Widget::create<AlternateScrewLight>(Vec(15, 366)));
+    addChild(Widget::create<AlternateScrewLight>(Vec(box.size.x - 30, 366)));
     // ***** SCREWS **********
 
     // ***** MAIN KNOBS ******
@@ -170,17 +171,17 @@ QuickMixWidget::QuickMixWidget(QuickMix *module) : LRModuleWidget(module) {
     // ***** MAIN KNOBS ******
 
     // ***** INPUTS **********
-    addInput(Port::create<LRIOPort>(Vec(16.5, 52.6), Port::INPUT, module, QuickMix::M1_INPUT));
-    addInput(Port::create<LRIOPort>(Vec(16.5, 87.6), Port::INPUT, module, QuickMix::M2_INPUT));
-    addInput(Port::create<LRIOPort>(Vec(16.5, 122.6), Port::INPUT, module, QuickMix::M3_INPUT));
-    addInput(Port::create<LRIOPort>(Vec(16.5, 157.6), Port::INPUT, module, QuickMix::M4_INPUT));
-    addInput(Port::create<LRIOPort>(Vec(16.5, 192.6), Port::INPUT, module, QuickMix::M5_INPUT));
+    addInput(Port::create<LRIOPortAudio>(Vec(16.5, 52.6), Port::INPUT, module, QuickMix::M1_INPUT));
+    addInput(Port::create<LRIOPortAudio>(Vec(16.5, 87.6), Port::INPUT, module, QuickMix::M2_INPUT));
+    addInput(Port::create<LRIOPortAudio>(Vec(16.5, 122.6), Port::INPUT, module, QuickMix::M3_INPUT));
+    addInput(Port::create<LRIOPortAudio>(Vec(16.5, 157.6), Port::INPUT, module, QuickMix::M4_INPUT));
+    addInput(Port::create<LRIOPortAudio>(Vec(16.5, 192.6), Port::INPUT, module, QuickMix::M5_INPUT));
 
-    addInput(Port::create<LRIOPortC>(Vec(16.5, 240.8f), Port::INPUT, module, QuickMix::CV_INPUT));
+    addInput(Port::create<LRIOPortCV>(Vec(16.5, 240.8f), Port::INPUT, module, QuickMix::CV_INPUT));
     // ***** INPUTS **********
 
     // ***** OUTPUTS *********
-    addOutput(Port::create<LRIOPort>(Vec(60.9, 304.8), Port::OUTPUT, module, QuickMix::MASTER_OUTPUT));
+    addOutput(Port::create<LRIOPortAudio>(Vec(60.9, 304.8), Port::OUTPUT, module, QuickMix::MASTER_OUTPUT));
     // ***** OUTPUTS *********
 
 

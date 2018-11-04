@@ -190,9 +190,9 @@ DiodeVCFWidget::DiodeVCFWidget(DiodeVCF *module) : LRModuleWidget(module) {
     // ***** SCREWS **********
 
     // ***** MAIN KNOBS ******
-    module->frqKnob = LRKnob::create<LRAlternateBigLight>(Vec(32.5, 74.4), module, &gestalt, DiodeVCF::FREQUENCY_PARAM, 0.f, 1.f, 1.f);
-    module->resKnob = LRKnob::create<LRAlternateBigLight>(Vec(151.5, 74.4), module, &gestalt, DiodeVCF::RES_PARAM, 0.0f, 1.0, 0.0f);
-    module->saturateKnob = LRKnob::create<LRAlternateMiddleLight>(Vec(99.5, 164.4), module, &gestalt, DiodeVCF::SATURATE_PARAM, 0.f, 1.0,
+    module->frqKnob = LRKnob::create<LRAlternateBigLight>(Vec(32.5, 74.4), module, DiodeVCF::FREQUENCY_PARAM, 0.f, 1.f, 1.f);
+    module->resKnob = LRKnob::create<LRAlternateBigLight>(Vec(151.5, 74.4), module, DiodeVCF::RES_PARAM, 0.0f, 1.0, 0.0f);
+    module->saturateKnob = LRKnob::create<LRAlternateMiddleLight>(Vec(99.5, 164.4), module, DiodeVCF::SATURATE_PARAM, 0.f, 1.0,
                                                                   0.0f);
 
     module->frqKnob->setIndicatorColors(nvgRGBAf(0.9f, 0.9f, 0.9f, 1.0f));
