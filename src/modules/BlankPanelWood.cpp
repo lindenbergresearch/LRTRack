@@ -82,6 +82,7 @@ void BlankPanelWood::updateComponents() {
 
     patina->visible = aged;
 
+    panel->dirty = true;
     //panel->dirty = true;
 }
 
