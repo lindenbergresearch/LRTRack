@@ -24,4 +24,4 @@ extern Model *modelBlankPanelWood;
 extern Model *modelWestcoast;
 extern Model *modelQuickMix;
 extern Model *modelDiodeVCF;
-extern Model *modelSpeck;
+//extern Model *modelSpeck;

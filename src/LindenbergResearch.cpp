@@ -17,7 +17,7 @@ void init(Plugin *p) {
     p->addModel(modelDiodeVCF);
     p->addModel(modelVCO);
 
-    p->addModel(modelSpeck);
+    //  p->addModel(modelSpeck);
 
     p->addModel(modelBlankPanel);
     p->addModel(modelBlankPanelEmpty);
