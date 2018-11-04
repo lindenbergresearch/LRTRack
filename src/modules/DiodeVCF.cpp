@@ -46,9 +46,9 @@ struct DiodeVCF : LRModule {
     LRLCDWidget *lcd = new LRLCDWidget(12, "%00004.3f Hz", LRLCDWidget::NUMERIC);
     DiodeLadderFilter *lpf = new DiodeLadderFilter(engineGetSampleRate());
 
-    LRAlternateBigLight *frqKnob = NULL;
-    LRAlternateBigLight *resKnob = NULL;
-    LRAlternateMiddleLight *saturateKnob = NULL;
+    LRBigKnob *frqKnob = NULL;
+    LRBigKnob *resKnob = NULL;
+    LRMiddleKnob *saturateKnob = NULL;
 
     LRPanel *panel;
 
@@ -56,28 +56,28 @@ struct DiodeVCF : LRModule {
     bool hidef = false;
 
 
-    json_t *toJson() override {
-        json_t *rootJ = LRModule::toJson();
+    /* json_t *toJson() override {
+         json_t *rootJ = LRModule::toJson();
 
-        json_object_set_new(rootJ, "AGED", json_boolean(aged));
-        json_object_set_new(rootJ, "hidef", json_boolean(hidef));
-        return rootJ;
-    }
+         json_object_set_new(rootJ, "AGED", json_boolean(aged));
+         json_object_set_new(rootJ, "hidef", json_boolean(hidef));
+         return rootJ;
+     }
 
 
-    void fromJson(json_t *rootJ) override {
-        LRModule::fromJson(rootJ);
+     void fromJson(json_t *rootJ) override {
+         LRModule::fromJson(rootJ);
 
-        json_t *agedJ = json_object_get(rootJ, "AGED");
-        if (agedJ)
-            aged = json_boolean_value(agedJ);
+         json_t *agedJ = json_object_get(rootJ, "AGED");
+         if (agedJ)
+             aged = json_boolean_value(agedJ);
 
-        json_t *hidefJ = json_object_get(rootJ, "hidef");
-        if (agedJ)
-            hidef = json_boolean_value(hidefJ);
+         json_t *hidefJ = json_object_get(rootJ, "hidef");
+         if (agedJ)
+             hidef = json_boolean_value(hidefJ);
 
-        updateComponents();
-    }
+         updateComponents();
+     }*/
 
 
     void step() override;
@@ -159,7 +159,7 @@ void DiodeVCF::onRandomize() {
  */
 struct DiodeVCFWidget : LRModuleWidget {
     DiodeVCFWidget(DiodeVCF *module);
-    void appendContextMenu(Menu *menu) override;
+    // void appendContextMenu(Menu *menu) override;
 };
 
 
@@ -190,9 +190,9 @@ DiodeVCFWidget::DiodeVCFWidget(DiodeVCF *module) : LRModuleWidget(module) {
     // ***** SCREWS **********
 
     // ***** MAIN KNOBS ******
-    module->frqKnob = LRKnob::create<LRAlternateBigLight>(Vec(32.5, 74.4), module, DiodeVCF::FREQUENCY_PARAM, 0.f, 1.f, 1.f);
-    module->resKnob = LRKnob::create<LRAlternateBigLight>(Vec(151.5, 74.4), module, DiodeVCF::RES_PARAM, 0.0f, 1.0, 0.0f);
-    module->saturateKnob = LRKnob::create<LRAlternateMiddleLight>(Vec(99.5, 164.4), module, DiodeVCF::SATURATE_PARAM, 0.f, 1.0,
+    module->frqKnob = LRKnob::create<LRBigKnob>(Vec(32.5, 74.4), module, DiodeVCF::FREQUENCY_PARAM, 0.f, 1.f, 1.f);
+    module->resKnob = LRKnob::create<LRBigKnob>(Vec(151.5, 74.4), module, DiodeVCF::RES_PARAM, 0.0f, 1.0, 0.0f);
+    module->saturateKnob = LRKnob::create<LRMiddleKnob>(Vec(99.5, 164.4), module, DiodeVCF::SATURATE_PARAM, 0.f, 1.0,
                                                                   0.0f);
 
     module->frqKnob->setIndicatorColors(nvgRGBAf(0.9f, 0.9f, 0.9f, 1.0f));
@@ -203,29 +203,30 @@ DiodeVCFWidget::DiodeVCFWidget(DiodeVCF *module) : LRModuleWidget(module) {
     addParam(module->resKnob);
     addParam(module->saturateKnob);
 
-    addParam(ParamWidget::create<LRAlternateSmallLight>(Vec(39.9, 251.4), module, DiodeVCF::FREQUENCY_CV_PARAM, -1.f, 1.0f, 0.f));
-    addParam(ParamWidget::create<LRAlternateSmallLight>(Vec(177, 251.4), module, DiodeVCF::RESONANCE_CV_PARAM, -1.f, 1.0f, 0.f));
-    addParam(ParamWidget::create<LRAlternateSmallLight>(Vec(108.5, 251.4), module, DiodeVCF::SATURATE_CV_PARAM, -1.f, 1.0f, 0.f));
+    addParam(ParamWidget::create<LRSmallKnob>(Vec(39.9, 251.4), module, DiodeVCF::FREQUENCY_CV_PARAM, -1.f, 1.0f, 0.f));
+    addParam(ParamWidget::create<LRSmallKnob>(Vec(177, 251.4), module, DiodeVCF::RESONANCE_CV_PARAM, -1.f, 1.0f, 0.f));
+    addParam(ParamWidget::create<LRSmallKnob>(Vec(108.5, 251.4), module, DiodeVCF::SATURATE_CV_PARAM, -1.f, 1.0f, 0.f));
     // ***** MAIN KNOBS ******
 
     // ***** CV INPUTS *******
-    addInput(Port::create<LRIOPortCLight>(Vec(37.4, 284.4), Port::INPUT, module, DiodeVCF::FREQUCENCY_CV_INPUT));
-    addInput(Port::create<LRIOPortCLight>(Vec(175.3, 284.4), Port::INPUT, module, DiodeVCF::RESONANCE_CV_INPUT));
-    addInput(Port::create<LRIOPortCLight>(Vec(106.4, 284.4), Port::INPUT, module, DiodeVCF::SATURATE_CV_INPUT));
+    addInput(Port::create<LRIOPortCV>(Vec(37.4, 284.4), Port::INPUT, module, DiodeVCF::FREQUCENCY_CV_INPUT));
+    addInput(Port::create<LRIOPortCV>(Vec(175.3, 284.4), Port::INPUT, module, DiodeVCF::RESONANCE_CV_INPUT));
+    addInput(Port::create<LRIOPortCV>(Vec(106.4, 284.4), Port::INPUT, module, DiodeVCF::SATURATE_CV_INPUT));
     // ***** CV INPUTS *******
 
 
     // ***** INPUTS **********
-    addInput(Port::create<LRIOPortBLight>(Vec(37.4, 318.5), Port::INPUT, module, DiodeVCF::FILTER_INPUT));
+    addInput(Port::create<LRIOPortAudio>(Vec(37.4, 318.5), Port::INPUT, module, DiodeVCF::FILTER_INPUT));
     // ***** INPUTS **********
 
     // ***** OUTPUTS *********
-    addOutput(Port::create<LRIOPortBLight>(Vec(175.3, 318.5), Port::OUTPUT, module, DiodeVCF::LP_OUTPUT));
-    addOutput(Port::create<LRIOPortBLight>(Vec(106.4, 318.5), Port::OUTPUT, module, DiodeVCF::HP_OUTPUT));
+    addOutput(Port::create<LRIOPortAudio>(Vec(175.3, 318.5), Port::OUTPUT, module, DiodeVCF::LP_OUTPUT));
+    addOutput(Port::create<LRIOPortAudio>(Vec(106.4, 318.5), Port::OUTPUT, module, DiodeVCF::HP_OUTPUT));
     // ***** OUTPUTS *********
 }
 
 
+/*
 struct DiodeVCFAged : MenuItem {
     DiodeVCF *diodeVCF;
 
@@ -281,7 +282,7 @@ void DiodeVCFWidget::appendContextMenu(Menu *menu) {
     DiodeVCFHiDef *mergeItemHiDef = MenuItem::create<DiodeVCFHiDef>("Use 4x oversampling");
     mergeItemHiDef->diodeVCF = diodeVCF;
     menu->addChild(mergeItemHiDef);
-}
+}*/
 
 
 Model *modelDiodeVCF = Model::create<DiodeVCF, DiodeVCFWidget>("Lindenberg Research", "DIODE VCF", "Laika Diode-Ladder Filter", FILTER_TAG);
