@@ -104,24 +104,24 @@ struct AlmaFilterWidget : LRModuleWidget {
 
 AlmaFilterWidget::AlmaFilterWidget(AlmaFilter *module) : LRModuleWidget(module) {
     panel->addSVGVariant(LRGestalt::DARK, SVG::load(assetPlugin(plugin, "res/panels/VCF.svg")));
-    // panel->addSVGVariant(SVG::load(assetPlugin(plugin, "res/panels/VCF.svg")));
-    // panel->addSVGVariant(SVG::load(assetPlugin(plugin, "res/panels/VCF.svg")));
+    panel->addSVGVariant(LRGestalt::LIGHT, SVG::load(assetPlugin(plugin, "res/panels/AlmaLight.svg")));
+    panel->addSVGVariant(LRGestalt::AGED, SVG::load(assetPlugin(plugin, "res/panels/AlmaLight.svg")));
 
     panel->init();
     addChild(panel);
     box.size = panel->box.size;
 
     // ***** SCREWS **********
-    addChild(Widget::create<ScrewDarkA>(Vec(15, 1)));
-    addChild(Widget::create<ScrewDarkA>(Vec(box.size.x - 30, 1)));
-    addChild(Widget::create<ScrewDarkA>(Vec(15, 366)));
-    addChild(Widget::create<ScrewDarkA>(Vec(box.size.x - 30, 366)));
+    addChild(Widget::create<AlternateScrewLight>(Vec(15, 1)));
+    addChild(Widget::create<AlternateScrewLight>(Vec(box.size.x - 30, 1)));
+    addChild(Widget::create<AlternateScrewLight>(Vec(15, 366)));
+    addChild(Widget::create<AlternateScrewLight>(Vec(box.size.x - 30, 366)));
     // ***** SCREWS **********
 
     // ***** MAIN KNOBS ******
-    module->frqKnob = LRKnob::create<LRBigKnob>(Vec(62, 150), module, &gestalt, AlmaFilter::CUTOFF_PARAM, 0.f, 1.f, 0.8f);
-    module->peakKnob = LRKnob::create<LRMiddleKnob>(Vec(24, 229), module, &gestalt, AlmaFilter::RESONANCE_PARAM, -0.f, 1.5, 0.0f);
-    module->driveKnob = LRKnob::create<LRMiddleKnob>(Vec(116, 228), module, &gestalt, AlmaFilter::DRIVE_PARAM, 0.0f, 1.f, 0.0f);
+    module->frqKnob = LRKnob::create<LRBigKnob>(Vec(62, 150), module, AlmaFilter::CUTOFF_PARAM, 0.f, 1.f, 0.8f);
+    module->peakKnob = LRKnob::create<LRMiddleKnob>(Vec(24, 229), module, AlmaFilter::RESONANCE_PARAM, -0.f, 1.5, 0.0f);
+    module->driveKnob = LRKnob::create<LRMiddleKnob>(Vec(116, 228), module, AlmaFilter::DRIVE_PARAM, 0.0f, 1.f, 0.0f);
 
     addParam(module->frqKnob);
     addParam(module->peakKnob);
@@ -135,17 +135,17 @@ AlmaFilterWidget::AlmaFilterWidget(AlmaFilter *module) : LRModuleWidget(module) 
     addParam(ParamWidget::create<LRSmallKnob>(Vec(78, 106), module, AlmaFilter::CUTOFF_CV_PARAM, -1.f, 1.f, 0.f));
     addParam(ParamWidget::create<LRSmallKnob>(Vec(127.1, 106), module, AlmaFilter::DRIVE_CV_PARAM, -1.f, 1.f, 0.f));
 
-    addInput(Port::create<LRIOPortC>(Vec(26, 50), Port::INPUT, module, AlmaFilter::RESONANCE_CV_INPUT));
-    addInput(Port::create<LRIOPortC>(Vec(76, 50), Port::INPUT, module, AlmaFilter::CUTOFF_CV_INPUT));
-    addInput(Port::create<LRIOPortC>(Vec(125, 50), Port::INPUT, module, AlmaFilter::DRIVE_CV_INPUT));
+    addInput(Port::create<LRIOPortCV>(Vec(26, 50), Port::INPUT, module, AlmaFilter::RESONANCE_CV_INPUT));
+    addInput(Port::create<LRIOPortCV>(Vec(76, 50), Port::INPUT, module, AlmaFilter::CUTOFF_CV_INPUT));
+    addInput(Port::create<LRIOPortCV>(Vec(125, 50), Port::INPUT, module, AlmaFilter::DRIVE_CV_INPUT));
     // ***** CV INPUTS *******
 
     // ***** INPUTS **********
-    addInput(Port::create<LRIOPort>(Vec(25, 326.5), Port::INPUT, module, AlmaFilter::FILTER_INPUT));
+    addInput(Port::create<LRIOPortAudio>(Vec(25, 326.5), Port::INPUT, module, AlmaFilter::FILTER_INPUT));
     // ***** INPUTS **********
 
     // ***** OUTPUTS *********
-    addOutput(Port::create<LRIOPort>(Vec(124.5, 326.5), Port::OUTPUT, module, AlmaFilter::LP_OUTPUT));
+    addOutput(Port::create<LRIOPortAudio>(Vec(124.5, 326.5), Port::OUTPUT, module, AlmaFilter::LP_OUTPUT));
     // ***** OUTPUTS *********
 
     // ***** LIGHTS **********
