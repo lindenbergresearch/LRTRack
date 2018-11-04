@@ -2,13 +2,17 @@
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <svg width="210px" height="380px" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-miterlimit:10;">
     <g id="Background" transform="matrix(1.16667,0,0,1,0.0116667,-196.458)">
-        <rect x="-0.01" y="196.458" width="180" height="380" style="fill:#060e18;"/>
+        <rect x="-0.01"
+              y="196.458"
+              width="180"
+              height="380"
+              style="fill:#161616;"/>
     </g>
     <g id="Guides">
-        <g transform="matrix(0.288308,0,0,0.614395,49.6719,65.0418)">
+        <g transform="matrix(0.288308,0,0,0.656136,49.6719,61.8515)">
             <rect x="46.4" y="76.43" width="49.029" height="4.115" style="fill:#b85963;fill-opacity:0.623529;"/>
         </g>
-        <g transform="matrix(0.288308,0,0,0.607533,49.6719,146.358)">
+        <g transform="matrix(0.288308,0,0,0.656136,49.6719,142.644)">
             <rect x="46.4" y="76.43" width="49.029" height="4.115" style="fill:#b85963;fill-opacity:0.623529;"/>
         </g>
         <g transform="matrix(0.226711,-0.120248,0.308814,0.582227,75.5478,65.9923)">
