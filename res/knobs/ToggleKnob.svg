@@ -13,7 +13,7 @@
             <circle cx="28"
                     cy="28"
                     r="25.714"
-                    style="fill:#fff;stroke:#2f2f2f;stroke-width:0.83px;"/>
+                    style="fill:#a2a2a2;stroke:#110f0f;stroke-width:0.83px;"/>
         </g>
         <g id="path8603"
            transform="matrix(0.94061,0,0,0.94061,1.66295,1.63008)">
@@ -27,14 +27,14 @@
                     style="fill:#dfdfdf;stroke:#616161;stroke-width:0.99px;"/>
         </g>
         <g id="Top"
-           transform="matrix(1.19442,0,0,1.12824,4.14334,4.31588)">
+           transform="matrix(1.27346,0,0,1.12824,2.52289,4.31588)">
             <g transform="matrix(1.11436,0,0,1.27647,-13.6642,-297.719)">
-                <path d="M36.741,235.617c0,-1.424 -1.25,-2.58 -2.791,-2.58l-5.582,0c-1.54,0 -2.791,1.156 -2.791,2.58l0,27.009c0,1.424 1.251,2.58 2.791,2.58l5.582,0c1.541,0 2.791,-1.156 2.791,-2.58l0,-27.009Z"
-                      style="fill-opacity:0.196078;"/>
+                <path d="M36.741,235.787c0,-1.518 -1.25,-2.75 -2.791,-2.75l-5.582,0c-1.54,0 -2.791,1.232 -2.791,2.75l0,26.669c0,1.517 1.251,2.75 2.791,2.75l5.582,0c1.541,0 2.791,-1.233 2.791,-2.75l0,-26.669Z"
+                      style="fill-opacity:0.313726;"/>
             </g>
             <g transform="matrix(1.11436,0,0,1.27647,-14.7786,-298.761)">
-                <path d="M36.741,235.617c0,-1.424 -1.25,-2.58 -2.791,-2.58l-5.582,0c-1.54,0 -2.791,1.156 -2.791,2.58l0,27.009c0,1.424 1.251,2.58 2.791,2.58l5.582,0c1.541,0 2.791,-1.156 2.791,-2.58l0,-27.009Z"
-                      style="fill:#fff;stroke:#000;stroke-width:0.43px;stroke-linejoin:miter;stroke-miterlimit:10;"/>
+                <path d="M36.741,235.787c0,-1.518 -1.25,-2.75 -2.791,-2.75l-5.582,0c-1.54,0 -2.791,1.232 -2.791,2.75l0,26.669c0,1.517 1.251,2.75 2.791,2.75l5.582,0c1.541,0 2.791,-1.233 2.791,-2.75l0,-26.669Z"
+                      style="fill:#fff;stroke:#000;stroke-width:0.5px;stroke-linejoin:miter;stroke-miterlimit:10;"/>
             </g>
         </g>
         <g transform="matrix(0.143441,0,0,0.23034,24.0186,1.27546)">
@@ -45,6 +45,6 @@
         <circle cx="8.649"
                 cy="217.631"
                 r="2.582"
-                style="fill:#ececec;stroke:#151515;stroke-width:0.42px;stroke-linejoin:miter;stroke-miterlimit:10;"/>
+                style="fill:#cdcdcd;stroke:#151515;stroke-opacity:0.435294;stroke-width:0.42px;stroke-linejoin:miter;stroke-miterlimit:10;"/>
     </g>
 </svg>
