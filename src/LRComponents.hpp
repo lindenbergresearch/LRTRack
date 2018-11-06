@@ -389,36 +389,6 @@ struct LRToggleKnob : LRKnob {
 /**
  * @brief Quantize position to odd numbers to simulate a toggle switch
  */
-struct LRAlternateToggleKnobLight : LRKnob {
-    LRAlternateToggleKnobLight(float length = 0.5f) {
-        //TODO: parametrize start and end angle
-        minAngle = -0.666666f * (float) M_PI;
-        maxAngle = length * (float) M_PI;
-
-        setSVG(SVG::load(assetPlugin(plugin, "res/knobs/AlternateToggleKnobLight.svg")));
-        setIndicatorDistance(11);
-        setIndicatorShape(4.3, 0.11);
-
-
-        shader->setShadowPosition(2, 3);
-
-        shader->setStrength(0.5f);
-        shader->setSize(0.6f);
-
-        speed = 2.f;
-    }
-
-
-    void onChange(EventChange &e) override {
-        value = round(value);
-        SVGKnob::onChange(e);
-    }
-};
-
-
-/**
- * @brief Quantize position to odd numbers to simulate a toggle switch
- */
 struct LRMiddleIncremental : LRKnob {
     LRMiddleIncremental(float length = 0.5f) {
         minAngle = -length * (float) M_PI;
@@ -1054,13 +1024,33 @@ struct LRPatinaWidget : TransparentWidget {
  * @brief Default panel border
  */
 struct LRPanelBorder : TransparentWidget {
-    void draw(NVGcontext *vg) override {
-        NVGcolor borderColor = nvgRGBAf(0.5, 0.5, 0.5, 0.3);
+    static constexpr float BORDER_WIDTH = 1.2f;
+
+
+    inline void draw(NVGcontext *vg) override {
+        NVGcolor borderColorLight = nvgRGBAf(0.9, 0.9, 0.9, 0.1);
+        NVGcolor borderColorDark = nvgRGBAf(0.1, 0.1, 0.1, 0.5);
+
         nvgBeginPath(vg);
-        nvgRect(vg, .5f, .5f, box.size.x - 1.f, box.size.y - 1.f);
-        nvgStrokeColor(vg, borderColor);
-        nvgStrokeWidth(vg, 0.8f);
-        nvgStroke(vg);
+        nvgRect(vg, 0, BORDER_WIDTH, 0 + BORDER_WIDTH, box.size.y);
+        nvgFillColor(vg, borderColorLight);
+        nvgFill(vg);
+
+        nvgBeginPath(vg);
+        nvgRect(vg, 0, 0, box.size.x, BORDER_WIDTH);
+        nvgFillColor(vg, borderColorLight);
+        nvgFill(vg);
+
+        nvgBeginPath(vg);
+        nvgRect(vg, 0, box.size.y - BORDER_WIDTH, box.size.x, box.size.y - BORDER_WIDTH);
+        nvgFillColor(vg, borderColorDark);
+        nvgFill(vg);
+
+        nvgBeginPath(vg);
+        nvgRect(vg, box.size.x - BORDER_WIDTH, 0, box.size.x - BORDER_WIDTH, box.size.y);
+        nvgFillColor(vg, borderColorDark);
+        nvgFill(vg);
+
     }
 };
 
