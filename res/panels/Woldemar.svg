@@ -2,7 +2,11 @@
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <svg xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:serif="http://www.serif.com/" width="210px" height="380px" version="1.1" xmlns="http://www.w3.org/2000/svg" xml:space="preserve" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:1.41421;">
     <g id="Panel" transform="matrix(1.16667,0,0,1,-1.42109e-14,-1.77636e-14)">
-        <rect x="0" y="0" width="180" height="380" style="fill:#fff;stroke:#161616;stroke-width:0.92px;"/>
+        <rect x="0"
+              y="0"
+              width="180"
+              height="380"
+              style="fill:#fff;"/>
     </g>
     <g id="Description" transform="matrix(1,0,0,1,2,3.82776)">
         <g transform="matrix(1.56346,0,0,0.780697,-36.3086,-18.4561)">
