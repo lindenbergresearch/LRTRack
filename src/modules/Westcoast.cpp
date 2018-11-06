@@ -220,7 +220,13 @@ WestcoastWidget::WestcoastWidget(Westcoast *module) : LRModuleWidget(module) {
     addParam(module->gainBtn);
     addParam(module->biasBtn);
 
-    addParam(LRKnob::create<LRToggleKnob>(Vec(85, 279.3), module, Westcoast::TYPE_PARAM, 1, 7, 1));
+    auto *toggleknob = LRKnob::create<LRToggleKnob>(Vec(84, 278), module, Westcoast::TYPE_PARAM, 1, 7, 1);
+
+    // calibrate toggle knob fpr 7 stages
+    // TODO:
+    toggleknob->minAngle = -0.5f * M_PI;
+
+    addParam(toggleknob);
 
     addParam(LRKnob::create<LRSmallKnob>(Vec(83.4, 101.00), module, Westcoast::CV_GAIN_PARAM, -1.f, 1.f, 0.f));
     addParam(LRKnob::create<LRSmallKnob>(Vec(83.4, 183.0), module, Westcoast::CV_BIAS_PARAM, -1.f, 1.f, 0.f));
