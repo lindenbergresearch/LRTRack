@@ -215,7 +215,7 @@ WestcoastWidget::WestcoastWidget(Westcoast *module) : LRModuleWidget(module) {
 
     // ***** MAIN KNOBS ******
     module->gainBtn = LRKnob::create<LRBigKnob>(Vec(128.7, 63.0), module, Westcoast::GAIN_PARAM, 0.0, 20.f, 1.f);
-    module->biasBtn = LRKnob::create<LRMiddleKnob>(Vec(136.4, 153.3), module, Westcoast::BIAS_PARAM, -6.f, 6.f, 0.f);
+    module->biasBtn = LRKnob::create<LRMiddleKnob>(Vec(135.4, 152.3), module, Westcoast::BIAS_PARAM, -6.f, 6.f, 0.f);
 
     addParam(module->gainBtn);
     addParam(module->biasBtn);
