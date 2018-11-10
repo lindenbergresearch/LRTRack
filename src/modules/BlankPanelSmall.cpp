@@ -140,8 +140,8 @@ void BlankPanelSmall::createPorts() {
 
 BlankPanelWidgetSmall::BlankPanelWidgetSmall(BlankPanelSmall *module) : LRModuleWidget(module) {
     panel->addSVGVariant(LRGestalt::DARK, SVG::load(assetPlugin(plugin, "res/panels/BlankPanelSmall.svg")));
-    // panel->addSVGVariant(SVG::load(assetPlugin(plugin, "res/panels/BlankPanelSmall.svg")));
-    // panel->addSVGVariant(SVG::load(assetPlugin(plugin, "res/panels/BlankPanelSmall.svg")));
+    panel->addSVGVariant(LRGestalt::LIGHT, SVG::load(assetPlugin(plugin, "res/panels/BlankPanelSmallLight.svg")));
+    panel->addSVGVariant(LRGestalt::AGED, SVG::load(assetPlugin(plugin, "res/panels/BlankPanelSmallAged.svg")));
 
     panel->init();
     addChild(panel);
@@ -150,8 +150,8 @@ BlankPanelWidgetSmall::BlankPanelWidgetSmall(BlankPanelSmall *module) : LRModule
     module->createPorts();
 
     // ***** SCREWS **********
-    addChild(Widget::create<ScrewDarkA>(Vec(23.4, 1)));
-    addChild(Widget::create<ScrewDarkA>(Vec(23.4, 366)));
+    addChild(Widget::create<ScrewLight>(Vec(23.4, 1)));
+    addChild(Widget::create<ScrewLight>(Vec(23.4, 366)));
     // ***** SCREWS **********
 
 
