@@ -891,12 +891,26 @@ struct ScrewDarkA : SVGScrew {
 /**
  * @brief Alternative screw head A
  */
-struct ScrewLight : SVGScrew {
+struct ScrewLight : SVGScrew, LRGestaltVariant, LRGestaltChangeAction {
     ScrewLight() {
         sw->svg = SVG::load(assetPlugin(plugin, "res/elements/ScrewLight.svg"));
         sw->wrap();
         box.size = sw->box.size;
+
+
+        addSVGVariant(LRGestalt::DARK, SVG::load(assetPlugin(plugin, "res/elements/ScrewDarkC.svg")));
+        addSVGVariant(LRGestalt::LIGHT, SVG::load(assetPlugin(plugin, "res/elements/ScrewDarkLightC.svg")));
+        addSVGVariant(LRGestalt::AGED, SVG::load(assetPlugin(plugin, "res/elements/ScrewDarkLightC.svg")));
     }
+
+
+    void onGestaltChange(LREventGestaltChange &e) override {
+        LRGestaltChangeAction::onGestaltChange(e);
+
+        sw->svg = getSVGVariant(*gestalt);
+        dirty = true;
+    }
+
 };
 
 
