@@ -143,19 +143,18 @@ struct QuickMixWidget : LRModuleWidget {
 
 QuickMixWidget::QuickMixWidget(QuickMix *module) : LRModuleWidget(module) {
     panel->addSVGVariant(LRGestalt::DARK, SVG::load(assetPlugin(plugin, "res/panels/QuickMix.svg")));
-    //  panel->addSVGVariant(SVG::load(assetPlugin(plugin, "res/panels/QuickMix.svg")));
-    //  panel->addSVGVariant(SVG::load(assetPlugin(plugin, "res/panels/QuickMix.svg")));
+    panel->addSVGVariant(LRGestalt::LIGHT, SVG::load(assetPlugin(plugin, "res/panels/QuickMixLight.svg")));
+    panel->addSVGVariant(LRGestalt::AGED, SVG::load(assetPlugin(plugin, "res/panels/QuickMixAged.svg")));
 
-    noVariants = true;
     panel->init();
     addChild(panel);
     box.size = panel->box.size;
 
     // ***** SCREWS **********
-    addChild(Widget::create<AlternateScrewLight>(Vec(15, 1)));
-    addChild(Widget::create<AlternateScrewLight>(Vec(box.size.x - 30, 1)));
-    addChild(Widget::create<AlternateScrewLight>(Vec(15, 366)));
-    addChild(Widget::create<AlternateScrewLight>(Vec(box.size.x - 30, 366)));
+    // addChild(Widget::create<ScrewLight>(Vec(15, 1)));
+    // addChild(Widget::create<ScrewLight>(Vec(box.size.x - 20, 1)));
+    //  addChild(Widget::create<ScrewLight>(Vec(15, 366)));
+    //  addChild(Widget::create<ScrewLight>(Vec(box.size.x - 20, 366)));
     // ***** SCREWS **********
 
     // ***** MAIN KNOBS ******
@@ -186,11 +185,11 @@ QuickMixWidget::QuickMixWidget(QuickMix *module) : LRModuleWidget(module) {
 
 
     // ***** LIGHTS **********
-    addChild(ModuleLightWidget::create<LRLight>(Vec(47., 61.3), module, QuickMix::LEVEL1_LIGHT));
-    addChild(ModuleLightWidget::create<LRLight>(Vec(47., 96.3), module, QuickMix::LEVEL2_LIGHT));
-    addChild(ModuleLightWidget::create<LRLight>(Vec(47., 131.3), module, QuickMix::LEVEL3_LIGHT));
-    addChild(ModuleLightWidget::create<LRLight>(Vec(47., 166.3), module, QuickMix::LEVEL4_LIGHT));
-    addChild(ModuleLightWidget::create<LRLight>(Vec(47., 201.3), module, QuickMix::LEVEL5_LIGHT));
+    addChild(ModuleLightWidget::create<LRLight>(Vec(47.f, 61.3), module, QuickMix::LEVEL1_LIGHT));
+    addChild(ModuleLightWidget::create<LRLight>(Vec(47.f, 96.3), module, QuickMix::LEVEL2_LIGHT));
+    addChild(ModuleLightWidget::create<LRLight>(Vec(47.f, 131.3), module, QuickMix::LEVEL3_LIGHT));
+    addChild(ModuleLightWidget::create<LRLight>(Vec(47.f, 166.3), module, QuickMix::LEVEL4_LIGHT));
+    addChild(ModuleLightWidget::create<LRLight>(Vec(47.f, 201.3), module, QuickMix::LEVEL5_LIGHT));
 
 
     // addChild(ModuleLightWidget::create<LRLight>(Vec(47.5, 304.6), module, QuickMix::LEVEL6_LIGHT));
