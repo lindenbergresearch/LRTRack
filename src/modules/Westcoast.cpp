@@ -204,8 +204,8 @@ WestcoastWidget::WestcoastWidget(Westcoast *module) : LRModuleWidget(module) {
     // panel->gradients[LIGHT]->setInnerColor(nvgRGBAf(1.5f * .369f, 1.5f * 0.369f, 1.5f * 0.369f, 0.45f));
     // panel->gradients[LIGHT]->setOuterColor(nvgRGBAf(0.f, 0.f, 0.f, 0.25f));
 
-    panel->gradients[AGED]->setInnerColor(nvgRGBAf(1.5f * .369f, 1.5f * 0.369f, 1.5f * 0.369f, 0.45f));
-    panel->gradients[AGED]->setOuterColor(nvgRGBAf(0.f, 0.f, 0.f, 0.25f));
+    // panel->gradients[AGED]->setInnerColor(nvgRGBAf(1.5f * .369f, 1.5f * 0.369f, 1.5f * 0.369f, 0.45f));
+    // panel->gradients[AGED]->setOuterColor(nvgRGBAf(0.f, 0.f, 0.f, 0.25f));
     // ***** SCREWS **********
     addChild(Widget::create<ScrewLight>(Vec(15, 1)));
     addChild(Widget::create<ScrewLight>(Vec(box.size.x - 30, 1)));
@@ -220,7 +220,7 @@ WestcoastWidget::WestcoastWidget(Westcoast *module) : LRModuleWidget(module) {
     addParam(module->gainBtn);
     addParam(module->biasBtn);
 
-    auto *toggleknob = LRKnob::create<LRToggleKnob>(Vec(84, 278), module, Westcoast::TYPE_PARAM, 1, 7, 1);
+    auto *toggleknob = LRKnob::create<LRToggleKnob>(Vec(83.8, 277.8), module, Westcoast::TYPE_PARAM, 1, 7, 1);
 
     // calibrate toggle knob fpr 7 stages
     // TODO:
