@@ -76,6 +76,21 @@ void LRKnob::onGestaltChange(LREventGestaltChange &e) {
         setSVG(svg);
     }
 
+    switch (*gestalt) {
+        case DARK:
+            indicator->lightMode = false;
+            break;
+        case LIGHT:
+            indicator->lightMode = true;
+            break;
+        case AGED:
+            indicator->lightMode = true;
+            break;
+        default:
+            indicator->lightMode = false;
+    }
+
+
     dirty = true;
     e.consumed = true;
 }

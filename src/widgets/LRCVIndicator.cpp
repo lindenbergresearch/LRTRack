@@ -23,19 +23,19 @@ LRCVIndicator::LRCVIndicator(float distance, float angle) {
  * @param vg
  */
 void LRCVIndicator::draw(NVGcontext *vg) {
-    NVGcolor current = normalColor;
+    NVGcolor current = lightMode ? normalColorLight : normalColor;
 
     if (active) {
         /** underrun */
         if (cv < 0.f - OVERFLOW_THRESHOLD) {
             cv = 0.f - OVERFLOW_THRESHOLD;
-            current = overflowColor;
+            current = lightMode ? overflowColorLight : overflowColor;
         }
 
         /** overrun */
         if (cv > 1.f + OVERFLOW_THRESHOLD) {
             cv = 1.f + OVERFLOW_THRESHOLD;
-            current = overflowColor;
+            current = lightMode ? overflowColorLight : overflowColor;
         }
 
 

@@ -94,10 +94,14 @@ struct LRCVIndicator : TransparentWidget {
 
     /** flag to control drawing */
     bool active = false;
+    bool lightMode = false;
 
     /** color of indicator */
     NVGcolor normalColor = nvgRGBA(0x00, 0x00, 0x00, 0xBB);
     NVGcolor overflowColor = nvgRGBA(0xBB, 0x00, 0x00, 0xBB);
+
+    NVGcolor normalColorLight = nvgRGBA(0xDD, 0xDD, 0xDD, 0xBB);
+    NVGcolor overflowColorLight = nvgRGBA(0xDD, 0x00, 0x00, 0xBB);
 
     /** radius from middle */
     float distance;
