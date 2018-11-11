@@ -129,7 +129,9 @@
                 </g>
             </g>
         </g>
-        <g id="Scale-Middle3" serif:id="Scale Middle" transform="matrix(0.615385,0,0,0.615385,27.5154,5.56923)">
+        <g id="Scale-Middle3"
+           serif:id="Scale Middle"
+           transform="matrix(0.615385,0,0,0.615385,27.8707,5.56923)">
             <g id="OuterCircle_5_3" serif:id="OuterCircle_5_" transform="matrix(1.125,0,0,1.125,-11.2488,-38.3259)">
                 <path d="M80.647,325.45c-6.339,-3.354 -10.657,-10.016 -10.657,-17.687c0,-11.045 8.955,-19.999 20,-19.999c11.046,0 20,8.954 20,19.999c0,7.612 -4.253,14.231 -10.514,17.609" style="fill:none;stroke:#f9f9f9;stroke-width:2.89px;stroke-linejoin:round;stroke-miterlimit:1.414;"/>
             </g>
