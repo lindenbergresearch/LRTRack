@@ -159,7 +159,7 @@ void DiodeVCF::onRandomize() {
  */
 struct DiodeVCFWidget : LRModuleWidget {
     DiodeVCFWidget(DiodeVCF *module);
-    // void appendContextMenu(Menu *menu) override;
+    void appendContextMenu(Menu *menu) override;
 };
 
 
@@ -246,7 +246,7 @@ struct DiodeVCFAged : MenuItem {
         rightText = CHECKMARK(diodeVCF->aged);
     }
 };
-
+*/
 
 struct DiodeVCFHiDef : MenuItem {
     DiodeVCF *diodeVCF;
@@ -275,14 +275,11 @@ void DiodeVCFWidget::appendContextMenu(Menu *menu) {
     DiodeVCF *diodeVCF = dynamic_cast<DiodeVCF *>(module);
     assert(diodeVCF);
 
-    DiodeVCFAged *mergeItemAged = MenuItem::create<DiodeVCFAged>("Use AGED look");
-    mergeItemAged->diodeVCF = diodeVCF;
-    menu->addChild(mergeItemAged);
 
     DiodeVCFHiDef *mergeItemHiDef = MenuItem::create<DiodeVCFHiDef>("Use 4x oversampling");
     mergeItemHiDef->diodeVCF = diodeVCF;
     menu->addChild(mergeItemHiDef);
-}*/
+}
 
 
 Model *modelDiodeVCF = Model::create<DiodeVCF, DiodeVCFWidget>("Lindenberg Research", "DIODE VCF", "Laika Diode-Ladder Filter", FILTER_TAG);
