@@ -174,14 +174,6 @@ DiodeVCFWidget::DiodeVCFWidget(DiodeVCF *module) : LRModuleWidget(module) {
     module->panel = panel;
     box.size = panel->box.size;
 
-
-
-    /*  panel->setInner(nvgRGBAf(0.3, 0.3, 0.f, 0.09f));
-      panel->setOuter(nvgRGBAf(0.f, 0.f, 0.f, 0.7f));
-
-      module->panelAged->setInner(nvgRGBAf(0.5, 0.5, 0.f, 0.1f));
-      module->panelAged->setOuter(nvgRGBAf(0.f, 0.f, 0.f, 0.73f));*/
-
     // ***** SCREWS **********
     addChild(Widget::create<ScrewLight>(Vec(15, 1)));
     addChild(Widget::create<ScrewLight>(Vec(box.size.x - 30, 1)));
