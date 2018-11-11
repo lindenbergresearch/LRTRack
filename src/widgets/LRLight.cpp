@@ -29,7 +29,7 @@ void LRLight::draw(NVGcontext *vg) {
     nvgRect(vg, radius - oradius, radius - oradius, 2 * oradius, 2 * oradius);
     NVGpaint paint;
     NVGcolor icol = color;
-    icol.a *= 0.40f;
+    icol.a *= glowIntensity;
     NVGcolor ocol = color;
     ocol.a = 0.00f;
     paint = nvgRadialGradient(vg, radius, radius, radius, oradius, icol, ocol);
@@ -44,8 +44,8 @@ void LRLight::setColor(NVGcolor color) {
     if (baseColors.empty()) addBaseColor(color);
     else baseColors[0] = color;
 
-    borderColor = nvgRGBAf(color.r / 100, color.g / 100, color.b / 100, 0.9);
-    bgColor = nvgRGBAf(color.r, color.g, color.b, 0.3);
+    borderColor = nvgRGBAf(color.r / 100, color.g / 100, color.b / 100, 1.0);
+    bgColor = nvgRGBAf(color.r / 70, color.g / 70, color.b / 70, 1.0);
 }
 
 
@@ -65,12 +65,15 @@ void LRLight::onGestaltChange(LREventGestaltChange &e) {
     switch (*gestalt) {
         case LRGestalt::DARK:
             setColor(LED_DEFAULT_COLOR_DARK);
+            glowIntensity = 0.35; // does better effect on dark surfaces
             break;
         case LRGestalt::LIGHT:
             setColor(LED_DEFAULT_COLOR_LIGHT);
+            glowIntensity = 0.25;
             break;
         case LRGestalt::AGED:
             setColor(LED_DEFAULT_COLOR_LIGHT);
+            glowIntensity = 0.25;
             break;
         default:
             setColor(LED_DEFAULT_COLOR_DARK);
