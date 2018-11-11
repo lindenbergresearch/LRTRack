@@ -112,10 +112,10 @@ AlmaFilterWidget::AlmaFilterWidget(AlmaFilter *module) : LRModuleWidget(module) 
     box.size = panel->box.size;
 
     // ***** SCREWS **********
-    addChild(Widget::create<AlternateScrewLight>(Vec(15, 1)));
-    addChild(Widget::create<AlternateScrewLight>(Vec(box.size.x - 30, 1)));
-    addChild(Widget::create<AlternateScrewLight>(Vec(15, 366)));
-    addChild(Widget::create<AlternateScrewLight>(Vec(box.size.x - 30, 366)));
+    addChild(Widget::create<ScrewLight>(Vec(15, 1)));
+    addChild(Widget::create<ScrewLight>(Vec(box.size.x - 30, 1)));
+    addChild(Widget::create<ScrewLight>(Vec(15, 366)));
+    addChild(Widget::create<ScrewLight>(Vec(box.size.x - 30, 366)));
     // ***** SCREWS **********
 
     // ***** MAIN KNOBS ******

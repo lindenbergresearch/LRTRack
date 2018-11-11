@@ -68,10 +68,10 @@ ReShaperWidget::ReShaperWidget(ReShaper *module) : LRModuleWidget(module) {
     box.size = panel->box.size;
 
     // ***** SCREWS **********
-    addChild(Widget::create<ScrewDarkA>(Vec(15, 1)));
-    addChild(Widget::create<ScrewDarkA>(Vec(box.size.x - 30, 1)));
-    addChild(Widget::create<ScrewDarkA>(Vec(15, 366)));
-    addChild(Widget::create<ScrewDarkA>(Vec(box.size.x - 30, 366)));
+    addChild(Widget::create<ScrewLight>(Vec(15, 1)));
+    addChild(Widget::create<ScrewLight>(Vec(box.size.x - 30, 1)));
+    addChild(Widget::create<ScrewLight>(Vec(15, 366)));
+    addChild(Widget::create<ScrewLight>(Vec(box.size.x - 30, 366)));
     // ***** SCREWS **********
 
 

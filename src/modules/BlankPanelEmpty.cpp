@@ -39,7 +39,7 @@ void BlankPanelEmpty::step() {
  */
 struct BlankPanelEmptyWidget : LRModuleWidget {
     ModuleResizeWidget *resizeWidget, *resizeWidgetRight;
-    AlternateScrewLight *screw1, *screw2;
+    ScrewLight *screw1, *screw2;
 
     BlankPanelEmptyWidget(BlankPanelEmpty *module);
 
@@ -68,11 +68,11 @@ BlankPanelEmptyWidget::BlankPanelEmptyWidget(BlankPanelEmpty *module) : LRModule
 
 
     // ***** SCREWS **********
-    addChild(Widget::create<AlternateScrewLight>(Vec(15, 1)));
-    addChild(Widget::create<AlternateScrewLight>(Vec(15, 366)));
+    addChild(Widget::create<ScrewLight>(Vec(15, 1)));
+    addChild(Widget::create<ScrewLight>(Vec(15, 366)));
 
-    screw1 = Widget::create<AlternateScrewLight>(Vec(box.size.x - 30, 1));
-    screw2 = Widget::create<AlternateScrewLight>(Vec(box.size.x - 30, 366));
+    screw1 = Widget::create<ScrewLight>(Vec(box.size.x - 30, 1));
+    screw2 = Widget::create<ScrewLight>(Vec(box.size.x - 30, 366));
 
     addChild(screw1);
     addChild(screw2);
