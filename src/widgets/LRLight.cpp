@@ -4,7 +4,7 @@ namespace lrt {
 
 void LRLight::draw(NVGcontext *vg) {
     float radius = box.size.x / 1.5f;
-    float oradius = radius + 14.0f;
+    float oradius = radius + 24.0f;
 
     // Solid
     nvgBeginPath(vg);
@@ -65,7 +65,7 @@ void LRLight::onGestaltChange(LREventGestaltChange &e) {
     switch (*gestalt) {
         case LRGestalt::DARK:
             setColor(LED_DEFAULT_COLOR_DARK);
-            glowIntensity = 0.35; // does better effect on dark surfaces
+            glowIntensity = 0.25; // does better effect on dark surfaces
             break;
         case LRGestalt::LIGHT:
             setColor(LED_DEFAULT_COLOR_LIGHT);
@@ -73,7 +73,7 @@ void LRLight::onGestaltChange(LREventGestaltChange &e) {
             break;
         case LRGestalt::AGED:
             setColor(LED_DEFAULT_COLOR_AGED);
-            glowIntensity = 0.25;
+            glowIntensity = 0.15;
             break;
         default:
             setColor(LED_DEFAULT_COLOR_DARK);
