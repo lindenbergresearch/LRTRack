@@ -72,7 +72,7 @@ void LRLight::onGestaltChange(LREventGestaltChange &e) {
             glowIntensity = 0.25;
             break;
         case LRGestalt::AGED:
-            setColor(LED_DEFAULT_COLOR_LIGHT);
+            setColor(LED_DEFAULT_COLOR_AGED);
             glowIntensity = 0.25;
             break;
         default:

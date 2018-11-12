@@ -85,10 +85,18 @@ void LRLCDWidget::draw(NVGcontext *vg) {
 void LRLCDWidget::onGestaltChange(LREventGestaltChange &e) {
     LRGestaltChangeAction::onGestaltChange(e);
 
-    if (*gestalt == DARK) {
-        fg = LCD_DEFAULT_COLOR_DARK;
-    } else {
-        fg = LCD_DEFAULT_COLOR_LIGHT;
+    switch (*gestalt) {
+        case DARK:
+            fg = LCD_DEFAULT_COLOR_DARK;
+            break;
+        case LIGHT:
+            fg = LCD_DEFAULT_COLOR_LIGHT;
+            break;
+        case AGED:
+            fg = LCD_DEFAULT_COLOR_AGED;
+            break;
+        default:
+            fg = LCD_DEFAULT_COLOR_DARK;
     }
 
     e.consumed = true;
