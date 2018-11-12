@@ -60,22 +60,6 @@ struct BlankPanelSmall : LRModule {
         multiple = false;
     }
 
-
-    json_t *toJson() override {
-        json_t *rootJ = LRModule::toJson();
-
-        json_object_set_new(rootJ, "multiple", json_boolean(multiple));
-        return rootJ;
-    }
-
-
-    void fromJson(json_t *rootJ) override {
-        LRModule::fromJson(rootJ);
-
-        json_t *multJ = json_object_get(rootJ, "multiple");
-        if (multJ)
-            multiple = json_boolean_value(multJ);
-    }
 };
 
 
@@ -118,6 +102,10 @@ void BlankPanelSmall::step() {
 struct BlankPanelWidgetSmall : LRModuleWidget {
     BlankPanelWidgetSmall(BlankPanelSmall *module);
     void appendContextMenu(Menu *menu) override;
+
+
+    json_t *toJson() override;
+    void fromJson(json_t *rootJ) override;
 };
 
 
@@ -211,6 +199,28 @@ void BlankPanelWidgetSmall::appendContextMenu(Menu *menu) {
     BlankPanelMultiple *mergeItem = MenuItem::create<BlankPanelMultiple>("Dual Multiple");
     mergeItem->blankPanelSmall = blankPanelSmall;
     menu->addChild(mergeItem);
+}
+
+
+json_t *BlankPanelWidgetSmall::toJson() {
+    json_t *rootJ = LRModuleWidget::toJson();
+
+    BlankPanelSmall *blankPanelSmall = dynamic_cast<BlankPanelSmall *>(module);
+
+    json_object_set_new(rootJ, "multiple", json_boolean(blankPanelSmall->multiple));
+    return rootJ;
+}
+
+
+void BlankPanelWidgetSmall::fromJson(json_t *rootJ) {
+    BlankPanelSmall *blankPanelSmall = dynamic_cast<BlankPanelSmall *>(module);
+
+    LRModuleWidget::fromJson(rootJ);
+
+    json_t *multJ = json_object_get(rootJ, "multiple");
+
+    if (multJ)
+        blankPanelSmall->multiple = json_boolean_value(multJ);
 }
 
 
