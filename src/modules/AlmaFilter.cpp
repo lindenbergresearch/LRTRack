@@ -127,7 +127,7 @@ AlmaFilterWidget::AlmaFilterWidget(AlmaFilter *module) : LRModuleWidget(module) 
     addParam(module->peakKnob);
     addParam(module->driveKnob);
 
-    addParam(ParamWidget::create<LRMiddleKnob>(Vec(70, 288), module, AlmaFilter::SLOPE_PARAM, 0.0f, 4.f, 2.0f));
+    addParam(ParamWidget::create<LRMiddleKnob>(Vec(69, 287), module, AlmaFilter::SLOPE_PARAM, 0.0f, 4.f, 2.0f));
     // ***** MAIN KNOBS ******
 
     // ***** CV INPUTS *******
