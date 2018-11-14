@@ -156,24 +156,24 @@ SimpleFilterWidget::SimpleFilterWidget(SimpleFilter *module) : LRModuleWidget(mo
     // ***** SCREWS **********
 
     // ***** MAIN KNOBS ******
-    addParam(ParamWidget::create<LRBigKnob>(Vec(75 - 28, 167), module, SimpleFilter::CUTOFF_PARAM, 0.f, 1.f, 0.f));
-    addParam(ParamWidget::create<LRMiddleKnob>(Vec(75 - 21, 252), module, SimpleFilter::RESONANCE_PARAM, -0.f, 1.f, 0.0f));
+    addParam(ParamWidget::create<LRBigKnob>(Vec(46.9, 171.5), module, SimpleFilter::CUTOFF_PARAM, 0.f, 1.f, 0.f));
+    addParam(ParamWidget::create<LRMiddleKnob>(Vec(54.0, 254.0), module, SimpleFilter::RESONANCE_PARAM, -0.f, 1.f, 0.0f));
     // ***** MAIN KNOBS ******
 
     // ***** CV INPUTS *******
-    addParam(ParamWidget::create<LRSmallKnob>(Vec(39 - 12, 120), module, SimpleFilter::CUTOFF_CV_PARAM, 0.f, 1.f, 0.f));
-    addParam(ParamWidget::create<LRSmallKnob>(Vec(111 - 12, 120), module, SimpleFilter::RESONANCE_CV_PARAM, 0.f, 1.f, 0.f));
+    addParam(ParamWidget::create<LRSmallKnob>(Vec(27, 122), module, SimpleFilter::CUTOFF_CV_PARAM, 0.f, 1.f, 0.f));
+    addParam(ParamWidget::create<LRSmallKnob>(Vec(99, 122), module, SimpleFilter::RESONANCE_CV_PARAM, 0.f, 1.f, 0.f));
 
-    addInput(Port::create<LRIOPortC>(Vec(39 - 14, 60), Port::INPUT, module, SimpleFilter::CUTOFF_CV_INPUT));
-    addInput(Port::create<LRIOPortC>(Vec(111 - 14, 60), Port::INPUT, module, SimpleFilter::RESONANCE_CV_INPUT));
+    addInput(Port::create<LRIOPortC>(Vec(25.4, 52.9), Port::INPUT, module, SimpleFilter::CUTOFF_CV_INPUT));
+    addInput(Port::create<LRIOPortC>(Vec(97.2, 52.9), Port::INPUT, module, SimpleFilter::RESONANCE_CV_INPUT));
     // ***** CV INPUTS *******
 
     // ***** INPUTS **********
-    addInput(Port::create<LRIOPort>(Vec(39 - 14, 320), Port::INPUT, module, SimpleFilter::FILTER_INPUT));
+    addInput(Port::create<LRIOPort>(Vec(25.4, 324.4), Port::INPUT, module, SimpleFilter::FILTER_INPUT));
     // ***** INPUTS **********
 
     // ***** OUTPUTS *********
-    addOutput(Port::create<LRIOPort>(Vec(111 - 14, 320), Port::OUTPUT, module, SimpleFilter::FILTER_OUTPUT));
+    addOutput(Port::create<LRIOPort>(Vec(97.2, 324.4), Port::OUTPUT, module, SimpleFilter::FILTER_OUTPUT));
     // ***** OUTPUTS *********
 }
 
