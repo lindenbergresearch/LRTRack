@@ -76,18 +76,18 @@ ReShaperWidget::ReShaperWidget(ReShaper *module) : LRModuleWidget(module) {
 
 
     // ***** MAIN KNOBS ******
-    addParam(ParamWidget::create<LRBigKnob>(Vec(32, 216), module, ReShaper::RESHAPER_AMOUNT, 1.f, 50.f, 1.f));
-    addParam(ParamWidget::create<LRSmallKnob>(Vec(48, 126), module, ReShaper::RESHAPER_CV_AMOUNT, 0.f, 5.f, 0.f));
+    addParam(ParamWidget::create<LRBigKnob>(Vec(32.7, 228), module, ReShaper::RESHAPER_AMOUNT, 1.f, 50.f, 1.f));
+    addParam(ParamWidget::create<LRSmallKnob>(Vec(48.9, 126), module, ReShaper::RESHAPER_CV_AMOUNT, 0.f, 5.f, 0.f));
     // ***** MAIN KNOBS ******
 
 
     // ***** INPUTS **********
-    addInput(Port::create<LRIOPort>(Vec(21, 60), Port::INPUT, module, ReShaper::RESHAPER_INPUT));
-    addInput(Port::create<LRIOPortC>(Vec(71, 60), Port::INPUT, module, ReShaper::RESHAPER_CV_INPUT));
+    addInput(Port::create<LRIOPort>(Vec(21.5, 52.3), Port::INPUT, module, ReShaper::RESHAPER_INPUT));
+    addInput(Port::create<LRIOPortC>(Vec(71.2, 52.3), Port::INPUT, module, ReShaper::RESHAPER_CV_INPUT));
     // ***** INPUTS **********
 
     // ***** OUTPUTS *********
-    addOutput(Port::create<LRIOPort>(Vec(46, 320), Port::OUTPUT, module, ReShaper::RESHAPER_OUTPUT));
+    addOutput(Port::create<LRIOPort>(Vec(46.2, 311.6), Port::OUTPUT, module, ReShaper::RESHAPER_OUTPUT));
     // ***** OUTPUTS *********
 }
 
