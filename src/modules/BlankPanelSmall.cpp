@@ -33,7 +33,7 @@ struct BlankPanelSmall : LRModule {
     BlankPanelSmall() : LRModule(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS) {}
 
 
-    LRIOPort *ioports[8] = {NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL};
+    LRIOPortCV *ioports[8] = {NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL};
     bool multiple = false;
 
     void step() override;
@@ -111,16 +111,16 @@ struct BlankPanelWidgetSmall : LRModuleWidget {
 
 void BlankPanelSmall::createPorts() {
     /* INPUTS */
-    ioports[0] = Port::create<LRIOPort>(Vec(16.5, 19.5), Port::INPUT, this, BlankPanelSmall::M1_INPUT);
-    ioports[1] = Port::create<LRIOPort>(Vec(16.5, 228.5), Port::INPUT, this, BlankPanelSmall::M2_INPUT);
+    ioports[0] = Port::create<LRIOPortCV>(Vec(16.5, 19.5), Port::INPUT, this, BlankPanelSmall::M1_INPUT);
+    ioports[1] = Port::create<LRIOPortCV>(Vec(16.5, 228.5), Port::INPUT, this, BlankPanelSmall::M2_INPUT);
 
     /* OUTPUTS */
-    ioports[2] = Port::create<LRIOPort>(Vec(16.5, 53.5), Port::OUTPUT, this, BlankPanelSmall::M1_OUTPUT);
-    ioports[3] = Port::create<LRIOPort>(Vec(16.5, 87.5), Port::OUTPUT, this, BlankPanelSmall::M2_OUTPUT);
-    ioports[4] = Port::create<LRIOPort>(Vec(16.5, 120.5), Port::OUTPUT, this, BlankPanelSmall::M3_OUTPUT);
-    ioports[5] = Port::create<LRIOPort>(Vec(16.5, 262.5), Port::OUTPUT, this, BlankPanelSmall::M4_OUTPUT);
-    ioports[6] = Port::create<LRIOPort>(Vec(16.5, 296.5), Port::OUTPUT, this, BlankPanelSmall::M5_OUTPUT);
-    ioports[7] = Port::create<LRIOPort>(Vec(16.5, 329.5), Port::OUTPUT, this, BlankPanelSmall::M6_OUTPUT);
+    ioports[2] = Port::create<LRIOPortCV>(Vec(16.5, 53.5), Port::OUTPUT, this, BlankPanelSmall::M1_OUTPUT);
+    ioports[3] = Port::create<LRIOPortCV>(Vec(16.5, 87.5), Port::OUTPUT, this, BlankPanelSmall::M2_OUTPUT);
+    ioports[4] = Port::create<LRIOPortCV>(Vec(16.5, 120.5), Port::OUTPUT, this, BlankPanelSmall::M3_OUTPUT);
+    ioports[5] = Port::create<LRIOPortCV>(Vec(16.5, 262.5), Port::OUTPUT, this, BlankPanelSmall::M4_OUTPUT);
+    ioports[6] = Port::create<LRIOPortCV>(Vec(16.5, 296.5), Port::OUTPUT, this, BlankPanelSmall::M5_OUTPUT);
+    ioports[7] = Port::create<LRIOPortCV>(Vec(16.5, 329.5), Port::OUTPUT, this, BlankPanelSmall::M6_OUTPUT);
 
     hidePorts();
 }
