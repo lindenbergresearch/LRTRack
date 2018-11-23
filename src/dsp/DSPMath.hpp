@@ -462,7 +462,7 @@ inline double lambert_W_Fritsch(double x) {
 
 /**
  * @brief Implementation of the error function
- *        https://www.johndcook.com/blog/cpp_erf/
+ * @brief https://www.johndcook.com/blog/cpp_erf/
  *
  * @param x input
  * @return erf(x)
@@ -488,13 +488,121 @@ inline double erf(const double x) {
 }
 
 
+/**
+ * @brief Approximates log to the base of 2 with optimized code.
+ * @brief https://www.ebayinc.com/stories/blogs/tech/fast-approximate-logarithms-part-i-the-basics/
+ * @param x
+ * @return
+ */
+inline float fastlog2(float x)  // compute log2(x) by reducing x to [0.75, 1.5)
+{
+    // a*(x-1)^2 + b*(x-1) approximates log2(x) when 0.75 <= x < 1.5
+    const float a = -.6296735;
+    const float b = 1.466967;
+    float signif, fexp;
+    int exp;
+    float lg2;
+    union {
+        float f;
+        unsigned int i;
+    } ux1, ux2;
+    int greater; // really a boolean
+    /*
+     * Assume IEEE representation, which is sgn(1):exp(8):frac(23)
+     * representing (1+frac)*2^(exp-127)  Call 1+frac the significand
+     */
+
+    // get exponent
+    ux1.f = x;
+    exp = (ux1.i & 0x7F800000) >> 23;
+    // actual exponent is exp-127, will subtract 127 later
+
+    greater = ux1.i & 0x00400000;  // true if signif > 1.5
+    if (greater) {
+        // signif >= 1.5 so need to divide by 2.  Accomplish this by
+        // stuffing exp = 126 which corresponds to an exponent of -1
+        ux2.i = (ux1.i & 0x007FFFFF) | 0x3f000000;
+        signif = ux2.f;
+        fexp = exp - 126;    // 126 instead of 127 compensates for division by 2
+        signif = signif - 1.0;                    // <
+        lg2 = fexp + a * signif * signif + b * signif;  // <
+    } else {
+        // get signif by stuffing exp = 127 which corresponds to an exponent of 0
+        ux2.i = (ux1.i & 0x007FFFFF) | 0x3f800000;
+        signif = ux2.f;
+        fexp = exp - 127;
+        signif = signif - 1.0;                    // <<--
+        lg2 = fexp + a * signif * signif + b * signif;  // <<--
+    }
+    // lines marked <<-- are common code, but optimize better
+    //  when duplicated, at least when using gcc
+    return (lg2);
+}
 
 
+/**
+ * @brief Fast natural log to the base of e using the optimized approximation of log2.
+ * @param x
+ * @return
+ */
+inline float fastlog(float x) {
+    return 0.6931472f * fastlog2(x);
+}
 
 
+/**
+ * @brief Fast pow() approximation
+ * @brief https://martin.ankerl.com/2012/01/25/optimized-approximative-pow-in-c-and-cpp/
+ * @param a base
+ * @param b exponent
+ * @return
+ */
+inline double fastPow(double a, double b) {
+    union {
+        double d;
+        int x[2];
+    } u = {a};
+    u.x[1] = (int) (b * (u.x[1] - 1072632447) + 1072632447);
+    u.x[0] = 0;
+    return u.d;
+}
 
 
+// should be much more precise with large b
+inline double fastPrecisePow(double a, double b) {
+    // calculate approximation with fraction of the exponent
+    int e = (int) b;
+    union {
+        double d;
+        int x[2];
+    } u = {a};
+    u.x[1] = (int) ((b - e) * (u.x[1] - 1072632447) + 1072632447);
+    u.x[0] = 0;
 
+    // exponentiation by squaring with the exponent's integer part
+    // double r = u.d makes everything much slower, not sure why
+    double r = 1.0;
+    while (e) {
+        if (e & 1) {
+            r *= a;
+        }
+        a *= a;
+        e >>= 1;
+    }
+
+    return r * u.d;
+}
+
+
+/**
+ * @brief Unaccurate approcimation of the LambertW function for x>0
+ * @brief usable my waveshaper applications
+ * @param x
+ * @return
+ */
+inline double fakedLambertW(double x) {
+    return log(x + 1);
+}
 
 
 
