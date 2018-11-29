@@ -15,6 +15,7 @@ void init(Plugin *p) {
     p->addModel(modelWestcoast);
     p->addModel(modelQuickMix);
     p->addModel(modelDiodeVCF);
+    p->addModel(modelKorg35);
     p->addModel(modelVCO);
 
     //  p->addModel(modelSpeck);
