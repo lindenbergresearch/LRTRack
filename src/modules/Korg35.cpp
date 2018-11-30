@@ -18,14 +18,19 @@
 
 #include "../LindenbergResearch.hpp"
 #include "../LRModel.hpp"
+#include "../dsp/Korg35Filter.hpp"
 
 
 using namespace rack;
 using namespace lrt;
 
+using dsp::Korg35Filter;
 
 struct Korg35 : LRModule {
     enum ParamIds {
+        FREQ_PARAM,
+        PEAK_PARAM,
+        SAT_PARAM,
         NUM_PARAMS
     };
     enum InputIds {
@@ -40,8 +45,29 @@ struct Korg35 : LRModule {
         NUM_LIGHTS
     };
 
+    LRKnob *frqKnob, *peakKnob, *saturateKnob;
+    Korg35Filter *filter = new Korg35Filter(engineGetSampleRate());
 
     Korg35() : LRModule(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS) {}
+
+
+    void step() override {
+        filter->fc = params[FREQ_PARAM].value;
+        filter->peak = params[PEAK_PARAM].value;
+        filter->sat = params[SAT_PARAM].value;
+
+        filter->in = inputs[FILTER_INPUT].value;
+        filter->invalidate();
+        filter->process();
+
+        outputs[LP_OUTPUT].value = filter->out;
+    }
+
+
+    void onSampleRateChange() override {
+        Module::onSampleRateChange();
+        filter->setSamplerate(engineGetSampleRate());
+    }
 };
 
 
@@ -71,18 +97,17 @@ Korg35Widget::Korg35Widget(Korg35 *module) : LRModuleWidget(module) {
     // ***** SCREWS **********
 
     // ***** MAIN KNOBS ******
-    /*  module->frqKnob = LRKnob::create<LRBigKnob>(Vec(32.5, 74.4), module, DiodeVCF::FREQUENCY_PARAM, 0.f, 1.f, 1.f);
-      module->resKnob = LRKnob::create<LRBigKnob>(Vec(151.5, 74.4), module, DiodeVCF::RES_PARAM, 0.0f, 1.0, 0.0f);
-      module->saturateKnob = LRKnob::create<LRMiddleKnob>(Vec(99.5, 164.4), module, DiodeVCF::SATURATE_PARAM, 0.f, 1.0,
-                                                          0.0f);
+    module->frqKnob = LRKnob::create<LRBigKnob>(Vec(32.5, 74.4), module, Korg35::FREQ_PARAM, 0.f, 1.f, 1.f);
+    module->peakKnob = LRKnob::create<LRBigKnob>(Vec(32.5, 144.4), module, Korg35::PEAK_PARAM, 0.001f, 2.0, 0.001f);
+    module->saturateKnob = LRKnob::create<LRMiddleKnob>(Vec(40, 244.4), module, Korg35::SAT_PARAM, 1.f, 1.5, 0.0f);
 
-      module->frqKnob->setIndicatorColors(nvgRGBAf(0.9f, 0.9f, 0.9f, 1.0f));
-      module->resKnob->setIndicatorColors(nvgRGBAf(0.9f, 0.9f, 0.9f, 1.0f));
-      module->saturateKnob->setIndicatorColors(nvgRGBAf(0.9f, 0.9f, 0.9f, 1.0f));
+    module->frqKnob->setIndicatorColors(nvgRGBAf(0.9f, 0.9f, 0.9f, 1.0f));
+    module->peakKnob->setIndicatorColors(nvgRGBAf(0.9f, 0.9f, 0.9f, 1.0f));
+    module->saturateKnob->setIndicatorColors(nvgRGBAf(0.9f, 0.9f, 0.9f, 1.0f));
 
-      addParam(module->frqKnob);
-      addParam(module->resKnob);
-      addParam(module->saturateKnob);
+    addParam(module->frqKnob);
+    addParam(module->peakKnob);
+    addParam(module->saturateKnob);/*
 
       addParam(ParamWidget::create<LRSmallKnob>(Vec(39.9, 251.4), module, DiodeVCF::FREQUENCY_CV_PARAM, -1.f, 1.0f, 0.f));
       addParam(ParamWidget::create<LRSmallKnob>(Vec(177, 251.4), module, DiodeVCF::RESONANCE_CV_PARAM, -1.f, 1.0f, 0.f));
