@@ -35,7 +35,10 @@ void dsp::Korg35FilterStage::init() {
 
 
 void dsp::Korg35FilterStage::invalidate() {
-    float wd = 2 * M_PI * fc;
+    // only process in dedicated mode
+    if (!dedicated) return;
+
+    float wd = 2 * PI * fc;
     float T = 1 / sr;
     float wa = (2 / T) * tan(wd * T / 2);
     float g = wa * T / 2;
@@ -63,4 +66,70 @@ void dsp::Korg35FilterStage::process() {
 }
 
 
-dsp::Korg35Filter::Korg35Filter(float sr) : DSPEffect(sr) {}
+void dsp::Korg35Filter::init() {
+    fc = sr / 2;
+    peak = 0.f;
+
+    lpf->init();
+    hpf1->init();
+    hpf2->init();
+}
+
+
+void dsp::Korg35Filter::invalidate() {
+    float wd = 2 * PI * fc;
+    float T = 1 / sr;
+    float wa = (2 / T) * tan(wd * T / 2);
+    float g = wa * T / 2;
+
+    float G = g / (1.f + g);
+
+    // set alphas
+    lpf->alpha = G;
+    hpf1->alpha = G;
+    hpf2->alpha = G;
+
+    hpf2->beta = -1.f * G / (1.f + g);
+    lpf->beta = 1.f / (1.f + g);
+
+    Ga = 1.f / (1.f - peak * G + peak * G * G);
+}
+
+
+void dsp::Korg35Filter::process() {
+    hpf1->in = in;
+    hpf1->process();
+    float y1 = hpf1->out;
+
+    float s35h = hpf2->getFeedback() + lpf->getFeedback();
+
+    float u = Ga * (y1 + s35h);
+    float y = peak * u;
+
+
+    // TODO: NLP
+
+    hpf2->in = y;
+    hpf2->process();
+
+    lpf->in = hpf2->out;
+    lpf->process();
+
+    if (peak > 0) {
+        y *= 1 / peak; // normalize
+    }
+
+    out = y;
+}
+
+
+void dsp::Korg35Filter::setSamplerate(float sr) {
+    DSPEffect::setSamplerate(sr);
+
+    // derive samplerate change
+    lpf->setSamplerate(sr);
+    hpf1->setSamplerate(sr);
+    hpf2->setSamplerate(sr);
+
+    invalidate();
+}

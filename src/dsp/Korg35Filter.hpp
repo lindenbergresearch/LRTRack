@@ -23,6 +23,8 @@
 #include "engine.hpp"
 #include "DSPMath.hpp"
 
+#define PI 3.14159265358979323846f
+
 namespace dsp {
 
 struct Korg35FilterStage : DSPEffect {
@@ -30,6 +32,8 @@ struct Korg35FilterStage : DSPEffect {
         LPF1,   // lowpass stage
         HPF1    // highpass stage
     };
+
+    bool dedicated = false;
 
     float fc;
     FilterType type;
@@ -49,15 +53,31 @@ struct Korg35FilterStage : DSPEffect {
     void init() override;
     void invalidate() override;
     void process() override;
-
 };
 
 
 struct Korg35Filter : DSPEffect {
 
+    Korg35FilterStage *lpf, *hpf1, *hpf2;
+    float Ga;
 
-    Korg35Filter(float sr);
+    float in, out;
 
+    // cutofffrq, peak (resonance) and saturation level
+    float fc, peak, sat;
+
+
+    Korg35Filter(float sr) : DSPEffect(sr) {
+        lpf = new Korg35FilterStage(sr, Korg35FilterStage::LPF1);
+        hpf1 = new Korg35FilterStage(sr, Korg35FilterStage::HPF1);
+        hpf2 = new Korg35FilterStage(sr, Korg35FilterStage::HPF1);
+    }
+
+
+    void init() override;
+    void invalidate() override;
+    void process() override;
+    void setSamplerate(float sr) override;
 };
 
 }
