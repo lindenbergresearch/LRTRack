@@ -57,6 +57,7 @@ struct Korg35FilterStage : DSPEffect {
 
 
 struct Korg35Filter : DSPEffect {
+    static constexpr float MAX_FREQUENCY = 20000.f;
 
     Korg35FilterStage *lpf, *hpf1, *hpf2;
     float Ga;

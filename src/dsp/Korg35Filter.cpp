@@ -77,7 +77,9 @@ void dsp::Korg35Filter::init() {
 
 
 void dsp::Korg35Filter::invalidate() {
-    float wd = 2 * PI * fc;
+    float frqHz = MAX_FREQUENCY / 1000.f * powf(1000.f, fc);
+
+    float wd = 2 * PI * frqHz;
     float T = 1 / sr;
     float wa = (2 / T) * tan(wd * T / 2);
     float g = wa * T / 2;
@@ -106,8 +108,7 @@ void dsp::Korg35Filter::process() {
     float u = Ga * (y1 + s35h);
     float y = peak * u;
 
-
-    // TODO: NLP
+    y = tanh(sat * y);
 
     hpf2->in = y;
     hpf2->process();
