@@ -31,7 +31,6 @@ struct Korg35FilterStage : DSPEffect {
         HPF1    // highpass stage
     };
 
-private:
     float fc;
     FilterType type;
     float alpha, beta;
@@ -39,8 +38,7 @@ private:
 
     float in, out;
 
-public:
-    Korg35FilterStage(float sr);
+    Korg35FilterStage(float sr, FilterType type);
 
 
     inline float getFeedback() {
@@ -51,6 +49,14 @@ public:
     void init() override;
     void invalidate() override;
     void process() override;
+
+};
+
+
+struct Korg35Filter : DSPEffect {
+
+
+    Korg35Filter(float sr);
 
 };
 

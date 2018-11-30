@@ -17,12 +17,12 @@
 \*                                                                     */
 
 #include "Korg35Filter.hpp"
-
-
 #include "DSPEffect.hpp"
 
 
-dsp::Korg35FilterStage::Korg35FilterStage(float sr) : DSPEffect(sr) {}
+dsp::Korg35FilterStage::Korg35FilterStage(float sr, FilterType type) : DSPEffect(sr) {
+    this->type = type;
+}
 
 
 void dsp::Korg35FilterStage::init() {
@@ -61,3 +61,6 @@ void dsp::Korg35FilterStage::process() {
     }
 
 }
+
+
+dsp::Korg35Filter::Korg35Filter(float sr) : DSPEffect(sr) {}
