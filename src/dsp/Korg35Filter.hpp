@@ -23,14 +23,12 @@
 #include "engine.hpp"
 #include "DSPMath.hpp"
 
-#define PI 3.14159265358979323846f
-
 namespace dsp {
 
 struct Korg35FilterStage : DSPEffect {
     enum FilterType {
-        LPF1,   // lowpass stage
-        HPF1    // highpass stage
+        LP_STAGE,   // lowpass stage
+        HP_STAGE    // highpass stage
     };
 
     bool dedicated = false;
@@ -69,9 +67,9 @@ struct Korg35Filter : DSPEffect {
 
 
     Korg35Filter(float sr) : DSPEffect(sr) {
-        lpf = new Korg35FilterStage(sr, Korg35FilterStage::LPF1);
-        hpf1 = new Korg35FilterStage(sr, Korg35FilterStage::HPF1);
-        hpf2 = new Korg35FilterStage(sr, Korg35FilterStage::HPF1);
+        lpf = new Korg35FilterStage(sr, Korg35FilterStage::LP_STAGE);
+        hpf1 = new Korg35FilterStage(sr, Korg35FilterStage::HP_STAGE);
+        hpf2 = new Korg35FilterStage(sr, Korg35FilterStage::HP_STAGE);
     }
 
 
