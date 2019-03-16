@@ -25,6 +25,9 @@
 
 namespace dsp {
 
+/**
+ * @brief Represents one filter stage
+ */
 struct Korg35FilterStage : DSPEffect {
     enum FilterType {
         LP_STAGE,   // lowpass stage
@@ -33,8 +36,9 @@ struct Korg35FilterStage : DSPEffect {
 
     bool dedicated = false;
 
-    float fc;
     FilterType type;
+
+    float fc;
     float alpha, beta;
     float zn1;
 
@@ -54,10 +58,21 @@ struct Korg35FilterStage : DSPEffect {
 };
 
 
+/**
+ * @brief Actual Korg35 Filter Class
+ */
 struct Korg35Filter : DSPEffect {
     static constexpr float MAX_FREQUENCY = 20000.f;
 
-    Korg35FilterStage *lpf, *hpf1, *hpf2;
+    enum FilterType {
+        LPF,   // lowpass
+        HPF    // highpass
+    };
+
+
+    Korg35FilterStage *lpf1, *lpf2, *hpf1, *hpf2;
+    FilterType type;
+
     float Ga;
 
     float in, out;
@@ -67,7 +82,8 @@ struct Korg35Filter : DSPEffect {
 
 
     Korg35Filter(float sr) : DSPEffect(sr) {
-        lpf = new Korg35FilterStage(sr, Korg35FilterStage::LP_STAGE);
+        lpf1 = new Korg35FilterStage(sr, Korg35FilterStage::LP_STAGE);
+        lpf2 = new Korg35FilterStage(sr, Korg35FilterStage::LP_STAGE);
         hpf1 = new Korg35FilterStage(sr, Korg35FilterStage::HP_STAGE);
         hpf2 = new Korg35FilterStage(sr, Korg35FilterStage::HP_STAGE);
     }

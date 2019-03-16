@@ -72,7 +72,8 @@ void dsp::Korg35Filter::init() {
     fc = sr / 2;
     peak = 0.f;
 
-    lpf->init();
+    lpf1->init();
+    lpf2->init();
     hpf1->init();
     hpf2->init();
 }
@@ -89,12 +90,12 @@ void dsp::Korg35Filter::invalidate() {
     float G = g / (1 + g);
 
     // set alphas
-    lpf->alpha = G;
+    lpf1->alpha = G;
     hpf1->alpha = G;
     hpf2->alpha = G;
 
     hpf2->beta = -1.f * G / (1.f + g);
-    lpf->beta = 1.f / (1.f + g);
+    lpf1->beta = 1.f / (1.f + g);
 
     Ga = 1.f / (1.f - peak * G + peak * G * G);
 }
@@ -105,7 +106,7 @@ void dsp::Korg35Filter::process() {
     hpf1->process();
     float y1 = hpf1->out;
 
-    float s35h = hpf2->getFeedback() + lpf->getFeedback();
+    float s35h = hpf2->getFeedback() + lpf1->getFeedback();
 
     float u = Ga * (y1 + s35h);
     float y = peak * fastatan(sat * u * 0.1) * 10;
@@ -115,8 +116,8 @@ void dsp::Korg35Filter::process() {
     hpf2->in = y;
     hpf2->process();
 
-    lpf->in = hpf2->out;
-    lpf->process();
+    lpf1->in = hpf2->out;
+    lpf1->process();
 
     if (peak > 0) {
         y *= 1 / peak; // normalize
@@ -130,7 +131,8 @@ void dsp::Korg35Filter::setSamplerate(float sr) {
     DSPEffect::setSamplerate(sr);
 
     // derive samplerate change
-    lpf->setSamplerate(sr);
+    lpf1->setSamplerate(sr);
+    lpf2->setSamplerate(sr);
     hpf1->setSamplerate(sr);
     hpf2->setSamplerate(sr);
 
