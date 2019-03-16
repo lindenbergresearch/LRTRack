@@ -32,9 +32,8 @@ float cliph(float in, float clip) {
  */
 float wrapTWOPI(float n) {
     float b = 1.f / TWOPI * n;
-    return (b - lround(b)) * TWOPI;
+    return (b - lroundf(b)) * TWOPI;
 }
-
 
 /**
  * @brief Get PLL increment depending on frequency
