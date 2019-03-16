@@ -81,7 +81,9 @@ struct Korg35Filter : DSPEffect {
     float fc, peak, sat;
 
 
-    Korg35Filter(float sr) : DSPEffect(sr) {
+    Korg35Filter(float sr, FilterType type) : DSPEffect(sr) {
+        Korg35Filter::type = type;
+
         lpf1 = new Korg35FilterStage(sr, Korg35FilterStage::LP_STAGE);
         lpf2 = new Korg35FilterStage(sr, Korg35FilterStage::LP_STAGE);
         hpf1 = new Korg35FilterStage(sr, Korg35FilterStage::HP_STAGE);
@@ -92,6 +94,8 @@ struct Korg35Filter : DSPEffect {
     void init() override;
     void invalidate() override;
     void process() override;
+    void processLPF();
+    void processHPF();
     void setSamplerate(float sr) override;
 };
 
