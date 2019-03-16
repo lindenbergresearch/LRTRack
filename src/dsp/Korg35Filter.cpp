@@ -18,6 +18,7 @@
 
 #include "Korg35Filter.hpp"
 #include "DSPEffect.hpp"
+#include "DSPMath.hpp"
 
 
 dsp::Korg35FilterStage::Korg35FilterStage(float sr, FilterType type) : DSPEffect(sr) {
@@ -26,7 +27,7 @@ dsp::Korg35FilterStage::Korg35FilterStage(float sr, FilterType type) : DSPEffect
 
 
 void dsp::Korg35FilterStage::init() {
-    type = LPF1;
+    type = LP_STAGE;
     alpha = 1.f;
     beta = 1.f;
     zn1 = 0;
@@ -38,9 +39,9 @@ void dsp::Korg35FilterStage::invalidate() {
     // only process in dedicated mode
     if (!dedicated) return;
 
-    float wd = 2 * PI * fc;
+    float wd = TWOPI * fc;
     float T = 1 / sr;
-    float wa = (2 / T) * tan(wd * T / 2);
+    float wa = (2 / T) * tanf(wd * T / 2);
     float g = wa * T / 2;
 
     alpha = g / (1.f + g);
@@ -55,11 +56,12 @@ void dsp::Korg35FilterStage::process() {
 
     zn1 = vn + lpf;
 
+    float hpf = in - lpf;
+
     // switch filter type
-    if (type == LPF1) {
+    if (type == LP_STAGE) {
         out = lpf;
     } else {
-        float hpf = in - lpf;
         out = hpf;
     }
 
@@ -79,12 +81,12 @@ void dsp::Korg35Filter::init() {
 void dsp::Korg35Filter::invalidate() {
     float frqHz = MAX_FREQUENCY / 1000.f * powf(1000.f, fc);
 
-    float wd = 2 * PI * frqHz;
+    float wd = TWOPI * frqHz;
     float T = 1 / sr;
-    float wa = (2 / T) * tan(wd * T / 2);
+    float wa = (2 / T) * tanf(wd * T / 2);
     float g = wa * T / 2;
 
-    float G = g / (1.f + g);
+    float G = g / (1 + g);
 
     // set alphas
     lpf->alpha = G;
@@ -106,9 +108,9 @@ void dsp::Korg35Filter::process() {
     float s35h = hpf2->getFeedback() + lpf->getFeedback();
 
     float u = Ga * (y1 + s35h);
-    float y = peak * u;
+    float y = peak * fastatan(sat * u * 0.1) * 10;
 
-    y = tanh(sat * y);
+    // u = tanhf(sat * u);
 
     hpf2->in = y;
     hpf2->process();
