@@ -156,7 +156,7 @@ void dsp::Korg35Filter::processLPF() {
     float u = Ga * (y1 + s35h);
     //float y = peak * fastatan(sat * u * 0.1) * 10.f;
 
-    u = fastatan(sat * u * 0.1) * 10.f;
+    u = tanhf(sat * u * 0.1) * 10.f;
 
     lpf2->in = u;
     lpf2->process();
