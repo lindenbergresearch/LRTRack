@@ -18,7 +18,7 @@
 
 #include "../LindenbergResearch.hpp"
 #include "../LRModel.hpp"
-#include "src/dsp/Type35Filter.hpp"
+#include "../dsp/Type35Filter.hpp"
 
 
 using namespace rack;
