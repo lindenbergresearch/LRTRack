@@ -18,13 +18,13 @@
 
 #include "../LindenbergResearch.hpp"
 #include "../LRModel.hpp"
-#include "../dsp/Korg35Filter.hpp"
+#include "src/dsp/Type35Filter.hpp"
 
 
 using namespace rack;
 using namespace lrt;
 
-using dsp::Korg35Filter;
+using dsp::Type35Filter;
 
 
 struct Type35 : LRModule {
@@ -51,8 +51,8 @@ struct Type35 : LRModule {
     };
 
     LRKnob *frqKnobLP, *peakKnobLP, *frqKnobHP, *peakKnobHP, *saturateKnob;
-    Korg35Filter *lpf = new Korg35Filter(engineGetSampleRate(), Korg35Filter::LPF);
-    Korg35Filter *hpf = new Korg35Filter(engineGetSampleRate(), Korg35Filter::HPF);
+    Type35Filter *lpf = new Type35Filter(engineGetSampleRate(), Type35Filter::LPF);
+    Type35Filter *hpf = new Type35Filter(engineGetSampleRate(), Type35Filter::HPF);
 
 
     Type35() : LRModule(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS) {}

@@ -161,7 +161,7 @@ struct Upsampler {
         inIndex++;
         inIndex %= quality;
         // Naively convolve each sample
-        // TODO replace with polyphase filter hierarchy
+        // TODO replace with polyphase lpf hierarchy
         for (int i = 0; i < oversample; i++) {
             float y = 0.0;
             for (int j = 0; j < quality; j++) {

@@ -94,7 +94,7 @@ void SimpleFilter::step() {
     resonance = clip(params[RESONANCE_PARAM].value + resonanceCVValue, 1.f);
 
     // normalize signal input to [-1.0...+1.0]
-    // filter starts to be very unstable for input gain above 1.f and below 0.f
+    // lpf starts to be very unstable for input gain above 1.f and below 0.f
     in = clip(inputs[FILTER_INPUT].value * 0.1f, 1.0f);
 
     // Set coefficients given frequency & resonance [0.0...1.0]
