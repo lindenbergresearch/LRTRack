@@ -31,6 +31,8 @@ struct Type35 : LRModule {
     enum ParamIds {
         FREQ1_PARAM,
         PEAK1_PARAM,
+        FREQ2_PARAM,
+        PEAK2_PARAM,
         SAT1_PARAM,
         NUM_PARAMS
     };
@@ -48,29 +50,41 @@ struct Type35 : LRModule {
         NUM_LIGHTS
     };
 
-    LRKnob *frqKnob, *peakKnob, *saturateKnob;
-    Korg35Filter *filter = new Korg35Filter(engineGetSampleRate(), Korg35Filter::LPF);
+    LRKnob *frqKnobLP, *peakKnobLP, *frqKnobHP, *peakKnobHP, *saturateKnob;
+    Korg35Filter *lpf = new Korg35Filter(engineGetSampleRate(), Korg35Filter::LPF);
+    Korg35Filter *hpf = new Korg35Filter(engineGetSampleRate(), Korg35Filter::HPF);
 
 
     Type35() : LRModule(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS) {}
 
 
     void step() override {
-        filter->fc = params[FREQ1_PARAM].value;
-        filter->peak = params[PEAK1_PARAM].value;
-        filter->sat = quadraticBipolar(params[SAT1_PARAM].value);
+        lpf->fc = params[FREQ1_PARAM].value;
+        lpf->peak = params[PEAK1_PARAM].value;
+        hpf->fc = params[FREQ2_PARAM].value;
+        hpf->peak = params[PEAK2_PARAM].value;
 
-        filter->in = inputs[FILTER_INPUT].value;
-        filter->invalidate();
-        filter->process();
+        lpf->sat = params[SAT1_PARAM].value;
+        hpf->sat = params[SAT1_PARAM].value;
 
-        outputs[LP_OUTPUT].value = filter->out;
+
+        lpf->in = inputs[FILTER_INPUT].value;
+        lpf->invalidate();
+        lpf->process();
+
+        // cascade
+        hpf->in = lpf->out;//inputs[FILTER_INPUT].value;
+        hpf->invalidate();
+        hpf->process();
+
+        outputs[LP_OUTPUT].value = hpf->out;
     }
 
 
     void onSampleRateChange() override {
         Module::onSampleRateChange();
-        filter->setSamplerate(engineGetSampleRate());
+        lpf->setSamplerate(engineGetSampleRate());
+        hpf->setSamplerate(engineGetSampleRate());
     }
 };
 
@@ -101,16 +115,29 @@ Type35Widget::Type35Widget(Type35 *module) : LRModuleWidget(module) {
     // ***** SCREWS **********
 
     // ***** MAIN KNOBS ******
-    module->frqKnob = LRKnob::create<LRBigKnob>(Vec(36.4, 68.3), module, Type35::FREQ1_PARAM, 0.f, 1.f, 1.f);
-    module->peakKnob = LRKnob::create<LRMiddleKnob>(Vec(43.4, 174.8), module, Type35::PEAK1_PARAM, 0.001f, 2.0, 0.001f);
+    module->frqKnobLP = LRKnob::create<LRBigKnob>(Vec(36.4, 68.3), module, Type35::FREQ1_PARAM, 0.f, 1.f, 1.f);
+    module->peakKnobLP = LRKnob::create<LRMiddleKnob>(Vec(43.4, 174.8), module, Type35::PEAK1_PARAM, 0.001f, 1.5, 0.001f);
+
+    module->frqKnobHP = LRKnob::create<LRBigKnob>(Vec(207.7, 68.3), module, Type35::FREQ2_PARAM, 0.f, 1.f, 0.f);
+    module->peakKnobHP = LRKnob::create<LRMiddleKnob>(Vec(214.6, 174.8), module, Type35::PEAK2_PARAM, 0.001f, 1.5, 0.001f);
+
+
     module->saturateKnob = LRKnob::create<LRMiddleKnob>(Vec(129.5, 149.2), module, Type35::SAT1_PARAM, 1.f, 2.5, 1.0f);
 
-    module->frqKnob->setIndicatorColors(nvgRGBAf(0.9f, 0.9f, 0.9f, 1.0f));
-    module->peakKnob->setIndicatorColors(nvgRGBAf(0.9f, 0.9f, 0.9f, 1.0f));
+    module->frqKnobLP->setIndicatorColors(nvgRGBAf(0.9f, 0.9f, 0.9f, 1.0f));
+    module->peakKnobLP->setIndicatorColors(nvgRGBAf(0.9f, 0.9f, 0.9f, 1.0f));
+
+    module->frqKnobHP->setIndicatorColors(nvgRGBAf(0.9f, 0.9f, 0.9f, 1.0f));
+    module->peakKnobHP->setIndicatorColors(nvgRGBAf(0.9f, 0.9f, 0.9f, 1.0f));
+
     module->saturateKnob->setIndicatorColors(nvgRGBAf(0.9f, 0.9f, 0.9f, 1.0f));
 
-    addParam(module->frqKnob);
-    addParam(module->peakKnob);
+    addParam(module->frqKnobLP);
+    addParam(module->peakKnobLP);
+
+    addParam(module->frqKnobHP);
+    addParam(module->peakKnobHP);
+
     addParam(module->saturateKnob);/*
 
       addParam(ParamWidget::create<LRSmallKnob>(Vec(39.9, 251.4), module, DiodeVCF::FREQUENCY_CV_PARAM, -1.f, 1.0f, 0.f));
@@ -135,4 +162,4 @@ Type35Widget::Type35Widget(Type35 *module) : LRModuleWidget(module) {
 }
 
 
-Model *modelKorg35 = Model::create<Type35, Type35Widget>("Lindenberg Research", "TYPE35 VCF", "Sallen-Key Type 35 Dual Filter", FILTER_TAG);
+Model *modelType35 = Model::create<Type35, Type35Widget>("Lindenberg Research", "TYPE35 VCF", "Sallen-Key Type 35 Dual Filter", FILTER_TAG);
