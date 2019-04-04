@@ -26,7 +26,8 @@ using namespace lrt;
 
 using dsp::Korg35Filter;
 
-struct Korg35 : LRModule {
+
+struct Type35 : LRModule {
     enum ParamIds {
         FREQ1_PARAM,
         PEAK1_PARAM,
@@ -50,7 +51,8 @@ struct Korg35 : LRModule {
     LRKnob *frqKnob, *peakKnob, *saturateKnob;
     Korg35Filter *filter = new Korg35Filter(engineGetSampleRate(), Korg35Filter::LPF);
 
-    Korg35() : LRModule(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS) {}
+
+    Type35() : LRModule(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS) {}
 
 
     void step() override {
@@ -76,15 +78,15 @@ struct Korg35 : LRModule {
 /**
  * @brief Blank Panel with Logo
  */
-struct Korg35Widget : LRModuleWidget {
-    Korg35Widget(Korg35 *module);
+struct Type35Widget : LRModuleWidget {
+    Type35Widget(Type35 *module);
 };
 
 
-Korg35Widget::Korg35Widget(Korg35 *module) : LRModuleWidget(module) {
-    panel->addSVGVariant(LRGestalt::DARK, SVG::load(assetPlugin(plugin, "res/panels/Korg35VCF.svg")));
-    panel->addSVGVariant(LRGestalt::LIGHT, SVG::load(assetPlugin(plugin, "res/panels/Korg35VCF.svg")));
-    panel->addSVGVariant(LRGestalt::AGED, SVG::load(assetPlugin(plugin, "res/panels/Korg35VCF.svg")));
+Type35Widget::Type35Widget(Type35 *module) : LRModuleWidget(module) {
+    panel->addSVGVariant(LRGestalt::DARK, SVG::load(assetPlugin(plugin, "res/panels/Type35VCF.svg")));
+    panel->addSVGVariant(LRGestalt::LIGHT, SVG::load(assetPlugin(plugin, "res/panels/Type35VCF.svg")));
+    panel->addSVGVariant(LRGestalt::AGED, SVG::load(assetPlugin(plugin, "res/panels/Type35VCF.svg")));
 
     panel->init();
     addChild(panel);
@@ -99,9 +101,9 @@ Korg35Widget::Korg35Widget(Korg35 *module) : LRModuleWidget(module) {
     // ***** SCREWS **********
 
     // ***** MAIN KNOBS ******
-    module->frqKnob = LRKnob::create<LRBigKnob>(Vec(36.4, 68.3), module, Korg35::FREQ1_PARAM, 0.f, 1.f, 1.f);
-    module->peakKnob = LRKnob::create<LRMiddleKnob>(Vec(43.4, 174.8), module, Korg35::PEAK1_PARAM, 0.001f, 2.0, 0.001f);
-    module->saturateKnob = LRKnob::create<LRMiddleKnob>(Vec(129.5, 149.2), module, Korg35::SAT1_PARAM, 1.f, 2.5, 1.0f);
+    module->frqKnob = LRKnob::create<LRBigKnob>(Vec(36.4, 68.3), module, Type35::FREQ1_PARAM, 0.f, 1.f, 1.f);
+    module->peakKnob = LRKnob::create<LRMiddleKnob>(Vec(43.4, 174.8), module, Type35::PEAK1_PARAM, 0.001f, 2.0, 0.001f);
+    module->saturateKnob = LRKnob::create<LRMiddleKnob>(Vec(129.5, 149.2), module, Type35::SAT1_PARAM, 1.f, 2.5, 1.0f);
 
     module->frqKnob->setIndicatorColors(nvgRGBAf(0.9f, 0.9f, 0.9f, 1.0f));
     module->peakKnob->setIndicatorColors(nvgRGBAf(0.9f, 0.9f, 0.9f, 1.0f));
@@ -124,13 +126,13 @@ Korg35Widget::Korg35Widget(Korg35 *module) : LRModuleWidget(module) {
 
 
     // ***** INPUTS **********
-    addInput(Port::create<LRIOPortAudio>(Vec(118, 313), Port::INPUT, module, Korg35::FILTER_INPUT));
+    addInput(Port::create<LRIOPortAudio>(Vec(118, 313), Port::INPUT, module, Type35::FILTER_INPUT));
     // ***** INPUTS **********
 
     // ***** OUTPUTS *********
-    addOutput(Port::create<LRIOPortAudio>(Vec(156, 313), Port::OUTPUT, module, Korg35::LP_OUTPUT));
+    addOutput(Port::create<LRIOPortAudio>(Vec(156, 313), Port::OUTPUT, module, Type35::LP_OUTPUT));
     // ***** OUTPUTS *********
 }
 
 
-Model *modelKorg35 = Model::create<Korg35, Korg35Widget>("Lindenberg Research", "TYPE35 VCF", "Sallen-Key Type 35 Dual Filter", FILTER_TAG);
+Model *modelKorg35 = Model::create<Type35, Type35Widget>("Lindenberg Research", "TYPE35 VCF", "Sallen-Key Type 35 Dual Filter", FILTER_TAG);
