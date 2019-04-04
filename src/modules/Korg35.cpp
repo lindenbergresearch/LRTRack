@@ -28,9 +28,9 @@ using dsp::Korg35Filter;
 
 struct Korg35 : LRModule {
     enum ParamIds {
-        FREQ_PARAM,
-        PEAK_PARAM,
-        SAT_PARAM,
+        FREQ1_PARAM,
+        PEAK1_PARAM,
+        SAT1_PARAM,
         NUM_PARAMS
     };
     enum InputIds {
@@ -39,6 +39,8 @@ struct Korg35 : LRModule {
     };
     enum OutputIds {
         LP_OUTPUT,
+        HO_OUT,
+        MIX_OUT,
         NUM_OUTPUTS
     };
     enum LightIds {
@@ -52,9 +54,9 @@ struct Korg35 : LRModule {
 
 
     void step() override {
-        filter->fc = params[FREQ_PARAM].value;
-        filter->peak = params[PEAK_PARAM].value;
-        filter->sat = quadraticBipolar(params[SAT_PARAM].value);
+        filter->fc = params[FREQ1_PARAM].value;
+        filter->peak = params[PEAK1_PARAM].value;
+        filter->sat = quadraticBipolar(params[SAT1_PARAM].value);
 
         filter->in = inputs[FILTER_INPUT].value;
         filter->invalidate();
@@ -97,9 +99,9 @@ Korg35Widget::Korg35Widget(Korg35 *module) : LRModuleWidget(module) {
     // ***** SCREWS **********
 
     // ***** MAIN KNOBS ******
-    module->frqKnob = LRKnob::create<LRBigKnob>(Vec(32.5, 74.4), module, Korg35::FREQ_PARAM, 0.f, 1.f, 1.f);
-    module->peakKnob = LRKnob::create<LRBigKnob>(Vec(32.5, 144.4), module, Korg35::PEAK_PARAM, 0.001f, 2.0, 0.001f);
-    module->saturateKnob = LRKnob::create<LRMiddleKnob>(Vec(40, 244.4), module, Korg35::SAT_PARAM, 1.f, 2.5, 1.0f);
+    module->frqKnob = LRKnob::create<LRBigKnob>(Vec(36.4, 68.3), module, Korg35::FREQ1_PARAM, 0.f, 1.f, 1.f);
+    module->peakKnob = LRKnob::create<LRMiddleKnob>(Vec(43.4, 174.8), module, Korg35::PEAK1_PARAM, 0.001f, 2.0, 0.001f);
+    module->saturateKnob = LRKnob::create<LRMiddleKnob>(Vec(129.5, 149.2), module, Korg35::SAT1_PARAM, 1.f, 2.5, 1.0f);
 
     module->frqKnob->setIndicatorColors(nvgRGBAf(0.9f, 0.9f, 0.9f, 1.0f));
     module->peakKnob->setIndicatorColors(nvgRGBAf(0.9f, 0.9f, 0.9f, 1.0f));
@@ -122,13 +124,13 @@ Korg35Widget::Korg35Widget(Korg35 *module) : LRModuleWidget(module) {
 
 
     // ***** INPUTS **********
-    addInput(Port::create<LRIOPortAudio>(Vec(37.4, 318.5), Port::INPUT, module, Korg35::FILTER_INPUT));
+    addInput(Port::create<LRIOPortAudio>(Vec(118, 313), Port::INPUT, module, Korg35::FILTER_INPUT));
     // ***** INPUTS **********
 
     // ***** OUTPUTS *********
-    addOutput(Port::create<LRIOPortAudio>(Vec(175.3, 318.5), Port::OUTPUT, module, Korg35::LP_OUTPUT));
+    addOutput(Port::create<LRIOPortAudio>(Vec(156, 313), Port::OUTPUT, module, Korg35::LP_OUTPUT));
     // ***** OUTPUTS *********
 }
 
 
-Model *modelKorg35 = Model::create<Korg35, Korg35Widget>("Lindenberg Research", "KORG35 VCF", "Mrs. Sally Korg35 Type Filter", FILTER_TAG);
+Model *modelKorg35 = Model::create<Korg35, Korg35Widget>("Lindenberg Research", "TYPE35 VCF", "Sallen-Key Type 35 Dual Filter", FILTER_TAG);
