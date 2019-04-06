@@ -63,6 +63,9 @@ struct Type35FilterStage : DSPEffect {
  */
 struct Type35Filter : DSPEffect {
     static constexpr float MAX_FREQUENCY = 20000.f;
+    static const int OVERSAMPLE = 2;
+    static constexpr float NOISE_GAIN = 10e-9f;     // internal noise gain used for self-oscillation
+    static const int IN = 0;
 
     enum FilterType {
         LPF,   // lowpass
@@ -72,6 +75,8 @@ struct Type35Filter : DSPEffect {
 
     Type35FilterStage *lpf1, *lpf2, *hpf1, *hpf2;
     FilterType type;
+    Noise noise;
+    Resampler<1> *rs;
 
     float Ga;
 
@@ -81,19 +86,22 @@ struct Type35Filter : DSPEffect {
     float fc, peak, sat;
 
 
-    Type35Filter(float sr, FilterType type) : DSPEffect(sr) {
+    Type35Filter(float sr, FilterType type) : DSPEffect(sr * OVERSAMPLE) {
         Type35Filter::type = type;
 
-        lpf1 = new Type35FilterStage(sr, Type35FilterStage::LP_STAGE);
-        lpf2 = new Type35FilterStage(sr, Type35FilterStage::LP_STAGE);
-        hpf1 = new Type35FilterStage(sr, Type35FilterStage::HP_STAGE);
-        hpf2 = new Type35FilterStage(sr, Type35FilterStage::HP_STAGE);
+        rs = new Resampler<1>(OVERSAMPLE, 4);
+
+        lpf1 = new Type35FilterStage(sr * OVERSAMPLE, Type35FilterStage::LP_STAGE);
+        lpf2 = new Type35FilterStage(sr * OVERSAMPLE, Type35FilterStage::LP_STAGE);
+        hpf1 = new Type35FilterStage(sr * OVERSAMPLE, Type35FilterStage::HP_STAGE);
+        hpf2 = new Type35FilterStage(sr * OVERSAMPLE, Type35FilterStage::HP_STAGE);
     }
 
 
     void init() override;
     void invalidate() override;
     void process() override;
+    void process2();
     void processLPF();
     void processHPF();
     void setSamplerate(float sr) override;

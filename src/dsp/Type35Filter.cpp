@@ -89,6 +89,8 @@ void dsp::Type35Filter::init() {
     fc = sr / 2.f;
     peak = 0.f;
 
+
+
     /* lowpass stages */
     lpf1->init();
     lpf2->init();
@@ -147,7 +149,7 @@ void dsp::Type35Filter::process() {
  * @brief Do the lowpass filtering and oversampling
  */
 void dsp::Type35Filter::processLPF() {
-    lpf1->in = in;
+    lpf1->in = in + noise.nextFloat(NOISE_GAIN);;
     lpf1->process();
     float y1 = lpf1->out;
 
@@ -156,7 +158,7 @@ void dsp::Type35Filter::processLPF() {
     float u = Ga * (y1 + s35h);
     //float y = peak * fastatan(sat * u * 0.1) * 10.f;
 
-    u = tanhf(sat * u * 0.1) * 10.f;
+    u = fastatan(sat * u * 0.1) * 10.f;
 
     lpf2->in = u;
     lpf2->process();
@@ -180,7 +182,7 @@ void dsp::Type35Filter::processLPF() {
  * @brief Do the highpass filtering and oversampling
  */
 void dsp::Type35Filter::processHPF() {
-    hpf1->in = in;
+    hpf1->in = in + noise.nextFloat(NOISE_GAIN);
     hpf1->process();
     float y1 = hpf1->out;
 
@@ -208,13 +210,31 @@ void dsp::Type35Filter::processHPF() {
  * @param sr SR
  */
 void dsp::Type35Filter::setSamplerate(float sr) {
-    DSPEffect::setSamplerate(sr);
+    DSPEffect::setSamplerate(sr * OVERSAMPLE);
 
     // derive samplerate change
-    lpf1->setSamplerate(sr);
-    lpf2->setSamplerate(sr);
-    hpf1->setSamplerate(sr);
-    hpf2->setSamplerate(sr);
+    lpf1->setSamplerate(sr * OVERSAMPLE);
+    lpf2->setSamplerate(sr * OVERSAMPLE);
+    hpf1->setSamplerate(sr * OVERSAMPLE);
+    hpf2->setSamplerate(sr * OVERSAMPLE);
 
     invalidate();
+}
+
+
+/**
+ * @brief Top function which handles the oversampling
+ */
+void dsp::Type35Filter::process2() {
+    rs->doUpsample(IN, in);
+
+    for (int i = 0; i < rs->getFactor(); i++) {
+        in = (float) rs->getUpsampled(IN)[i];
+
+        process();
+
+        rs->data[IN][i] = out;
+    }
+
+    out = (float) rs->getDownsampled(IN);;
 }
