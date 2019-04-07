@@ -63,13 +63,13 @@ struct Type35FilterStage : DSPEffect {
  */
 struct Type35Filter : DSPEffect {
     static constexpr float MAX_FREQUENCY = 20000.f;
-    static const int OVERSAMPLE = 2;
-    static constexpr float NOISE_GAIN = 10e-9f;     // internal noise gain used for self-oscillation
+    static const int OVERSAMPLE = 4;
+    static constexpr float NOISE_GAIN = 10e-9f; // internal noise gain used for self-oscillation
     static const int IN = 0;
 
     enum FilterType {
-        LPF,   // lowpass
-        HPF    // highpass
+        LPF, // lowpass
+        HPF  // highpass
     };
 
 
@@ -89,7 +89,7 @@ struct Type35Filter : DSPEffect {
     Type35Filter(float sr, FilterType type) : DSPEffect(sr * OVERSAMPLE) {
         Type35Filter::type = type;
 
-        rs = new Resampler<1>(OVERSAMPLE, 4);
+        rs = new Resampler<1>(OVERSAMPLE, 8);
 
         lpf1 = new Type35FilterStage(sr * OVERSAMPLE, Type35FilterStage::LP_STAGE);
         lpf2 = new Type35FilterStage(sr * OVERSAMPLE, Type35FilterStage::LP_STAGE);
