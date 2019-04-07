@@ -34,10 +34,20 @@ struct Type35 : LRModule {
         FREQ2_PARAM,
         PEAK2_PARAM,
         SAT1_PARAM,
+        CUTOFF1_CV_PARAM,
+        PEAK1_CV_PARAM,
+        CUTOFF2_CV_PARAM,
+        PEAK2_CV_PARAM,
+        GAIN_CV_PARAM,
+        MODE_SWITCH_PARAM,
         NUM_PARAMS
     };
     enum InputIds {
         FILTER_INPUT,
+        CUTOFF1_CV_INPUT,
+        PEAK1_CV_INPUT,
+        CUTOFF2_CV_INPUT,
+        PEAK2_CV_INPUT,
         NUM_INPUTS
     };
     enum OutputIds {
@@ -70,12 +80,12 @@ struct Type35 : LRModule {
 
         lpf->in = inputs[FILTER_INPUT].value;
         lpf->invalidate();
-        lpf->process();
+        lpf->process2();
 
         // cascade
         hpf->in = lpf->out;//inputs[FILTER_INPUT].value;
         hpf->invalidate();
-        hpf->process();
+        hpf->process2();
 
         outputs[LP_OUTPUT].value = hpf->out;
     }
@@ -138,7 +148,21 @@ Type35Widget::Type35Widget(Type35 *module) : LRModuleWidget(module) {
     addParam(module->frqKnobHP);
     addParam(module->peakKnobHP);
 
-    addParam(module->saturateKnob);/*
+    addParam(module->saturateKnob);
+
+    addParam(ParamWidget::create<LRSmallKnob>(Vec(32.5, 269.4), module, Type35::CUTOFF1_CV_PARAM, -1.f, 1.0f, 0.f));
+    addParam(ParamWidget::create<LRSmallKnob>(Vec(74.5, 269.4), module, Type35::PEAK1_CV_PARAM, -1.f, 1.0f, 0.f));
+
+    addParam(ParamWidget::create<LRSmallKnob>(Vec(201.5, 269.4), module, Type35::CUTOFF2_CV_PARAM, -1.f, 1.0f, 0.f));
+    addParam(ParamWidget::create<LRSmallKnob>(Vec(243.5, 269.4), module, Type35::PEAK2_CV_PARAM, -1.f, 1.0f, 0.f));
+
+
+    addInput(Port::create<LRIOPortCV>(Vec(31.9, 312), Port::INPUT, module, Type35::CUTOFF1_CV_INPUT));
+    addInput(Port::create<LRIOPortCV>(Vec(73.9, 312), Port::INPUT, module, Type35::PEAK1_CV_INPUT));
+
+    addInput(Port::create<LRIOPortCV>(Vec(200.9, 312), Port::INPUT, module, Type35::CUTOFF2_CV_INPUT));
+    addInput(Port::create<LRIOPortCV>(Vec(242.9, 312), Port::INPUT, module, Type35::PEAK2_CV_INPUT));
+    /*
 
       addParam(ParamWidget::create<LRSmallKnob>(Vec(39.9, 251.4), module, DiodeVCF::FREQUENCY_CV_PARAM, -1.f, 1.0f, 0.f));
       addParam(ParamWidget::create<LRSmallKnob>(Vec(177, 251.4), module, DiodeVCF::RESONANCE_CV_PARAM, -1.f, 1.0f, 0.f));
@@ -159,6 +183,8 @@ Type35Widget::Type35Widget(Type35 *module) : LRModuleWidget(module) {
     // ***** OUTPUTS *********
     addOutput(Port::create<LRIOPortAudio>(Vec(156, 313), Port::OUTPUT, module, Type35::LP_OUTPUT));
     // ***** OUTPUTS *********
+
+    addParam(ParamWidget::create<LRSwitch>(Vec(119, 131), module, Type35::MODE_SWITCH_PARAM, 0, 1, 0));
 }
 
 
