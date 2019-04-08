@@ -91,7 +91,7 @@ struct Decimator {
     double kernel[RS_BUFFER_SIZE];
     int inIndex;
     int oversample, quality;
-    double cutoff = 0.9;
+    double cutoff = 0.65;
 
 
     Decimator(int oversample, int quality) {
@@ -134,7 +134,7 @@ struct Upsampler {
     double kernel[RS_BUFFER_SIZE];
     int inIndex;
     int oversample, quality;
-    double cutoff = 0.9;
+    double cutoff = 0.65;
 
 
     Upsampler(int oversample, int quality) {
@@ -228,13 +228,13 @@ struct Resampler {
      * @brief Create up-sampled data out of two basic values
      */
     void doUpsample(int channel, double in) {
-        // interpolator[channel]->process(in * UPSAMPLE_COMPENSATION, up[channel]);
-        y[channel].y0 = y[channel].y1;
-        y[channel].y1 = in;
+        interpolator[channel]->process(in * UPSAMPLE_COMPENSATION, up[channel]);
+        /*  y[channel].y0 = y[channel].y1;
+          y[channel].y1 = in;
 
-        for (int i = 0; i < getFactor(); i++) {
-            up[channel][i] = interpolate(channel, i + 1);
-        }
+          for (int i = 0; i < getFactor(); i++) {
+              up[channel][i] = interpolate(channel, i + 1);
+          }*/
     }
 
 
