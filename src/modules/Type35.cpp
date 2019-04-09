@@ -48,7 +48,7 @@ struct Type35 : LRModule {
         PEAK1_CV_INPUT,
         CUTOFF2_CV_INPUT,
         PEAK2_CV_INPUT,
-        SATURATE_CV_INPUT,
+        DRIVE_CV_INPUT,
         NUM_INPUTS
     };
     enum OutputIds {
@@ -61,7 +61,7 @@ struct Type35 : LRModule {
         NUM_LIGHTS
     };
 
-    LRKnob *frqKnobLP, *peakKnobLP, *frqKnobHP, *peakKnobHP, *saturateKnob;
+    LRKnob *frqKnobLP, *peakKnobLP, *frqKnobHP, *peakKnobHP, *driveKnob;
     Type35Filter *lpf = new Type35Filter(engineGetSampleRate(), Type35Filter::LPF);
     Type35Filter *hpf = new Type35Filter(engineGetSampleRate(), Type35Filter::HPF);
 
@@ -70,14 +70,38 @@ struct Type35 : LRModule {
 
 
     void step() override {
-        lpf->fc = params[FREQ1_PARAM].value;
-        lpf->peak = params[PEAK1_PARAM].value;
-        hpf->fc = params[FREQ2_PARAM].value;
-        hpf->peak = params[PEAK2_PARAM].value;
+        // compute all cv values
+        float frq1cv = inputs[CUTOFF1_CV_INPUT].value * 0.1f * quadraticBipolar(params[CUTOFF1_CV_PARAM].value);
+        float peak1cv = inputs[PEAK1_CV_INPUT].value * 0.1f * quadraticBipolar(params[PEAK1_CV_PARAM].value);
 
-        lpf->sat = params[SAT1_PARAM].value;
-        hpf->sat = params[SAT1_PARAM].value;
+        float frq2cv = inputs[CUTOFF2_CV_INPUT].value * 0.1f * quadraticBipolar(params[CUTOFF2_CV_PARAM].value);
+        float peak2cv = inputs[PEAK2_CV_INPUT].value * 0.1f * quadraticBipolar(params[PEAK2_CV_PARAM].value);
 
+        float drivecv = inputs[DRIVE_CV_INPUT].value * 0.1f; //* quadraticBipolar(params[PEAK1_CV_PARAM].value);
+
+        // set vc parameter and knob values
+        lpf->fc = params[FREQ1_PARAM].value + frq1cv;
+        lpf->peak = params[PEAK1_PARAM].value + peak1cv;
+        hpf->fc = params[FREQ2_PARAM].value + frq2cv;
+        hpf->peak = params[PEAK2_PARAM].value + peak2cv;
+
+        lpf->sat = params[SAT1_PARAM].value + drivecv;
+        hpf->sat = params[SAT1_PARAM].value + drivecv;
+
+
+        if (frqKnobLP != nullptr && frqKnobHP != nullptr && peakKnobLP != nullptr && peakKnobHP != nullptr && driveKnob != nullptr) {
+            frqKnobLP->setIndicatorActive(inputs[CUTOFF1_CV_INPUT].active);
+            peakKnobLP->setIndicatorActive(inputs[PEAK1_CV_INPUT].active);
+            frqKnobHP->setIndicatorActive(inputs[CUTOFF2_CV_INPUT].active);
+            peakKnobHP->setIndicatorActive(inputs[PEAK2_CV_INPUT].active);
+            driveKnob->setIndicatorActive(inputs[DRIVE_CV_INPUT].active);
+
+            frqKnobLP->setIndicatorValue(params[FREQ1_PARAM].value + frq1cv);
+            peakKnobLP->setIndicatorValue(params[PEAK1_PARAM].value + peak1cv);
+            frqKnobHP->setIndicatorValue(params[FREQ2_PARAM].value + frq2cv);
+            peakKnobHP->setIndicatorValue(params[PEAK2_PARAM].value + peak2cv);
+            driveKnob->setIndicatorValue(params[SAT1_PARAM].value + drivecv);
+        }
 
         if (params[MODE_SWITCH_PARAM].value > 0) {
             hpf->in = inputs[FILTER_INPUT].value;
@@ -146,7 +170,7 @@ Type35Widget::Type35Widget(Type35 *module) : LRModuleWidget(module) {
     module->peakKnobHP = LRKnob::create<LRMiddleKnob>(Vec(214.6, 174.8), module, Type35::PEAK2_PARAM, 0.001f, 1.5, 0.001f);
 
 
-    module->saturateKnob = LRKnob::create<LRMiddleKnob>(Vec(129.5, 149.2), module, Type35::SAT1_PARAM, 1.f, 2.5, 1.0f);
+    module->driveKnob = LRKnob::create<LRMiddleKnob>(Vec(129.5, 149.2), module, Type35::SAT1_PARAM, 1.f, 2.5, 1.0f);
 
     module->frqKnobLP->setIndicatorColors(nvgRGBAf(0.9f, 0.9f, 0.9f, 1.0f));
     module->peakKnobLP->setIndicatorColors(nvgRGBAf(0.9f, 0.9f, 0.9f, 1.0f));
@@ -154,7 +178,7 @@ Type35Widget::Type35Widget(Type35 *module) : LRModuleWidget(module) {
     module->frqKnobHP->setIndicatorColors(nvgRGBAf(0.9f, 0.9f, 0.9f, 1.0f));
     module->peakKnobHP->setIndicatorColors(nvgRGBAf(0.9f, 0.9f, 0.9f, 1.0f));
 
-    module->saturateKnob->setIndicatorColors(nvgRGBAf(0.9f, 0.9f, 0.9f, 1.0f));
+    module->driveKnob->setIndicatorColors(nvgRGBAf(0.9f, 0.9f, 0.9f, 1.0f));
 
     addParam(module->frqKnobLP);
     addParam(module->peakKnobLP);
@@ -162,7 +186,7 @@ Type35Widget::Type35Widget(Type35 *module) : LRModuleWidget(module) {
     addParam(module->frqKnobHP);
     addParam(module->peakKnobHP);
 
-    addParam(module->saturateKnob);
+    addParam(module->driveKnob);
 
     addParam(ParamWidget::create<LRSmallKnob>(Vec(32.5, 269.4), module, Type35::CUTOFF1_CV_PARAM, -1.f, 1.0f, 0.f));
     addParam(ParamWidget::create<LRSmallKnob>(Vec(74.5, 269.4), module, Type35::PEAK1_CV_PARAM, -1.f, 1.0f, 0.f));
@@ -170,7 +194,7 @@ Type35Widget::Type35Widget(Type35 *module) : LRModuleWidget(module) {
     addParam(ParamWidget::create<LRSmallKnob>(Vec(201.5, 269.4), module, Type35::CUTOFF2_CV_PARAM, -1.f, 1.0f, 0.f));
     addParam(ParamWidget::create<LRSmallKnob>(Vec(243.5, 269.4), module, Type35::PEAK2_CV_PARAM, -1.f, 1.0f, 0.f));
 
-    addParam(ParamWidget::create<LRSmallKnob>(Vec(138.5, 84.4), module, Type35::MIX_PARAM, -1.f, 1.0f, 0.f));
+    // addParam(ParamWidget::create<LRSmallKnob>(Vec(138.5, 84.4), module, Type35::MIX_PARAM, -1.f, 1.0f, 0.f));
 
 
     addInput(Port::create<LRIOPortCV>(Vec(30.4, 312), Port::INPUT, module, Type35::CUTOFF1_CV_INPUT));
@@ -179,7 +203,7 @@ Type35Widget::Type35Widget(Type35 *module) : LRModuleWidget(module) {
     addInput(Port::create<LRIOPortCV>(Vec(199.4, 312), Port::INPUT, module, Type35::CUTOFF2_CV_INPUT));
     addInput(Port::create<LRIOPortCV>(Vec(241.4, 312), Port::INPUT, module, Type35::PEAK2_CV_INPUT));
 
-    addInput(Port::create<LRIOPortCV>(Vec(136.4, 229), Port::INPUT, module, Type35::SATURATE_CV_INPUT));
+    addInput(Port::create<LRIOPortCV>(Vec(136.4, 229), Port::INPUT, module, Type35::DRIVE_CV_INPUT));
 
     /*
 
@@ -191,7 +215,7 @@ Type35Widget::Type35Widget(Type35 *module) : LRModuleWidget(module) {
     // ***** CV INPUTS *******
     /*  addInput(Port::create<LRIOPortCV>(Vec(37.4, 284.4), Port::INPUT, module, DiodeVCF::FREQUCENCY_CV_INPUT));
       addInput(Port::create<LRIOPortCV>(Vec(175.3, 284.4), Port::INPUT, module, DiodeVCF::RESONANCE_CV_INPUT));
-      addInput(Port::create<LRIOPortCV>(Vec(106.4, 284.4), Port::INPUT, module, DiodeVCF::SATURATE_CV_INPUT));*/
+      addInput(Port::create<LRIOPortCV>(Vec(106.4, 284.4), Port::INPUT, module, DiodeVCF::DRIVE_CV_INPUT));*/
     // ***** CV INPUTS *******
 
 
