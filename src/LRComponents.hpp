@@ -209,6 +209,8 @@ private:
     float snapAt = 0.0f;
     /** snap sensitivity */
     float snapSens = 0.1;
+    /** is toggle knob */
+    int toggle = 0;
 
 protected:
     /** shader */
@@ -327,6 +329,33 @@ public:
      * @brief Remove knob snaping
      */
     void unsetSnap();
+
+
+    /**
+     * @brief Check for toggle knob
+     * @return
+     */
+    bool isToggle() {
+        return toggle != 0;
+    }
+
+
+    /**
+     * @brief Get total toggle steps
+     * @return
+     */
+    int getToggleSteps() {
+        return toggle;
+    }
+
+
+    /**
+     * @brief Set toggle steps
+     * @param steps
+     */
+    void setToggleSteps(int steps) {
+        toggle = steps;
+    }
 
 
     /**
@@ -521,7 +550,8 @@ struct LRSmallKnob : LRKnob {
         addSVGVariant(LRGestalt::LIGHT, SVG::load(assetPlugin(plugin, "res/knobs/AlternateSmallLight.svg")));
         addSVGVariant(LRGestalt::AGED, SVG::load(assetPlugin(plugin, "res/knobs/AlternateSmallLight.svg")));
 
-        setSnap(0.0f, 0.02f);
+        if (toggle == 0)
+            setSnap(0.0f, 0.02f);
         speed = 0.9f;
     }
 
