@@ -79,16 +79,29 @@ struct Type35 : LRModule {
         hpf->sat = params[SAT1_PARAM].value;
 
 
-        lpf->in = inputs[FILTER_INPUT].value;
-        lpf->invalidate();
-        lpf->process2();
+        if (params[MODE_SWITCH_PARAM].value > 0) {
+            hpf->in = inputs[FILTER_INPUT].value;
+            hpf->invalidate();
+            hpf->process2();
 
-        // cascade
-        hpf->in = lpf->out;//inputs[FILTER_INPUT].value;
-        hpf->invalidate();
-        hpf->process2();
+            // cascade
+            lpf->in = hpf->out;//inputs[FILTER_INPUT].value;
+            lpf->invalidate();
+            lpf->process2();
 
-        outputs[LP_OUTPUT].value = hpf->out;
+            outputs[LP_OUTPUT].value = lpf->out;
+        } else {
+            lpf->in = inputs[FILTER_INPUT].value;
+            lpf->invalidate();
+            lpf->process2();
+
+            // cascade
+            hpf->in = lpf->out;//inputs[FILTER_INPUT].value;
+            hpf->invalidate();
+            hpf->process2();
+
+            outputs[LP_OUTPUT].value = hpf->out;
+        }
     }
 
 
@@ -190,7 +203,7 @@ Type35Widget::Type35Widget(Type35 *module) : LRModuleWidget(module) {
     addOutput(Port::create<LRIOPortAudio>(Vec(156, 313), Port::OUTPUT, module, Type35::LP_OUTPUT));
     // ***** OUTPUTS *********
 
-    addParam(ParamWidget::create<LRSwitch>(Vec(119, 131), module, Type35::MODE_SWITCH_PARAM, 0, 1, 0));
+    addParam(ParamWidget::create<LRSwitch>(Vec(135, 55), module, Type35::MODE_SWITCH_PARAM, 0, 1, 0));
 }
 
 
