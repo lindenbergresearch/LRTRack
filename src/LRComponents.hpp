@@ -550,9 +550,59 @@ struct LRSmallKnob : LRKnob {
         addSVGVariant(LRGestalt::LIGHT, SVG::load(assetPlugin(plugin, "res/knobs/AlternateSmallLight.svg")));
         addSVGVariant(LRGestalt::AGED, SVG::load(assetPlugin(plugin, "res/knobs/AlternateSmallLight.svg")));
 
-        if (toggle == 0)
-            setSnap(0.0f, 0.02f);
+        setSnap(0.0f, 0.02f);
         speed = 0.9f;
+    }
+
+
+    void onGestaltChange(LREventGestaltChange &e) override {
+        LRKnob::onGestaltChange(e);
+
+        switch (*gestalt) {
+            case LRGestalt::DARK:
+                setIndicatorDistance(13);
+                setIndicatorShape(5, 0.13);
+                shader->setShadowPosition(3, 3);
+                shader->setStrength(1.f);
+                shader->setSize(.65f);
+                break;
+            case LRGestalt::LIGHT:
+                shader->setShadowPosition(3, 3);
+                shader->setShadowPosition(2, 3);
+                shader->setStrength(0.5f);
+                shader->setSize(0.7f);
+                break;
+            case LRGestalt::AGED:
+                shader->setShadowPosition(3, 3);
+                shader->setShadowPosition(2, 3);
+                shader->setStrength(0.5f);
+                shader->setSize(0.7f);
+                break;
+            default:
+                break;
+        }
+    }
+};
+
+
+/**
+ * @brief LR Small Knob
+ */
+struct LRSmallToggleKnob : LRKnob {
+    LRSmallToggleKnob() {
+        setSVG(SVG::load(assetPlugin(plugin, "res/knobs/SmallKnob.svg")));
+
+        addSVGVariant(LRGestalt::DARK, SVG::load(assetPlugin(plugin, "res/knobs/SmallKnob.svg")));
+        addSVGVariant(LRGestalt::LIGHT, SVG::load(assetPlugin(plugin, "res/knobs/AlternateSmallLight.svg")));
+        addSVGVariant(LRGestalt::AGED, SVG::load(assetPlugin(plugin, "res/knobs/AlternateSmallLight.svg")));
+
+        speed = 2.0;
+    }
+
+
+    void onChange(EventChange &e) override {
+        value = round(value);
+        SVGKnob::onChange(e);
     }
 
 
