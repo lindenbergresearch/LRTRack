@@ -105,8 +105,10 @@ void dsp::Type35Filter::init() {
  * @brief Recompute filter parameter
  */
 void dsp::Type35Filter::invalidate() {
-
     float frqHz;
+
+    if (fc < 0) fc = 0;
+    if (peak <= 0)peak = 0.001;
 
     if (type == LPF)
         frqHz = (MAX_FREQUENCY / 1000.f) * powf(950.f, fc) - 20.f;
