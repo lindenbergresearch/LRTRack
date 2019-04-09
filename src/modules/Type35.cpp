@@ -163,13 +163,13 @@ Type35Widget::Type35Widget(Type35 *module) : LRModuleWidget(module) {
     // ***** SCREWS **********
 
     // ***** MAIN KNOBS ******
-    module->frqKnobLP = LRKnob::create<LRBigKnob>(Vec(36.4, 68.3), module, Type35::FREQ1_PARAM, 0.f, 1.f, 1.f);
-    module->peakKnobLP = LRKnob::create<LRMiddleKnob>(Vec(43.4, 174.8), module, Type35::PEAK1_PARAM, 0.f, 1.f, 0.f);
+    module->frqKnobLP = LRKnob::create<LRBigKnob>(Vec(32.9, 68.6), module, Type35::FREQ1_PARAM, 0.f, 1.f, 1.f);
+    module->peakKnobLP = LRKnob::create<LRMiddleKnob>(Vec(39.9, 174.1), module, Type35::PEAK1_PARAM, 0.f, 1.f, 0.f);
 
-    module->frqKnobHP = LRKnob::create<LRBigKnob>(Vec(207.7, 68.3), module, Type35::FREQ2_PARAM, 0.f, 1.f, 0.f);
-    module->peakKnobHP = LRKnob::create<LRMiddleKnob>(Vec(214.6, 174.8), module, Type35::PEAK2_PARAM, 0.001f, 1.5, 0.001f);
+    module->frqKnobHP = LRKnob::create<LRBigKnob>(Vec(196.2, 68.6), module, Type35::FREQ2_PARAM, 0.f, 1.f, 0.f);
+    module->peakKnobHP = LRKnob::create<LRMiddleKnob>(Vec(203.1, 174.1), module, Type35::PEAK2_PARAM, 0.001f, 1.5, 0.001f);
 
-    module->driveKnob = LRKnob::create<LRMiddleKnob>(Vec(129.5, 149.2), module, Type35::DRIVE_PARAM, 1.f, 2.5, 1.0f);
+    module->driveKnob = LRKnob::create<LRMiddleKnob>(Vec(122, 149.2), module, Type35::DRIVE_PARAM, 1.f, 2.5, 1.0f);
 
     module->frqKnobLP->setIndicatorColors(nvgRGBAf(0.9f, 0.9f, 0.9f, 1.0f));
     module->peakKnobLP->setIndicatorColors(nvgRGBAf(0.9f, 0.9f, 0.9f, 1.0f));
@@ -187,29 +187,29 @@ Type35Widget::Type35Widget(Type35 *module) : LRModuleWidget(module) {
 
     addParam(module->driveKnob);
 
-    addParam(ParamWidget::create<LRSmallKnob>(Vec(36.5, 269.4), module, Type35::CUTOFF1_CV_PARAM, -1.f, 1.0f, 0.f));
-    addParam(ParamWidget::create<LRSmallKnob>(Vec(78.5, 269.4), module, Type35::PEAK1_CV_PARAM, -1.f, 1.0f, 0.f));
+    addParam(ParamWidget::create<LRSmallKnob>(Vec(36.5 - 7.5, 269.4), module, Type35::CUTOFF1_CV_PARAM, -1.f, 1.0f, 0.f));
+    addParam(ParamWidget::create<LRSmallKnob>(Vec(78.5 - 7.5, 269.4), module, Type35::PEAK1_CV_PARAM, -1.f, 1.0f, 0.f));
 
-    addParam(ParamWidget::create<LRSmallKnob>(Vec(197.5, 269.4), module, Type35::CUTOFF2_CV_PARAM, -1.f, 1.0f, 0.f));
-    addParam(ParamWidget::create<LRSmallKnob>(Vec(239.5, 269.4), module, Type35::PEAK2_CV_PARAM, -1.f, 1.0f, 0.f));
+    addParam(ParamWidget::create<LRSmallKnob>(Vec(197.5 - 7.5, 269.4), module, Type35::CUTOFF2_CV_PARAM, -1.f, 1.0f, 0.f));
+    addParam(ParamWidget::create<LRSmallKnob>(Vec(239.5 - 7.5, 269.4), module, Type35::PEAK2_CV_PARAM, -1.f, 1.0f, 0.f));
 
-    addParam(ParamWidget::create<LRSmallKnob>(Vec(142.7, 281.4), module, Type35::DRIVE_CV_PARAM, -1.f, 1.0f, 0.f));
+    addParam(ParamWidget::create<LRSmallKnob>(Vec(130.7, 269.4), module, Type35::DRIVE_CV_PARAM, -1.f, 1.0f, 0.f));
 
 
-    addInput(Port::create<LRIOPortCV>(Vec(34.4, 312), Port::INPUT, module, Type35::CUTOFF1_CV_INPUT));
-    addInput(Port::create<LRIOPortCV>(Vec(76.4, 312), Port::INPUT, module, Type35::PEAK1_CV_INPUT));
+    addInput(Port::create<LRIOPortCV>(Vec(34.4 - 7.5, 312), Port::INPUT, module, Type35::CUTOFF1_CV_INPUT));
+    addInput(Port::create<LRIOPortCV>(Vec(76.4 - 7.5, 312), Port::INPUT, module, Type35::PEAK1_CV_INPUT));
 
-    addInput(Port::create<LRIOPortCV>(Vec(195.4, 312), Port::INPUT, module, Type35::CUTOFF2_CV_INPUT));
-    addInput(Port::create<LRIOPortCV>(Vec(237.4, 312), Port::INPUT, module, Type35::PEAK2_CV_INPUT));
+    addInput(Port::create<LRIOPortCV>(Vec(195.4 - 7.5, 312), Port::INPUT, module, Type35::CUTOFF2_CV_INPUT));
+    addInput(Port::create<LRIOPortCV>(Vec(237.4 - 7.5, 312), Port::INPUT, module, Type35::PEAK2_CV_INPUT));
 
-    addInput(Port::create<LRIOPortCV>(Vec(136.4, 229), Port::INPUT, module, Type35::DRIVE_CV_INPUT));
+    addInput(Port::create<LRIOPortCV>(Vec(136.4 - 7.5, 229), Port::INPUT, module, Type35::DRIVE_CV_INPUT));
 
     // ***** INPUTS **********
-    addInput(Port::create<LRIOPortAudio>(Vec(118, 313), Port::INPUT, module, Type35::FILTER_INPUT));
+    addInput(Port::create<LRIOPortAudio>(Vec(118 - 8, 312), Port::INPUT, module, Type35::FILTER_INPUT));
     // ***** INPUTS **********
 
     // ***** OUTPUTS *********
-    addOutput(Port::create<LRIOPortAudio>(Vec(156, 313), Port::OUTPUT, module, Type35::LP_OUTPUT));
+    addOutput(Port::create<LRIOPortAudio>(Vec(156 - 8, 312), Port::OUTPUT, module, Type35::LP_OUTPUT));
     // ***** OUTPUTS *********
 
     addParam(ParamWidget::create<LRSwitch>(Vec(135, 55), module, Type35::MODE_SWITCH_PARAM, 0, 1, 0));
