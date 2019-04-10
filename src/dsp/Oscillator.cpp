@@ -116,9 +116,9 @@ void DSPBLOscillator::updatePitch() {
     if (tick++ < sr * 30) {
         if (tick < sr * 1.8f) {
             tick += 6; // accelerated detune
-            warmup = 1 - fastPow((float) M_E, -(tick / warmupTau));
+            warmup = 1 - powf((float) M_E, -(tick / warmupTau));
         } else
-            warmup = 1 - fastPow((float) M_E, -(tick / warmupTau));
+            warmup = 1 - powf((float) M_E, -(tick / warmupTau));
     }
 
     lfo->process();
@@ -143,8 +143,8 @@ void DSPBLOscillator::updatePitch() {
     }
 
     /* optimize the usage of expensive exp function and other computations */
-    float coeff = (_oct != oct) ? fastPow(2.f, oct) : _coeff;
-    float base = (_cv != cv) ? fastPow(2.f, cv) : _base;
+    float coeff = (_oct != oct) ? powf(2.f, oct) : _coeff;
+    float base = (_cv != cv) ? powf(2.f, cv) : _base;
     float biqufm = (_tune != tune + fm) ? quadraticBipolar(tune + fm) : _biqufm;
 
     if (lfoMode)
