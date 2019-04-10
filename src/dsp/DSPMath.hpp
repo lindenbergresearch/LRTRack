@@ -9,7 +9,7 @@
 using namespace rack;
 
 const static float PI = 3.1415926535897932384626433832795;
-const static float TWOPI = lroundf(M_PI * 2.);
+const static float TWOPI = PI * 2.f;
 
 
 /**
