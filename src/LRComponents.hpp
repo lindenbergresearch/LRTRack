@@ -559,7 +559,7 @@ struct LRSmallKnob : LRKnob {
  * @brief LR Small Knob
  */
 struct LRSmallToggleKnob : LRKnob {
-    LRSmallToggleKnob(float length = 0.8) {
+    LRSmallToggleKnob(float length = 0.7) {
         //TODO: parametrize start and end angle
         minAngle = -length * (float) M_PI;
         maxAngle = length * (float) M_PI;
@@ -594,7 +594,7 @@ struct LRSmallToggleKnob : LRKnob {
             case LRGestalt::LIGHT:
                 shader->setShadowPosition(3, 3);
                 shader->setShadowPosition(2, 3);
-                shader->setStrength(0.5f);
+                shader->setStrength(0.3f);
                 shader->setSize(0.7f);
                 break;
             case LRGestalt::AGED:
