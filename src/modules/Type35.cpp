@@ -52,9 +52,7 @@ struct Type35 : LRModule {
         NUM_INPUTS
     };
     enum OutputIds {
-        LP_OUTPUT,
-        HO_OUT,
-        MIX_OUT,
+        OUTPUT,
         NUM_OUTPUTS
     };
     enum LightIds {
@@ -103,7 +101,7 @@ struct Type35 : LRModule {
             driveKnob->setIndicatorValue(params[DRIVE_PARAM].value + drivecv);
         }
 
-        if (params[MODE_SWITCH_PARAM].value > 0) {
+        if (params[MODE_SWITCH_PARAM].value == 1) {
             hpf->in = inputs[FILTER_INPUT].value;
             hpf->invalidate();
             hpf->process2();
@@ -113,8 +111,31 @@ struct Type35 : LRModule {
             lpf->invalidate();
             lpf->process2();
 
-            outputs[LP_OUTPUT].value = lpf->out;
-        } else {
+            outputs[OUTPUT].value = lpf->out;
+        } else if (params[MODE_SWITCH_PARAM].value == 2) {
+            lpf->in = inputs[FILTER_INPUT].value;
+            lpf->invalidate();
+            lpf->process2();
+
+            outputs[OUTPUT].value = lpf->out;
+        } else if (params[MODE_SWITCH_PARAM].value == 3) {
+            lpf->in = inputs[FILTER_INPUT].value;
+            lpf->invalidate();
+            lpf->process2();
+
+            // cascade
+            hpf->in = inputs[FILTER_INPUT].value;//inputs[FILTER_INPUT].value;
+            hpf->invalidate();
+            hpf->process2();
+
+            outputs[OUTPUT].value = hpf->out + lpf->out;
+        } else if (params[MODE_SWITCH_PARAM].value == 4) {
+            hpf->in = inputs[FILTER_INPUT].value;//inputs[FILTER_INPUT].value;
+            hpf->invalidate();
+            hpf->process2();
+
+            outputs[OUTPUT].value = hpf->out;
+        } else if (params[MODE_SWITCH_PARAM].value == 5) {
             lpf->in = inputs[FILTER_INPUT].value;
             lpf->invalidate();
             lpf->process2();
@@ -124,8 +145,10 @@ struct Type35 : LRModule {
             hpf->invalidate();
             hpf->process2();
 
-            outputs[LP_OUTPUT].value = hpf->out;
+            outputs[OUTPUT].value = hpf->out;
         }
+
+
     }
 
 
@@ -167,7 +190,7 @@ Type35Widget::Type35Widget(Type35 *module) : LRModuleWidget(module) {
     module->peakKnobLP = LRKnob::create<LRMiddleKnob>(Vec(39.9, 174.1), module, Type35::PEAK1_PARAM, 0.f, 1.f, 0.f);
 
     module->frqKnobHP = LRKnob::create<LRBigKnob>(Vec(196.2, 68.6), module, Type35::FREQ2_PARAM, 0.f, 1.f, 0.f);
-    module->peakKnobHP = LRKnob::create<LRMiddleKnob>(Vec(203.1, 174.1), module, Type35::PEAK2_PARAM, 0.001f, 1.5, 0.001f);
+    module->peakKnobHP = LRKnob::create<LRMiddleKnob>(Vec(203.1, 174.1), module, Type35::PEAK2_PARAM, 0.f, 1.f, 0.f);
 
     module->driveKnob = LRKnob::create<LRMiddleKnob>(Vec(122, 149.2), module, Type35::DRIVE_PARAM, 1.f, 2.5, 1.0f);
 
@@ -195,6 +218,8 @@ Type35Widget::Type35Widget(Type35 *module) : LRModuleWidget(module) {
 
     addParam(ParamWidget::create<LRSmallKnob>(Vec(130.7, 269.4), module, Type35::DRIVE_CV_PARAM, -1.f, 1.0f, 0.f));
 
+    addParam(ParamWidget::create<LRSmallToggleKnob>(Vec(130.7, 88.6), module, Type35::MODE_SWITCH_PARAM, 1.f, 5.0f, 1.f));
+
 
     addInput(Port::create<LRIOPortCV>(Vec(34.4 - 7.5, 312), Port::INPUT, module, Type35::CUTOFF1_CV_INPUT));
     addInput(Port::create<LRIOPortCV>(Vec(76.4 - 7.5, 312), Port::INPUT, module, Type35::PEAK1_CV_INPUT));
@@ -209,10 +234,10 @@ Type35Widget::Type35Widget(Type35 *module) : LRModuleWidget(module) {
     // ***** INPUTS **********
 
     // ***** OUTPUTS *********
-    addOutput(Port::create<LRIOPortAudio>(Vec(156 - 8, 312), Port::OUTPUT, module, Type35::LP_OUTPUT));
+    addOutput(Port::create<LRIOPortAudio>(Vec(156 - 8, 312), Port::OUTPUT, module, Type35::OUTPUT));
     // ***** OUTPUTS *********
 
-    addParam(ParamWidget::create<LRSwitch>(Vec(135, 55), module, Type35::MODE_SWITCH_PARAM, 0, 1, 0));
+    // addParam(ParamWidget::create<LRSwitch>(Vec(135, 55), module, Type35::MODE_SWITCH_PARAM, 0, 1, 0));
 }
 
 
