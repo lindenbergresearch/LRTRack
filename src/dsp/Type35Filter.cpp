@@ -107,15 +107,15 @@ void dsp::Type35Filter::init() {
 void dsp::Type35Filter::invalidate() {
     float frqHz;
 
-    if (fc < 0) fc = 0;
-    if (peak <= 0)peak = 0.001;
+    fc = clamp(fc, 0.f, 1.1f);
+    peak = clamp(peak, 0.0001, 1.1f);
 
     if (type == LPF)
         frqHz = (MAX_FREQUENCY / 1000.f) * powf(950.f, fc) - 20.f;
     else
         frqHz = (MAX_FREQUENCY / 1000.f) * powf(1000.f, fc);
 
-    peak = 2 * cubicShape(peak) * 1.0001 + noise.nextFloat(10e-7);
+    peak = cubicShape(peak) * 2.f + noise.nextFloat(10e-7);
 
     float wd = TWOPI * frqHz;
     float T = 1.f / sr;
