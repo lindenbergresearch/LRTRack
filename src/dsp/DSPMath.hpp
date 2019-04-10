@@ -557,7 +557,7 @@ inline float fastlog(float x) {
  * @param b exponent
  * @return
  */
-inline double fastPow(double a, double b) {
+inline float fastPow(float a, float b) {
     union {
         double d;
         int x[2];
