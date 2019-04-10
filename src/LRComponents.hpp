@@ -209,8 +209,6 @@ private:
     float snapAt = 0.0f;
     /** snap sensitivity */
     float snapSens = 0.1;
-    /** is toggle knob */
-    int toggle = 0;
 
 protected:
     /** shader */
@@ -329,34 +327,6 @@ public:
      * @brief Remove knob snaping
      */
     void unsetSnap();
-
-
-    /**
-     * @brief Check for toggle knob
-     * @return
-     */
-    bool isToggle() {
-        return toggle != 0;
-    }
-
-
-    /**
-     * @brief Get total toggle steps
-     * @return
-     */
-    int getToggleSteps() {
-        return toggle;
-    }
-
-
-    /**
-     * @brief Set toggle steps
-     * @param steps
-     */
-    void setToggleSteps(int steps) {
-        toggle = steps;
-    }
-
 
     /**
      * @brief Snapping mode for knobs
@@ -589,14 +559,18 @@ struct LRSmallKnob : LRKnob {
  * @brief LR Small Knob
  */
 struct LRSmallToggleKnob : LRKnob {
-    LRSmallToggleKnob() {
-        setSVG(SVG::load(assetPlugin(plugin, "res/knobs/SmallKnob.svg")));
+    LRSmallToggleKnob(float length = 0.8) {
+        //TODO: parametrize start and end angle
+        minAngle = -length * (float) M_PI;
+        maxAngle = length * (float) M_PI;
 
-        addSVGVariant(LRGestalt::DARK, SVG::load(assetPlugin(plugin, "res/knobs/SmallKnob.svg")));
-        addSVGVariant(LRGestalt::LIGHT, SVG::load(assetPlugin(plugin, "res/knobs/AlternateSmallLight.svg")));
-        addSVGVariant(LRGestalt::AGED, SVG::load(assetPlugin(plugin, "res/knobs/AlternateSmallLight.svg")));
+        setSVG(SVG::load(assetPlugin(plugin, "res/knobs/AlternateSmallToggleLight.svg")));
 
-        speed = 2.0;
+        addSVGVariant(LRGestalt::DARK, SVG::load(assetPlugin(plugin, "res/knobs/AlternateSmallToggleLight.svg")));
+        addSVGVariant(LRGestalt::LIGHT, SVG::load(assetPlugin(plugin, "res/knobs/AlternateSmallToggleLight.svg")));
+        addSVGVariant(LRGestalt::AGED, SVG::load(assetPlugin(plugin, "res/knobs/AlternateSmallToggleLight.svg")));
+
+        speed = 3.0;
     }
 
 
