@@ -41,20 +41,23 @@ void LRKnob::draw(NVGcontext *vg) {
     /** debug numerical values */
     if (debug) {
         auto text = stringf("%4.3f", value);
-        nvgFontSize(vg, 15);
+        auto size = box.size.x / 2. > 15 ? 15 : box.size.x / 2.;
+        nvgFontSize(vg, size);
+
         nvgFontFaceId(vg, font->handle);
+        nvgTextAlign(vg, NVG_ALIGN_LEFT | NVG_ALIGN_MIDDLE);
 
         float bounds[4];
 
         nvgTextBounds(vg, 0, 0, text.c_str(), nullptr, bounds);
 
         nvgBeginPath(vg);
-        nvgFillColor(vg, nvgRGBAf(0, 0, 0, 0.5));
-        nvgRoundedRect(vg, (int) bounds[0] - 4, (int) bounds[1] - 2, (int) (bounds[2] - bounds[0]) + 8, (int) (bounds[3] - bounds[1]) + 4,
-                       ((int) (bounds[3] - bounds[1]) + 4) / 2 - 1);
+        nvgFillColor(vg, nvgRGBAf(0., 0.1, 0.2, 0.8));
+        nvgRoundedRect(vg, bounds[0] - 4, bounds[1] - 2, (bounds[2] - bounds[0]) + 8, (bounds[3] - bounds[1]) + 4,
+                       ((bounds[3] - bounds[1]) + 4) / 2 - 1);
         nvgFill(vg);
 
-        nvgFillColor(vg, nvgRGBAf(1.f, 1.f, 1.0f, .5f));
+        nvgFillColor(vg, nvgRGBAf(1.0f, 1.0f, 1.0f, .99f));
         nvgText(vg, 0, 0, text.c_str(), NULL);
     }
 }
