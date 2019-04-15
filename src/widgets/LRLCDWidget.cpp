@@ -71,10 +71,10 @@ void LRLCDWidget::draw(NVGcontext *vg) {
               fontsize, xoffs,
               yoffs);*/
 
-    nvgFillPaint(vg, nvgBoxGradient(vg, 0 - 50, 0 - 50, mx + 50, my + 50, 10, 10,
+    /*nvgFillPaint(vg, nvgBoxGradient(vg, 0 - 50, 0 - 50, mx + 50, my + 50, 10, 10,
                                     nvgRGBAf(1, 0, 0, 0.25),
                                     nvgRGBAf(0, 0, 0, .0)));
-    nvgFill(vg);
+    nvgFill(vg);*/
 
     nvgFillColor(vg, nvgRGBAf(fg.r, fg.g, fg.b, 0.23));
     std::string str;
