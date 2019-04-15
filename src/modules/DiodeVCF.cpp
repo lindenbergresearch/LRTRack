@@ -43,7 +43,6 @@ struct DiodeVCF : LRModule {
     void onRandomize() override;
     void updateComponents();
 
-    LRLCDWidget *lcd = new LRLCDWidget(12, "%00004.3f Hz", LRLCDWidget::NUMERIC);
     DiodeLadderFilter *lpf = new DiodeLadderFilter(engineGetSampleRate());
 
     LRBigKnob *frqKnob = NULL;
@@ -120,8 +119,6 @@ void DiodeVCF::step() {
     lpf->setSaturation(sat);
 
     lpf->low = !hidef;
-
-    lcd->value = lpf->getFreqHz();
 
     lpf->setIn(inputs[FILTER_INPUT].value / 10.f);
     lpf->invalidate();
