@@ -38,7 +38,6 @@ struct Type35 : LRModule {
         PEAK1_CV_PARAM,
         CUTOFF2_CV_PARAM,
         PEAK2_CV_PARAM,
-        MODE_SWITCH_PARAM,
         NUM_PARAMS
     };
     enum InputIds {
@@ -65,7 +64,13 @@ struct Type35 : LRModule {
     LRLCDWidget *lcd = new LRLCDWidget(10, "%s", LRLCDWidget::LIST, 10);
 
 
-    Type35() : LRModule(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS) {}
+    Type35() : LRModule(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS) {
+        frqKnobLP = LRKnob::create<LRBigKnob>(Vec(32.9, 68.6 + 7), this, Type35::FREQ1_PARAM, 0.f, 1.f, 1.f);
+        peakKnobLP = LRKnob::create<LRMiddleKnob>(Vec(39.9, 174.1 + 7), this, Type35::PEAK1_PARAM, 0.f, 1.f, 0.f);
+        frqKnobHP = LRKnob::create<LRBigKnob>(Vec(196.2, 68.6 + 7), this, Type35::FREQ2_PARAM, 0.f, 1.f, 0.f);
+        peakKnobHP = LRKnob::create<LRMiddleKnob>(Vec(203.1, 174.1 + 7), this, Type35::PEAK2_PARAM, 0.f, 1.f, 0.f);
+        driveKnob = LRKnob::create<LRMiddleKnob>(Vec(122, 101.2), this, Type35::DRIVE_PARAM, 1.f, 2.5, 1.0f);
+    }
 
 
     void step() override {
@@ -160,6 +165,7 @@ struct Type35 : LRModule {
 
     void fromJson(json_t *rootJ) override {
         LRModule::fromJson(rootJ);
+
         json_t *mode = json_object_get(rootJ, "filtermode");
 
         if (mode)
@@ -210,11 +216,6 @@ Type35Widget::Type35Widget(Type35 *module) : LRModuleWidget(module) {
     // ***** SCREWS **********
 
     // ***** MAIN KNOBS ******
-    module->frqKnobLP = LRKnob::create<LRBigKnob>(Vec(32.9, 68.6 + 7), module, Type35::FREQ1_PARAM, 0.f, 1.f, 1.f);
-    module->peakKnobLP = LRKnob::create<LRMiddleKnob>(Vec(39.9, 174.1 + 7), module, Type35::PEAK1_PARAM, 0.f, 1.f, 0.f);
-    module->frqKnobHP = LRKnob::create<LRBigKnob>(Vec(196.2, 68.6 + 7), module, Type35::FREQ2_PARAM, 0.f, 1.f, 0.f);
-    module->peakKnobHP = LRKnob::create<LRMiddleKnob>(Vec(203.1, 174.1 + 7), module, Type35::PEAK2_PARAM, 0.f, 1.f, 0.f);
-    module->driveKnob = LRKnob::create<LRMiddleKnob>(Vec(122, 101.2), module, Type35::DRIVE_PARAM, 1.f, 2.5, 1.0f);
     module->frqKnobLP->setIndicatorColors(nvgRGBAf(0.9f, 0.9f, 0.9f, 1.0f));
     module->peakKnobLP->setIndicatorColors(nvgRGBAf(0.9f, 0.9f, 0.9f, 1.0f));
     module->frqKnobHP->setIndicatorColors(nvgRGBAf(0.9f, 0.9f, 0.9f, 1.0f));
@@ -253,5 +254,5 @@ Type35Widget::Type35Widget(Type35 *module) : LRModuleWidget(module) {
 }
 
 
-Model *modelType35 = Model::create<Type35, Type35Widget>("Lindenberg Research", "TYPE35 VCF", "VAMPYR Type35 Dual Multimode Filter",
+Model *modelType35 = Model::create<Type35, Type35Widget>("Lindenberg Research", "TYPE35 VCF", "Vampyr type35 multimode VCF",
                                                          FILTER_TAG);
