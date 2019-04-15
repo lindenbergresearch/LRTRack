@@ -38,7 +38,6 @@ struct Type35 : LRModule {
         PEAK1_CV_PARAM,
         CUTOFF2_CV_PARAM,
         PEAK2_CV_PARAM,
-        DRIVE_CV_PARAM,
         MODE_SWITCH_PARAM,
         NUM_PARAMS
     };
@@ -63,6 +62,8 @@ struct Type35 : LRModule {
     Type35Filter *lpf = new Type35Filter(engineGetSampleRate(), Type35Filter::LPF);
     Type35Filter *hpf = new Type35Filter(engineGetSampleRate(), Type35Filter::HPF);
 
+    LRLCDWidget *lcd = new LRLCDWidget(10, "%s", LRLCDWidget::LIST, 10);
+
 
     Type35() : LRModule(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS) {}
 
@@ -75,7 +76,7 @@ struct Type35 : LRModule {
         float frq2cv = inputs[CUTOFF2_CV_INPUT].value * 0.1f * quadraticBipolar(params[CUTOFF2_CV_PARAM].value);
         float peak2cv = inputs[PEAK2_CV_INPUT].value * 0.1f * quadraticBipolar(params[PEAK2_CV_PARAM].value);
 
-        float drivecv = inputs[DRIVE_CV_INPUT].value * 0.1f * quadraticBipolar(params[DRIVE_CV_PARAM].value);
+        float drivecv = inputs[DRIVE_CV_INPUT].value;//* 0.1f * quadraticBipolar(params[DRIVE_CV_PARAM].value);
 
         // set vc parameter and knob values
         lpf->fc = params[FREQ1_PARAM].value + frq1cv;
@@ -101,47 +102,44 @@ struct Type35 : LRModule {
             driveKnob->setIndicatorValue(params[DRIVE_PARAM].value + drivecv);
         }
 
-        if (params[MODE_SWITCH_PARAM].value == 1) {
+        if (lround(lcd->value) == 0) {
             hpf->in = inputs[FILTER_INPUT].value;
             hpf->invalidate();
             hpf->process2();
 
-            // cascade
-            lpf->in = hpf->out;//inputs[FILTER_INPUT].value;
+            lpf->in = hpf->out;
             lpf->invalidate();
             lpf->process2();
 
             outputs[OUTPUT].value = lpf->out;
-        } else if (params[MODE_SWITCH_PARAM].value == 2) {
+        } else if (lround(lcd->value) == 1) {
             lpf->in = inputs[FILTER_INPUT].value;
             lpf->invalidate();
             lpf->process2();
 
             outputs[OUTPUT].value = lpf->out;
-        } else if (params[MODE_SWITCH_PARAM].value == 3) {
+        } else if (lround(lcd->value) == 2) {
             lpf->in = inputs[FILTER_INPUT].value;
             lpf->invalidate();
             lpf->process2();
 
-            // cascade
-            hpf->in = inputs[FILTER_INPUT].value;//inputs[FILTER_INPUT].value;
+            hpf->in = inputs[FILTER_INPUT].value;
             hpf->invalidate();
             hpf->process2();
 
             outputs[OUTPUT].value = hpf->out + lpf->out;
-        } else if (params[MODE_SWITCH_PARAM].value == 4) {
-            hpf->in = inputs[FILTER_INPUT].value;//inputs[FILTER_INPUT].value;
+        } else if (lround(lcd->value) == 3) {
+            hpf->in = inputs[FILTER_INPUT].value;
             hpf->invalidate();
             hpf->process2();
 
             outputs[OUTPUT].value = hpf->out;
-        } else if (params[MODE_SWITCH_PARAM].value == 5) {
+        } else if (lround(lcd->value) == 4) {
             lpf->in = inputs[FILTER_INPUT].value;
             lpf->invalidate();
             lpf->process2();
 
-            // cascade
-            hpf->in = lpf->out;//inputs[FILTER_INPUT].value;
+            hpf->in = lpf->out;
             hpf->invalidate();
             hpf->process2();
 
@@ -178,6 +176,14 @@ Type35Widget::Type35Widget(Type35 *module) : LRModuleWidget(module) {
 
     box.size = panel->box.size;
 
+    // **** SETUP LCD ********
+    module->lcd->box.pos = Vec(100, 221);
+    module->lcd->items = {"1: LP->HP", "2: LP", "3: LP + HP", "4: HP", " 5: HP->LP"};
+    module->lcd->format = "%s";
+    module->lcd->value = 0;
+    addChild(module->lcd);
+    // **** SETUP LCD ********
+
     // ***** SCREWS **********
     addChild(Widget::create<ScrewLight>(Vec(15, 1)));
     addChild(Widget::create<ScrewLight>(Vec(box.size.x - 30, 1)));
@@ -186,59 +192,48 @@ Type35Widget::Type35Widget(Type35 *module) : LRModuleWidget(module) {
     // ***** SCREWS **********
 
     // ***** MAIN KNOBS ******
-    module->frqKnobLP = LRKnob::create<LRBigKnob>(Vec(32.9, 68.6), module, Type35::FREQ1_PARAM, 0.f, 1.f, 1.f);
-    module->peakKnobLP = LRKnob::create<LRMiddleKnob>(Vec(39.9, 174.1), module, Type35::PEAK1_PARAM, 0.f, 1.f, 0.f);
-
-    module->frqKnobHP = LRKnob::create<LRBigKnob>(Vec(196.2, 68.6), module, Type35::FREQ2_PARAM, 0.f, 1.f, 0.f);
-    module->peakKnobHP = LRKnob::create<LRMiddleKnob>(Vec(203.1, 174.1), module, Type35::PEAK2_PARAM, 0.f, 1.f, 0.f);
-
-    module->driveKnob = LRKnob::create<LRMiddleKnob>(Vec(122, 149.2), module, Type35::DRIVE_PARAM, 1.f, 2.5, 1.0f);
-
+    module->frqKnobLP = LRKnob::create<LRBigKnob>(Vec(32.9, 68.6 + 7), module, Type35::FREQ1_PARAM, 0.f, 1.f, 1.f);
+    module->peakKnobLP = LRKnob::create<LRMiddleKnob>(Vec(39.9, 174.1 + 7), module, Type35::PEAK1_PARAM, 0.f, 1.f, 0.f);
+    module->frqKnobHP = LRKnob::create<LRBigKnob>(Vec(196.2, 68.6 + 7), module, Type35::FREQ2_PARAM, 0.f, 1.f, 0.f);
+    module->peakKnobHP = LRKnob::create<LRMiddleKnob>(Vec(203.1, 174.1 + 7), module, Type35::PEAK2_PARAM, 0.f, 1.f, 0.f);
+    module->driveKnob = LRKnob::create<LRMiddleKnob>(Vec(122, 101.2), module, Type35::DRIVE_PARAM, 1.f, 2.5, 1.0f);
     module->frqKnobLP->setIndicatorColors(nvgRGBAf(0.9f, 0.9f, 0.9f, 1.0f));
     module->peakKnobLP->setIndicatorColors(nvgRGBAf(0.9f, 0.9f, 0.9f, 1.0f));
-
     module->frqKnobHP->setIndicatorColors(nvgRGBAf(0.9f, 0.9f, 0.9f, 1.0f));
     module->peakKnobHP->setIndicatorColors(nvgRGBAf(0.9f, 0.9f, 0.9f, 1.0f));
-
     module->driveKnob->setIndicatorColors(nvgRGBAf(0.9f, 0.9f, 0.9f, 1.0f));
 
     addParam(module->frqKnobLP);
     addParam(module->peakKnobLP);
-
     addParam(module->frqKnobHP);
     addParam(module->peakKnobHP);
-
     addParam(module->driveKnob);
 
     addParam(ParamWidget::create<LRSmallKnob>(Vec(36.5 - 7.5, 269.4), module, Type35::CUTOFF1_CV_PARAM, -1.f, 1.0f, 0.f));
     addParam(ParamWidget::create<LRSmallKnob>(Vec(78.5 - 7.5, 269.4), module, Type35::PEAK1_CV_PARAM, -1.f, 1.0f, 0.f));
-
     addParam(ParamWidget::create<LRSmallKnob>(Vec(197.5 - 7.5, 269.4), module, Type35::CUTOFF2_CV_PARAM, -1.f, 1.0f, 0.f));
     addParam(ParamWidget::create<LRSmallKnob>(Vec(239.5 - 7.5, 269.4), module, Type35::PEAK2_CV_PARAM, -1.f, 1.0f, 0.f));
+    // ***** MAIN KNOBS ******
 
-    addParam(ParamWidget::create<LRSmallKnob>(Vec(130.7, 269.4), module, Type35::DRIVE_CV_PARAM, -1.f, 1.0f, 0.f));
-
-    addParam(ParamWidget::create<LRSmallToggleKnob>(Vec(130.7, 88.6), module, Type35::MODE_SWITCH_PARAM, 1.f, 5.0f, 1.f));
-
-
+    // ***** CV INPUTS *******
     addInput(Port::create<LRIOPortCV>(Vec(34.4 - 7.5, 312), Port::INPUT, module, Type35::CUTOFF1_CV_INPUT));
     addInput(Port::create<LRIOPortCV>(Vec(76.4 - 7.5, 312), Port::INPUT, module, Type35::PEAK1_CV_INPUT));
-
     addInput(Port::create<LRIOPortCV>(Vec(195.4 - 7.5, 312), Port::INPUT, module, Type35::CUTOFF2_CV_INPUT));
     addInput(Port::create<LRIOPortCV>(Vec(237.4 - 7.5, 312), Port::INPUT, module, Type35::PEAK2_CV_INPUT));
-
-    addInput(Port::create<LRIOPortCV>(Vec(136.4 - 7.5, 229), Port::INPUT, module, Type35::DRIVE_CV_INPUT));
+    addInput(Port::create<LRIOPortCV>(Vec(129.4, 172), Port::INPUT, module, Type35::DRIVE_CV_INPUT));
+    // ***** CV INPUTS *******
 
     // ***** INPUTS **********
-    addInput(Port::create<LRIOPortAudio>(Vec(118 - 8, 312), Port::INPUT, module, Type35::FILTER_INPUT));
+    addInput(Port::create<LRIOPortAudio>(Vec(118 - 8, 269), Port::INPUT, module, Type35::FILTER_INPUT));
     // ***** INPUTS **********
 
     // ***** OUTPUTS *********
-    addOutput(Port::create<LRIOPortAudio>(Vec(156 - 8, 312), Port::OUTPUT, module, Type35::OUTPUT));
+    addOutput(Port::create<LRIOPortAudio>(Vec(156 - 8, 269), Port::OUTPUT, module, Type35::OUTPUT));
     // ***** OUTPUTS *********
 
     // addParam(ParamWidget::create<LRSwitch>(Vec(135, 55), module, Type35::MODE_SWITCH_PARAM, 0, 1, 0));
 }
 
 
-Model *modelType35 = Model::create<Type35, Type35Widget>("Lindenberg Research", "TYPE35 VCF", "Sallen-Key Type 35 Dual Filter", FILTER_TAG);
+Model *modelType35 = Model::create<Type35, Type35Widget>("Lindenberg Research", "TYPE35 VCF", "VAMPYR Type35 Dual Multimode Filter",
+                                                         FILTER_TAG);
