@@ -143,8 +143,11 @@ SimpleFilterWidget::SimpleFilterWidget(SimpleFilter *module) : LRModuleWidget(mo
     //panel->addSVGVariant(SVG::load(assetPlugin(plugin, "res/panels/SimpleFilter.svg")));
     // panel->addSVGVariant(SVG::load(assetPlugin(plugin, "res/panels/SimpleFilter.svg")));
 
+    auto newGestalt = DARK;
+
     noVariants = true;
     panel->init();
+    gestalt = newGestalt;
     addChild(panel);
     box.size = panel->box.size;
 
