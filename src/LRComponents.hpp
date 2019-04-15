@@ -9,10 +9,12 @@
 #define LCD_FONT_DIG7 "res/digital-7.ttf"
 #define LCD_FONTSIZE 11
 #define LCD_LETTER_SPACING 0
+#define LCD_MARGIN_VERTICAL 1.73
+#define LCD_MARGIN_HORIZONTAL 1.07
 
 #define LCD_DEFAULT_COLOR_DARK nvgRGBAf(0.23, 0.6, 0.82, 1.0)
-#define LCD_DEFAULT_COLOR_LIGHT nvgRGBAf(0.0, 0.0, 0.0, 1.0)
-#define LCD_DEFAULT_COLOR_AGED nvgRGBAf(0.0, 0.0, 0.12, 1.0)
+#define LCD_DEFAULT_COLOR_LIGHT nvgRGBAf(0.23, 0.7, 1.0, 1.0)
+#define LCD_DEFAULT_COLOR_AGED nvgRGBAf(0.63, 0.1, 0.0, 1.0)
 
 #define LED_DEFAULT_COLOR_DARK nvgRGBAf(0.23, 0.5, 1.0, 1.0)
 #define LED_DEFAULT_COLOR_LIGHT nvgRGBAf(1.0, 0.32, 0.12, 1.0)
@@ -41,7 +43,7 @@ typedef std::vector<std::string> StringVector;
 /**
  * @brief Emulation of a LCD monochrome display
  */
-struct LRLCDWidget : Label, LRGestaltChangeAction {
+struct LRLCDWidget : FramebufferWidget, LRGestaltVariant, LRGestaltChangeAction {
 
     enum LCDType {
         NUMERIC,
@@ -49,19 +51,22 @@ struct LRLCDWidget : Label, LRGestaltChangeAction {
         LIST
     };
 
-    TrueType ttfLCDDig7;
-    float fontsize;
+    TransformWidget *tw;
+    SVGWidget *sw;
+
+    TrueType ttfLCDDIG7;
+
 
     LCDType type;
-
     NVGcolor fg;
-    NVGcolor bg;
 
     bool active = true;
     float value = 0.0;
     unsigned char length = 0;
-    string format;
+    string format, text;
     vector<string> items;
+
+    float fontsize;
 
     string s1;
     string s2;
@@ -69,7 +74,9 @@ struct LRLCDWidget : Label, LRGestaltChangeAction {
     /**
      * @brief Constructor
      */
-    LRLCDWidget(unsigned char length, string format, LCDType type, float fontsize = LCD_FONTSIZE);
+    LRLCDWidget(unsigned char length, string format, LCDType type, float fontsize);
+
+    void step() override;
 
     /**
      * @brief Draw LCD display
@@ -83,7 +90,11 @@ struct LRLCDWidget : Label, LRGestaltChangeAction {
     }
 
 
+    void doResize(Vec v);
+
     void onGestaltChange(LREventGestaltChange &e) override;
+
+    virtual void onMouseDown(EventMouseDown &e) override;
 
 };
 
@@ -559,7 +570,7 @@ struct LRSmallKnob : LRKnob {
  * @brief LR Small Knob
  */
 struct LRSmallToggleKnob : LRKnob {
-    LRSmallToggleKnob(float length = 0.7) {
+    LRSmallToggleKnob(float length = 0.73) {
         //TODO: parametrize start and end angle
         minAngle = -length * (float) M_PI;
         maxAngle = length * (float) M_PI;
