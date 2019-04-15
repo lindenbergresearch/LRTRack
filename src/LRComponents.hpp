@@ -450,8 +450,8 @@ struct LRBigKnob : LRKnob {
             case LRGestalt::DARK:
                 setIndicatorDistance(15);
                 setIndicatorShape(4.8, 0.12);
-                shader->setShadowPosition(5, 6);
-                shader->setStrength(1.f);
+                shader->setShadowPosition(4, 5);
+                shader->setStrength(0.8f);
                 shader->setSize(.65f);
                 break;
             case LRGestalt::LIGHT:
@@ -495,8 +495,8 @@ struct LRMiddleKnob : LRKnob {
             case LRGestalt::DARK:
                 setIndicatorDistance(13);
                 setIndicatorShape(5, 0.13);
-                shader->setShadowPosition(4, 4);
-                shader->setStrength(1.f);
+                shader->setShadowPosition(2, 3);
+                shader->setStrength(0.8f);
                 shader->setSize(.65f);
                 break;
             case LRGestalt::LIGHT:
