@@ -150,8 +150,27 @@ struct Type35 : LRModule {
     }
 
 
+    json_t *toJson() override {
+        json_t *rootJ = json_object();
+        json_object_set_new(rootJ, "filtermode", json_integer((int) lround(lcd->value)));
+
+        return rootJ;
+    }
+
+
+    void fromJson(json_t *rootJ) override {
+        LRModule::fromJson(rootJ);
+        json_t *mode = json_object_get(rootJ, "filtermode");
+
+        if (mode)
+            lcd->value = json_integer_value(mode);// json_real_value(mode);
+
+        lcd->dirty = true;
+    }
+
+
     void onSampleRateChange() override {
-        Module::onSampleRateChange();
+        LRModule::onSampleRateChange();
         lpf->setSamplerate(engineGetSampleRate());
         hpf->setSamplerate(engineGetSampleRate());
     }
@@ -168,8 +187,8 @@ struct Type35Widget : LRModuleWidget {
 
 Type35Widget::Type35Widget(Type35 *module) : LRModuleWidget(module) {
     panel->addSVGVariant(LRGestalt::DARK, SVG::load(assetPlugin(plugin, "res/panels/Type35VCF.svg")));
-    panel->addSVGVariant(LRGestalt::LIGHT, SVG::load(assetPlugin(plugin, "res/panels/Type35VCF.svg")));
-    panel->addSVGVariant(LRGestalt::AGED, SVG::load(assetPlugin(plugin, "res/panels/Type35VCF.svg")));
+    panel->addSVGVariant(LRGestalt::LIGHT, SVG::load(assetPlugin(plugin, "res/panels/Type35VCFLight.svg")));
+    panel->addSVGVariant(LRGestalt::AGED, SVG::load(assetPlugin(plugin, "res/panels/Type35VCFAged.svg")));
 
     panel->init();
     addChild(panel);
@@ -180,7 +199,6 @@ Type35Widget::Type35Widget(Type35 *module) : LRModuleWidget(module) {
     module->lcd->box.pos = Vec(100, 221);
     module->lcd->items = {"1: LP->HP", "2: LP", "3: LP + HP", "4: HP", " 5: HP->LP"};
     module->lcd->format = "%s";
-    module->lcd->value = 0;
     addChild(module->lcd);
     // **** SETUP LCD ********
 
