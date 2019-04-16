@@ -221,6 +221,14 @@ private:
     /** snap sensitivity */
     float snapSens = 0.1;
 
+    /** use gradient */
+    bool gradient = false;
+    /** gradient radius */
+    float radius;
+    /** colors */
+    NVGcolor startColor, endColor;
+
+
 protected:
     /** shader */
     LRShadow *shader;
@@ -289,6 +297,19 @@ public:
         indicator->overflowColor = overflow;
     }
 
+
+    /**
+     * @brief Setup gradient parameter is a gradient is used by a knob
+     * @param radius The inner radius
+     * @param startColor Start color (Top)
+     * @param endColor  End color (Bottom)
+     */
+    void setGradientParameter(float radius, NVGcolor startColor, NVGcolor endColor) {
+        gradient = true;
+        LRKnob::radius = radius;
+        LRKnob::startColor = startColor;
+        LRKnob::endColor = endColor;
+    }
 
     /**
      * @brief Hook into setSVG() method to setup box dimensions correct for indicator
