@@ -46,7 +46,9 @@ struct VCO : LRModule {
     LRBigKnob *frqKnob = NULL;
 
 
-    VCO() : LRModule(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS) {}
+    VCO() : LRModule(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS) {
+        frqKnob = LRKnob::create<LRBigKnob>(Vec(126.0, 64.7), this, VCO::FREQUENCY_PARAM, -1.f, 1.f, 0.f);
+    }
 
 
     /*
@@ -182,8 +184,6 @@ VCOWidget::VCOWidget(VCO *module) : LRModuleWidget(module) {
 
 
     // ***** MAIN KNOBS ******
-    module->frqKnob = LRKnob::create<LRBigKnob>(Vec(126.0, 64.7), module, VCO::FREQUENCY_PARAM, -1.f, 1.f, 0.f);
-
     addParam(module->frqKnob);
     addParam(LRKnob::create<LRToggleKnob>(Vec(133, 170.5), module, VCO::OCTAVE_PARAM, -4.f, 3.f, 0.f));
 
