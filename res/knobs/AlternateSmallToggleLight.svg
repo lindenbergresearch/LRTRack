@@ -8,6 +8,28 @@
      xmlns="http://www.w3.org/2000/svg"
      xml:space="preserve"
      style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:1.41421;">
+    <g transform="matrix(1.16667,0,0,1.16667,1.5,1.24892)">
+        <g id="SmallKnob">
+            <g>
+                <g transform="matrix(1.11628,0,0,1.11628,-1.39536,-1.42455)">
+                    <circle cx="12"
+                            cy="12.251"
+                            r="10.75"
+                            style="fill:#2a2a2a;stroke:#8a8a8a;stroke-width:0.27px;"/>
+                </g>
+                <g transform="matrix(0.590689,0,0,0.590689,4.91173,5.01446)">
+                    <circle cx="12"
+                            cy="12.251"
+                            r="9.029"
+                            style="fill:#303030;stroke:#050404;stroke-width:0.2px;stroke-linejoin:miter;stroke-miterlimit:10;"/>
+                </g>
+                <g transform="matrix(1.21144,0,0,0.664594,-2.59071,0.985223)">
+                    <path d="M13.193,1.059c0,-0.584 -0.26,-1.058 -0.58,-1.058l-1.161,0c-0.32,0 -0.58,0.474 -0.58,1.058l0,5.946c0,0.584 0.26,1.058 0.58,1.058l1.161,0c0.32,0 0.58,-0.474 0.58,-1.058l0,-5.946Z"
+                          style="fill:#d1d1d1;"/>
+                </g>
+            </g>
+        </g>
+    </g>
     <g id="BigKnob"
        transform="matrix(0.517335,0,0,0.517306,1.01459,1.03487)">
         <circle cx="28"
