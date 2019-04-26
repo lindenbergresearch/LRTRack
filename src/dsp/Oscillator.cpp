@@ -64,9 +64,9 @@ void DSPBLOscillator::process() {
     /* compute sine */
     output[SINE].value = fastSin(phase) * 5.f;
 
-    /* compute noise: act as S&H in LFO mode, update next random only every cycle */
+    /* compute noise: act as S&H in LFO mode, update getNext random only every cycle */
     if (!lfoMode || phase - incr <= -M_PI)
-        output[NOISE].value = noise.nextFloat(10.f) - 5.f;
+        output[NOISE].value = noise.getNext(10.f) - 5.f;
 
 }
 
@@ -76,15 +76,15 @@ void DSPBLOscillator::reset() {
     param[PULSEWIDTH].value = 1.f;
     phase = 0.f;
     incr = 0.f;
-    detune = noise.nextFloat(DETUNE_AMOUNT);
+    detune = noise.getNext(DETUNE_AMOUNT);
     drift = 0.f;
     warmup = 0.f;
     warmupTau = sr * 1.5f;
     tick = round(sr * 0.7f);
 
     lfo->reset();
-    lfo->setPhase(noise.nextFloat(TWOPI));
-    lfo->setFrequency(DRIFT_FREQ + noise.nextFloat(DRIFT_VARIANZ));
+    lfo->setPhase(noise.getNext(TWOPI));
+    lfo->setFrequency(DRIFT_FREQ + noise.getNext(DRIFT_VARIANZ));
 
     n = 0;
 

@@ -115,7 +115,7 @@ void dsp::Type35Filter::invalidate() {
     else
         frqHz = (MAX_FREQUENCY / 1000.f) * powf(1000.f, fc);
 
-    peak = cubicShape(peak) * 2.f + noise.nextFloat(10e-7);
+    peak = cubicShape(peak) * 2.f + noise.getNext(10e-7);
 
     float wd = TWOPI * frqHz;
     float T = 1.f / sr;
@@ -159,7 +159,7 @@ void dsp::Type35Filter::process() {
  * @brief Do the lowpass filtering and oversampling
  */
 void dsp::Type35Filter::processLPF() {
-    lpf1->in = in + noise.nextFloat(NOISE_GAIN);;
+    lpf1->in = in + noise.getNext(NOISE_GAIN);;
     lpf1->process();
     float y1 = lpf1->out;
 
@@ -192,7 +192,7 @@ void dsp::Type35Filter::processLPF() {
  * @brief Do the highpass filtering and oversampling
  */
 void dsp::Type35Filter::processHPF() {
-    hpf1->in = in + noise.nextFloat(NOISE_GAIN);
+    hpf1->in = in + noise.getNext(NOISE_GAIN);
     hpf1->process();
     float y1 = hpf1->out;
 

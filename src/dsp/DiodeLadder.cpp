@@ -148,7 +148,7 @@ void DiodeLadderFilter::process1() {
 
     float y = (1.0f / fastatan(saturation)) * fastatan(saturation * in);
 
-    y += noise.nextFloat(NOISE_GAIN);
+    y += noise.getNext(NOISE_GAIN);
 
     float u = (y - k * sigma) / (1 + k * gamma);
 

@@ -46,7 +46,7 @@ void LadderFilter::process() {
         bx = fade5(b1, b2, b3, b4, b5, slope);
 
         // saturate and add very low noise to have self oscillation with no input and high res
-        b0 = fastatan(x + noise.nextFloat(NOISE_GAIN));
+        b0 = fastatan(x + noise.getNext(NOISE_GAIN));
 
         float y = bx * (1 + drive * 40);
 
