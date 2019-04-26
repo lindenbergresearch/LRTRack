@@ -36,6 +36,22 @@ void LRKnob::draw(NVGcontext *vg) {
     /** component */
     FramebufferWidget::draw(vg);
 
+
+    if (lightning) {
+        nvgBeginPath(vg);
+
+        auto gradient = nvgLinearGradient(vg, box.size.x / 2 - radius / 2 * 1.1, box.size.y / 2 - radius / 2 * 1.1,
+                                          box.size.x / 2 + radius / 2 * 1.1,
+                                          box.size.y / 2 + radius / 2 * 1.1,
+                                          startColor,
+                                          endColor);
+
+        nvgCircle(vg, box.size.x / 2, box.size.y / 2, radius);
+
+        nvgFillPaint(vg, gradient);
+        nvgFill(vg);
+    }
+
     indicator->draw(vg);
 
     /** debug numerical values */
