@@ -94,11 +94,41 @@ struct Noise {
     Noise() {}
 
 
-    float nextFloat(float gain) {
+    /**
+     * @brief Get next random number
+     * @param gain
+     * @return
+     */
+    inline float getNext(float const gain) {
         static std::default_random_engine e;
         static std::uniform_real_distribution<> dis(0, 1); // rage 0 - 1
         return (float) dis(e) * gain;
     }
+
+
+    /**
+     * @brief Get next random number
+     * @param gain Gain
+     * @param low Start range
+     * @param high Stop range
+     * @return
+     */
+    inline float getNext(float const gain, int const low, int const high) {
+        static std::default_random_engine e;
+        static std::uniform_real_distribution<> dis(low, high); // rage n - m
+        return (float) dis(e) * gain;
+    }
+
+
+    /**
+     * @brief Add noise to a number
+     * @param n Pointer to a float
+     * @param gain Noise gain
+     */
+    inline void add(float &n, float gain) {
+        n += getNext(gain, -1, 1);
+    }
+
 };
 
 
