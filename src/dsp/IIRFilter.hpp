@@ -50,15 +50,38 @@ struct IIRFilter : DSPEffect {
     IIRFilter(float sr, float *a, float *b, int size) : DSPEffect(sr) {
         vector<float> _a(a, a + size);
         vector<float> _b(a, b + size);
+        vector<float> _x(size);
+        vector<float> _y(size);
 
         this->a = _a;
         this->b = _b;
+        x = _x;
+        y = _y;
     }
 
 
-    void init() override;
-    void invalidate() override;
-    void process() override;
+    /**
+     * @brief Perform IIR computations
+     */
+    void process() override {
+        int i;
+
+        // put new input sample to buffer
+        shiftRight(x, in);
+
+        for (i = 0; i < a.size(); i++) {
+            out += a[i] * x[i];
+        }
+
+        shiftRight(y);
+
+        for (i = 1; i < b.size(); i++) {
+            out -= b[i] * y[i];
+        }
+
+        y[0] = out;
+    }
+
 
     float in, out;
     vector<float> a, b;
