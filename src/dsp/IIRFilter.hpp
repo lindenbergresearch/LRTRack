@@ -28,6 +28,13 @@ using std::vector;
 
 /**
  * @brief Implements a standard IIR filter with a dynamic order in direct form I
+ *
+ *  In particular, this class implements the standard difference
+ *  equation:
+ *
+ *  a[0]*y[n] = b[0]*x[n] + ... + b[nb]*x[n-nb] -
+ *              a[1]*y[n-1] - ... - a[na]*y[n-na]
+ *
  */
 struct IIRFilter : DSPEffect {
 
@@ -49,7 +56,7 @@ struct IIRFilter : DSPEffect {
      */
     IIRFilter(float sr, float *a, float *b, int size) : DSPEffect(sr) {
         vector<float> _a(a, a + size);
-        vector<float> _b(a, b + size);
+        vector<float> _b(b, b + size);
         vector<float> _x(size);
         vector<float> _y(size);
 
