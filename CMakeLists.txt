@@ -43,7 +43,9 @@ set(SOURCE_FILES
         src/widgets/LRPanel.cpp
         src/widgets/LRSVGRotator.cpp
         src/dsp/Saturator.cpp
-        src/dsp/Saturator.hpp
+        src/dsp/Saturator.cpp
+        src/dsp/DelayLine.hpp
+        src/dsp/DelayLine.cpp
         src/dsp/Hardclip.cpp
         src/dsp/Hardclip.hpp
         src/dsp/RShaper.cpp
@@ -57,10 +59,11 @@ set(SOURCE_FILES
         src/dsp/DiodeLadder.cpp
         src/dsp/DiodeLadder.hpp
         src/modules/DiodeVCF.cpp
+        src/modules/TestDriver.cpp
         src/widgets/FontIconWidget.cpp
         src/modules/BlankPanelSmall.cpp
         src/modules/Speck.cpp
-        src/widgets/LRGradientWidget.cpp src/LRModule.cpp src/LRModuleWidget.cpp src/LRModel.hpp src/widgets/LRPatinaWidget.cpp src/LRGestalt.hpp src/modules/Type35.cpp src/dsp/Type35Filter.cpp src/dsp/Type35Filter.hpp src/dsp/RateConverter.cpp src/dsp/RateConverter.hpp)
+        src/widgets/LRGradientWidget.cpp src/LRModule.cpp src/LRModuleWidget.cpp src/LRModel.hpp src/widgets/LRPatinaWidget.cpp src/LRGestalt.hpp src/modules/Type35.cpp src/dsp/Type35Filter.cpp src/dsp/Type35Filter.hpp src/dsp/RateConverter.cpp src/dsp/RateConverter.hpp src/dsp/BiquadFilter.cpp src/dsp/BiquadFilter.hpp src/dsp/IIRFilter.hpp src/dsp/BBDCore.hpp)
 
 include_directories(.)
 include_directories(src)
