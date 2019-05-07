@@ -17,6 +17,7 @@
 \*                                                                     */
 
 #include <dsp/functions.hpp>
+#include "../dsp/IIRFilter.hpp"
 #include "../dsp/DelayLine.hpp"
 #include "../LindenbergResearch.hpp"
 #include "../LRModel.hpp"
@@ -64,12 +65,36 @@ struct TestDriver : LRModule {
     dsp::DelayLine *ddlL = new dsp::DelayLine(engineGetSampleRate());
     dsp::DelayLine *ddlR = new dsp::DelayLine(engineGetSampleRate());
 
+    dsp::IIRFilter *iir, *iir2;
+
 
     TestDriver() : LRModule(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS) {
         a1Knob = LRKnob::create<LRBigKnob>(Vec(32.9, 68.6 + 7), this, TestDriver::A1_PARAM, 0.f, 1.f, 1.f);
         a2Knob = LRKnob::create<LRMiddleKnob>(Vec(39.9, 174.1 + 7), this, TestDriver::A2_PARAM, 0.f, 1.f, 0.f);
         b1Knob = LRKnob::create<LRBigKnob>(Vec(196.2, 68.6 + 7), this, TestDriver::B1_PARAM, 0.f, 1.f, 0.f);
         b2Knob = LRKnob::create<LRMiddleKnob>(Vec(203.1, 174.1 + 7), this, TestDriver::B2_PARAM, 0.f, 1.f, 0.f);
+
+        float antiAliasACoefVals[8] = {0.00002808162654240159, 0.00324260184959550063, 0.01229358405255225224, 0.01781338547909389058,
+                                       0.01191661427670600605, 0.00351674566780364349, 0.00034109599239625331, 0.00000665645917792087};
+
+        float antiAliasBCoefVals[8] = {1.00000000000000000000, 0.27002485476511250972, -2.35210121584816533868, -0.47624252782494447267,
+                                       1.85825180320240179732, 0.30789821629786440216, -0.48145639585378052772, -0.07721597509005941051};
+
+        iir = new dsp::IIRFilter(engineGetSampleRate(), antiAliasACoefVals, antiAliasBCoefVals, 8);
+
+        /* float reconstruction1BCoefVals[6] = {0.00051516013318437094, 0.03041821522444834724, 0.06752981661722373685, 0
+                                               .04770540623300938837,
+                                              0.01033396947561467973, 0.00001106873510238544};
+         float reconstruction1ACoefVals[6] = {1.00000000000000000000, -0.63300309066683380088, -1.16456643091420186664,
+                                              0.76529508607787266605, 0.33776127751256762588, -0.14897208486870763822};*/
+
+        float reconstruction2BCoefVals[3] = {0.01440296150822061375, 0.12374170373521460597, 0.01322614050481232296};
+        float reconstruction2ACoefVals[3] = {1.00000000000000000000, -1.75672492751137410139, 0.90805921207607520618};
+
+
+        iir2 = new dsp::IIRFilter(engineGetSampleRate(), reconstruction2BCoefVals, reconstruction2ACoefVals, 3);
+
+
     }
 
 
@@ -104,7 +129,7 @@ struct TestDriver : LRModule {
         }
 
         /* computations */
-        auto dL = params[A1_PARAM].value * (engineGetSampleRate() - 1) + 1;
+        /*auto dL = params[A1_PARAM].value * (engineGetSampleRate() - 1) + 1;
         auto fbL = params[A2_PARAM].value;
 
         auto dR = params[B1_PARAM].value * (engineGetSampleRate() - 1) + 1;
@@ -124,7 +149,15 @@ struct TestDriver : LRModule {
         ddlR->in = inputs[INPUT_B].active ? inputs[INPUT_B].value : inputs[INPUT_A].value;
         ddlR->process();
 
-        outputs[OUTPUT_B].value = inputs[INPUT_B].active ? ddlR->out + inputs[INPUT_B].value : ddlR->out + inputs[INPUT_A].value;
+        outputs[OUTPUT_B].value = inputs[INPUT_B].active ? ddlR->out + inputs[INPUT_B].value : ddlR->out + inputs[INPUT_A].value;*/
+
+        iir->in = inputs[INPUT_A].value;
+        iir->process();
+        outputs[OUTPUT_A].value = iir->out;
+
+        iir2->in = inputs[INPUT_A].value;
+        iir2->process();
+        outputs[OUTPUT_B].value = iir2->out;
     }
 
 
