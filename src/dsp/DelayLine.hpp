@@ -95,8 +95,8 @@ struct DelayLine : DSPEffect {
     double delay;
 
     DelayBuffer *buffer;
-
     float in, out;
+
 public:
     explicit DelayLine(float sr);
 
