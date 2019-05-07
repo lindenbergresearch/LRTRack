@@ -16,6 +16,7 @@ void init(Plugin *p) {
     p->addModel(modelQuickMix);
     p->addModel(modelDiodeVCF);
     p->addModel(modelType35);
+    p->addModel(modelTestDriver);
     p->addModel(modelVCO);
 
     //  p->addModel(modelSpeck);

@@ -25,4 +25,5 @@ extern Model *modelWestcoast;
 extern Model *modelQuickMix;
 extern Model *modelDiodeVCF;
 extern Model *modelType35;
+extern Model *modelTestDriver;
 //extern Model *modelSpeck;
