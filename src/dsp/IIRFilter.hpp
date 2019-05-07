@@ -44,7 +44,14 @@ struct IIRFilter : DSPEffect {
      * @param a A Coefficients
      * @param b B Coefficients
      */
-    IIRFilter(float sr, vector<float> &a, vector<float> &b) : DSPEffect(sr), a(a), b(b) {}
+    //TODO: does not work currently
+    IIRFilter(float sr, vector<float> &a, vector<float> &b) : DSPEffect(sr), a(a), b(b) {
+        vector<float> _x(a.size());
+        vector<float> _y(a.size());
+
+        x = _x;
+        y = _y;
+    }
 
 
     /**
@@ -71,7 +78,8 @@ struct IIRFilter : DSPEffect {
      * @brief Perform IIR computations
      */
     void process() override {
-        int i;
+        unsigned int i;
+        out = 0;
 
         // put new input sample to buffer
         shiftRight(x, in);
@@ -100,8 +108,8 @@ private:
      * @brief Shift all elements right in a vector
      * @param data Reference to a vector<float>
      */
-    inline void shiftRight(vector<float> &data, float fill = 0) {
-        for (int i = data.size() - 1; i > 0; i--) {
+    static inline void shiftRight(vector<float> &data, float fill = 0) {
+        for (int i = data.size() - 2; i >= 0; i--) {
             data[i + 1] = data[i];
         }
 
