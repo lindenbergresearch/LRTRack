@@ -45,7 +45,7 @@ void LRPanel::init() {
     gradients[LRGestalt::AGED] = gradientAged;
 
     /* setup panel border */
-    auto *pb = new LRPanelBorder();
+    pb = new LRPanelBorder();
     pb->box.size = box.size;
     addChild(pb);
 

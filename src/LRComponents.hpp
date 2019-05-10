@@ -948,6 +948,7 @@ struct LRPanelBorder : TransparentWidget {
  */
 struct LRPanel : FramebufferWidget, LRGestaltVariant, LRGestaltChangeAction {
     SVGWidget *panelWidget;
+    LRPanelBorder *pb;
     map<LRGestalt, LRGradientWidget *> gradients;
     LRPatinaWidget *patinaWidgetClassic, *patinaWidgetWhite;
 
