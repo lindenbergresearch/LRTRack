@@ -17,7 +17,10 @@ void init(Plugin *p) {
     p->addModel(modelDiodeVCF);
     p->addModel(modelType35);
     p->addModel(modelTestDriver);
+    p->addModel(modelEchoBox);
     p->addModel(modelVCO);
+
+
 
     //  p->addModel(modelSpeck);
 
