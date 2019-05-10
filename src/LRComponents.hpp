@@ -428,34 +428,6 @@ struct LRToggleKnob : LRKnob {
 
 
 /**
- * @brief Quantize position to odd numbers to simulate a toggle switch
- */
-struct LRMiddleIncremental : LRKnob {
-    LRMiddleIncremental(float length = 0.5f) {
-        minAngle = -length * (float) M_PI;
-        maxAngle = length * (float) M_PI;
-
-        setSVG(SVG::load(assetPlugin(plugin, "res/knobs/AlternateMiddleKnob.svg")));
-        shader->setShadowPosition(3, 4);
-
-        shader->setStrength(1.2f);
-        shader->setSize(0.7f);
-
-        speed = 3.f;
-    }
-
-
-    void onChange(EventChange &e) override {
-
-        value = lround(value);
-
-        //value = round(value);
-        SVGKnob::onChange(e);
-    }
-};
-
-
-/**
  * @brief LR Big Knob
  */
 struct LRBigKnob : LRKnob {
@@ -659,67 +631,6 @@ struct LRSmallToggleKnob : LRKnob {
 
 
 /**
- * @brief LR Alternate Small Knob
- */
-struct LRAlternateSmallKnob : LRKnob {
-    LRAlternateSmallKnob() {
-        setSVG(SVG::load(assetPlugin(plugin, "res/knobs/AlternateSmallKnob.svg")));
-        shader->setShadowPosition(3, 3);
-        setSnap(0.0f, 0.02f);
-
-        speed = 0.9f;
-    }
-};
-
-
-/**
- * @brief LR Middle Knob
- */
-struct LRAlternateMiddleKnob : LRKnob {
-    LRAlternateMiddleKnob() {
-        setSVG(SVG::load(assetPlugin(plugin, "res/knobs/AlternateMiddleKnob.svg")));
-        setIndicatorDistance(11);
-        setIndicatorShape(5.0, 0.14);
-        shader->setShadowPosition(4, 5);
-
-        setSnap(0.0f, 0.12f);
-    }
-};
-
-
-/**
- * @brief LR Big Knob
- */
-struct LRAlternateBigKnob : LRKnob {
-    LRAlternateBigKnob() {
-        setSVG(SVG::load(assetPlugin(plugin, "res/knobs/AlternateBigKnob.svg")));
-        setIndicatorDistance(15);
-        setIndicatorShape(4.8, 0.12);
-        shader->setShadowPosition(5, 6);
-    }
-};
-
-
-/**
- * @brief LR Big Knob
- */
-struct LRAlternateBigLight : LRKnob {
-    LRAlternateBigLight() {
-        setSVG(SVG::load(assetPlugin(plugin, "res/knobs/AlternateBigLight.svg")));
-        setIndicatorDistance(17);
-        setIndicatorShape(4.1, 0.08);
-
-
-        shader->setShadowPosition(4, 5);
-
-        shader->setStrength(0.5f);
-        shader->setSize(0.6f);
-
-    }
-};
-
-
-/**
  * @brief LR Big Knob
  */
 struct LRAlternateMiddleLight : LRKnob {
@@ -734,59 +645,6 @@ struct LRAlternateMiddleLight : LRKnob {
         shader->setStrength(0.5f);
         shader->setSize(0.6f);
 
-    }
-};
-
-
-/**
- * @brief LR Small Knob
- */
-struct LRAlternateSmallLight : LRKnob {
-    LRAlternateSmallLight() {
-        setSVG(SVG::load(assetPlugin(plugin, "res/knobs/AlternateSmallLight.svg")));
-        shader->setShadowPosition(3, 3);
-        setSnap(0.0f, 0.02f);
-
-        shader->setShadowPosition(2, 3);
-
-        shader->setStrength(0.5f);
-        shader->setSize(0.7f);
-
-        speed = 0.9f;
-    }
-};
-
-
-/**
- * @brief Alternative IO Port
- */
-struct LRIOPort : SVGPort {
-private:
-    LRShadow *shader;
-
-public:
-    LRIOPort() {
-        background->svg = SVG::load(assetPlugin(plugin, "res/elements/IOPortB.svg"));
-        background->wrap();
-        box.size = background->box.size;
-
-        shader = new LRShadow();
-        //  addChild(shadow);
-
-        /** inherit dimensions */
-        shader->setBox(box);
-        shader->setSize(0.50);
-        shader->setShadowPosition(3, 2);
-    }
-
-
-    /**
-     * @brief Hook into draw method
-     * @param vg
-     */
-    void draw(NVGcontext *vg) override {
-        shader->draw(vg);
-        SVGPort::draw(vg);
     }
 };
 
@@ -812,41 +670,6 @@ public:
         shader->setSize(0.55);
         shader->setStrength(0.3);
         shader->setShadowPosition(1, 2);
-    }
-
-
-    /**
-     * @brief Hook into draw method
-     * @param vg
-     */
-    void draw(NVGcontext *vg) override {
-        shader->draw(vg);
-        SVGPort::draw(vg);
-    }
-};
-
-
-/**
- * @brief Alternative IO Port
- */
-struct LRIOPortC : SVGPort {
-private:
-    LRShadow *shader;
-
-public:
-    LRIOPortC() {
-        background->svg = SVG::load(assetPlugin(plugin, "res/elements/IOPortC.svg"));
-        background->wrap();
-        box.size = background->box.size;
-
-        shader = new LRShadow();
-        // addChild(shader);
-
-        /** inherit dimensions */
-        shader->setBox(box);
-        shader->setSize(0.50);
-        shader->setStrength(0.1);
-        shader->setShadowPosition(3, 4);
     }
 
 
@@ -950,53 +773,6 @@ struct LRIOPortCV : LRIOPortD {
 
 
 /**
- * @brief Alternative IO Port
- */
-struct LRIOPortCLight : SVGPort {
-private:
-    LRShadow *shader;
-
-public:
-    LRIOPortCLight() {
-        background->svg = SVG::load(assetPlugin(plugin, "res/elements/IOPortCLight.svg"));
-        background->wrap();
-        box.size = background->box.size;
-
-        shader = new LRShadow();
-        // addChild(shader);
-
-        /** inherit dimensions */
-        shader->setBox(box);
-        shader->setSize(0.55);
-        shader->setStrength(0.3);
-        shader->setShadowPosition(1, 2);
-    }
-
-
-    /**
-     * @brief Hook into draw method
-     * @param vg
-     */
-    void draw(NVGcontext *vg) override {
-        shader->draw(vg);
-        SVGPort::draw(vg);
-    }
-};
-
-
-/**
- * @brief Alternative screw head A
- */
-struct ScrewDarkA : SVGScrew {
-    ScrewDarkA() {
-        sw->svg = SVG::load(assetPlugin(plugin, "res/elements/ScrewDark.svg"));
-        sw->wrap();
-        box.size = sw->box.size;
-    }
-};
-
-
-/**
  * @brief Alternative screw head A
  */
 struct ScrewLight : SVGScrew, LRGestaltVariant, LRGestaltChangeAction {
@@ -1019,18 +795,6 @@ struct ScrewLight : SVGScrew, LRGestaltVariant, LRGestaltChangeAction {
         dirty = true;
     }
 
-};
-
-
-/**
- * @brief Alternative screw head A
- */
-struct AlternateScrewLight : SVGScrew {
-    AlternateScrewLight() {
-        sw->svg = SVG::load(assetPlugin(plugin, "res/elements/AlternateScrewLight.svg"));
-        sw->wrap();
-        box.size = sw->box.size;
-    }
 };
 
 
