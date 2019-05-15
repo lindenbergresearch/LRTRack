@@ -1,0 +1,20 @@
+{
+  "slug": "LindenbergResearch",
+  "name": "LindenbergResearch",
+  "version": "1.0.0",
+  "license": "CC0-1.0",
+  "author": "Lindenberg Research",
+  "authorEmail": "heapdump@icloud.com",
+  "authorUrl": "https://github.com/lindenbergresearch",
+  "sourceUrl": "https://github.com/lindenbergresearch/LRTRack",
+  "modules": [
+    {
+      "slug": "TYPE35 VCF",
+      "name": "Vampyr type35 VCF",
+      "description": "Sallen-Key type dual filter: Lowpass: 12dB/oct Highpass: 6dB/oct",
+      "tags": [
+        "FILTER"
+      ]
+    }
+  ]
+}
