@@ -1,21 +1,22 @@
 #include "LindenbergResearch.hpp"
 
-Plugin *plugin;
+Plugin *pluginInstance;
 
 
 void init(Plugin *p) {
-    plugin = p;
-    p->slug = TOSTRING(SLUG);
-    p->version = TOSTRING(VERSION);
+    pluginInstance = p;
 
-    p->addModel(modelSimpleFilter);
+
+    p->addModel(modelType35);
+
+
+/*    p->addModel(modelSimpleFilter);
     p->addModel(modelMS20Filter);
     p->addModel(modelAlmaFilter);
     p->addModel(modelReShaper);
     p->addModel(modelWestcoast);
     p->addModel(modelQuickMix);
     p->addModel(modelDiodeVCF);
-    p->addModel(modelType35);
     p->addModel(modelTestDriver);
     p->addModel(modelEchoBox);
     p->addModel(modelVCO);
@@ -27,5 +28,5 @@ void init(Plugin *p) {
     p->addModel(modelBlankPanel);
     p->addModel(modelBlankPanelEmpty);
     p->addModel(modelBlankPanelSmall);
-    p->addModel(modelBlankPanelWood);
+    p->addModel(modelBlankPanelWood);*/
 }
