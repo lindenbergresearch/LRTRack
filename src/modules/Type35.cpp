@@ -193,9 +193,9 @@ struct Type35Widget : LRModuleWidget {
 
 
 Type35Widget::Type35Widget(Type35 *module) : LRModuleWidget(module) {
-    panel->addSVGVariant(LRGestalt::DARK, SVG::load(assetPlugin(plugin, "res/panels/Type35VCF.svg")));
-    panel->addSVGVariant(LRGestalt::LIGHT, SVG::load(assetPlugin(plugin, "res/panels/Type35VCFLight.svg")));
-    panel->addSVGVariant(LRGestalt::AGED, SVG::load(assetPlugin(plugin, "res/panels/Type35VCFAged.svg")));
+    panel->addSVGVariant(LRGestalt::DARK, SVG::load(assetPlugin(pluginInstance, "res/panels/Type35VCF.svg")));
+    panel->addSVGVariant(LRGestalt::LIGHT, SVG::load(assetPlugin(pluginInstance, "res/panels/Type35VCFLight.svg")));
+    panel->addSVGVariant(LRGestalt::AGED, SVG::load(assetPlugin(pluginInstance, "res/panels/Type35VCFAged.svg")));
 
     panel->init();
     addChild(panel);

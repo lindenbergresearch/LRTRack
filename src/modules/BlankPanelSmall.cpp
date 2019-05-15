@@ -127,9 +127,9 @@ void BlankPanelSmall::createPorts() {
 
 
 BlankPanelWidgetSmall::BlankPanelWidgetSmall(BlankPanelSmall *module) : LRModuleWidget(module) {
-    panel->addSVGVariant(LRGestalt::DARK, SVG::load(assetPlugin(plugin, "res/panels/BlankPanelSmall.svg")));
-    panel->addSVGVariant(LRGestalt::LIGHT, SVG::load(assetPlugin(plugin, "res/panels/BlankPanelSmallLight.svg")));
-    panel->addSVGVariant(LRGestalt::AGED, SVG::load(assetPlugin(plugin, "res/panels/BlankPanelSmallAged.svg")));
+    panel->addSVGVariant(LRGestalt::DARK, SVG::load(assetPlugin(pluginInstance, "res/panels/BlankPanelSmall.svg")));
+    panel->addSVGVariant(LRGestalt::LIGHT, SVG::load(assetPlugin(pluginInstance, "res/panels/BlankPanelSmallLight.svg")));
+    panel->addSVGVariant(LRGestalt::AGED, SVG::load(assetPlugin(pluginInstance, "res/panels/BlankPanelSmallAged.svg")));
 
     panel->init();
     addChild(panel);

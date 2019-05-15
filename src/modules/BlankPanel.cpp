@@ -42,9 +42,9 @@ struct BlankPanelWidget : LRModuleWidget {
 
 
 BlankPanelWidget::BlankPanelWidget(BlankPanel *module) : LRModuleWidget(module) {
-    panel->addSVGVariant(LRGestalt::DARK, SVG::load(assetPlugin(plugin, "res/panels/BlankPanel.svg")));
-    panel->addSVGVariant(LRGestalt::LIGHT, SVG::load(assetPlugin(plugin, "res/panels/BlankPanelLight.svg")));
-    panel->addSVGVariant(LRGestalt::AGED, SVG::load(assetPlugin(plugin, "res/panels/BlankPanelLight.svg")));
+    panel->addSVGVariant(LRGestalt::DARK, SVG::load(assetPlugin(pluginInstance, "res/panels/BlankPanel.svg")));
+    panel->addSVGVariant(LRGestalt::LIGHT, SVG::load(assetPlugin(pluginInstance, "res/panels/BlankPanelLight.svg")));
+    panel->addSVGVariant(LRGestalt::AGED, SVG::load(assetPlugin(pluginInstance, "res/panels/BlankPanelLight.svg")));
 
     gestalt = LRGestalt::AGED;
     patina = true;
@@ -64,9 +64,11 @@ BlankPanelWidget::BlankPanelWidget(BlankPanel *module) : LRModuleWidget(module) 
 
     float speed = 0.007;
 
-    addChild(SVGRotator::create(Vec(105.5, 55), SVG::load(assetPlugin(plugin, "res/elements/CogBig.svg")), speed, 0.7, 0.4));
-    addChild(SVGRotator::create(Vec(139, 43.7), SVG::load(assetPlugin(plugin, "res/elements/CogMiddle.svg")), speed * 1.9f, 0.7, 0.4));
-    addChild(SVGRotator::create(Vec(120, 40), SVG::load(assetPlugin(plugin, "res/elements/CogSmall.svg")), -speed * 1.3f, 0.7, 0.4));
+    addChild(SVGRotator::create(Vec(105.5, 55), SVG::load(assetPlugin(pluginInstance, "res/elements/CogBig.svg")), speed, 0.7, 0.4));
+    addChild(SVGRotator::create(Vec(139, 43.7), SVG::load(assetPlugin(pluginInstance, "res/elements/CogMiddle.svg")), speed * 1.9f, 0.7,
+                                0.4));
+    addChild(
+            SVGRotator::create(Vec(120, 40), SVG::load(assetPlugin(pluginInstance, "res/elements/CogSmall.svg")), -speed * 1.3f, 0.7, 0.4));
 
 
     // ***** SCREWS **********

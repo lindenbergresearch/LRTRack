@@ -149,9 +149,9 @@ struct VCOWidget : LRModuleWidget {
 
 
 VCOWidget::VCOWidget(VCO *module) : LRModuleWidget(module) {
-    panel->addSVGVariant(LRGestalt::DARK, SVG::load(assetPlugin(plugin, "res/panels/VCO.svg")));
-    panel->addSVGVariant(LRGestalt::LIGHT, SVG::load(assetPlugin(plugin, "res/panels/Woldemar.svg")));
-    panel->addSVGVariant(LRGestalt::AGED, SVG::load(assetPlugin(plugin, "res/panels/WoldemarAged.svg")));
+    panel->addSVGVariant(LRGestalt::DARK, SVG::load(assetPlugin(pluginInstance, "res/panels/VCO.svg")));
+    panel->addSVGVariant(LRGestalt::LIGHT, SVG::load(assetPlugin(pluginInstance, "res/panels/Woldemar.svg")));
+    panel->addSVGVariant(LRGestalt::AGED, SVG::load(assetPlugin(pluginInstance, "res/panels/WoldemarAged.svg")));
 
     panel->init();
     box.size = panel->box.size;

@@ -102,9 +102,9 @@ struct MS20FilterWidget : LRModuleWidget {
 
 
 MS20FilterWidget::MS20FilterWidget(MS20Filter *module) : LRModuleWidget(module) {
-    panel->addSVGVariant(LRGestalt::DARK, SVG::load(assetPlugin(plugin, "res/panels/MS20.svg")));
-    panel->addSVGVariant(LRGestalt::LIGHT, SVG::load(assetPlugin(plugin, "res/panels/MS20Light.svg")));
-    panel->addSVGVariant(LRGestalt::AGED, SVG::load(assetPlugin(plugin, "res/panels/MS20Aged.svg")));
+    panel->addSVGVariant(LRGestalt::DARK, SVG::load(assetPlugin(pluginInstance, "res/panels/MS20.svg")));
+    panel->addSVGVariant(LRGestalt::LIGHT, SVG::load(assetPlugin(pluginInstance, "res/panels/MS20Light.svg")));
+    panel->addSVGVariant(LRGestalt::AGED, SVG::load(assetPlugin(pluginInstance, "res/panels/MS20Aged.svg")));
 
     panel->init();
     addChild(panel);

@@ -238,7 +238,7 @@ struct SpeckDisplay : TransparentWidget {
 
 
     SpeckDisplay() {
-        font = Font::load(assetPlugin(plugin, "res/ibm-plex-mono/IBMPlexMono-Medium.ttf"));
+        font = Font::load(assetPlugin(pluginInstance, "res/ibm-plex-mono/IBMPlexMono-Medium.ttf"));
     }
 
 
@@ -499,7 +499,7 @@ struct SpeckWidget : LRModuleWidget {
 
 
 SpeckWidget::SpeckWidget(Speck *module) : LRModuleWidget(module) {
-    panel->addSVGVariant(LRGestalt::DARK, SVG::load(assetPlugin(plugin, "res/panels/SpeckAnalyzer.svg")));
+    panel->addSVGVariant(LRGestalt::DARK, SVG::load(assetPlugin(pluginInstance, "res/panels/SpeckAnalyzer.svg")));
     // panel->addSVGVariant(SVG::load(assetPlugin(plugin, "res/panels/SpeckAnalyzer.svg")));
     // panel->addSVGVariant(SVG::load(assetPlugin(plugin, "res/panels/SpeckAnalyzer.svg")));
 

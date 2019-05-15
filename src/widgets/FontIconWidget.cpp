@@ -7,7 +7,7 @@ using namespace lrt;
 
 
 FontIconWidget::FontIconWidget(float fontSize, NVGcolor color) {
-    iconFont = Font::load(assetPlugin(plugin, ICON_FONT_GLYPHYX));
+    iconFont = Font::load(assetPlugin(pluginInstance, ICON_FONT_GLYPHYX));
     FontIconWidget::fontSize = fontSize;
     FontIconWidget::color = color;
 }

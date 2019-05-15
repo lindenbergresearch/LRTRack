@@ -102,7 +102,7 @@ struct EchoBoxWidget : LRModuleWidget {
 
 
 EchoBoxWidget::EchoBoxWidget(EchoBox *module) : LRModuleWidget(module) {
-    panel->addSVGVariant(LRGestalt::DARK, SVG::load(assetPlugin(plugin, "res/panels/EchoBox.svg")));
+    panel->addSVGVariant(LRGestalt::DARK, SVG::load(assetPlugin(pluginInstance, "res/panels/EchoBox.svg")));
     // panel->addSVGVariant(LRGestalt::LIGHT, SVG::load(assetPlugin(plugin, "res/panels/DiodeLadderVCF.svg")));
     //  panel->addSVGVariant(LRGestalt::AGED, SVG::load(assetPlugin(plugin, "res/panels/DiodeLadderVCFAged.svg")));
 

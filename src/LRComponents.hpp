@@ -31,7 +31,7 @@ using std::string;
 using std::map;
 
 
-extern Plugin *plugin;
+extern Plugin *pluginInstance;
 
 namespace lrt {
 
@@ -381,11 +381,11 @@ struct LRToggleKnob : LRKnob {
         minAngle = -0.666666f * (float) M_PI;
         maxAngle = length * (float) M_PI;
 
-        setSVG(SVG::load(assetPlugin(plugin, "res/knobs/ToggleKnob.svg")));
+        setSVG(SVG::load(assetPlugin(pluginInstance, "res/knobs/ToggleKnob.svg")));
 
-        addSVGVariant(LRGestalt::DARK, SVG::load(assetPlugin(plugin, "res/knobs/ToggleKnob.svg")));
-        addSVGVariant(LRGestalt::LIGHT, SVG::load(assetPlugin(plugin, "res/knobs/AlternateToggleKnobLight.svg")));
-        addSVGVariant(LRGestalt::AGED, SVG::load(assetPlugin(plugin, "res/knobs/AlternateToggleKnobLight.svg")));
+        addSVGVariant(LRGestalt::DARK, SVG::load(assetPlugin(pluginInstance, "res/knobs/ToggleKnob.svg")));
+        addSVGVariant(LRGestalt::LIGHT, SVG::load(assetPlugin(pluginInstance, "res/knobs/AlternateToggleKnobLight.svg")));
+        addSVGVariant(LRGestalt::AGED, SVG::load(assetPlugin(pluginInstance, "res/knobs/AlternateToggleKnobLight.svg")));
 
 
         speed = 2.f;
@@ -432,11 +432,11 @@ struct LRToggleKnob : LRKnob {
  */
 struct LRBigKnob : LRKnob {
     LRBigKnob() {
-        setSVG(SVG::load(assetPlugin(plugin, "res/knobs/BigKnob.svg")));
+        setSVG(SVG::load(assetPlugin(pluginInstance, "res/knobs/BigKnob.svg")));
 
-        addSVGVariant(LRGestalt::DARK, SVG::load(assetPlugin(plugin, "res/knobs/BigKnob.svg")));
-        addSVGVariant(LRGestalt::LIGHT, SVG::load(assetPlugin(plugin, "res/knobs/AlternateBigLight.svg")));
-        addSVGVariant(LRGestalt::AGED, SVG::load(assetPlugin(plugin, "res/knobs/AlternateBigLight.svg")));
+        addSVGVariant(LRGestalt::DARK, SVG::load(assetPlugin(pluginInstance, "res/knobs/BigKnob.svg")));
+        addSVGVariant(LRGestalt::LIGHT, SVG::load(assetPlugin(pluginInstance, "res/knobs/AlternateBigLight.svg")));
+        addSVGVariant(LRGestalt::AGED, SVG::load(assetPlugin(pluginInstance, "res/knobs/AlternateBigLight.svg")));
     }
 
 
@@ -480,11 +480,11 @@ struct LRBigKnob : LRKnob {
  */
 struct LRMiddleKnob : LRKnob {
     LRMiddleKnob() {
-        setSVG(SVG::load(assetPlugin(plugin, "res/knobs/MiddleKnob.svg")));
+        setSVG(SVG::load(assetPlugin(pluginInstance, "res/knobs/MiddleKnob.svg")));
 
-        addSVGVariant(LRGestalt::DARK, SVG::load(assetPlugin(plugin, "res/knobs/MiddleKnob.svg")));
-        addSVGVariant(LRGestalt::LIGHT, SVG::load(assetPlugin(plugin, "res/knobs/AlternateMiddleLight.svg")));
-        addSVGVariant(LRGestalt::AGED, SVG::load(assetPlugin(plugin, "res/knobs/AlternateMiddleLight.svg")));
+        addSVGVariant(LRGestalt::DARK, SVG::load(assetPlugin(pluginInstance, "res/knobs/MiddleKnob.svg")));
+        addSVGVariant(LRGestalt::LIGHT, SVG::load(assetPlugin(pluginInstance, "res/knobs/AlternateMiddleLight.svg")));
+        addSVGVariant(LRGestalt::AGED, SVG::load(assetPlugin(pluginInstance, "res/knobs/AlternateMiddleLight.svg")));
     }
 
 
@@ -528,11 +528,11 @@ struct LRMiddleKnob : LRKnob {
  */
 struct LRSmallKnob : LRKnob {
     LRSmallKnob() {
-        setSVG(SVG::load(assetPlugin(plugin, "res/knobs/SmallKnob.svg")));
+        setSVG(SVG::load(assetPlugin(pluginInstance, "res/knobs/SmallKnob.svg")));
 
-        addSVGVariant(LRGestalt::DARK, SVG::load(assetPlugin(plugin, "res/knobs/SmallKnob.svg")));
-        addSVGVariant(LRGestalt::LIGHT, SVG::load(assetPlugin(plugin, "res/knobs/AlternateSmallLight.svg")));
-        addSVGVariant(LRGestalt::AGED, SVG::load(assetPlugin(plugin, "res/knobs/AlternateSmallLight.svg")));
+        addSVGVariant(LRGestalt::DARK, SVG::load(assetPlugin(pluginInstance, "res/knobs/SmallKnob.svg")));
+        addSVGVariant(LRGestalt::LIGHT, SVG::load(assetPlugin(pluginInstance, "res/knobs/AlternateSmallLight.svg")));
+        addSVGVariant(LRGestalt::AGED, SVG::load(assetPlugin(pluginInstance, "res/knobs/AlternateSmallLight.svg")));
 
         setSnap(0.0f, 0.02f);
         speed = 0.9f;
@@ -581,11 +581,11 @@ struct LRSmallToggleKnob : LRKnob {
         minAngle = -length * (float) M_PI;
         maxAngle = length * (float) M_PI;
 
-        setSVG(SVG::load(assetPlugin(plugin, "res/knobs/AlternateSmallToggle.svg")));
+        setSVG(SVG::load(assetPlugin(pluginInstance, "res/knobs/AlternateSmallToggle.svg")));
 
-        addSVGVariant(LRGestalt::DARK, SVG::load(assetPlugin(plugin, "res/knobs/AlternateSmallToggle.svg")));
-        addSVGVariant(LRGestalt::LIGHT, SVG::load(assetPlugin(plugin, "res/knobs/AlternateSmallToggleLight.svg")));
-        addSVGVariant(LRGestalt::AGED, SVG::load(assetPlugin(plugin, "res/knobs/AlternateSmallToggleLight.svg")));
+        addSVGVariant(LRGestalt::DARK, SVG::load(assetPlugin(pluginInstance, "res/knobs/AlternateSmallToggle.svg")));
+        addSVGVariant(LRGestalt::LIGHT, SVG::load(assetPlugin(pluginInstance, "res/knobs/AlternateSmallToggleLight.svg")));
+        addSVGVariant(LRGestalt::AGED, SVG::load(assetPlugin(pluginInstance, "res/knobs/AlternateSmallToggleLight.svg")));
 
         speed = 3.0;
     }
@@ -635,7 +635,7 @@ struct LRSmallToggleKnob : LRKnob {
  */
 struct LRAlternateMiddleLight : LRKnob {
     LRAlternateMiddleLight() {
-        setSVG(SVG::load(assetPlugin(plugin, "res/knobs/AlternateMiddleLight.svg")));
+        setSVG(SVG::load(assetPlugin(pluginInstance, "res/knobs/AlternateMiddleLight.svg")));
         setIndicatorDistance(11);
         setIndicatorShape(4.3, 0.11);
 
@@ -658,7 +658,7 @@ private:
 
 public:
     LRIOPortBLight() {
-        background->svg = SVG::load(assetPlugin(plugin, "res/elements/IOPortBLight.svg"));
+        background->svg = SVG::load(assetPlugin(pluginInstance, "res/elements/IOPortBLight.svg"));
         background->wrap();
         box.size = background->box.size;
 
@@ -753,9 +753,9 @@ public:
  */
 struct LRIOPortAudio : LRIOPortD {
     LRIOPortAudio() : LRIOPortD() {
-        addSVGVariant(DARK, SVG::load(assetPlugin(plugin, "res/elements/IOPortB.svg")));
-        addSVGVariant(LIGHT, SVG::load(assetPlugin(plugin, "res/elements/IOPortBLight.svg")));
-        addSVGVariant(AGED, SVG::load(assetPlugin(plugin, "res/elements/IOPortBLight.svg")));
+        addSVGVariant(DARK, SVG::load(assetPlugin(pluginInstance, "res/elements/IOPortB.svg")));
+        addSVGVariant(LIGHT, SVG::load(assetPlugin(pluginInstance, "res/elements/IOPortBLight.svg")));
+        addSVGVariant(AGED, SVG::load(assetPlugin(pluginInstance, "res/elements/IOPortBLight.svg")));
     }
 };
 
@@ -765,9 +765,9 @@ struct LRIOPortAudio : LRIOPortD {
  */
 struct LRIOPortCV : LRIOPortD {
     LRIOPortCV() : LRIOPortD() {
-        addSVGVariant(DARK, SVG::load(assetPlugin(plugin, "res/elements/IOPortC.svg")));
-        addSVGVariant(LIGHT, SVG::load(assetPlugin(plugin, "res/elements/IOPortCLight.svg")));
-        addSVGVariant(AGED, SVG::load(assetPlugin(plugin, "res/elements/IOPortCLight.svg")));
+        addSVGVariant(DARK, SVG::load(assetPlugin(pluginInstance, "res/elements/IOPortC.svg")));
+        addSVGVariant(LIGHT, SVG::load(assetPlugin(pluginInstance, "res/elements/IOPortCLight.svg")));
+        addSVGVariant(AGED, SVG::load(assetPlugin(pluginInstance, "res/elements/IOPortCLight.svg")));
     }
 };
 
@@ -777,14 +777,14 @@ struct LRIOPortCV : LRIOPortD {
  */
 struct ScrewLight : SVGScrew, LRGestaltVariant, LRGestaltChangeAction {
     ScrewLight() {
-        sw->svg = SVG::load(assetPlugin(plugin, "res/elements/ScrewLight.svg"));
+        sw->svg = SVG::load(assetPlugin(pluginInstance, "res/elements/ScrewLight.svg"));
         sw->wrap();
         box.size = sw->box.size;
 
 
-        addSVGVariant(LRGestalt::DARK, SVG::load(assetPlugin(plugin, "res/elements/ScrewDarkC.svg")));
-        addSVGVariant(LRGestalt::LIGHT, SVG::load(assetPlugin(plugin, "res/elements/ScrewDarkLightC.svg")));
-        addSVGVariant(LRGestalt::AGED, SVG::load(assetPlugin(plugin, "res/elements/ScrewDarkLightC.svg")));
+        addSVGVariant(LRGestalt::DARK, SVG::load(assetPlugin(pluginInstance, "res/elements/ScrewDarkC.svg")));
+        addSVGVariant(LRGestalt::LIGHT, SVG::load(assetPlugin(pluginInstance, "res/elements/ScrewDarkLightC.svg")));
+        addSVGVariant(LRGestalt::AGED, SVG::load(assetPlugin(pluginInstance, "res/elements/ScrewDarkLightC.svg")));
     }
 
 
@@ -803,7 +803,7 @@ struct ScrewLight : SVGScrew, LRGestaltVariant, LRGestaltChangeAction {
  */
 struct ScrewDarkB : SVGScrew {
     ScrewDarkB() {
-        sw->svg = SVG::load(assetPlugin(plugin, "res/elements/ScrewDarkB.svg"));
+        sw->svg = SVG::load(assetPlugin(pluginInstance, "res/elements/ScrewDarkB.svg"));
         sw->wrap();
         box.size = sw->box.size;
     }
@@ -815,8 +815,8 @@ struct ScrewDarkB : SVGScrew {
  */
 struct LRSwitch : SVGSwitch, ToggleSwitch {
     LRSwitch() {
-        addFrame(SVG::load(assetPlugin(plugin, "res/elements/Switch0.svg")));
-        addFrame(SVG::load(assetPlugin(plugin, "res/elements/Switch1.svg")));
+        addFrame(SVG::load(assetPlugin(pluginInstance, "res/elements/Switch0.svg")));
+        addFrame(SVG::load(assetPlugin(pluginInstance, "res/elements/Switch1.svg")));
     }
 };
 

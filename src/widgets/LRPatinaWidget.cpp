@@ -26,7 +26,7 @@ using std::string;
  */
 LRPatinaWidget::LRPatinaWidget(const string &filename, const Vec &size) {
     svg = new SVGWidget();
-    svg->setSVG(SVG::load(assetPlugin(plugin, filename)));
+    svg->setSVG(SVG::load(assetPlugin(pluginInstance, filename)));
 
     addChild(svg);
     box.size = size;

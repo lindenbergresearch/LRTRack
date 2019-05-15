@@ -139,7 +139,7 @@ struct SimpleFilterWidget : LRModuleWidget {
 
 
 SimpleFilterWidget::SimpleFilterWidget(SimpleFilter *module) : LRModuleWidget(module) {
-    panel->addSVGVariant(LRGestalt::DARK, SVG::load(assetPlugin(plugin, "res/panels/SimpleFilter.svg")));
+    panel->addSVGVariant(LRGestalt::DARK, SVG::load(assetPlugin(pluginInstance, "res/panels/SimpleFilter.svg")));
     //panel->addSVGVariant(SVG::load(assetPlugin(plugin, "res/panels/SimpleFilter.svg")));
     // panel->addSVGVariant(SVG::load(assetPlugin(plugin, "res/panels/SimpleFilter.svg")));
 

@@ -102,7 +102,7 @@ struct BlankPanelWidgetWood : LRModuleWidget {
 
 
 BlankPanelWidgetWood::BlankPanelWidgetWood(BlankPanelWood *module) : LRModuleWidget(module) {
-    panel->addSVGVariant(LRGestalt::DARK, SVG::load(assetPlugin(plugin, "res/panels/WoodLeftTop.svg")));
+    panel->addSVGVariant(LRGestalt::DARK, SVG::load(assetPlugin(pluginInstance, "res/panels/WoodLeftTop.svg")));
     // panel->addSVGVariant(SVG::load(assetPlugin(plugin, "res/panels/WoodLeftTop.svg")));
     // panel->addSVGVariant(SVG::load(assetPlugin(plugin, "res/panels/WoodLeftTop.svg")));
 
@@ -125,11 +125,11 @@ BlankPanelWidgetWood::BlankPanelWidgetWood(BlankPanelWood *module) : LRModuleWid
     panel->addChild(gradientDark);
 
     module->patina = new SVGWidget();
-    module->patina->setSVG(SVG::load(assetPlugin(plugin, "res/panels/WoodPatina.svg")));
+    module->patina->setSVG(SVG::load(assetPlugin(pluginInstance, "res/panels/WoodPatina.svg")));
     panel->addChild(module->patina);
 
     module->logoStamp = new SVGWidget();
-    module->logoStamp->setSVG(SVG::load(assetPlugin(plugin, "res/elements/LogoSmallPlate.svg")));
+    module->logoStamp->setSVG(SVG::load(assetPlugin(pluginInstance, "res/elements/LogoSmallPlate.svg")));
     module->logoStamp->box.pos = Vec(8.5, 348.8);
     addChild(module->logoStamp);
 

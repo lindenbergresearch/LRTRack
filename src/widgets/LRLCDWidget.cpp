@@ -14,16 +14,16 @@ LRLCDWidget::LRLCDWidget(unsigned char length, std::string format, LCDType type,
     tw->addChild(sw);
 
     /** load LCD ttf font */
-    ttfLCDDIG7 = Font::load(assetPlugin(plugin, LCD_FONT_DIG7));
+    ttfLCDDIG7 = Font::load(assetPlugin(pluginInstance, LCD_FONT_DIG7));
     LRLCDWidget::fontsize = fontsize;
     LRLCDWidget::type = type;
     LRLCDWidget::length = length;
     LRLCDWidget::format = format;
     LRLCDWidget::fg = LCD_DEFAULT_COLOR_DARK;
 
-    addSVGVariant(LRGestalt::DARK, SVG::load(assetPlugin(plugin, "res/elements/LCDFrameDark.svg")));
-    addSVGVariant(LRGestalt::LIGHT, SVG::load(assetPlugin(plugin, "res/elements/LCDFrameLight.svg")));
-    addSVGVariant(LRGestalt::AGED, SVG::load(assetPlugin(plugin, "res/elements/LCDFrameAged.svg")));
+    addSVGVariant(LRGestalt::DARK, SVG::load(assetPlugin(pluginInstance, "res/elements/LCDFrameDark.svg")));
+    addSVGVariant(LRGestalt::LIGHT, SVG::load(assetPlugin(pluginInstance, "res/elements/LCDFrameLight.svg")));
+    addSVGVariant(LRGestalt::AGED, SVG::load(assetPlugin(pluginInstance, "res/elements/LCDFrameAged.svg")));
 
     for (int i = 0; i < LRLCDWidget::length; ++i) {
         s1.append("O");
