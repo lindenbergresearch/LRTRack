@@ -3,16 +3,18 @@
 #include <cmath>
 #include "rack.hpp"
 #include "asset.hpp"
-#include "widgets.hpp"
 #include "LRComponents.hpp"
 
 using namespace rack;
 using namespace lrt;
 
-// Forward-declare the Plugin, defined in Template.cpp
-extern Plugin *plugin;
+extern Plugin *pluginInstance;
 
-extern Model *modelSimpleFilter;
+
+extern Model *modelType35;
+
+
+/*extern Model *modelSimpleFilter;
 extern Model *modelMS20Filter;
 extern Model *modelAlmaFilter;
 extern Model *modelReShaper;
@@ -27,4 +29,4 @@ extern Model *modelDiodeVCF;
 extern Model *modelType35;
 extern Model *modelTestDriver;
 extern Model *modelEchoBox;
-//extern Model *modelSpeck;
+extern Model *modelSpeck;*/
