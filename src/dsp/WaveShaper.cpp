@@ -1,7 +1,7 @@
 
 #include "WaveShaper.hpp"
 
-using namespace dsp;
+using namespace lrt;
 
 
 double WaveShaper::getIn() const {

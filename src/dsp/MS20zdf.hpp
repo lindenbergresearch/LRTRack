@@ -3,7 +3,7 @@
 #include "DSPSystem.hpp"
 #include "DSPMath.hpp"
 
-namespace dsp {
+namespace lrt {
 
 
 /**

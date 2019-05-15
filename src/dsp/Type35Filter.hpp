@@ -23,7 +23,7 @@
 #include "engine.hpp"
 #include "DSPMath.hpp"
 
-namespace dsp {
+namespace lrt {
 
 /**
  * @brief Represents one filter stage

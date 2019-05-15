@@ -20,7 +20,7 @@
 
 #include "DSPEffect.hpp"
 
-namespace dsp {
+namespace lrt {
 
 enum BiquadType {
     LOWPASS = 0,

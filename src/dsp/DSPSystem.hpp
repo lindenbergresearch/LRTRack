@@ -6,7 +6,7 @@
  * @brief Basic DSP types
  */
 
-namespace dsp {
+namespace lrt {
 
 /**
  * @brief Represents an IOPort of a DSP system

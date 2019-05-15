@@ -38,7 +38,7 @@ struct AlmaFilter : LRModule {
         NUM_LIGHTS
     };
 
-    dsp::LadderFilter *filter = new dsp::LadderFilter(engineGetSampleRate());
+    lrt::LadderFilter *filter = new lrt::LadderFilter(engineGetSampleRate());
 
     LRBigKnob *frqKnob = NULL;
     LRMiddleKnob *peakKnob = NULL;

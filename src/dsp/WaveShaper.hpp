@@ -7,7 +7,7 @@
 #define SHAPER_MAX_VOLTS 15.0
 #define DCBLOCK_ALPHA 0.999
 
-namespace dsp {
+namespace lrt {
 
 /**
  * @brief Basic WaveShaper class with build-in dynamic oversampling

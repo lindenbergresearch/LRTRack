@@ -6,7 +6,7 @@
 
 static const int OVERSAMPLE = 2;
 static const int FEEDBACK_LIMITER_GAIN = 25;
-namespace dsp {
+namespace lrt {
 
 struct DiodeLadderStage : DSPEffect {
 

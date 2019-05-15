@@ -1,7 +1,7 @@
 #include "DSPMath.hpp"
 #include "Oscillator.hpp"
 
-using namespace dsp;
+using namespace lrt;
 
 
 /**

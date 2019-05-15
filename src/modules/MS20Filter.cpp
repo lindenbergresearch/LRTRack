@@ -37,7 +37,7 @@ struct MS20Filter : LRModule {
         NUM_LIGHTS
     };
 
-    dsp::MS20zdf *ms20zdf = new dsp::MS20zdf(engineGetSampleRate());
+    lrt::MS20zdf *ms20zdf = new lrt::MS20zdf(engineGetSampleRate());
 
     LRBigKnob *frqKnob = NULL;
     LRMiddleKnob *peakKnob = NULL;

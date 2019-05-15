@@ -26,7 +26,7 @@
  * @param sr SampleRate
  * @param type Lowpass / Highpass
  */
-dsp::Type35FilterStage::Type35FilterStage(float sr, FilterType type) : DSPEffect(sr) {
+lrt::Type35FilterStage::Type35FilterStage(float sr, FilterType type) : DSPEffect(sr) {
     this->type = type;
 }
 
@@ -34,7 +34,7 @@ dsp::Type35FilterStage::Type35FilterStage(float sr, FilterType type) : DSPEffect
 /**
  * @brief Init stage
  */
-void dsp::Type35FilterStage::init() {
+void lrt::Type35FilterStage::init() {
     type = LP_STAGE;
     alpha = 1.f;
     beta = 1.f;
@@ -46,7 +46,7 @@ void dsp::Type35FilterStage::init() {
 /**
  * @brief Recompute filter parameter
  */
-void dsp::Type35FilterStage::invalidate() {
+void lrt::Type35FilterStage::invalidate() {
     // only process in dedicated mode
     if (!dedicated) return;
 
@@ -62,7 +62,7 @@ void dsp::Type35FilterStage::invalidate() {
 /**
  * @brief Update filter and compute next sample
  */
-void dsp::Type35FilterStage::process() {
+void lrt::Type35FilterStage::process() {
     // v(n)
     float vn = (in - zn1) * alpha;
 
@@ -85,7 +85,7 @@ void dsp::Type35FilterStage::process() {
 /**
  * @brief Init main filter
  */
-void dsp::Type35Filter::init() {
+void lrt::Type35Filter::init() {
     fc = sr / 2.f;
     peak = 0.f;
 
@@ -104,7 +104,7 @@ void dsp::Type35Filter::init() {
 /**
  * @brief Recompute filter parameter
  */
-void dsp::Type35Filter::invalidate() {
+void lrt::Type35Filter::invalidate() {
     float frqHz;
 
     fc = clamp(fc, 0.f, 1.1f);
@@ -150,7 +150,7 @@ void dsp::Type35Filter::invalidate() {
 /**
  * @brief Compute next sample for output depending on filter type
  */
-void dsp::Type35Filter::process() {
+void lrt::Type35Filter::process() {
     type == LPF ? processLPF() : processHPF();
 }
 
@@ -158,7 +158,7 @@ void dsp::Type35Filter::process() {
 /**
  * @brief Do the lowpass filtering and oversampling
  */
-void dsp::Type35Filter::processLPF() {
+void lrt::Type35Filter::processLPF() {
     lpf1->in = in + noise.getNext(NOISE_GAIN);;
     lpf1->process();
     float y1 = lpf1->out;
@@ -191,7 +191,7 @@ void dsp::Type35Filter::processLPF() {
 /**
  * @brief Do the highpass filtering and oversampling
  */
-void dsp::Type35Filter::processHPF() {
+void lrt::Type35Filter::processHPF() {
     hpf1->in = in + noise.getNext(NOISE_GAIN);
     hpf1->process();
     float y1 = hpf1->out;
@@ -219,7 +219,7 @@ void dsp::Type35Filter::processHPF() {
  * @brief Update samplerate
  * @param sr SR
  */
-void dsp::Type35Filter::setSamplerate(float sr) {
+void lrt::Type35Filter::setSamplerate(float sr) {
     DSPEffect::setSamplerate(sr * OVERSAMPLE);
 
     // derive samplerate change
@@ -235,7 +235,7 @@ void dsp::Type35Filter::setSamplerate(float sr) {
 /**
  * @brief Top function which handles the oversampling
  */
-void dsp::Type35Filter::process2() {
+void lrt::Type35Filter::process2() {
     rs->doUpsample(IN, in);
 
     for (int i = 0; i < rs->getFactor(); i++) {

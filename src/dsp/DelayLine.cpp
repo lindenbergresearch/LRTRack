@@ -21,14 +21,14 @@
 #include "DSPEffect.hpp"
 
 
-void dsp::DelayLine::init() {
+void lrt::DelayLine::init() {
     /* one second max delay */
     buffer = DelayBuffer::create<DelayBuffer>((int) sr, fb, delay);
     buffer->clear();
 }
 
 
-void dsp::DelayLine::invalidate() {
+void lrt::DelayLine::invalidate() {
     DSPEffect::invalidate();
 
     buffer->fb = fb;
@@ -36,19 +36,19 @@ void dsp::DelayLine::invalidate() {
 }
 
 
-void dsp::DelayLine::process() {
+void lrt::DelayLine::process() {
     DSPEffect::process();
 
     out = buffer->feed(in);
 }
 
 
-dsp::DelayLine::DelayLine(float sr) : DSPEffect(sr) {
+lrt::DelayLine::DelayLine(float sr) : DSPEffect(sr) {
     init();
 }
 
 
-float dsp::DelayBuffer::feed(float in) {
+float lrt::DelayBuffer::feed(float in) {
     // calculate delay offset
     double back = (double) counter - delay;
 

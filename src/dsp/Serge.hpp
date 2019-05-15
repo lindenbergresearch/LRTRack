@@ -10,7 +10,7 @@
 
 #define SERGE_THRESHOLD 10e-10
 
-namespace dsp {
+namespace lrt {
 
 struct SergeWFStage {
 private:

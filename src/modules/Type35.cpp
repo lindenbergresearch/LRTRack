@@ -16,6 +16,7 @@
 **                                                                     **
 \*                                                                     */
 
+#include <rack0.hpp>
 #include "../LindenbergResearch.hpp"
 #include "../LRModel.hpp"
 #include "../dsp/Type35Filter.hpp"
@@ -24,7 +25,7 @@
 using namespace rack;
 using namespace lrt;
 
-using dsp::Type35Filter;
+using lrt::Type35Filter;
 
 
 struct Type35 : LRModule {

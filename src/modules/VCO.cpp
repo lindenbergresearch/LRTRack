@@ -5,7 +5,7 @@
 using namespace rack;
 using namespace lrt;
 
-using dsp::DSPBLOscillator;
+using lrt::DSPBLOscillator;
 
 
 struct VCO : LRModule {

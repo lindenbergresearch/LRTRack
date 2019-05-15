@@ -22,7 +22,7 @@
 #include <limits>
 
 
-namespace dsp {
+namespace lrt {
 
 template<int branch>
 double LambertW(const double x);

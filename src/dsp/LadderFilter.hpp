@@ -5,7 +5,7 @@
 #include "engine.hpp"
 #include "DSPMath.hpp"
 
-namespace dsp {
+namespace lrt {
 
 struct LadderFilter : DSPEffect {
 

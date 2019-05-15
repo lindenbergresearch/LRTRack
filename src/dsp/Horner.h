@@ -20,7 +20,7 @@
 #pragma once
 
 
-namespace dsp {
+namespace lrt {
 
 template<typename Float, class Tag, unsigned int order>
 struct Polynomial {

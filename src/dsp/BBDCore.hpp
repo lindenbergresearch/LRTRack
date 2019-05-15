@@ -20,7 +20,7 @@
 
 #include "DSPEffect.hpp"
 
-namespace dsp {
+namespace lrt {
 
 /**
  * Interpolation type used for value computation

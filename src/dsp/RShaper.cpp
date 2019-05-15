@@ -1,6 +1,6 @@
 #include "RShaper.hpp"
 
-using namespace dsp;
+using namespace lrt;
 
 
 ReShaper::ReShaper(float sr) : WaveShaper(sr) {

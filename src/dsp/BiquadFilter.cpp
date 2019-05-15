@@ -20,10 +20,10 @@
 #include "BiquadFilter.hpp"
 
 
-void dsp::Biquad::init() {}
+void lrt::Biquad::init() {}
 
 
-dsp::Biquad::Biquad(float sr) : dsp::DSPEffect(sr) {
+lrt::Biquad::Biquad(float sr) : lrt::DSPEffect(sr) {
     type = LOWPASS;
     a0 = 1.0;
     a1 = a2 = b1 = b2 = 0.0;
@@ -35,41 +35,41 @@ dsp::Biquad::Biquad(float sr) : dsp::DSPEffect(sr) {
 }
 
 
-dsp::Biquad::Biquad(BiquadType type, double Fc, double Q, double peakGainDB, float sr) : dsp::DSPEffect(sr) {
+lrt::Biquad::Biquad(BiquadType type, double Fc, double Q, double peakGainDB, float sr) : lrt::DSPEffect(sr) {
     setBiquad(type, Fc, Q, peakGainDB);
     z1 = z2 = 0.0;
 }
 
 
-dsp::Biquad::~Biquad() {
+lrt::Biquad::~Biquad() {
 }
 
 
-void dsp::Biquad::setType(BiquadType type) {
+void lrt::Biquad::setType(BiquadType type) {
     this->type = type;
     invalidate();
 }
 
 
-void dsp::Biquad::setQ(double Q) {
+void lrt::Biquad::setQ(double Q) {
     this->Q = Q;
     invalidate();
 }
 
 
-void dsp::Biquad::setFc(double Fc) {
+void lrt::Biquad::setFc(double Fc) {
     this->Fc = Fc;
     invalidate();
 }
 
 
-void dsp::Biquad::setPeakGain(double peakGainDB) {
+void lrt::Biquad::setPeakGain(double peakGainDB) {
     this->peakGain = peakGainDB;
     invalidate();
 }
 
 
-void dsp::Biquad::setBiquad(BiquadType type, double Fc, double Q, double peakGainDB) {
+void lrt::Biquad::setBiquad(BiquadType type, double Fc, double Q, double peakGainDB) {
     this->type = type;
     this->Q = Q;
     this->Fc = Fc;
@@ -77,7 +77,7 @@ void dsp::Biquad::setBiquad(BiquadType type, double Fc, double Q, double peakGai
 }
 
 
-void dsp::Biquad::invalidate() {
+void lrt::Biquad::invalidate() {
     double norm;
     double V = pow(10, fabs(peakGain) / 20.0);
     double K = tan(M_PI * Fc / sr);

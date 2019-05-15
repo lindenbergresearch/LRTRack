@@ -7,7 +7,7 @@
 using namespace rack;
 using namespace lrt;
 
-using dsp::DiodeLadderFilter;
+using lrt::DiodeLadderFilter;
 
 
 struct DiodeVCF : LRModule {

@@ -7,7 +7,7 @@
 #define UPSAMPLE_COMPENSATION 1.3
 
 
-namespace dsp {
+namespace lrt {
 
 /**
  * @brief Base class for all signal processors

@@ -1,6 +1,6 @@
 #include "Saturator.hpp"
 
-using namespace dsp;
+using namespace lrt;
 
 
 Saturator::Saturator(float sr) : WaveShaper(sr) {

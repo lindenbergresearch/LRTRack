@@ -21,7 +21,7 @@
 
 #include "DSPEffect.hpp"
 
-namespace dsp {
+namespace lrt {
 
 using std::vector;
 

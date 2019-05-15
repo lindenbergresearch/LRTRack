@@ -11,7 +11,7 @@
 #define LOCKHART_THRESHOLD 10e-10
 
 
-namespace dsp {
+namespace lrt {
 
 /**
  * @brief Represents one stage of the Lockhart Wavefolder

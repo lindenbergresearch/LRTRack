@@ -1,6 +1,6 @@
 #include "FastTanWF.hpp"
 
-using namespace dsp;
+using namespace lrt;
 
 
 FastTan::FastTan(float sr) : WaveShaper(sr) {

@@ -1,6 +1,6 @@
 #include "DiodeLadder.hpp"
 
-using namespace dsp;
+using namespace lrt;
 
 
 DiodeLadderStage::DiodeLadderStage(float sr) : DSPEffect(sr) {

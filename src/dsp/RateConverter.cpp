@@ -21,7 +21,7 @@
 #include "RateConverter.hpp"
 
 
-namespace dsp {
+namespace lrt {
 
 RateConverter::RateConverter(void) {
     irBuffer = nullptr;

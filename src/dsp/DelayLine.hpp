@@ -23,7 +23,7 @@
 #include "HQTrig.hpp"
 #include "BiquadFilter.hpp"
 
-namespace dsp {
+namespace lrt {
 
 
 /**

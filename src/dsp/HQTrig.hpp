@@ -4,7 +4,7 @@
 #include "DSPMath.hpp"
 
 
-namespace dsp {
+namespace lrt {
 
 
 struct HQTanh : DSPEffect {

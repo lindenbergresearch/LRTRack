@@ -62,10 +62,10 @@ struct TestDriver : LRModule {
 
     LRLCDWidget *lcd = new LRLCDWidget(10, "%s", LRLCDWidget::LIST, 10);
 
-    dsp::DelayLine *ddlL = new dsp::DelayLine(engineGetSampleRate());
-    dsp::DelayLine *ddlR = new dsp::DelayLine(engineGetSampleRate());
+    lrt::DelayLine *ddlL = new lrt::DelayLine(engineGetSampleRate());
+    lrt::DelayLine *ddlR = new lrt::DelayLine(engineGetSampleRate());
 
-    dsp::IIRFilter *iir, *iir2;
+    lrt::IIRFilter *iir, *iir2;
 
 
     TestDriver() : LRModule(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS) {
@@ -80,7 +80,7 @@ struct TestDriver : LRModule {
         float antiAliasBCoefVals[8] = {1.00000000000000000000, 0.27002485476511250972, -2.35210121584816533868, -0.47624252782494447267,
                                        1.85825180320240179732, 0.30789821629786440216, -0.48145639585378052772, -0.07721597509005941051};
 
-        iir = new dsp::IIRFilter(engineGetSampleRate(), antiAliasACoefVals, antiAliasBCoefVals, 8);
+        iir = new lrt::IIRFilter(engineGetSampleRate(), antiAliasACoefVals, antiAliasBCoefVals, 8);
 
         /* float reconstruction1BCoefVals[6] = {0.00051516013318437094, 0.03041821522444834724, 0.06752981661722373685, 0
                                                .04770540623300938837,
@@ -92,7 +92,7 @@ struct TestDriver : LRModule {
         float reconstruction2ACoefVals[3] = {1.00000000000000000000, -1.75672492751137410139, 0.90805921207607520618};
 
 
-        iir2 = new dsp::IIRFilter(engineGetSampleRate(), reconstruction2BCoefVals, reconstruction2ACoefVals, 3);
+        iir2 = new lrt::IIRFilter(engineGetSampleRate(), reconstruction2BCoefVals, reconstruction2ACoefVals, 3);
 
 
     }

@@ -4,7 +4,7 @@
 
 #define SATURATOR_GAIN 0.05
 
-namespace dsp {
+namespace lrt {
 
 struct Saturator : WaveShaper {
 

@@ -1,7 +1,7 @@
 #include "Lockhart.hpp"
 #include "LambertW.h"
 
-using namespace dsp;
+using namespace lrt;
 
 
 /**
@@ -26,7 +26,7 @@ double LockhartWFStage::compute(double x) {
     // Compute Antiderivative
     l = sign(x);
     u = d * pow(M_E, l * b * x);
-    ln = dsp::LambertW<0>(u);
+    ln = lrt::LambertW<0>(u);
     fn = (0.5 * LOCKHART_VT / b) * (ln * (ln + 2.)) - 0.5 * a * x * x;
 
     // Check for ill-conditioning
@@ -34,7 +34,7 @@ double LockhartWFStage::compute(double x) {
         // Compute Averaged Wavefolder Output
         xn = 0.5 * (x + xn1);
         u = d * pow(M_E, l * b * xn);
-        ln = dsp::LambertW<0>(u);
+        ln = lrt::LambertW<0>(u);
         out = l * LOCKHART_VT * ln - a * xn;
 
     } else {
@@ -59,7 +59,7 @@ LockhartWFStage::LockhartWFStage() {
 
 
 void LockhartWavefolder::init() {
-    dsp::WaveShaper::rs = new dsp::Resampler<1>(1);
+    lrt::WaveShaper::rs = new lrt::Resampler<1>(1);
 }
 
 

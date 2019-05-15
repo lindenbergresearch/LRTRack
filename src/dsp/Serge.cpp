@@ -1,7 +1,7 @@
 #include "Serge.hpp"
 #include "LambertW.h"
 
-using namespace dsp;
+using namespace lrt;
 
 double SergeWFStage::compute(double x) {
     double out;
@@ -9,7 +9,7 @@ double SergeWFStage::compute(double x) {
 
     l = sign(x);
     u = (SERGE_R1 * SERGE_IS) / (SERGE_ETA * SERGE_VT) * pow(M_E, (l * x) / (SERGE_ETA * SERGE_VT));
-    ln = dsp::LambertW<0>(u);
+    ln = lrt::LambertW<0>(u);
 
     fn = SERGE_VT * SERGE_ETA * SERGE_ETA * SERGE_VT * (ln * (ln + 2)) - x * x / 2;
 
@@ -18,7 +18,7 @@ double SergeWFStage::compute(double x) {
         // Compute Averaged Wavefolder Output
         xn = 0.5 * (x + xn1);
         u = (SERGE_R1 * SERGE_IS) / (SERGE_ETA * SERGE_VT) * pow(M_E, (l * xn) / (SERGE_VT * SERGE_ETA));
-        ln = dsp::LambertW<0>(u);
+        ln = lrt::LambertW<0>(u);
         out = 2 * l * SERGE_ETA * SERGE_VT * ln - xn;
     } else {
         // Apply AA Form
@@ -45,7 +45,7 @@ SergeWavefolder::SergeWavefolder(float sr) : WaveShaper(sr) {
 
 
 void SergeWavefolder::init() {
-    dsp::WaveShaper::rs = new dsp::Resampler<1>(1);
+    lrt::WaveShaper::rs = new lrt::Resampler<1>(1);
 }
 
 

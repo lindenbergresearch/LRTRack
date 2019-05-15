@@ -1,6 +1,6 @@
 #include "Overdrive.hpp"
 
-using namespace dsp;
+using namespace lrt;
 
 
 Overdrive::Overdrive(float sr) : WaveShaper(sr) {

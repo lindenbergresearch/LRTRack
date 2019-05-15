@@ -1,6 +1,6 @@
 #include "Hardclip.hpp"
 
-using namespace dsp;
+using namespace lrt;
 
 
 Hardclip::Hardclip(float sr) : WaveShaper(sr) {

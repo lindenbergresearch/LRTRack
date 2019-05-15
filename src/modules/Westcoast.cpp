@@ -57,13 +57,13 @@ struct Westcoast : LRModule {
     }
 
 
-    dsp::LockhartWavefolder *hs = new dsp::LockhartWavefolder(engineGetSampleRate());
-    dsp::SergeWavefolder *sg = new dsp::SergeWavefolder(engineGetSampleRate());
-    dsp::Saturator *saturator = new dsp::Saturator(engineGetSampleRate());
-    dsp::Hardclip *hardclip = new dsp::Hardclip(engineGetSampleRate());
-    dsp::ReShaper *reshaper = new dsp::ReShaper(engineGetSampleRate());
-    dsp::Overdrive *overdrive = new dsp::Overdrive(engineGetSampleRate());
-    dsp::FastTan *fastTan = new dsp::FastTan(engineGetSampleRate());
+    lrt::LockhartWavefolder *hs = new lrt::LockhartWavefolder(engineGetSampleRate());
+    lrt::SergeWavefolder *sg = new lrt::SergeWavefolder(engineGetSampleRate());
+    lrt::Saturator *saturator = new lrt::Saturator(engineGetSampleRate());
+    lrt::Hardclip *hardclip = new lrt::Hardclip(engineGetSampleRate());
+    lrt::ReShaper *reshaper = new lrt::ReShaper(engineGetSampleRate());
+    lrt::Overdrive *overdrive = new lrt::Overdrive(engineGetSampleRate());
+    lrt::FastTan *fastTan = new lrt::FastTan(engineGetSampleRate());
 
     LRBigKnob *gainBtn = NULL;
     LRMiddleKnob *biasBtn = NULL;

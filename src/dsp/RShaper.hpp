@@ -4,7 +4,7 @@
 
 #define RSHAPER_GAIN 0.1
 
-namespace dsp {
+namespace lrt {
 
 struct ReShaper : WaveShaper {
 

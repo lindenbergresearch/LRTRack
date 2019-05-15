@@ -18,7 +18,7 @@
 
 #pragma once
 
-namespace dsp {
+namespace lrt {
 
 class RateConverter {
 public:
