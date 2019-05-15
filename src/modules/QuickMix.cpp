@@ -151,48 +151,48 @@ QuickMixWidget::QuickMixWidget(QuickMix *module) : LRModuleWidget(module) {
     box.size = panel->box.size;
 
     // ***** SCREWS **********
-    // addChild(Widget::create<ScrewLight>(Vec(15, 1)));
-    // addChild(Widget::create<ScrewLight>(Vec(box.size.x - 20, 1)));
-    //  addChild(Widget::create<ScrewLight>(Vec(15, 366)));
-    //  addChild(Widget::create<ScrewLight>(Vec(box.size.x - 20, 366)));
+    // addChild(createWidget<ScrewLight>(Vec(15, 1)));
+    // addChild(createWidget<ScrewLight>(Vec(box.size.x - 20, 1)));
+    //  addChild(createWidget<ScrewLight>(Vec(15, 366)));
+    //  addChild(createWidget<ScrewLight>(Vec(box.size.x - 20, 366)));
     // ***** SCREWS **********
 
     // ***** MAIN KNOBS ******
-    addParam(ParamWidget::create<LRSmallKnob>(Vec(62.3, 53.8), module, QuickMix::LEVEL1_PARAM, -1.f, 1.f, 0.f));
-    addParam(ParamWidget::create<LRSmallKnob>(Vec(62.3, 88.8), module, QuickMix::LEVEL2_PARAM, -1.f, 1.f, 0.f));
-    addParam(ParamWidget::create<LRSmallKnob>(Vec(62.3, 123.8), module, QuickMix::LEVEL3_PARAM, -1.f, 1.f, 0.f));
-    addParam(ParamWidget::create<LRSmallKnob>(Vec(62.3, 158.8), module, QuickMix::LEVEL4_PARAM, -1.f, 1.f, 0.f));
-    addParam(ParamWidget::create<LRSmallKnob>(Vec(62.3, 193.8), module, QuickMix::LEVEL5_PARAM, -1.f, 1.f, 0.f));
+    addParam(ParamcreateWidget<LRSmallKnob>(Vec(62.3, 53.8), module, QuickMix::LEVEL1_PARAM, -1.f, 1.f, 0.f));
+    addParam(ParamcreateWidget<LRSmallKnob>(Vec(62.3, 88.8), module, QuickMix::LEVEL2_PARAM, -1.f, 1.f, 0.f));
+    addParam(ParamcreateWidget<LRSmallKnob>(Vec(62.3, 123.8), module, QuickMix::LEVEL3_PARAM, -1.f, 1.f, 0.f));
+    addParam(ParamcreateWidget<LRSmallKnob>(Vec(62.3, 158.8), module, QuickMix::LEVEL4_PARAM, -1.f, 1.f, 0.f));
+    addParam(ParamcreateWidget<LRSmallKnob>(Vec(62.3, 193.8), module, QuickMix::LEVEL5_PARAM, -1.f, 1.f, 0.f));
 
-    addParam(ParamWidget::create<LRSmallKnob>(Vec(62.3, 242.0), module, QuickMix::SHAPE_PARAM, -1.f, 1.f, 0.f));
+    addParam(ParamcreateWidget<LRSmallKnob>(Vec(62.3, 242.0), module, QuickMix::SHAPE_PARAM, -1.f, 1.f, 0.f));
 
-    addParam(ParamWidget::create<LRSmallKnob>(Vec(18.8, 305.8), module, QuickMix::LEVELM_PARAM, 0.f, 1.f, 0.5f));
+    addParam(ParamcreateWidget<LRSmallKnob>(Vec(18.8, 305.8), module, QuickMix::LEVELM_PARAM, 0.f, 1.f, 0.5f));
     // ***** MAIN KNOBS ******
 
     // ***** INPUTS **********
-    addInput(Port::create<LRIOPortAudio>(Vec(16.5, 52.6), Port::INPUT, module, QuickMix::M1_INPUT));
-    addInput(Port::create<LRIOPortAudio>(Vec(16.5, 87.6), Port::INPUT, module, QuickMix::M2_INPUT));
-    addInput(Port::create<LRIOPortAudio>(Vec(16.5, 122.6), Port::INPUT, module, QuickMix::M3_INPUT));
-    addInput(Port::create<LRIOPortAudio>(Vec(16.5, 157.6), Port::INPUT, module, QuickMix::M4_INPUT));
-    addInput(Port::create<LRIOPortAudio>(Vec(16.5, 192.6), Port::INPUT, module, QuickMix::M5_INPUT));
+    addInput(createPort<LRIOPortAudio>(Vec(16.5, 52.6), PortWidget::INPUT, module, QuickMix::M1_INPUT));
+    addInput(createPort<LRIOPortAudio>(Vec(16.5, 87.6), PortWidget::INPUT, module, QuickMix::M2_INPUT));
+    addInput(createPort<LRIOPortAudio>(Vec(16.5, 122.6), PortWidget::INPUT, module, QuickMix::M3_INPUT));
+    addInput(createPort<LRIOPortAudio>(Vec(16.5, 157.6), PortWidget::INPUT, module, QuickMix::M4_INPUT));
+    addInput(createPort<LRIOPortAudio>(Vec(16.5, 192.6), PortWidget::INPUT, module, QuickMix::M5_INPUT));
 
-    addInput(Port::create<LRIOPortCV>(Vec(16.5, 240.8f), Port::INPUT, module, QuickMix::CV_INPUT));
+    addInput(createPort<LRIOPortCV>(Vec(16.5, 240.8f), PortWidget::INPUT, module, QuickMix::CV_INPUT));
     // ***** INPUTS **********
 
     // ***** OUTPUTS *********
-    addOutput(Port::create<LRIOPortAudio>(Vec(60.9, 304.8), Port::OUTPUT, module, QuickMix::MASTER_OUTPUT));
+    addOutput(createPort<LRIOPortAudio>(Vec(60.9, 304.8), PortWidget::OUTPUT, module, QuickMix::MASTER_OUTPUT));
     // ***** OUTPUTS *********
 
 
     // ***** LIGHTS **********
-    addChild(ModuleLightWidget::create<LRLight>(Vec(47.f, 61.3), module, QuickMix::LEVEL1_LIGHT));
-    addChild(ModuleLightWidget::create<LRLight>(Vec(47.f, 96.3), module, QuickMix::LEVEL2_LIGHT));
-    addChild(ModuleLightWidget::create<LRLight>(Vec(47.f, 131.3), module, QuickMix::LEVEL3_LIGHT));
-    addChild(ModuleLightWidget::create<LRLight>(Vec(47.f, 166.3), module, QuickMix::LEVEL4_LIGHT));
-    addChild(ModuleLightWidget::create<LRLight>(Vec(47.f, 201.3), module, QuickMix::LEVEL5_LIGHT));
+    addChild(createLight<LRLight>(Vec(47.f, 61.3), module, QuickMix::LEVEL1_LIGHT));
+    addChild(createLight<LRLight>(Vec(47.f, 96.3), module, QuickMix::LEVEL2_LIGHT));
+    addChild(createLight<LRLight>(Vec(47.f, 131.3), module, QuickMix::LEVEL3_LIGHT));
+    addChild(createLight<LRLight>(Vec(47.f, 166.3), module, QuickMix::LEVEL4_LIGHT));
+    addChild(createLight<LRLight>(Vec(47.f, 201.3), module, QuickMix::LEVEL5_LIGHT));
 
 
-    // addChild(ModuleLightWidget::create<LRLight>(Vec(47.5, 304.6), module, QuickMix::LEVEL6_LIGHT));
+    // addChild(createLight<LRLight>(Vec(47.5, 304.6), module, QuickMix::LEVEL6_LIGHT));
 
     // ***** LIGHTS **********
 
@@ -200,4 +200,4 @@ QuickMixWidget::QuickMixWidget(QuickMix *module) : LRModuleWidget(module) {
 }
 
 
-Model *modelQuickMix = Model::create<QuickMix, QuickMixWidget>("Lindenberg Research", "QuickMixer", "VC Mixer Amp", MIXER_TAG);
+Model *modelQuickMix = createModel<QuickMix, QuickMixWidget>("Lindenberg Research", "QuickMixer", "VC Mixer Amp", MIXER_TAG);

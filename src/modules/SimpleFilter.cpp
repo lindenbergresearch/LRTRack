@@ -55,7 +55,7 @@ struct SimpleFilter : LRModule {
 
 
     // For more advanced Module features, read Rack's engine.hpp header file
-    // - toJson, fromJson: serialization of internal data
+    // - dataToJson, dataFromJson: serialization of internal data
     // - onSampleRateChange: event triggered by a change of sample rate
     // - reset, randomize: implements special behavior when user clicks these from the context menu
 };
@@ -152,34 +152,34 @@ SimpleFilterWidget::SimpleFilterWidget(SimpleFilter *module) : LRModuleWidget(mo
     box.size = panel->box.size;
 
     // ***** SCREWS **********
-    addChild(Widget::create<ScrewLight>(Vec(15, 1)));
-    addChild(Widget::create<ScrewLight>(Vec(box.size.x - 30, 1)));
-    addChild(Widget::create<ScrewLight>(Vec(15, 366)));
-    addChild(Widget::create<ScrewLight>(Vec(box.size.x - 30, 366)));
+    addChild(createWidget<ScrewLight>(Vec(15, 1)));
+    addChild(createWidget<ScrewLight>(Vec(box.size.x - 30, 1)));
+    addChild(createWidget<ScrewLight>(Vec(15, 366)));
+    addChild(createWidget<ScrewLight>(Vec(box.size.x - 30, 366)));
     // ***** SCREWS **********
 
     // ***** MAIN KNOBS ******
-    addParam(ParamWidget::create<LRBigKnob>(Vec(46.9, 171.5), module, SimpleFilter::CUTOFF_PARAM, 0.f, 1.f, 0.f));
-    addParam(ParamWidget::create<LRMiddleKnob>(Vec(54.0, 254.0), module, SimpleFilter::RESONANCE_PARAM, -0.f, 1.f, 0.0f));
+    addParam(ParamcreateWidget<LRBigKnob>(Vec(46.9, 171.5), module, SimpleFilter::CUTOFF_PARAM, 0.f, 1.f, 0.f));
+    addParam(ParamcreateWidget<LRMiddleKnob>(Vec(54.0, 254.0), module, SimpleFilter::RESONANCE_PARAM, -0.f, 1.f, 0.0f));
     // ***** MAIN KNOBS ******
 
     // ***** CV INPUTS *******
-    addParam(ParamWidget::create<LRSmallKnob>(Vec(27, 122), module, SimpleFilter::CUTOFF_CV_PARAM, 0.f, 1.f, 0.f));
-    addParam(ParamWidget::create<LRSmallKnob>(Vec(99, 122), module, SimpleFilter::RESONANCE_CV_PARAM, 0.f, 1.f, 0.f));
+    addParam(ParamcreateWidget<LRSmallKnob>(Vec(27, 122), module, SimpleFilter::CUTOFF_CV_PARAM, 0.f, 1.f, 0.f));
+    addParam(ParamcreateWidget<LRSmallKnob>(Vec(99, 122), module, SimpleFilter::RESONANCE_CV_PARAM, 0.f, 1.f, 0.f));
 
-    addInput(Port::create<LRIOPortCV>(Vec(25.4, 52.9), Port::INPUT, module, SimpleFilter::CUTOFF_CV_INPUT));
-    addInput(Port::create<LRIOPortCV>(Vec(97.2, 52.9), Port::INPUT, module, SimpleFilter::RESONANCE_CV_INPUT));
+    addInput(createPort<LRIOPortCV>(Vec(25.4, 52.9), PortWidget::INPUT, module, SimpleFilter::CUTOFF_CV_INPUT));
+    addInput(createPort<LRIOPortCV>(Vec(97.2, 52.9), PortWidget::INPUT, module, SimpleFilter::RESONANCE_CV_INPUT));
     // ***** CV INPUTS *******
 
     // ***** INPUTS **********
-    addInput(Port::create<LRIOPortAudio>(Vec(25.4, 324.4), Port::INPUT, module, SimpleFilter::FILTER_INPUT));
+    addInput(createPort<LRIOPortAudio>(Vec(25.4, 324.4), PortWidget::INPUT, module, SimpleFilter::FILTER_INPUT));
     // ***** INPUTS **********
 
     // ***** OUTPUTS *********
-    addOutput(Port::create<LRIOPortAudio>(Vec(97.2, 324.4), Port::OUTPUT, module, SimpleFilter::FILTER_OUTPUT));
+    addOutput(createPort<LRIOPortAudio>(Vec(97.2, 324.4), PortWidget::OUTPUT, module, SimpleFilter::FILTER_OUTPUT));
     // ***** OUTPUTS *********
 }
 
 
-Model *modelSimpleFilter = Model::create<SimpleFilter, SimpleFilterWidget>("Lindenberg Research", "LPFilter24dB", "24dB Lowpass Filter",
-                                                                           FILTER_TAG);
+Model *modelSimpleFilter = createModel<SimpleFilter, SimpleFilterWidget>("Lindenberg Research", "LPFilter24dB", "24dB Lowpass Filter",
+                                                                         FILTER_TAG);

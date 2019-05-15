@@ -94,16 +94,16 @@ struct Speck : LRModule {
     void step() override;
 
 
-    json_t *toJson() override {
-        json_t *rootJ = LRModule::toJson();
+    json_t *dataToJson() override {
+        json_t *rootJ = LRModule::dataToJson();
 
         json_object_set_new(rootJ, "linLog", json_integer((int) linLog));
         return rootJ;
     }
 
 
-    void fromJson(json_t *rootJ) override {
-        LRModule::fromJson(rootJ);
+    void dataFromJson(json_t *rootJ) override {
+        LRModule::dataFromJson(rootJ);
 
         json_t *sumJ = json_object_get(rootJ, "linLog");
         if (sumJ)
@@ -509,12 +509,12 @@ SpeckWidget::SpeckWidget(Speck *module) : LRModuleWidget(module) {
     box.size = panel->box.size;
 
 
-    addChild(Widget::create<ScrewLight>(Vec(15, 1)));
-    addChild(Widget::create<ScrewLight>(Vec(300 - 30, 1)));
-    addChild(Widget::create<ScrewLight>(Vec(15, 364)));
-    addChild(Widget::create<ScrewLight>(Vec(300 - 30, 364)));
-    addChild(Widget::create<ScrewLight>(Vec(box.size.x - 30, 1)));
-    addChild(Widget::create<ScrewLight>(Vec(box.size.x - 30, 366)));
+    addChild(createWidget<ScrewLight>(Vec(15, 1)));
+    addChild(createWidget<ScrewLight>(Vec(300 - 30, 1)));
+    addChild(createWidget<ScrewLight>(Vec(15, 364)));
+    addChild(createWidget<ScrewLight>(Vec(300 - 30, 364)));
+    addChild(createWidget<ScrewLight>(Vec(box.size.x - 30, 1)));
+    addChild(createWidget<ScrewLight>(Vec(box.size.x - 30, 366)));
 
     SpeckDisplay *display = new SpeckDisplay();
     display->module = module;
@@ -522,33 +522,33 @@ SpeckWidget::SpeckWidget(Speck *module) : LRModuleWidget(module) {
     display->box.size = Vec(box.size.x - 300, 380);
     addChild(display);
 
-    addParam(ParamWidget::create<LRSwitch>(Vec(33, 340), module, Speck::ONOFF_PARAM, 0.0, 1.0, 0.0));
+    addParam(ParamcreateWidget<LRSwitch>(Vec(33, 340), module, Speck::ONOFF_PARAM, 0.0, 1.0, 0.0));
 
 
-    addParam(ParamWidget::create<LRAlternateMiddleLight>(Vec(118 - 50, 124), module, Speck::SCALE_1_PARAM, -10.0f, 20.0, -1.0f));
-    addParam(ParamWidget::create<LRAlternateMiddleLight>(Vec(118 - 50, 177), module, Speck::POS_1_PARAM, -1.0f, 1.0, 0.0));
+    addParam(ParamcreateWidget<LRAlternateMiddleLight>(Vec(118 - 50, 124), module, Speck::SCALE_1_PARAM, -10.0f, 20.0, -1.0f));
+    addParam(ParamcreateWidget<LRAlternateMiddleLight>(Vec(118 - 50, 177), module, Speck::POS_1_PARAM, -1.0f, 1.0, 0.0));
 
-    addParam(ParamWidget::create<LRAlternateMiddleLight>(Vec(197 - 50, 124), module, Speck::SCALE_2_PARAM, -10.0f, 20.0, -1.0f));
-    addParam(ParamWidget::create<LRAlternateMiddleLight>(Vec(197 - 50, 177), module, Speck::POS_2_PARAM, -1.0f, 1.0, 0.0));
+    addParam(ParamcreateWidget<LRAlternateMiddleLight>(Vec(197 - 50, 124), module, Speck::SCALE_2_PARAM, -10.0f, 20.0, -1.0f));
+    addParam(ParamcreateWidget<LRAlternateMiddleLight>(Vec(197 - 50, 177), module, Speck::POS_2_PARAM, -1.0f, 1.0, 0.0));
 
-    addParam(ParamWidget::create<LRAlternateMiddleLight>(Vec(253 - 50, 124), module, Speck::ZOOM_PARAM, 1.0, ZOOM_RANGE, 1.0));
+    addParam(ParamcreateWidget<LRAlternateMiddleLight>(Vec(253 - 50, 124), module, Speck::ZOOM_PARAM, 1.0, ZOOM_RANGE, 1.0));
 
-    addParam(ParamWidget::create<LRAlternateMiddleLight>(Vec(253 - 50, 177), module, Speck::FOFFS_PARAM, 0.0, FOFFS_RANGE, 0.0));
+    addParam(ParamcreateWidget<LRAlternateMiddleLight>(Vec(253 - 50, 177), module, Speck::FOFFS_PARAM, 0.0, FOFFS_RANGE, 0.0));
 
-    addParam(ParamWidget::create<LRSwitch>(Vec(258, 244), module, Speck::LINLOG_PARAM, 0.0, 1.0, 0.0));
+    addParam(ParamcreateWidget<LRSwitch>(Vec(258, 244), module, Speck::LINLOG_PARAM, 0.0, 1.0, 0.0));
 
 
-    addInput(Port::create<LRIOPortBLight>(Vec(12, 240), Port::INPUT, module, Speck::INPUT_1));
-    addInput(Port::create<LRIOPortBLight>(Vec(59, 240), Port::INPUT, module, Speck::INPUT_2));
+    addInput(createPort<LRIOPortBLight>(Vec(12, 240), PortWidget::INPUT, module, Speck::INPUT_1));
+    addInput(createPort<LRIOPortBLight>(Vec(59, 240), PortWidget::INPUT, module, Speck::INPUT_2));
 
-    addOutput(Port::create<LRIOPortBLight>(Vec(9, 306), Port::OUTPUT, module, Speck::OUTPUT_1));
-    addOutput(Port::create<LRIOPortBLight>(Vec(56, 306), Port::OUTPUT, module, Speck::OUTPUT_2));
+    addOutput(createPort<LRIOPortBLight>(Vec(9, 306), PortWidget::OUTPUT, module, Speck::OUTPUT_1));
+    addOutput(createPort<LRIOPortBLight>(Vec(56, 306), PortWidget::OUTPUT, module, Speck::OUTPUT_2));
 
-    addChild(ModuleLightWidget::create<MediumLight<GreenLight>>(Vec(286, 230), module, Speck::LIGHTS_0_LIN));
-    addChild(ModuleLightWidget::create<MediumLight<GreenLight>>(Vec(286, 280), module, Speck::LIGHTS_1_LOG));
-    addChild(ModuleLightWidget::create<MediumLight<GreenLight>>(Vec(265, 30), module, Speck::LIGHTS_2_ON));
+    addChild(createLight<MediumLight<GreenLight>>(Vec(286, 230), module, Speck::LIGHTS_0_LIN));
+    addChild(createLight<MediumLight<GreenLight>>(Vec(286, 280), module, Speck::LIGHTS_1_LOG));
+    addChild(createLight<MediumLight<GreenLight>>(Vec(265, 30), module, Speck::LIGHTS_2_ON));
 
 }
 
 
-Model *modelSpeck = Model::create<Speck, SpeckWidget>("Lindenberg Research", "Speck", "Spectrum Analyzer", VISUAL_TAG, UTILITY_TAG);
+Model *modelSpeck = createModel<Speck, SpeckWidget>("Lindenberg Research", "Speck", "Spectrum Analyzer", VISUAL_TAG, UTILITY_TAG);

@@ -210,10 +210,10 @@ WestcoastWidget::WestcoastWidget(Westcoast *module) : LRModuleWidget(module) {
     // panel->gradients[AGED]->setInnerColor(nvgRGBAf(1.5f * .369f, 1.5f * 0.369f, 1.5f * 0.369f, 0.45f));
     // panel->gradients[AGED]->setOuterColor(nvgRGBAf(0.f, 0.f, 0.f, 0.25f));
     // ***** SCREWS **********
-    addChild(Widget::create<ScrewLight>(Vec(15, 1)));
-    addChild(Widget::create<ScrewLight>(Vec(box.size.x - 30, 1)));
-    addChild(Widget::create<ScrewLight>(Vec(15, 366)));
-    addChild(Widget::create<ScrewLight>(Vec(box.size.x - 30, 366)));
+    addChild(createWidget<ScrewLight>(Vec(15, 1)));
+    addChild(createWidget<ScrewLight>(Vec(box.size.x - 30, 1)));
+    addChild(createWidget<ScrewLight>(Vec(15, 366)));
+    addChild(createWidget<ScrewLight>(Vec(box.size.x - 30, 366)));
     // ***** SCREWS **********
 
     // ***** MAIN KNOBS ******
@@ -233,23 +233,23 @@ WestcoastWidget::WestcoastWidget(Westcoast *module) : LRModuleWidget(module) {
     // ***** MAIN KNOBS ******
 
     // ***** CV INPUTS *******
-    addInput(Port::create<LRIOPortCV>(Vec(32.4, 99.0), Port::INPUT, module, Westcoast::CV_GAIN_INPUT));
-    addInput(Port::create<LRIOPortCV>(Vec(32.4, 179.8), Port::INPUT, module, Westcoast::CV_BIAS_INPUT));
+    addInput(createPort<LRIOPortCV>(Vec(32.4, 99.0), PortWidget::INPUT, module, Westcoast::CV_GAIN_INPUT));
+    addInput(createPort<LRIOPortCV>(Vec(32.4, 179.8), PortWidget::INPUT, module, Westcoast::CV_BIAS_INPUT));
     // ***** CV INPUTS *******
 
     // ***** INPUTS **********
-    addInput(Port::create<LRIOPortAudio>(Vec(22.4, 326.05), Port::INPUT, module, Westcoast::SHAPER_INPUT));
+    addInput(createPort<LRIOPortAudio>(Vec(22.4, 326.05), PortWidget::INPUT, module, Westcoast::SHAPER_INPUT));
     // ***** INPUTS **********
 
     // ***** OUTPUTS *********
-    addOutput(Port::create<LRIOPortAudio>(Vec(159.4, 326.05), Port::OUTPUT, module, Westcoast::SHAPER_OUTPUT));
+    addOutput(createPort<LRIOPortAudio>(Vec(159.4, 326.05), PortWidget::OUTPUT, module, Westcoast::SHAPER_OUTPUT));
     // ***** OUTPUTS *********
 
     // ***** SWITCH  *********
-    //addParam(ParamWidget::create<LRSwitch>(Vec(119, 331), module, Westcoast::DCBLOCK_PARAM, 0.0, 1.0, 1.0));
+    //addParam(ParamcreateWidget<LRSwitch>(Vec(119, 331), module, Westcoast::DCBLOCK_PARAM, 0.0, 1.0, 1.0));
     // ***** SWITCH  *********
 }
 
 
-Model *modelWestcoast = Model::create<Westcoast, WestcoastWidget>("Lindenberg Research", "Westcoast VCS",
-                                                                  "Westcoast Complex Shaper", WAVESHAPER_TAG);
+Model *modelWestcoast = createModel<Westcoast, WestcoastWidget>("Lindenberg Research", "Westcoast VCS",
+                                                                "Westcoast Complex Shaper", WAVESHAPER_TAG);

@@ -104,23 +104,23 @@ struct BlankPanelWidgetSmall : LRModuleWidget {
     void appendContextMenu(Menu *menu) override;
 
 
-    json_t *toJson() override;
-    void fromJson(json_t *rootJ) override;
+    json_t *dataToJson() override;
+    void dataFromJson(json_t *rootJ) override;
 };
 
 
 void BlankPanelSmall::createPorts() {
     /* INPUTS */
-    ioports[0] = Port::create<LRIOPortCV>(Vec(16.5, 19.5), Port::INPUT, this, BlankPanelSmall::M1_INPUT);
-    ioports[1] = Port::create<LRIOPortCV>(Vec(16.5, 228.5), Port::INPUT, this, BlankPanelSmall::M2_INPUT);
+    ioports[0] = createPort<LRIOPortCV>(Vec(16.5, 19.5), PortWidget::INPUT, this, BlankPanelSmall::M1_INPUT);
+    ioports[1] = createPort<LRIOPortCV>(Vec(16.5, 228.5), PortWidget::INPUT, this, BlankPanelSmall::M2_INPUT);
 
     /* OUTPUTS */
-    ioports[2] = Port::create<LRIOPortCV>(Vec(16.5, 53.5), Port::OUTPUT, this, BlankPanelSmall::M1_OUTPUT);
-    ioports[3] = Port::create<LRIOPortCV>(Vec(16.5, 87.5), Port::OUTPUT, this, BlankPanelSmall::M2_OUTPUT);
-    ioports[4] = Port::create<LRIOPortCV>(Vec(16.5, 120.5), Port::OUTPUT, this, BlankPanelSmall::M3_OUTPUT);
-    ioports[5] = Port::create<LRIOPortCV>(Vec(16.5, 262.5), Port::OUTPUT, this, BlankPanelSmall::M4_OUTPUT);
-    ioports[6] = Port::create<LRIOPortCV>(Vec(16.5, 296.5), Port::OUTPUT, this, BlankPanelSmall::M5_OUTPUT);
-    ioports[7] = Port::create<LRIOPortCV>(Vec(16.5, 329.5), Port::OUTPUT, this, BlankPanelSmall::M6_OUTPUT);
+    ioports[2] = createPort<LRIOPortCV>(Vec(16.5, 53.5), PortWidget::OUTPUT, this, BlankPanelSmall::M1_OUTPUT);
+    ioports[3] = createPort<LRIOPortCV>(Vec(16.5, 87.5), PortWidget::OUTPUT, this, BlankPanelSmall::M2_OUTPUT);
+    ioports[4] = createPort<LRIOPortCV>(Vec(16.5, 120.5), PortWidget::OUTPUT, this, BlankPanelSmall::M3_OUTPUT);
+    ioports[5] = createPort<LRIOPortCV>(Vec(16.5, 262.5), PortWidget::OUTPUT, this, BlankPanelSmall::M4_OUTPUT);
+    ioports[6] = createPort<LRIOPortCV>(Vec(16.5, 296.5), PortWidget::OUTPUT, this, BlankPanelSmall::M5_OUTPUT);
+    ioports[7] = createPort<LRIOPortCV>(Vec(16.5, 329.5), PortWidget::OUTPUT, this, BlankPanelSmall::M6_OUTPUT);
 
     hidePorts();
 }
@@ -138,8 +138,8 @@ BlankPanelWidgetSmall::BlankPanelWidgetSmall(BlankPanelSmall *module) : LRModule
     module->createPorts();
 
     // ***** SCREWS **********
-    addChild(Widget::create<ScrewLight>(Vec(23.4, 1)));
-    addChild(Widget::create<ScrewLight>(Vec(23.4, 366)));
+    addChild(createWidget<ScrewLight>(Vec(23.4, 1)));
+    addChild(createWidget<ScrewLight>(Vec(23.4, 366)));
     // ***** SCREWS **********
 
 
@@ -196,14 +196,14 @@ void BlankPanelWidgetSmall::appendContextMenu(Menu *menu) {
     BlankPanelSmall *blankPanelSmall = dynamic_cast<BlankPanelSmall *>(module);
     assert(blankPanelSmall);
 
-    BlankPanelMultiple *mergeItem = MenuItem::create<BlankPanelMultiple>("Dual Multiple");
+    BlankPanelMultiple *mergeItem = createMenuItem<BlankPanelMultiple>("Dual Multiple");
     mergeItem->blankPanelSmall = blankPanelSmall;
     menu->addChild(mergeItem);
 }
 
 
-json_t *BlankPanelWidgetSmall::toJson() {
-    json_t *rootJ = LRModuleWidget::toJson();
+json_t *BlankPanelWidgetSmall::dataToJson() {
+    json_t *rootJ = LRModuleWidget::dataToJson();
 
     BlankPanelSmall *blankPanelSmall = dynamic_cast<BlankPanelSmall *>(module);
 
@@ -212,10 +212,10 @@ json_t *BlankPanelWidgetSmall::toJson() {
 }
 
 
-void BlankPanelWidgetSmall::fromJson(json_t *rootJ) {
+void BlankPanelWidgetSmall::dataFromJson(json_t *rootJ) {
     BlankPanelSmall *blankPanelSmall = dynamic_cast<BlankPanelSmall *>(module);
 
-    LRModuleWidget::fromJson(rootJ);
+    LRModuleWidget::dataFromJson(rootJ);
 
     json_t *multJ = json_object_get(rootJ, "multiple");
 
@@ -224,7 +224,7 @@ void BlankPanelWidgetSmall::fromJson(json_t *rootJ) {
 }
 
 
-Model *modelBlankPanelSmall = Model::create<BlankPanelSmall, BlankPanelWidgetSmall>(
+Model *modelBlankPanelSmall = createModel<BlankPanelSmall, BlankPanelWidgetSmall>(
         "Lindenberg Research",
         "BlankPanel Small",
         "Blank: Small / Multiple",

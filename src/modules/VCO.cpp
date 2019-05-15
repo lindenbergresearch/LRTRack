@@ -52,15 +52,15 @@ struct VCO : LRModule {
 
 
     /*
-    json_t *toJson() override {
-        json_t *rootJ = LRModule::toJson();
+    json_t *dataToJson() override {
+        json_t *rootJ = LRModule::dataToJson();
         json_object_set_new(rootJ, "AGED", json_boolean(AGED));
         return rootJ;
     }
 
 
-    void fromJson(json_t *rootJ) override {
-        LRModule::fromJson(rootJ);
+    void dataFromJson(json_t *rootJ) override {
+        LRModule::dataFromJson(rootJ);
 
         json_t *agedJ = json_object_get(rootJ, "AGED");
         if (agedJ)
@@ -176,10 +176,10 @@ VCOWidget::VCOWidget(VCO *module) : LRModuleWidget(module) {
 
 
     // ***** SCREWS **********
-    addChild(Widget::create<ScrewLight>(Vec(15, 1)));
-    addChild(Widget::create<ScrewLight>(Vec(box.size.x - 30, 1)));
-    addChild(Widget::create<ScrewLight>(Vec(15, 366)));
-    addChild(Widget::create<ScrewLight>(Vec(box.size.x - 30, 366)));
+    addChild(createWidget<ScrewLight>(Vec(15, 1)));
+    addChild(createWidget<ScrewLight>(Vec(box.size.x - 30, 1)));
+    addChild(createWidget<ScrewLight>(Vec(15, 366)));
+    addChild(createWidget<ScrewLight>(Vec(box.size.x - 30, 366)));
     // ***** SCREWS **********
 
 
@@ -199,25 +199,25 @@ VCOWidget::VCOWidget(VCO *module) : LRModuleWidget(module) {
 
 
     // ***** INPUTS **********
-    addInput(Port::create<LRIOPortCV>(Vec(20.8, 67.9), Port::INPUT, module, VCO::VOCT1_INPUT));
-    addInput(Port::create<LRIOPortCV>(Vec(68.0, 67.9), Port::INPUT, module, VCO::VOCT2_INPUT));
-    addInput(Port::create<LRIOPortCV>(Vec(20.8, 121.5), Port::INPUT, module, VCO::FM_CV_INPUT));
-    addInput(Port::create<LRIOPortCV>(Vec(20.8, 174.8), Port::INPUT, module, VCO::PW_CV_INPUT));
+    addInput(createPort<LRIOPortCV>(Vec(20.8, 67.9), PortWidget::INPUT, module, VCO::VOCT1_INPUT));
+    addInput(createPort<LRIOPortCV>(Vec(68.0, 67.9), PortWidget::INPUT, module, VCO::VOCT2_INPUT));
+    addInput(createPort<LRIOPortCV>(Vec(20.8, 121.5), PortWidget::INPUT, module, VCO::FM_CV_INPUT));
+    addInput(createPort<LRIOPortCV>(Vec(20.8, 174.8), PortWidget::INPUT, module, VCO::PW_CV_INPUT));
     // ***** INPUTS **********
 
 
     // ***** OUTPUTS *********
-    addOutput(Port::create<LRIOPortAudio>(Vec(21, 305.8), Port::OUTPUT, module, VCO::SAW_OUTPUT));
-    addOutput(Port::create<LRIOPortAudio>(Vec(56.8, 305.8), Port::OUTPUT, module, VCO::PULSE_OUTPUT));
-    addOutput(Port::create<LRIOPortAudio>(Vec(91.6, 305.8), Port::OUTPUT, module, VCO::SINE_OUTPUT));
-    addOutput(Port::create<LRIOPortAudio>(Vec(126.6, 305.8), Port::OUTPUT, module, VCO::TRI_OUTPUT));
-    addOutput(Port::create<LRIOPortAudio>(Vec(162.0, 305.8), Port::OUTPUT, module, VCO::NOISE_OUTPUT));
-    addOutput(Port::create<LRIOPortAudio>(Vec(162.0, 269.1), Port::OUTPUT, module, VCO::MIX_OUTPUT));
+    addOutput(createPort<LRIOPortAudio>(Vec(21, 305.8), PortWidget::OUTPUT, module, VCO::SAW_OUTPUT));
+    addOutput(createPort<LRIOPortAudio>(Vec(56.8, 305.8), PortWidget::OUTPUT, module, VCO::PULSE_OUTPUT));
+    addOutput(createPort<LRIOPortAudio>(Vec(91.6, 305.8), PortWidget::OUTPUT, module, VCO::SINE_OUTPUT));
+    addOutput(createPort<LRIOPortAudio>(Vec(126.6, 305.8), PortWidget::OUTPUT, module, VCO::TRI_OUTPUT));
+    addOutput(createPort<LRIOPortAudio>(Vec(162.0, 305.8), PortWidget::OUTPUT, module, VCO::NOISE_OUTPUT));
+    addOutput(createPort<LRIOPortAudio>(Vec(162.0, 269.1), PortWidget::OUTPUT, module, VCO::MIX_OUTPUT));
     // ***** OUTPUTS *********
 
 
     // ***** LIGHTS **********
-    addChild(ModuleLightWidget::create<LRLight>(Vec(181.8, 210), module, VCO::LFO_LIGHT));
+    addChild(createLight<LRLight>(Vec(181.8, 210), module, VCO::LFO_LIGHT));
     // ***** LIGHTS **********
 }
 
@@ -250,10 +250,10 @@ void VCOWidget::appendContextMenu(Menu *menu) {
     VCO *vco = dynamic_cast<VCO *>(module);
     assert(vco);
 
-    VCOAged *mergeItemAged = MenuItem::create<VCOAged>("Use AGED look");
+    VCOAged *mergeItemAged = createMenuItem<VCOAged>("Use AGED look");
     mergeItemAged->vco = vco;
     menu->addChild(mergeItemAged);
 }*/
 
 
-Model *modelVCO = Model::create<VCO, VCOWidget>("Lindenberg Research", "VCO", "Woldemar VCO", OSCILLATOR_TAG);
+Model *modelVCO = createModel<VCO, VCOWidget>("Lindenberg Research", "VCO", "Woldemar VCO", OSCILLATOR_TAG);

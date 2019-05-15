@@ -156,7 +156,7 @@ struct Type35 : LRModule {
     }
 
 
-    json_t *toJson() override {
+    json_t *dataToJson() override {
         json_t *rootJ = json_object();
         json_object_set_new(rootJ, "filtermode", json_integer((int) lround(lcd->value)));
 
@@ -164,8 +164,8 @@ struct Type35 : LRModule {
     }
 
 
-    void fromJson(json_t *rootJ) override {
-        LRModule::fromJson(rootJ);
+    void dataFromJson(json_t *rootJ) override {
+        LRModule::dataFromJson(rootJ);
 
         json_t *mode = json_object_get(rootJ, "filtermode");
 
@@ -210,10 +210,10 @@ Type35Widget::Type35Widget(Type35 *module) : LRModuleWidget(module) {
     // **** SETUP LCD ********
 
     // ***** SCREWS **********
-    addChild(Widget::create<ScrewLight>(Vec(15, 1)));
-    addChild(Widget::create<ScrewLight>(Vec(box.size.x - 30, 1)));
-    addChild(Widget::create<ScrewLight>(Vec(15, 366)));
-    addChild(Widget::create<ScrewLight>(Vec(box.size.x - 30, 366)));
+    addChild(createWidget<ScrewLight>(Vec(15, 1)));
+    addChild(createWidget<ScrewLight>(Vec(box.size.x - 30, 1)));
+    addChild(createWidget<ScrewLight>(Vec(15, 366)));
+    addChild(createWidget<ScrewLight>(Vec(box.size.x - 30, 366)));
     // ***** SCREWS **********
 
     // ***** MAIN KNOBS ******
@@ -229,31 +229,30 @@ Type35Widget::Type35Widget(Type35 *module) : LRModuleWidget(module) {
     addParam(module->peakKnobHP);
     addParam(module->driveKnob);
 
-    addParam(ParamWidget::create<LRSmallKnob>(Vec(36.5 - 7.5, 269.4), module, Type35::CUTOFF1_CV_PARAM, -1.f, 1.0f, 0.f));
-    addParam(ParamWidget::create<LRSmallKnob>(Vec(78.5 - 7.5, 269.4), module, Type35::PEAK1_CV_PARAM, -1.f, 1.0f, 0.f));
-    addParam(ParamWidget::create<LRSmallKnob>(Vec(197.5 - 7.5, 269.4), module, Type35::CUTOFF2_CV_PARAM, -1.f, 1.0f, 0.f));
-    addParam(ParamWidget::create<LRSmallKnob>(Vec(239.5 - 7.5, 269.4), module, Type35::PEAK2_CV_PARAM, -1.f, 1.0f, 0.f));
+    addParam(createParam<LRSmallKnob>(Vec(36.5 - 7.5, 269.4), module, Type35::CUTOFF1_CV_PARAM, -1.f, 1.0f, 0.f));
+    addParam(createParam<LRSmallKnob>(Vec(78.5 - 7.5, 269.4), module, Type35::PEAK1_CV_PARAM, -1.f, 1.0f, 0.f));
+    addParam(createParam<LRSmallKnob>(Vec(197.5 - 7.5, 269.4), module, Type35::CUTOFF2_CV_PARAM, -1.f, 1.0f, 0.f));
+    addParam(createParam<LRSmallKnob>(Vec(239.5 - 7.5, 269.4), module, Type35::PEAK2_CV_PARAM, -1.f, 1.0f, 0.f));
     // ***** MAIN KNOBS ******
 
     // ***** CV INPUTS *******
-    addInput(Port::create<LRIOPortCV>(Vec(34.4 - 7.5, 312), Port::INPUT, module, Type35::CUTOFF1_CV_INPUT));
-    addInput(Port::create<LRIOPortCV>(Vec(76.4 - 7.5, 312), Port::INPUT, module, Type35::PEAK1_CV_INPUT));
-    addInput(Port::create<LRIOPortCV>(Vec(195.4 - 7.5, 312), Port::INPUT, module, Type35::CUTOFF2_CV_INPUT));
-    addInput(Port::create<LRIOPortCV>(Vec(237.4 - 7.5, 312), Port::INPUT, module, Type35::PEAK2_CV_INPUT));
-    addInput(Port::create<LRIOPortCV>(Vec(129.4, 172), Port::INPUT, module, Type35::DRIVE_CV_INPUT));
+    addInput(createPort<LRIOPortCV>(Vec(34.4 - 7.5, 312), PortWidget::INPUT, module, Type35::CUTOFF1_CV_INPUT));
+    addInput(createPort<LRIOPortCV>(Vec(76.4 - 7.5, 312), PortWidget::INPUT, module, Type35::PEAK1_CV_INPUT));
+    addInput(createPort<LRIOPortCV>(Vec(195.4 - 7.5, 312), PortWidget::INPUT, module, Type35::CUTOFF2_CV_INPUT));
+    addInput(createPort<LRIOPortCV>(Vec(237.4 - 7.5, 312), PortWidget::INPUT, module, Type35::PEAK2_CV_INPUT));
+    addInput(createPort<LRIOPortCV>(Vec(129.4, 172), PortWidget::INPUT, module, Type35::DRIVE_CV_INPUT));
     // ***** CV INPUTS *******
 
     // ***** INPUTS **********
-    addInput(Port::create<LRIOPortAudio>(Vec(118 - 8, 269), Port::INPUT, module, Type35::FILTER_INPUT));
+    addInput(createPort<LRIOPortAudio>(Vec(118 - 8, 269), PortWidget::INPUT, module, Type35::FILTER_INPUT));
     // ***** INPUTS **********
 
     // ***** OUTPUTS *********
-    addOutput(Port::create<LRIOPortAudio>(Vec(156 - 8, 269), Port::OUTPUT, module, Type35::OUTPUT));
+    addOutput(createPort<LRIOPortAudio>(Vec(156 - 8, 269), PortWidget::OUTPUT, module, Type35::OUTPUT));
     // ***** OUTPUTS *********
 
-    // addParam(ParamWidget::create<LRSwitch>(Vec(135, 55), module, Type35::MODE_SWITCH_PARAM, 0, 1, 0));
+    // addParam(ParamcreateWidget<LRSwitch>(Vec(135, 55), module, Type35::MODE_SWITCH_PARAM, 0, 1, 0));
 }
 
 
-Model *modelType35 = Model::create<Type35, Type35Widget>("Lindenberg Research", "TYPE35 VCF", "Vampyr type35 multimode VCF",
-                                                         FILTER_TAG);
+Model *modelType35 = createModel<Type35, Type35Widget>("TYPE35 VCF");

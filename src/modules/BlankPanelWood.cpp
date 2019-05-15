@@ -39,7 +39,7 @@ struct BlankPanelWood : LRModule {
     void randomize() override;
 
 
-    json_t *toJson() override {
+    json_t *dataToJson() override {
         json_t *rootJ = json_object();
 
         json_object_set_new(rootJ, "AGED", json_boolean(aged));
@@ -49,8 +49,8 @@ struct BlankPanelWood : LRModule {
     }
 
 
-    void fromJson(json_t *rootJ) override {
-        LRModule::fromJson(rootJ);
+    void dataFromJson(json_t *rootJ) override {
+        LRModule::dataFromJson(rootJ);
 
         json_t *agedJ = json_object_get(rootJ, "AGED");
         if (agedJ)
@@ -137,10 +137,10 @@ BlankPanelWidgetWood::BlankPanelWidgetWood(BlankPanelWood *module) : LRModuleWid
 
 
     // ***** SCREWS **********
-    module->screw1 = Widget::create<ScrewDarkB>(Vec(23, 6));
+    module->screw1 = createWidget<ScrewDarkB>(Vec(23, 6));
     addChild(module->screw1);
 
-    module->screw2 = Widget::create<ScrewDarkB>(Vec(23, box.size.y - 20));
+    module->screw2 = createWidget<ScrewDarkB>(Vec(23, box.size.y - 20));
     addChild(module->screw2);
     // ***** SCREWS **********
 }
@@ -215,21 +215,21 @@ void BlankPanelWidgetWood::appendContextMenu(Menu *menu) {
     BlankPanelWood *blankPanelWood = dynamic_cast<BlankPanelWood *>(module);
     assert(blankPanelWood);
 
-    BlankPanelWoodAged *mergeItemAged = MenuItem::create<BlankPanelWoodAged>("Use AGED look");
+    BlankPanelWoodAged *mergeItemAged = createMenuItem<BlankPanelWoodAged>("Use AGED look");
     mergeItemAged->blankPanelWood = blankPanelWood;
     menu->addChild(mergeItemAged);
 
-    BlankPanelWoodScrews *mergeItemScrews = MenuItem::create<BlankPanelWoodScrews>("Show Screws");
+    BlankPanelWoodScrews *mergeItemScrews = createMenuItem<BlankPanelWoodScrews>("Show Screws");
     mergeItemScrews->blankPanelWood = blankPanelWood;
     menu->addChild(mergeItemScrews);
 
-    BlankPanelWoodLogo *mergeItemLogo = MenuItem::create<BlankPanelWoodLogo>("Show Logo Plate");
+    BlankPanelWoodLogo *mergeItemLogo = createMenuItem<BlankPanelWoodLogo>("Show Logo Plate");
     mergeItemLogo->blankPanelWood = blankPanelWood;
     menu->addChild(mergeItemLogo);
 }
 
 
-Model *modelBlankPanelWood = Model::create<BlankPanelWood, BlankPanelWidgetWood>(
+Model *modelBlankPanelWood = createModel<BlankPanelWood, BlankPanelWidgetWood>(
         "Lindenberg Research",
         "BlankPanel Wood",
         "Blank: Wood ",

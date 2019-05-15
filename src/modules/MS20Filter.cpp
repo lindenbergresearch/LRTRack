@@ -112,10 +112,10 @@ MS20FilterWidget::MS20FilterWidget(MS20Filter *module) : LRModuleWidget(module) 
 
 
     // ***** SCREWS **********
-    addChild(Widget::create<ScrewLight>(Vec(15, 1)));
-    addChild(Widget::create<ScrewLight>(Vec(box.size.x - 30, 1)));
-    addChild(Widget::create<ScrewLight>(Vec(15, 366)));
-    addChild(Widget::create<ScrewLight>(Vec(box.size.x - 30, 366)));
+    addChild(createWidget<ScrewLight>(Vec(15, 1)));
+    addChild(createWidget<ScrewLight>(Vec(box.size.x - 30, 1)));
+    addChild(createWidget<ScrewLight>(Vec(15, 366)));
+    addChild(createWidget<ScrewLight>(Vec(box.size.x - 30, 366)));
     // ***** SCREWS **********
 
     // ***** MAIN KNOBS ******
@@ -129,23 +129,23 @@ MS20FilterWidget::MS20FilterWidget(MS20Filter *module) : LRModuleWidget(module) 
     addParam(LRKnob::create<LRSmallKnob>(Vec(61, 82.4), module, MS20Filter::CUTOFF_CV_PARAM, -1.f, 1.f, 0.f));
     addParam(LRKnob::create<LRSmallKnob>(Vec(61, 239), module, MS20Filter::GAIN_CV_PARAM, -1.f, 1.f, 0.f));
 
-    addInput(Port::create<LRIOPortCV>(Vec(18, 168.5), Port::INPUT, module, MS20Filter::PEAK_CV_INPUT));
-    addInput(Port::create<LRIOPortCV>(Vec(18, 81.5), Port::INPUT, module, MS20Filter::CUTOFF_CV_INPUT));
-    addInput(Port::create<LRIOPortCV>(Vec(18, 239), Port::INPUT, module, MS20Filter::GAIN_CV_INPUT));
+    addInput(createPort<LRIOPortCV>(Vec(18, 168.5), PortWidget::INPUT, module, MS20Filter::PEAK_CV_INPUT));
+    addInput(createPort<LRIOPortCV>(Vec(18, 81.5), PortWidget::INPUT, module, MS20Filter::CUTOFF_CV_INPUT));
+    addInput(createPort<LRIOPortCV>(Vec(18, 239), PortWidget::INPUT, module, MS20Filter::GAIN_CV_INPUT));
     // ***** CV INPUTS *******
 
     // ***** INPUTS **********
-    addInput(Port::create<LRIOPortAudio>(Vec(17.999, 326.05), Port::INPUT, module, MS20Filter::FILTER_INPUT));
+    addInput(createPort<LRIOPortAudio>(Vec(17.999, 326.05), PortWidget::INPUT, module, MS20Filter::FILTER_INPUT));
     // ***** INPUTS **********
 
     // ***** OUTPUTS *********
-    addOutput(Port::create<LRIOPortAudio>(Vec(58.544, 326.05), Port::OUTPUT, module, MS20Filter::FILTER_OUTPUT));
+    addOutput(createPort<LRIOPortAudio>(Vec(58.544, 326.05), PortWidget::OUTPUT, module, MS20Filter::FILTER_OUTPUT));
     // ***** OUTPUTS *********
 
     // ***** SWITCH  *********
-    addParam(ParamWidget::create<LRSwitch>(Vec(119, 331), module, MS20Filter::MODE_SWITCH_PARAM, 0.0, 1.0, 1.0));
+    addParam(ParamcreateWidget<LRSwitch>(Vec(119, 331), module, MS20Filter::MODE_SWITCH_PARAM, 0.0, 1.0, 1.0));
     // ***** SWITCH  *********
 }
 
 
-Model *modelMS20Filter = Model::create<MS20Filter, MS20FilterWidget>("Lindenberg Research", "MS20 VCF", "Valerie MS20 Filter", FILTER_TAG);
+Model *modelMS20Filter = createModel<MS20Filter, MS20FilterWidget>("Lindenberg Research", "MS20 VCF", "Valerie MS20 Filter", FILTER_TAG);

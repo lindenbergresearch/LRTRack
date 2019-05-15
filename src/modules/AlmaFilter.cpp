@@ -116,10 +116,10 @@ AlmaFilterWidget::AlmaFilterWidget(AlmaFilter *module) : LRModuleWidget(module) 
     box.size = panel->box.size;
 
     // ***** SCREWS **********
-    addChild(Widget::create<ScrewLight>(Vec(15, 1)));
-    addChild(Widget::create<ScrewLight>(Vec(box.size.x - 30, 1)));
-    addChild(Widget::create<ScrewLight>(Vec(15, 366)));
-    addChild(Widget::create<ScrewLight>(Vec(box.size.x - 30, 366)));
+    addChild(createWidget<ScrewLight>(Vec(15, 1)));
+    addChild(createWidget<ScrewLight>(Vec(box.size.x - 30, 1)));
+    addChild(createWidget<ScrewLight>(Vec(15, 366)));
+    addChild(createWidget<ScrewLight>(Vec(box.size.x - 30, 366)));
     // ***** SCREWS **********
 
     // ***** MAIN KNOBS ******
@@ -127,31 +127,31 @@ AlmaFilterWidget::AlmaFilterWidget(AlmaFilter *module) : LRModuleWidget(module) 
     addParam(module->peakKnob);
     addParam(module->driveKnob);
 
-    addParam(ParamWidget::create<LRMiddleKnob>(Vec(69, 287), module, AlmaFilter::SLOPE_PARAM, 0.0f, 4.f, 2.0f));
+    addParam(ParamcreateWidget<LRMiddleKnob>(Vec(69, 287), module, AlmaFilter::SLOPE_PARAM, 0.0f, 4.f, 2.0f));
     // ***** MAIN KNOBS ******
 
     // ***** CV INPUTS *******
-    addParam(ParamWidget::create<LRSmallKnob>(Vec(27.5, 106), module, AlmaFilter::RESONANCE_CV_PARAM, -1.f, 1.0f, 0.f));
-    addParam(ParamWidget::create<LRSmallKnob>(Vec(78, 106), module, AlmaFilter::CUTOFF_CV_PARAM, -1.f, 1.f, 0.f));
-    addParam(ParamWidget::create<LRSmallKnob>(Vec(127.1, 106), module, AlmaFilter::DRIVE_CV_PARAM, -1.f, 1.f, 0.f));
+    addParam(ParamcreateWidget<LRSmallKnob>(Vec(27.5, 106), module, AlmaFilter::RESONANCE_CV_PARAM, -1.f, 1.0f, 0.f));
+    addParam(ParamcreateWidget<LRSmallKnob>(Vec(78, 106), module, AlmaFilter::CUTOFF_CV_PARAM, -1.f, 1.f, 0.f));
+    addParam(ParamcreateWidget<LRSmallKnob>(Vec(127.1, 106), module, AlmaFilter::DRIVE_CV_PARAM, -1.f, 1.f, 0.f));
 
-    addInput(Port::create<LRIOPortCV>(Vec(26, 50), Port::INPUT, module, AlmaFilter::RESONANCE_CV_INPUT));
-    addInput(Port::create<LRIOPortCV>(Vec(76, 50), Port::INPUT, module, AlmaFilter::CUTOFF_CV_INPUT));
-    addInput(Port::create<LRIOPortCV>(Vec(125, 50), Port::INPUT, module, AlmaFilter::DRIVE_CV_INPUT));
+    addInput(createPort<LRIOPortCV>(Vec(26, 50), PortWidget::INPUT, module, AlmaFilter::RESONANCE_CV_INPUT));
+    addInput(createPort<LRIOPortCV>(Vec(76, 50), PortWidget::INPUT, module, AlmaFilter::CUTOFF_CV_INPUT));
+    addInput(createPort<LRIOPortCV>(Vec(125, 50), PortWidget::INPUT, module, AlmaFilter::DRIVE_CV_INPUT));
     // ***** CV INPUTS *******
 
     // ***** INPUTS **********
-    addInput(Port::create<LRIOPortAudio>(Vec(25, 326.5), Port::INPUT, module, AlmaFilter::FILTER_INPUT));
+    addInput(createPort<LRIOPortAudio>(Vec(25, 326.5), PortWidget::INPUT, module, AlmaFilter::FILTER_INPUT));
     // ***** INPUTS **********
 
     // ***** OUTPUTS *********
-    addOutput(Port::create<LRIOPortAudio>(Vec(124.5, 326.5), Port::OUTPUT, module, AlmaFilter::LP_OUTPUT));
+    addOutput(createPort<LRIOPortAudio>(Vec(124.5, 326.5), PortWidget::OUTPUT, module, AlmaFilter::LP_OUTPUT));
     // ***** OUTPUTS *********
 
     // ***** LIGHTS **********
-    addChild(ModuleLightWidget::create<LRLight>(Vec(85, 247), module, AlmaFilter::OVERLOAD_LIGHT));
+    addChild(createLight<LRLight>(Vec(85, 247), module, AlmaFilter::OVERLOAD_LIGHT));
     // ***** LIGHTS **********
 }
 
 
-Model *modelAlmaFilter = Model::create<AlmaFilter, AlmaFilterWidget>("Lindenberg Research", "VCF", "Alma Ladder Filter", FILTER_TAG);
+Model *modelAlmaFilter = createModel<AlmaFilter, AlmaFilterWidget>("Lindenberg Research", "VCF", "Alma Ladder Filter", FILTER_TAG);

@@ -68,11 +68,11 @@ BlankPanelEmptyWidget::BlankPanelEmptyWidget(BlankPanelEmpty *module) : LRModule
 
 
     // ***** SCREWS **********
-    addChild(Widget::create<ScrewLight>(Vec(15, 1)));
-    addChild(Widget::create<ScrewLight>(Vec(15, 366)));
+    addChild(createWidget<ScrewLight>(Vec(15, 1)));
+    addChild(createWidget<ScrewLight>(Vec(15, 366)));
 
-    screw1 = Widget::create<ScrewLight>(Vec(box.size.x - 30, 1));
-    screw2 = Widget::create<ScrewLight>(Vec(box.size.x - 30, 366));
+    screw1 = createWidget<ScrewLight>(Vec(box.size.x - 30, 1));
+    screw2 = createWidget<ScrewLight>(Vec(box.size.x - 30, 366));
 
     addChild(screw1);
     addChild(screw2);
@@ -95,7 +95,7 @@ void BlankPanelEmptyWidget::step() {
 }
 
 
-Model *modelBlankPanelEmpty = Model::create<BlankPanelEmpty, BlankPanelEmptyWidget>(
+Model *modelBlankPanelEmpty = createModel<BlankPanelEmpty, BlankPanelEmptyWidget>(
         "Lindenberg Research",
         "BlankPanel 02",
         "Blank: Empty",

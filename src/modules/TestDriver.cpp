@@ -161,7 +161,7 @@ struct TestDriver : LRModule {
     }
 
 
-    json_t *toJson() override {
+    json_t *dataToJson() override {
         json_t *rootJ = json_object();
         json_object_set_new(rootJ, "lcdindex", json_integer((int) lround(lcd->value)));
 
@@ -169,8 +169,8 @@ struct TestDriver : LRModule {
     }
 
 
-    void fromJson(json_t *rootJ) override {
-        LRModule::fromJson(rootJ);
+    void dataFromJson(json_t *rootJ) override {
+        LRModule::dataFromJson(rootJ);
 
         json_t *mode = json_object_get(rootJ, "lcdindex");
 
@@ -213,10 +213,10 @@ TestDriverWidget::TestDriverWidget(TestDriver *module) : LRModuleWidget(module) 
     // **** SETUP LCD ********
 
     // ***** SCREWS **********
-    addChild(Widget::create<ScrewLight>(Vec(15, 1)));
-    addChild(Widget::create<ScrewLight>(Vec(box.size.x - 30, 1)));
-    addChild(Widget::create<ScrewLight>(Vec(15, 366)));
-    addChild(Widget::create<ScrewLight>(Vec(box.size.x - 30, 366)));
+    addChild(createWidget<ScrewLight>(Vec(15, 1)));
+    addChild(createWidget<ScrewLight>(Vec(box.size.x - 30, 1)));
+    addChild(createWidget<ScrewLight>(Vec(15, 366)));
+    addChild(createWidget<ScrewLight>(Vec(box.size.x - 30, 366)));
     // ***** SCREWS **********
 
     // ***** MAIN KNOBS ******
@@ -230,35 +230,35 @@ TestDriverWidget::TestDriverWidget(TestDriver *module) : LRModuleWidget(module) 
     addParam(module->b1Knob);
     addParam(module->b2Knob);
 
-    addParam(ParamWidget::create<LRSmallKnob>(Vec(36.5 - 7.5, 269.4), module, TestDriver::A1_CV_PARAM, -1.f, 1.0f, 0.f));
-    addParam(ParamWidget::create<LRSmallKnob>(Vec(78.5 - 7.5, 269.4), module, TestDriver::A2_CV_PARAM, -1.f, 1.0f, 0.f));
-    addParam(ParamWidget::create<LRSmallKnob>(Vec(197.5 - 7.5, 269.4), module, TestDriver::B1_CV_PARAM, -1.f, 1.0f, 0.f));
-    addParam(ParamWidget::create<LRSmallKnob>(Vec(239.5 - 7.5, 269.4), module, TestDriver::B2_CV_PARAM, -1.f, 1.0f, 0.f));
+    addParam(ParamcreateWidget<LRSmallKnob>(Vec(36.5 - 7.5, 269.4), module, TestDriver::A1_CV_PARAM, -1.f, 1.0f, 0.f));
+    addParam(ParamcreateWidget<LRSmallKnob>(Vec(78.5 - 7.5, 269.4), module, TestDriver::A2_CV_PARAM, -1.f, 1.0f, 0.f));
+    addParam(ParamcreateWidget<LRSmallKnob>(Vec(197.5 - 7.5, 269.4), module, TestDriver::B1_CV_PARAM, -1.f, 1.0f, 0.f));
+    addParam(ParamcreateWidget<LRSmallKnob>(Vec(239.5 - 7.5, 269.4), module, TestDriver::B2_CV_PARAM, -1.f, 1.0f, 0.f));
 
-    addParam(ParamWidget::create<LRSmallToggleKnob>(Vec(126.6, 112.2), module, TestDriver::T1_PARAM, 0.f, 10.0f, 0.f));
+    addParam(ParamcreateWidget<LRSmallToggleKnob>(Vec(126.6, 112.2), module, TestDriver::T1_PARAM, 0.f, 10.0f, 0.f));
 
     // ***** MAIN KNOBS ******
 
     // ***** CV INPUTS *******
-    addInput(Port::create<LRIOPortCV>(Vec(34.4 - 7.5, 312), Port::INPUT, module, TestDriver::A1_CV_INPUT));
-    addInput(Port::create<LRIOPortCV>(Vec(76.4 - 7.5, 312), Port::INPUT, module, TestDriver::A2_CV_INPUT));
-    addInput(Port::create<LRIOPortCV>(Vec(195.4 - 7.5, 312), Port::INPUT, module, TestDriver::B1_CV_INPUT));
-    addInput(Port::create<LRIOPortCV>(Vec(237.4 - 7.5, 312), Port::INPUT, module, TestDriver::B2_CV_INPUT));
+    addInput(createPort<LRIOPortCV>(Vec(34.4 - 7.5, 312), PortWidget::INPUT, module, TestDriver::A1_CV_INPUT));
+    addInput(createPort<LRIOPortCV>(Vec(76.4 - 7.5, 312), PortWidget::INPUT, module, TestDriver::A2_CV_INPUT));
+    addInput(createPort<LRIOPortCV>(Vec(195.4 - 7.5, 312), PortWidget::INPUT, module, TestDriver::B1_CV_INPUT));
+    addInput(createPort<LRIOPortCV>(Vec(237.4 - 7.5, 312), PortWidget::INPUT, module, TestDriver::B2_CV_INPUT));
     // ***** CV INPUTS *******
 
     // ***** INPUTS **********
-    addInput(Port::create<LRIOPortAudio>(Vec(118 - 8, 269), Port::INPUT, module, TestDriver::INPUT_A));
-    addInput(Port::create<LRIOPortAudio>(Vec(118 - 8, 312), Port::INPUT, module, TestDriver::INPUT_B));
+    addInput(createPort<LRIOPortAudio>(Vec(118 - 8, 269), PortWidget::INPUT, module, TestDriver::INPUT_A));
+    addInput(createPort<LRIOPortAudio>(Vec(118 - 8, 312), PortWidget::INPUT, module, TestDriver::INPUT_B));
     // ***** INPUTS **********
 
     // ***** OUTPUTS *********
-    addOutput(Port::create<LRIOPortAudio>(Vec(156 - 8, 269), Port::OUTPUT, module, TestDriver::OUTPUT_A));
-    addOutput(Port::create<LRIOPortAudio>(Vec(156 - 8, 312), Port::OUTPUT, module, TestDriver::OUTPUT_B));
+    addOutput(createPort<LRIOPortAudio>(Vec(156 - 8, 269), PortWidget::OUTPUT, module, TestDriver::OUTPUT_A));
+    addOutput(createPort<LRIOPortAudio>(Vec(156 - 8, 312), PortWidget::OUTPUT, module, TestDriver::OUTPUT_B));
     // ***** OUTPUTS *********
 
-    addParam(ParamWidget::create<LRSwitch>(Vec(131.1, 245.2), module, TestDriver::S1_PARAM, 0, 1, 0));
+    addParam(ParamcreateWidget<LRSwitch>(Vec(131.1, 245.2), module, TestDriver::S1_PARAM, 0, 1, 0));
 }
 
 
-Model *modelTestDriver = Model::create<TestDriver, TestDriverWidget>("Lindenberg Research", "TestDriver", "TestDrive Module for "
+Model *modelTestDriver = createModel<TestDriver, TestDriverWidget>("Lindenberg Research", "TestDriver", "TestDrive Module for "
                                                                                                           "ProtoTyping", UTILITY_TAG);

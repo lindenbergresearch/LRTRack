@@ -71,28 +71,28 @@ ReShaperWidget::ReShaperWidget(ReShaper *module) : LRModuleWidget(module) {
     box.size = panel->box.size;
 
     // ***** SCREWS **********
-    addChild(Widget::create<ScrewLight>(Vec(15, 1)));
-    addChild(Widget::create<ScrewLight>(Vec(box.size.x - 30, 1)));
-    addChild(Widget::create<ScrewLight>(Vec(15, 366)));
-    addChild(Widget::create<ScrewLight>(Vec(box.size.x - 30, 366)));
+    addChild(createWidget<ScrewLight>(Vec(15, 1)));
+    addChild(createWidget<ScrewLight>(Vec(box.size.x - 30, 1)));
+    addChild(createWidget<ScrewLight>(Vec(15, 366)));
+    addChild(createWidget<ScrewLight>(Vec(box.size.x - 30, 366)));
     // ***** SCREWS **********
 
 
     // ***** MAIN KNOBS ******
-    addParam(ParamWidget::create<LRBigKnob>(Vec(32.7, 228), module, ReShaper::RESHAPER_AMOUNT, 1.f, 50.f, 1.f));
-    addParam(ParamWidget::create<LRSmallKnob>(Vec(48.9, 126), module, ReShaper::RESHAPER_CV_AMOUNT, 0.f, 5.f, 0.f));
+    addParam(ParamcreateWidget<LRBigKnob>(Vec(32.7, 228), module, ReShaper::RESHAPER_AMOUNT, 1.f, 50.f, 1.f));
+    addParam(ParamcreateWidget<LRSmallKnob>(Vec(48.9, 126), module, ReShaper::RESHAPER_CV_AMOUNT, 0.f, 5.f, 0.f));
     // ***** MAIN KNOBS ******
 
 
     // ***** INPUTS **********
-    addInput(Port::create<LRIOPortAudio>(Vec(21.5, 52.3), Port::INPUT, module, ReShaper::RESHAPER_INPUT));
-    addInput(Port::create<LRIOPortCV>(Vec(71.2, 52.3), Port::INPUT, module, ReShaper::RESHAPER_CV_INPUT));
+    addInput(createPort<LRIOPortAudio>(Vec(21.5, 52.3), PortWidget::INPUT, module, ReShaper::RESHAPER_INPUT));
+    addInput(createPort<LRIOPortCV>(Vec(71.2, 52.3), PortWidget::INPUT, module, ReShaper::RESHAPER_CV_INPUT));
     // ***** INPUTS **********
 
     // ***** OUTPUTS *********
-    addOutput(Port::create<LRIOPortAudio>(Vec(46.2, 311.6), Port::OUTPUT, module, ReShaper::RESHAPER_OUTPUT));
+    addOutput(createPort<LRIOPortAudio>(Vec(46.2, 311.6), PortWidget::OUTPUT, module, ReShaper::RESHAPER_OUTPUT));
     // ***** OUTPUTS *********
 }
 
 
-Model *modelReShaper = Model::create<ReShaper, ReShaperWidget>("Lindenberg Research", "ReShaper", "ReShaper Wavefolder", WAVESHAPER_TAG);
+Model *modelReShaper = createModel<ReShaper, ReShaperWidget>("Lindenberg Research", "ReShaper", "ReShaper Wavefolder", WAVESHAPER_TAG);

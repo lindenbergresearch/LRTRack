@@ -113,10 +113,10 @@ EchoBoxWidget::EchoBoxWidget(EchoBox *module) : LRModuleWidget(module) {
     box.size = panel->box.size;
 
     // ***** SCREWS **********
-     addChild(Widget::create<ScrewLight>(Vec(15, 1)));
-     addChild(Widget::create<ScrewLight>(Vec(box.size.x - 30, 1)));
-     addChild(Widget::create<ScrewLight>(Vec(15, 366)));
-     addChild(Widget::create<ScrewLight>(Vec(box.size.x - 30, 366)));
+    addChild(createWidget<ScrewLight>(Vec(15, 1)));
+    addChild(createWidget<ScrewLight>(Vec(box.size.x - 30, 1)));
+    addChild(createWidget<ScrewLight>(Vec(15, 366)));
+    addChild(createWidget<ScrewLight>(Vec(box.size.x - 30, 366)));
     // ***** SCREWS **********
 
     // ***** MAIN KNOBS ******
@@ -128,25 +128,25 @@ EchoBoxWidget::EchoBoxWidget(EchoBox *module) : LRModuleWidget(module) {
       addParam(module->resKnob);
       addParam(module->saturateKnob);
 
-      addParam(ParamWidget::create<LRSmallKnob>(Vec(39.9, 251.4), module, DiodeVCF::FREQUENCY_CV_PARAM, -1.f, 1.0f, 0.f));
-      addParam(ParamWidget::create<LRSmallKnob>(Vec(177, 251.4), module, DiodeVCF::RESONANCE_CV_PARAM, -1.f, 1.0f, 0.f));
-      addParam(ParamWidget::create<LRSmallKnob>(Vec(108.5, 251.4), module, DiodeVCF::SATURATE_CV_PARAM, -1.f, 1.0f, 0.f));*/
+      addParam(ParamcreateWidget<LRSmallKnob>(Vec(39.9, 251.4), module, DiodeVCF::FREQUENCY_CV_PARAM, -1.f, 1.0f, 0.f));
+      addParam(ParamcreateWidget<LRSmallKnob>(Vec(177, 251.4), module, DiodeVCF::RESONANCE_CV_PARAM, -1.f, 1.0f, 0.f));
+      addParam(ParamcreateWidget<LRSmallKnob>(Vec(108.5, 251.4), module, DiodeVCF::SATURATE_CV_PARAM, -1.f, 1.0f, 0.f));*/
     // ***** MAIN KNOBS ******
 
     // ***** CV INPUTS *******
-    //  addInput(Port::create<LRIOPortCV>(Vec(37.4, 284.4), Port::INPUT, module, DiodeVCF::FREQUCENCY_CV_INPUT));
-    //  addInput(Port::create<LRIOPortCV>(Vec(175.3, 284.4), Port::INPUT, module, DiodeVCF::RESONANCE_CV_INPUT));
-    //  addInput(Port::create<LRIOPortCV>(Vec(106.4, 284.4), Port::INPUT, module, DiodeVCF::SATURATE_CV_INPUT));
+    //  addInput(createPort<LRIOPortCV>(Vec(37.4, 284.4), PortWidget::INPUT, module, DiodeVCF::FREQUCENCY_CV_INPUT));
+    //  addInput(createPort<LRIOPortCV>(Vec(175.3, 284.4), PortWidget::INPUT, module, DiodeVCF::RESONANCE_CV_INPUT));
+    //  addInput(createPort<LRIOPortCV>(Vec(106.4, 284.4), PortWidget::INPUT, module, DiodeVCF::SATURATE_CV_INPUT));
     // ***** CV INPUTS *******
 
 
     // ***** INPUTS **********
-    //  addInput(Port::create<LRIOPortAudio>(Vec(37.4, 318.5), Port::INPUT, module, DiodeVCF::FILTER_INPUT));
+    //  addInput(createPort<LRIOPortAudio>(Vec(37.4, 318.5), PortWidget::INPUT, module, DiodeVCF::FILTER_INPUT));
     // ***** INPUTS **********
 
     // ***** OUTPUTS *********
-    // addOutput(Port::create<LRIOPortAudio>(Vec(175.3, 318.5), Port::OUTPUT, module, DiodeVCF::LP_OUTPUT));
-    //  addOutput(Port::create<LRIOPortAudio>(Vec(106.4, 318.5), Port::OUTPUT, module, DiodeVCF::HP_OUTPUT));
+    // addOutput(createPort<LRIOPortAudio>(Vec(175.3, 318.5), PortWidget::OUTPUT, module, DiodeVCF::LP_OUTPUT));
+    //  addOutput(createPort<LRIOPortAudio>(Vec(106.4, 318.5), PortWidget::OUTPUT, module, DiodeVCF::HP_OUTPUT));
     // ***** OUTPUTS *********
 }
 
@@ -201,11 +201,11 @@ void DiodeVCFWidget::appendContextMenu(Menu *menu) {
     assert(diodeVCF);
 
 
-    DiodeVCFHiDef *mergeItemHiDef = MenuItem::create<DiodeVCFHiDef>("Use 4x oversampling");
+    DiodeVCFHiDef *mergeItemHiDef = createMenuItem<DiodeVCFHiDef>("Use 4x oversampling");
     mergeItemHiDef->diodeVCF = diodeVCF;
     menu->addChild(mergeItemHiDef);
 }*/
 
 
-Model *modelEchoBox = Model::create<EchoBox, EchoBoxWidget>("Lindenberg Research", "ECHOBOX DELAY", "))) echoBOX analog delay processor",
-                                                            DELAY_TAG);
+Model *modelEchoBox = createModel<EchoBox, EchoBoxWidget>("Lindenberg Research", "ECHOBOX DELAY", "))) echoBOX analog delay processor",
+                                                          DELAY_TAG);
