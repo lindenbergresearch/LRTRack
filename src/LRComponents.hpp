@@ -1,9 +1,8 @@
 #pragma once
 
 #include <map>
-#include "rack.hpp"
+#include "rack0.hpp"
 #include "asset.hpp"
-#include "widgets.hpp"
 #include "LRGestalt.hpp"
 
 #define LCD_FONT_DIG7 "res/digital-7.ttf"
@@ -30,7 +29,6 @@ using std::shared_ptr;
 using std::string;
 using std::map;
 
-
 extern Plugin *pluginInstance;
 
 namespace lrt {
@@ -38,6 +36,7 @@ namespace lrt {
 /* Type definitions for common used data structures */
 typedef std::shared_ptr<rack::Font> TrueType;
 typedef std::vector<std::string> StringVector;
+typedef std::string string;
 
 
 /**
@@ -733,7 +732,7 @@ public:
                 break;
         }
 
-        dirty = true;
+        fb->dirty = true;
     }
 
 
