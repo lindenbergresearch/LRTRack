@@ -5,13 +5,12 @@ using namespace rack;
 using namespace lrt;
 
 
-Menu *LRModuleWidget::createContextMenu() {
-    Menu *menu = ModuleWidget::createContextMenu();
+void LRModuleWidget::appendContextMenu(ui::Menu *menu) {
+    // Menu *menu = ModuleWidget::createContextMenu();
 
     auto count = panel->pool.size() - 1; // NIL does not count!
 
-
-    if (noVariants) return menu; // if gestalt is disabled do nothing
+    if (noVariants) return; // if gestalt is disabled do nothing
 
     auto *spacerLabel = new MenuLabel();
     menu->addChild(spacerLabel);
@@ -58,8 +57,6 @@ Menu *LRModuleWidget::createContextMenu() {
     auto *patinaItem = new PatinaItem(this->panel);
     patinaItem->text = "Used Look";
     menu->addChild(patinaItem);
-
-    return menu;
 }
 
 
@@ -139,13 +136,13 @@ void LRModuleWidget::fromJson(json_t *rootJ) {
 
 /**
  * @brief Randomize parameters
- */
+
 void LRModuleWidget::randomize() {
     ModuleWidget::randomize();
     panel->patinaWidgetClassic->randomize();
     panel->patinaWidgetWhite->randomize();
     panel->dirty = true;
-}
+}*/
 
 
 /**
@@ -174,4 +171,6 @@ void LRModuleWidget::step() {
         prevGestalt = gestalt;
     }
 }
+
+
 

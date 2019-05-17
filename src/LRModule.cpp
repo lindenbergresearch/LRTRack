@@ -6,11 +6,10 @@ using namespace lrt;
 
 
 /**
- * Default constructor for a module
+ * Compatibility constructor to pass the standard config via constructor in old 0.6 - style
  */
-LRModule::LRModule(int numParams, int numInputs, int numOutputs, int numLights) :
-        Module(numParams, numInputs, numOutputs, numLights) {
-
+LRModule::LRModule(int numParams, int numInputs, int numOutputs, int numLights) {
+    config(numParams, numInputs, numOutputs, numLights);
 }
 
 
