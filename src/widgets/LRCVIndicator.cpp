@@ -1,5 +1,21 @@
+/*                                                                     *\
+**       __   ___  ______                                              **
+**      / /  / _ \/_  __/                                              **
+**     / /__/ , _/ / /    Lindenberg                                   **
+**    /____/_/|_| /_/  Research Tec.                                   **
+**                                                                     **
+**                                                                     **
+**	  https://github.com/lindenbergresearch/LRTRack	                   **
+**    heapdump@icloud.com                                              **
+**		                                                               **
+**    Sound Modules for VCV Rack                                       **
+**    Copyright 2017-2019 by Patrick Lindenberg / LRT                  **
+**                                                                     **
+**    For Redistribution and use in source and binary forms,           **
+**    with or without modification please see LICENSE.                 **
+**                                                                     **
+\*                                                                     */
 #include "../LRComponents.hpp"
-
 
 namespace lrt {
 
@@ -20,9 +36,9 @@ LRCVIndicator::LRCVIndicator(float distance, float angle) {
 
 /**
  * @brief Draw routine for cv indicator
- * @param vg
+ * @param args.vg
  */
-void LRCVIndicator::draw(NVGcontext *vg) {
+void LRCVIndicator::draw(const Widget::DrawArgs &args) {
     NVGcolor current = lightMode ? normalColorLight : normalColor;
 
     if (active) {
@@ -53,15 +69,15 @@ void LRCVIndicator::draw(NVGcontext *vg) {
         p3.x = middle.x - sin(-(a - d2) * (float) M_PI) * d;
         p3.y = middle.y - cos(-(a - d2) * (float) M_PI) * d;
 
-        nvgBeginPath(vg);
-        nvgMoveTo(vg, p1.x, p1.y);
-        nvgLineTo(vg, p2.x, p2.y);
-        nvgLineTo(vg, p3.x, p3.y);
-        nvgLineTo(vg, p1.x, p1.y);
-        nvgClosePath(vg);
+        nvgBeginPath(args.vg);
+        nvgMoveTo(args.vg, p1.x, p1.y);
+        nvgLineTo(args.vg, p2.x, p2.y);
+        nvgLineTo(args.vg, p3.x, p3.y);
+        nvgLineTo(args.vg, p1.x, p1.y);
+        nvgClosePath(args.vg);
 
-        nvgFillColor(vg, current);
-        nvgFill(vg);
+        nvgFillColor(args.vg, current);
+        nvgFill(args.vg);
     }
 }
 

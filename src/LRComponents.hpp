@@ -50,7 +50,7 @@ struct LRLCDWidget : FramebufferWidget, LRGestaltVariant, LRGestaltChangeAction 
     };
 
     TransformWidget *tw;
-    SVGWidget *sw;
+    SVGWidget *sw; //TODO: remove svg widget
 
     TrueType ttfLCDDIG7;
 
@@ -132,10 +132,10 @@ struct LRCVIndicator : TransparentWidget {
     void setDistances(float d1, float d2);
 
     /**
-     * @brief Draw routine for cv indicator
-     * @param vg
+     * @brief Draw indicator
+     * @param args
      */
-    void draw(NVGcontext *vg) override;
+    void draw(const DrawArgs &args) override;
 };
 
 
