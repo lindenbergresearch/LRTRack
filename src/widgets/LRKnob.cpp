@@ -1,5 +1,21 @@
+/*                                                                     *\
+**       __   ___  ______                                              **
+**      / /  / _ \/_  __/                                              **
+**     / /__/ , _/ / /    Lindenberg                                   **
+**    /____/_/|_| /_/  Research Tec.                                   **
+**                                                                     **
+**                                                                     **
+**	  https://github.com/lindenbergresearch/LRTRack	                   **
+**    heapdump@icloud.com                                              **
+**		                                                               **
+**    Sound Modules for VCV Rack                                       **
+**    Copyright 2017-2019 by Patrick Lindenberg / LRT                  **
+**                                                                     **
+**    For Redistribution and use in source and binary forms,           **
+**    with or without modification please see LICENSE.                 **
+**                                                                     **
+\*                                                                     */
 #include "../LRComponents.hpp"
-
 
 namespace lrt {
 
@@ -12,7 +28,7 @@ LRKnob::LRKnob() {
     shader = new LRShadow();
     removeChild(shadow); // uninstall default
 
-    font = Font::load(assetGlobal("res/fonts/ShareTechMono-Regular.ttf"));
+    font = APP->window->loadFont(asset::system("res/fonts/ShareTechMono-Regular.ttf"));
 
     indicator = new LRCVIndicator(15.f, ANGLE);
     // addChild(indicator);
@@ -20,7 +36,7 @@ LRKnob::LRKnob() {
 
 
 void LRKnob::setSVG(std::shared_ptr<SVG> svg) {
-    SVGKnob::setSVG(svg);
+    SvgKnob::setSVG(svg);
 
     /** inherit dimensions after loaded svg */
     indicator->box.size = sw->box.size;
@@ -29,52 +45,53 @@ void LRKnob::setSVG(std::shared_ptr<SVG> svg) {
 }
 
 
-void LRKnob::draw(NVGcontext *vg) {
+void LRKnob::draw(const Widget::DrawArgs &args) {
     /** shadow */
-    shader->draw(vg);
+    shader->draw(args.vg);
 
     /** component */
-    FramebufferWidget::draw(vg);
+    SvgKnob::draw(args);
 
+    auto value = paramQuantity->getValue();
 
     if (lightning) {
-        nvgBeginPath(vg);
+        nvgBeginPath(args.vg);
 
-        auto gradient = nvgLinearGradient(vg, box.size.x / 2 - radius / 2 * 1.1, box.size.y / 2 - radius / 2 * 1.1,
+        auto gradient = nvgLinearGradient(args.vg, box.size.x / 2 - radius / 2 * 1.1, box.size.y / 2 - radius / 2 * 1.1,
                                           box.size.x / 2 + radius / 2 * 1.1,
                                           box.size.y / 2 + radius / 2 * 1.1,
                                           startColor,
                                           endColor);
 
-        nvgCircle(vg, box.size.x / 2, box.size.y / 2, radius);
+        nvgCircle(args.vg, box.size.x / 2, box.size.y / 2, radius);
 
-        nvgFillPaint(vg, gradient);
-        nvgFill(vg);
+        nvgFillPaint(args.vg, gradient);
+        nvgFill(args.vg);
     }
 
-    indicator->draw(vg);
+    indicator->draw(args);
 
     /** debug numerical values */
     if (debug) {
         auto text = stringf("%4.3f", value);
         auto size = box.size.x / 2. > 15 ? 15 : box.size.x / 2.;
-        nvgFontSize(vg, size);
+        nvgFontSize(args.vg, size);
 
-        nvgFontFaceId(vg, font->handle);
-        nvgTextAlign(vg, NVG_ALIGN_LEFT | NVG_ALIGN_MIDDLE);
+        nvgFontFaceId(args.vg, font->handle);
+        nvgTextAlign(args.vg, NVG_ALIGN_LEFT | NVG_ALIGN_MIDDLE);
 
         float bounds[4];
 
-        nvgTextBounds(vg, 0, 0, text.c_str(), nullptr, bounds);
+        nvgTextBounds(args.vg, 0, 0, text.c_str(), nullptr, bounds);
 
-        nvgBeginPath(vg);
-        nvgFillColor(vg, nvgRGBAf(0., 0.1, 0.2, 0.8));
-        nvgRoundedRect(vg, bounds[0] - 4, bounds[1] - 2, (bounds[2] - bounds[0]) + 8, (bounds[3] - bounds[1]) + 4,
+        nvgBeginPath(args.vg);
+        nvgFillColor(args.vg, nvgRGBAf(0., 0.1, 0.2, 0.8));
+        nvgRoundedRect(args.vg, bounds[0] - 4, bounds[1] - 2, (bounds[2] - bounds[0]) + 8, (bounds[3] - bounds[1]) + 4,
                        ((bounds[3] - bounds[1]) + 4) / 2 - 1);
-        nvgFill(vg);
+        nvgFill(args.vg);
 
-        nvgFillColor(vg, nvgRGBAf(1.0f, 1.0f, 1.0f, .99f));
-        nvgText(vg, 0, 0, text.c_str(), NULL);
+        nvgFillColor(args.vg, nvgRGBAf(1.0f, 1.0f, 1.0f, .99f));
+        nvgText(args.vg, 0, 0, text.c_str(), NULL);
     }
 }
 
@@ -91,10 +108,12 @@ void LRKnob::unsetSnap() {
 }
 
 
-void LRKnob::onChange(EventChange &e) {
+void LRKnob::onChange(const event::Change &e) {
+    auto value = paramQuantity->getValue();
+
     // if the value still inside snap-tolerance keep the value zero
     if (snap && value > -snapSens + snapAt && value < snapSens + snapAt) value = 0;
-    SVGKnob::onChange(e);
+    SvgKnob::onChange(e);
 }
 
 
@@ -123,5 +142,6 @@ void LRKnob::onGestaltChange(LREventGestaltChange &e) {
     dirty = true;
     e.consumed = true;
 }
+
 
 }

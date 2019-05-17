@@ -186,7 +186,7 @@ public:
 /**
  * @brief The base of all knobs used in LR panels, includes a indicator
  */
-struct LRKnob : SVGKnob, LRGestaltVariant, LRGestaltChangeAction {
+struct LRKnob : SvgKnob, LRGestaltVariant, LRGestaltChangeAction {
 private:
     static constexpr float ANGLE = 0.83f;
 
@@ -214,7 +214,7 @@ private:
 protected:
     /** shader */
     LRShadow *shader;
-
+    bool dirty;
 public:
 
     LRKnob();
@@ -329,7 +329,7 @@ public:
      * @brief Draw knob
      * @param vg
      */
-    void draw(NVGcontext *vg) override;
+    void draw(const DrawArgs &args) override;
 
     /**
      * @brief Setup knob snapping
@@ -347,10 +347,11 @@ public:
      * @brief Snapping mode for knobs
      * @param e
      */
-    void onChange(EventChange &e) override;
+
 
 
     void onGestaltChange(LREventGestaltChange &e) override;
+    void onChange(const event::Change &e) override;
 };
 
 
