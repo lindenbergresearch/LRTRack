@@ -9,16 +9,14 @@
 **    heapdump@icloud.com                                              **
 **		                                                               **
 **    Sound Modules for VCV Rack                                       **
-**    Copyright 2017/2018 by Patrick Lindenberg / LRT                  **
+**    Copyright 2017-2019 by Patrick Lindenberg / LRT                  **
 **                                                                     **
 **    For Redistribution and use in source and binary forms,           **
 **    with or without modification please see LICENSE.                 **
 **                                                                     **
 \*                                                                     */
-
 #pragma once
 
-#include <widgets.hpp>
 #include <map>
 
 using namespace rack;
@@ -26,7 +24,6 @@ using std::vector;
 using std::shared_ptr;
 using std::string;
 using std::map;
-
 
 namespace lrt {
 
@@ -38,6 +35,14 @@ enum LRGestalt : int {
     DARK,   // DARK theme (as standard)
     LIGHT,  // LIGHT theme
     AGED    // LIGHT theme with AGED look
+};
+
+
+/**
+ * @brief Base event class
+ */
+struct EventChange {
+    //TODO: extend!
 };
 
 
@@ -69,7 +74,7 @@ struct LRGestaltChangeAction {
 struct LRGestaltVariant {
 
     /* SVG pool - Holds all needed SVG images */
-    map<LRGestalt, shared_ptr<SVG>> pool;
+    map<LRGestalt, shared_ptr<SVG>> pool; //TODO: drop depr. SVG class
 
 
     /**
