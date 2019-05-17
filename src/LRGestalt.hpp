@@ -42,7 +42,7 @@ enum LRGestalt : int {
  * @brief Base event class
  */
 struct EventChange {
-    //TODO: extend!
+    bool consumed = false;
 };
 
 
