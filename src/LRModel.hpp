@@ -9,20 +9,21 @@
 **    heapdump@icloud.com                                              **
 **		                                                               **
 **    Sound Modules for VCV Rack                                       **
-**    Copyright 2017/2018 by Patrick Lindenberg / LRT                  **
+**    Copyright 2017-2019 by Patrick Lindenberg / LRT                  **
 **                                                                     **
 **    For Redistribution and use in source and binary forms,           **
 **    with or without modification please see LICENSE.                 **
 **                                                                     **
 \*                                                                     */
-
 #pragma once
 
 #include "LRComponents.hpp"
 #include "rack.hpp"
 #include "asset.hpp"
-#include "widgets.hpp"
 
+namespace lrt {
+
+using std::vector;
 
 static const char *const JSON_GESTALT_KEY = "gestaltID";
 static const char *const JSON_GRADIENT_KEY = "gradient";
@@ -33,12 +34,6 @@ static const char *const JSON_PATINA_A_Y = "patina_a_y";
 
 static const char *const JSON_PATINA_B_X = "patina_b_x";
 static const char *const JSON_PATINA_B_Y = "patina_b_y";
-
-namespace lrt {
-
-using std::string;
-using std::vector;
-
 
 static const string STR_CHECKMARK_UNICODE = "✔";
 
@@ -82,7 +77,9 @@ struct LRModuleWidget : ModuleWidget {
      * @brief Default constructor derived from rack
      * @param module LRModule instance
      */
-    explicit LRModuleWidget(LRModule *module) : ModuleWidget(module) {
+    explicit LRModuleWidget(LRModule *module) {
+        setModule(module);
+
         // pass gestalt pointer to module, to point to the origin at the widget
         module->gestalt = &gestalt;
         panel = new LRPanel();
@@ -100,13 +97,12 @@ struct LRModuleWidget : ModuleWidget {
         GestaltItem(LRGestalt gestaltM, LRModuleWidget *widget) : gestaltM(gestaltM), widget(widget) {}
 
 
-        void onAction(EventAction &e) override {
+        void onAction(const event::Action &e) override {
             if (widget != nullptr) {
                 // set new global gestalt to current ID of selected menu item
                 widget->gestalt = gestaltM;
             }
         }
-
 
         void step() override {
             rightText = (widget->gestalt == gestaltM) ? STR_CHECKMARK_UNICODE : "";
@@ -124,7 +120,7 @@ struct LRModuleWidget : ModuleWidget {
         explicit GradientItem(LRPanel *panel) : panel(panel) {}
 
 
-        void onAction(EventAction &e) override {
+        void onAction(const event::Action &e) override {
             if (panel != nullptr) {
                 panel->setGradientVariant(true);
                 panel->dirty = true;
@@ -144,11 +140,10 @@ struct LRModuleWidget : ModuleWidget {
     struct PatinaItem : MenuItem {
         LRPanel *panel;
 
-
         explicit PatinaItem(LRPanel *panel) : panel(panel) {}
 
 
-        void onAction(EventAction &e) override {
+        void onAction(const event::Action &e) override {
             if (panel != nullptr) {
                 panel->setPatina(!*panel->patina); // invert flag on trigger
                 panel->dirty = true;
@@ -163,16 +158,12 @@ struct LRModuleWidget : ModuleWidget {
 
 
     void step() override;
-
-    /**
-     * @brief Create standard menu for all modules
-     * @return
-     */
-    Menu *createContextMenu() override;
-
+    void appendContextMenu(ui::Menu *menu) override;
     json_t *toJson() override;
     void fromJson(json_t *rootJ) override;
-    void randomize() override;
+
+    //void randomize() override;
+    //TODO: check randomize on widgets!
 };
 
 
