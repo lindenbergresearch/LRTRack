@@ -14,16 +14,16 @@ LRLCDWidget::LRLCDWidget(unsigned char length, std::string format, LCDType type,
     tw->addChild(sw);
 
     /** load LCD ttf font */
-    ttfLCDDIG7 = Font::load(assetPlugin(pluginInstance, LCD_FONT_DIG7));
+    ttfLCDDIG7 = APP->window->loadFont(asset::plugin(pluginInstance, LCD_FONT_DIG7));
     LRLCDWidget::fontsize = fontsize;
     LRLCDWidget::type = type;
     LRLCDWidget::length = length;
     LRLCDWidget::format = format;
     LRLCDWidget::fg = LCD_DEFAULT_COLOR_DARK;
 
-    addSVGVariant(LRGestalt::DARK, SVG::load(assetPlugin(pluginInstance, "res/elements/LCDFrameDark.svg")));
-    addSVGVariant(LRGestalt::LIGHT, SVG::load(assetPlugin(pluginInstance, "res/elements/LCDFrameLight.svg")));
-    addSVGVariant(LRGestalt::AGED, SVG::load(assetPlugin(pluginInstance, "res/elements/LCDFrameAged.svg")));
+    addSVGVariant(LRGestalt::DARK, APP->window->loadSvg(asset::plugin(pluginInstance, "res/elements/LCDFrameDark.svg")));
+    addSVGVariant(LRGestalt::LIGHT, APP->window->loadSvg(asset::plugin(pluginInstance, "res/elements/LCDFrameLight.svg")));
+    addSVGVariant(LRGestalt::AGED, APP->window->loadSvg(asset::plugin(pluginInstance, "res/elements/LCDFrameAged.svg")));
 
     for (int i = 0; i < LRLCDWidget::length; ++i) {
         s1.append("O");
@@ -34,18 +34,17 @@ LRLCDWidget::LRLCDWidget(unsigned char length, std::string format, LCDType type,
 
 /**
  * @brief Draw method of custom LCD widget
- * @param vg
+ * @param args.vg
  */
-void LRLCDWidget::draw(NVGcontext *vg) {
-    FramebufferWidget::draw(vg);
+void LRLCDWidget::draw(const Widget::DrawArgs &args) {
+    FramebufferWidget::draw(args);
 
-    nvgFontSize(vg, fontsize);
-    nvgFontFaceId(vg, ttfLCDDIG7->handle);
-    nvgTextLetterSpacing(vg, LCD_LETTER_SPACING);
-    //nvgTextAlign(vg, NVG_ALIGN_B | NVG_ALIGN_LEFT);
+    nvgFontSize(args.vg, fontsize);
+    nvgFontFaceId(args.vg, ttfLCDDIG7->handle);
+    nvgTextLetterSpacing(args.vg, LCD_LETTER_SPACING);
 
     float bounds[4];
-    nvgTextBoxBounds(vg, 0, 0, 120, s2.c_str(), nullptr, bounds);
+    nvgTextBoxBounds(args.vg, 0, 0, 120, s2.c_str(), nullptr, bounds);
 
     auto mx = (bounds[2] - bounds[0]) * LCD_MARGIN_HORIZONTAL;
     auto my = (bounds[3] - bounds[1]) * LCD_MARGIN_VERTICAL;
@@ -71,16 +70,16 @@ void LRLCDWidget::draw(NVGcontext *vg) {
               fontsize, xoffs,
               yoffs);*/
 
-    /*nvgFillPaint(vg, nvgBoxGradient(vg, 0 - 50, 0 - 50, mx + 50, my + 50, 10, 10,
+    /*nvgFillPaint(args.vg, nvgBoxGradient(args.vg, 0 - 50, 0 - 50, mx + 50, my + 50, 10, 10,
                                     nvgRGBAf(1, 0, 0, 0.25),
                                     nvgRGBAf(0, 0, 0, .0)));
-    nvgFill(vg);*/
+    nvgFill(args.vg);*/
 
-    nvgFillColor(vg, nvgRGBAf(fg.r, fg.g, fg.b, 0.23));
+    nvgFillColor(args.vg, nvgRGBAf(fg.r, fg.g, fg.b, 0.23));
     std::string str;
 
-    nvgTextBox(vg, xoffs, yoffs, 120, s1.c_str(), nullptr);
-    nvgTextBox(vg, xoffs, yoffs, 120, s2.c_str(), nullptr);
+    nvgTextBox(args.vg, xoffs, yoffs, 120, s1.c_str(), nullptr);
+    nvgTextBox(args.vg, xoffs, yoffs, 120, s2.c_str(), nullptr);
 
     /** if set to inactive just draw the background segments */
     if (!active) return;
@@ -118,8 +117,8 @@ void LRLCDWidget::draw(NVGcontext *vg) {
         str = stringf(format.c_str(), items[index].c_str());
     }
 
-    nvgFillColor(vg, fg);
-    nvgTextBox(vg, xoffs, yoffs, 120, str.c_str(), nullptr);
+    nvgFillColor(args.vg, fg);
+    nvgTextBox(args.vg, xoffs, yoffs, 120, str.c_str(), nullptr);
 }
 
 
@@ -151,7 +150,6 @@ void LRLCDWidget::onGestaltChange(LREventGestaltChange &e) {
             fg = LCD_DEFAULT_COLOR_DARK;
     }
 
-    e.consumed = true;
 }
 
 
@@ -169,22 +167,16 @@ void LRLCDWidget::doResize(Vec v) {
 }
 
 
-void LRLCDWidget::onMouseDown(EventMouseDown &e) {
-    Widget::onMouseDown(e);
+void LRLCDWidget::onButton(const event::Button &e) {
+    Widget::onButton(e);
+
+
+    //TODO: check correct mouse button
 
     if (type == LIST) {
         if (value < items.size() - 1) value++;
         else value = 0;
-
-        e.consumed = true;
     }
-}
-
-
-void LRLCDWidget::step() {
-
-
-    FramebufferWidget::step();
 }
 
 }

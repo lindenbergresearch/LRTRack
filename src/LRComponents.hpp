@@ -1,7 +1,7 @@
 #pragma once
 
 #include <map>
-#include "rack0.hpp"
+#include "rack.hpp"
 #include "asset.hpp"
 #include "LRGestalt.hpp"
 
@@ -35,7 +35,6 @@ namespace lrt {
 
 /* Type definitions for common used data structures */
 typedef std::shared_ptr<rack::Font> TrueType;
-typedef std::vector<std::string> StringVector;
 typedef std::string string;
 
 
@@ -75,26 +74,10 @@ struct LRLCDWidget : FramebufferWidget, LRGestaltVariant, LRGestaltChangeAction 
      */
     LRLCDWidget(unsigned char length, string format, LCDType type, float fontsize);
 
-    void step() override;
-
-    /**
-     * @brief Draw LCD display
-     * @param vg
-     */
-    void draw(NVGcontext *vg) override;
-
-
-    inline void addItem(string name) {
-        items.push_back(name);
-    }
-
-
+    void draw(const DrawArgs &args) override;
+    void onButton(const event::Button &e) override;
     void doResize(Vec v);
-
     void onGestaltChange(LREventGestaltChange &e) override;
-
-    virtual void onMouseDown(EventMouseDown &e) override;
-
 };
 
 
