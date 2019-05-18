@@ -1,3 +1,20 @@
+/*                                                                     *\
+**       __   ___  ______                                              **
+**      / /  / _ \/_  __/                                              **
+**     / /__/ , _/ / /    Lindenberg                                   **
+**    /____/_/|_| /_/  Research Tec.                                   **
+**                                                                     **
+**                                                                     **
+**	  https://github.com/lindenbergresearch/LRTRack	                   **
+**    heapdump@icloud.com                                              **
+**		                                                               **
+**    Sound Modules for VCV Rack                                       **
+**    Copyright 2017-2019 by Patrick Lindenberg / LRT                  **
+**                                                                     **
+**    For Redistribution and use in source and binary forms,           **
+**    with or without modification please see LICENSE.                 **
+**                                                                     **
+\*                                                                     */
 #include "../LRComponents.hpp"
 
 namespace lrt {
@@ -6,7 +23,7 @@ SVGRotator::SVGRotator() : FramebufferWidget() {
     tw = new TransformWidget();
     addChild(tw);
 
-    sw = new SVGWidget();
+    sw = new SvgWidget();
     tw->addChild(sw);
 }
 
@@ -15,8 +32,8 @@ SVGRotator::SVGRotator() : FramebufferWidget() {
  * @brief Set SVG image to rotator
  * @param svg
  */
-void SVGRotator::setSVG(std::shared_ptr<SVG> svg) {
-    sw->setSVG(svg);
+void SVGRotator::setSvg(std::shared_ptr<Svg> svg) {
+    sw->setSvg(svg);
     tw->box.size = sw->box.size;
     box.size = sw->box.size;
 }
@@ -42,8 +59,8 @@ void SVGRotator::step() {
 }
 
 
-void SVGRotator::draw(NVGcontext *vg) {
-    nvgGlobalAlpha(vg, transperency);
-    FramebufferWidget::draw(vg);
+void SVGRotator::draw(const Widget::DrawArgs &args) {
+    nvgGlobalAlpha(args.vg, transperency);
+    FramebufferWidget::draw(args);
 }
 }

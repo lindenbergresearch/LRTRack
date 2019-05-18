@@ -950,8 +950,8 @@ struct SVGRotator : FramebufferWidget {
      * @param scale Scaling of the SVG / default 100%
      * @param transperency Transperancy of the SVG / default 100%
      */
-    SVGRotator static *create(Vec pos, shared_ptr<SVG> svg, float inc, float scale = 1.0f, float transperency = 1.f) {
-        SVGRotator *rotator = FramebufferWidget::create<SVGRotator>(pos);
+    SVGRotator static *create(Vec pos, shared_ptr<Svg> svg, float inc, float scale = 1.0f, float transperency = 1.f) {
+        SVGRotator *rotator = new SVGRotator();
 
         rotator->setSvg(svg);
         rotator->inc = inc;
@@ -962,9 +962,9 @@ struct SVGRotator : FramebufferWidget {
     }
 
 
-    void draw(NVGcontext *vg) override;
+    void draw(const Widget::DrawArgs &args) override;
 
-    void setSvg(shared_ptr<SVG> svg);
+    void setSvg(shared_ptr<Svg> svg);
     void step() override;
 };
 
