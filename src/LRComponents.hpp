@@ -853,7 +853,7 @@ public:
     const NVGcolor &getOuterColor() const;
     void setOuterColor(const NVGcolor &outerColor);
 
-    void draw(NVGcontext *vg) override;
+    void draw(const Widget::DrawArgs &args) override;
 };
 
 
