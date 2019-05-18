@@ -879,30 +879,29 @@ struct LRPanelBorder : TransparentWidget {
     static constexpr float BORDER_WIDTH = 1.2f;
 
 
-    inline void draw(NVGcontext *vg) override {
+    inline void draw(const Widget::DrawArgs &args) override {
         NVGcolor borderColorLight = nvgRGBAf(0.9, 0.9, 0.9, 0.1);
         NVGcolor borderColorDark = nvgRGBAf(0.1, 0.1, 0.1, 0.5);
 
-        nvgBeginPath(vg);
-        nvgRect(vg, 0, BORDER_WIDTH, 0 + BORDER_WIDTH, box.size.y);
-        nvgFillColor(vg, borderColorLight);
-        nvgFill(vg);
+        nvgBeginPath(args.vg);
+        nvgRect(args.vg, 0, BORDER_WIDTH, 0 + BORDER_WIDTH, box.size.y);
+        nvgFillColor(args.vg, borderColorLight);
+        nvgFill(args.vg);
 
-        nvgBeginPath(vg);
-        nvgRect(vg, 0, 0, box.size.x, BORDER_WIDTH);
-        nvgFillColor(vg, borderColorLight);
-        nvgFill(vg);
+        nvgBeginPath(args.vg);
+        nvgRect(args.vg, 0, 0, box.size.x, BORDER_WIDTH);
+        nvgFillColor(args.vg, borderColorLight);
+        nvgFill(args.vg);
 
-        nvgBeginPath(vg);
-        nvgRect(vg, 0, box.size.y - BORDER_WIDTH, box.size.x, box.size.y - BORDER_WIDTH);
-        nvgFillColor(vg, borderColorDark);
-        nvgFill(vg);
+        nvgBeginPath(args.vg);
+        nvgRect(args.vg, 0, box.size.y - BORDER_WIDTH, box.size.x, box.size.y - BORDER_WIDTH);
+        nvgFillColor(args.vg, borderColorDark);
+        nvgFill(args.vg);
 
-        nvgBeginPath(vg);
-        nvgRect(vg, box.size.x - BORDER_WIDTH, 0, box.size.x - BORDER_WIDTH, box.size.y);
-        nvgFillColor(vg, borderColorDark);
-        nvgFill(vg);
-
+        nvgBeginPath(args.vg);
+        nvgRect(args.vg, box.size.x - BORDER_WIDTH, 0, box.size.x - BORDER_WIDTH, box.size.y);
+        nvgFillColor(args.vg, borderColorDark);
+        nvgFill(args.vg);
     }
 };
 
