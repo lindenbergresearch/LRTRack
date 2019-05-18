@@ -795,10 +795,8 @@ struct LRLight : ModuleLightWidget, LRGestaltChangeAction {
 
     LRLight();
 
-    void draw(NVGcontext *vg) override;
-
+    void draw(const Widget::DrawArgs &args) override;
     void setColor(NVGcolor color);
-
     void onGestaltChange(LREventGestaltChange &e) override;
 };
 

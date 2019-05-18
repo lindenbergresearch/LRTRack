@@ -1,40 +1,57 @@
+/*                                                                     *\
+**       __   ___  ______                                              **
+**      / /  / _ \/_  __/                                              **
+**     / /__/ , _/ / /    Lindenberg                                   **
+**    /____/_/|_| /_/  Research Tec.                                   **
+**                                                                     **
+**                                                                     **
+**	  https://github.com/lindenbergresearch/LRTRack	                   **
+**    heapdump@icloud.com                                              **
+**		                                                               **
+**    Sound Modules for VCV Rack                                       **
+**    Copyright 2017-2019 by Patrick Lindenberg / LRT                  **
+**                                                                     **
+**    For Redistribution and use in source and binary forms,           **
+**    with or without modification please see LICENSE.                 **
+**                                                                     **
+\*                                                                     */
 #include "../LRComponents.hpp"
 
 namespace lrt {
 
-void LRLight::draw(NVGcontext *vg) {
+void LRLight::draw(const Widget::DrawArgs &args) {
     float radius = box.size.x / 1.5f;
     float oradius = radius + 24.0f;
 
     // Solid
-    nvgBeginPath(vg);
-    nvgCircle(vg, radius, radius, radius);
-    nvgFillColor(vg, bgColor);
-    nvgFill(vg);
+    nvgBeginPath(args.vg);
+    nvgCircle(args.vg, radius, radius, radius);
+    nvgFillColor(args.vg, bgColor);
+    nvgFill(args.vg);
 
     // Border
-    nvgStrokeWidth(vg, 1.0f);
+    nvgStrokeWidth(args.vg, 1.0f);
     // NVGcolor borderColor = nvgRGBAf(0.01, 0.03, 0.09, 0.9);
     borderColor.a *= 0.5f;
-    nvgStrokeColor(vg, borderColor);
-    nvgStroke(vg);
+    nvgStrokeColor(args.vg, borderColor);
+    nvgStroke(args.vg);
 
     // Inner glow
-    nvgGlobalCompositeOperation(vg, NVG_LIGHTER);
-    nvgFillColor(vg, color);
-    nvgFill(vg);
+    nvgGlobalCompositeOperation(args.vg, NVG_LIGHTER);
+    nvgFillColor(args.vg, color);
+    nvgFill(args.vg);
 
     // Outer glow
-    nvgBeginPath(vg);
-    nvgRect(vg, radius - oradius, radius - oradius, 2 * oradius, 2 * oradius);
+    nvgBeginPath(args.vg);
+    nvgRect(args.vg, radius - oradius, radius - oradius, 2 * oradius, 2 * oradius);
     NVGpaint paint;
     NVGcolor icol = color;
     icol.a *= glowIntensity;
     NVGcolor ocol = color;
     ocol.a = 0.00f;
-    paint = nvgRadialGradient(vg, radius, radius, radius, oradius, icol, ocol);
-    nvgFillPaint(vg, paint);
-    nvgFill(vg);
+    paint = nvgRadialGradient(args.vg, radius, radius, radius, oradius, icol, ocol);
+    nvgFillPaint(args.vg, paint);
+    nvgFill(args.vg);
 }
 
 
