@@ -976,73 +976,75 @@ struct FontIconWidget : FramebufferWidget {
 
     explicit FontIconWidget(float fontSize = 12.f, NVGcolor color = nvgRGBAf(1.f, 1.f, 1.f, 1.f));
 
-    void draw(NVGcontext *vg) override;
+    void draw(const Widget::DrawArgs &args) override;
 };
 
 
+//TODO: [2019-05-18 21:34] => implement resize panel
 /**
  * Utility widget for resize action on modules
  */
+/*
 struct ModuleResizeWidget : Widget {
 
-    float minWidth;
-    bool right = false;
-    float dragX;
-    float dragY;
-    Rect originalBox;
+   float minWidth;
+   bool right = false;
+   float dragX;
+   float dragY;
+   Rect originalBox;
 
 
-    ModuleResizeWidget(float _minWidth) {
-        box.size = Vec(RACK_GRID_WIDTH * 1, RACK_GRID_HEIGHT);
-        minWidth = _minWidth;
-    }
+   ModuleResizeWidget(float _minWidth) {
+       box.size = Vec(RACK_GRID_WIDTH * 1, RACK_GRID_HEIGHT);
+       minWidth = _minWidth;
+   }
 
 
-    void onMouseDown(EventMouseDown &e) override {
-        if (e.button == 0) {
-            e.consumed = true;
-            e.target = this;
-        }
-    }
+   void onMouseDown(EventMouseDown &e) override {
+       if (e.button == 0) {
+           e.consumed = true;
+           e.target = this;
+       }
+   }
 
 
-    void onDragStart(EventDragStart &e) override {
-        dragX = gRackWidget->lastMousePos.x;
-        dragY = gRackWidget->lastMousePos.y;
-        ModuleWidget *m = getAncestorOfType<ModuleWidget>();
-        originalBox = m->box;
-    }
+   void onDragStart(EventDragStart &e) override {
+       dragX = gRackWidget->lastMousePos.x;
+       dragY = gRackWidget->lastMousePos.y;
+       ModuleWidget *m = getAncestorOfType<ModuleWidget>();
+       originalBox = m->box;
+   }
 
 
-    void onDragMove(EventDragMove &e) override {
-        ModuleWidget *m = getAncestorOfType<ModuleWidget>();
+   void onDragMove(EventDragMove &e) override {
+       ModuleWidget *m = getAncestorOfType<ModuleWidget>();
 
-        float newDragX = gRackWidget->lastMousePos.x;
-        float deltaX = newDragX - dragX;
-        float newDragY = gRackWidget->lastMousePos.y;
-        float deltaY = newDragY - dragY;
+       float newDragX = gRackWidget->lastMousePos.x;
+       float deltaX = newDragX - dragX;
+       float newDragY = gRackWidget->lastMousePos.y;
+       float deltaY = newDragY - dragY;
 
-        Rect newBox = originalBox;
+       Rect newBox = originalBox;
 
-        // resize width
-        if (right) {
-            newBox.size.x += deltaX;
-            newBox.size.x = fmaxf(newBox.size.x, minWidth);
-            newBox.size.x = roundf(newBox.size.x / RACK_GRID_WIDTH) * RACK_GRID_WIDTH;
-        } else {
-            newBox.size.x -= deltaX;
-            newBox.size.x = fmaxf(newBox.size.x, minWidth);
-            newBox.size.x = roundf(newBox.size.x / RACK_GRID_WIDTH) * RACK_GRID_WIDTH;
-            newBox.pos.x = originalBox.pos.x + originalBox.size.x - newBox.size.x;
-        }
+       // resize width
+       if (right) {
+           newBox.size.x += deltaX;
+           newBox.size.x = fmaxf(newBox.size.x, minWidth);
+           newBox.size.x = roundf(newBox.size.x / RACK_GRID_WIDTH) * RACK_GRID_WIDTH;
+       } else {
+           newBox.size.x -= deltaX;
+           newBox.size.x = fmaxf(newBox.size.x, minWidth);
+           newBox.size.x = roundf(newBox.size.x / RACK_GRID_WIDTH) * RACK_GRID_WIDTH;
+           newBox.pos.x = originalBox.pos.x + originalBox.size.x - newBox.size.x;
+       }
 
-        // resize height
-        newBox.size.y += deltaY;
-        newBox.size.y = fmaxf(newBox.size.y, RACK_GRID_HEIGHT);
-        newBox.size.y = roundf(newBox.size.y / RACK_GRID_HEIGHT) * RACK_GRID_HEIGHT;
+       // resize height
+       newBox.size.y += deltaY;
+       newBox.size.y = fmaxf(newBox.size.y, RACK_GRID_HEIGHT);
+       newBox.size.y = roundf(newBox.size.y / RACK_GRID_HEIGHT) * RACK_GRID_HEIGHT;
 
-        gRackWidget->requestModuleBox(m, newBox);
-    }
+       gRackWidget->requestModuleBox(m, newBox);
+   }
 
-};
+};*/
 }
