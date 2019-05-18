@@ -35,8 +35,8 @@ LRKnob::LRKnob() {
 }
 
 
-void LRKnob::setSVG(std::shared_ptr<SVG> svg) {
-    SvgKnob::setSVG(svg);
+void LRKnob::setSvg(std::shared_ptr<SVG> svg) {
+    SvgKnob::setSvg(svg);
 
     /** inherit dimensions after loaded svg */
     indicator->box.size = sw->box.size;
@@ -47,7 +47,7 @@ void LRKnob::setSVG(std::shared_ptr<SVG> svg) {
 
 void LRKnob::draw(const Widget::DrawArgs &args) {
     /** shadow */
-    shader->draw(args.vg);
+    shader->draw(args);
 
     /** component */
     SvgKnob::draw(args);
