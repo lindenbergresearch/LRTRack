@@ -1,3 +1,20 @@
+/*                                                                     *\
+**       __   ___  ______                                              **
+**      / /  / _ \/_  __/                                              **
+**     / /__/ , _/ / /    Lindenberg                                   **
+**    /____/_/|_| /_/  Research Tec.                                   **
+**                                                                     **
+**                                                                     **
+**	  https://github.com/lindenbergresearch/LRTRack	                   **
+**    heapdump@icloud.com                                              **
+**		                                                               **
+**    Sound Modules for VCV Rack                                       **
+**    Copyright 2017-2019 by Patrick Lindenberg / LRT                  **
+**                                                                     **
+**    For Redistribution and use in source and binary forms,           **
+**    with or without modification please see LICENSE.                 **
+**                                                                     **
+\*                                                                     */
 #include <window.hpp>
 #include "../LRComponents.hpp"
 #include "../LRGestalt.hpp"
@@ -6,11 +23,11 @@ namespace lrt {
 
 void LRPanel::init() {
     /* set panel svg */
-    panelWidget = new SVGWidget();
+    panelWidget = new SvgWidget();
     auto svg = (gestalt == nullptr) ? getSVGVariant(DARK) : getSVGVariant(*gestalt);  // INIT
 
     if (svg != nullptr) {
-        panelWidget->setSVG(svg);
+        panelWidget->setSvg(svg);
     }
 
     box.size = panelWidget->box.size.div(RACK_GRID_SIZE).round().mult(RACK_GRID_SIZE);
@@ -90,7 +107,7 @@ void LRPanel::onGestaltChange(LREventGestaltChange &e) {
     auto svg = getSVGVariant(*gestalt);
 
     if (svg != nullptr) {
-        panelWidget->setSVG(svg);
+        panelWidget->setSvg(svg);
         box.size = panelWidget->box.size.div(RACK_GRID_SIZE).round().mult(RACK_GRID_SIZE);
     }
 
@@ -103,12 +120,7 @@ void LRPanel::onGestaltChange(LREventGestaltChange &e) {
 
 
 void LRPanel::step() {
-    if (isNear(gPixelRatio, 1.0)) {
-        // Small details draw poorly at low DPI, so oversample when drawing to the framebuffer
-        oversample = 2.0;
-    }
-
-
+    oversample = 2.0; //TODO: [2019-05-18 21:21] => need this???
     FramebufferWidget::step();
 }
 
