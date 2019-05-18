@@ -355,7 +355,6 @@ struct LRToggleKnob : LRKnob {
         addSVGVariant(LRGestalt::LIGHT, APP->window->loadSvg(asset::plugin(pluginInstance, "res/knobs/AlternateToggleKnobLight.svg")));
         addSVGVariant(LRGestalt::AGED, APP->window->loadSvg(asset::plugin(pluginInstance, "res/knobs/AlternateToggleKnobLight.svg")));
 
-
         speed = 2.f;
     }
 
@@ -368,7 +367,7 @@ struct LRToggleKnob : LRKnob {
         auto value = paramQuantity->getValue();
         paramQuantity->setValue(round(value));
 
-        SvgKnob::onChange(e);
+        SvgKnob::onChange(e);//TODO: [2019-05-18 19:29] => check if value get/set works with new v1 api
     }
 
 
@@ -632,15 +631,15 @@ struct LRAlternateMiddleLight : LRKnob {
 /**
  * @brief Alternative IO Port
  */
-struct LRIOPortBLight : SVGPort {
+struct LRIOPortBLight : SvgPort {
 private:
     LRShadow *shader;
 
 public:
     LRIOPortBLight() {
-        background->svg = APP->window->loadSvg(asset::plugin(pluginInstance, "res/elements/IOPortBLight.svg"));
-        background->wrap();
-        box.size = background->box.size;
+        auto svg = APP->window->loadSvg(asset::plugin(pluginInstance, "res/elements/IOPortBLight.svg"));
+
+        setSvg(svg);
 
         shader = new LRShadow();
         //  addChild(shadow);
@@ -653,13 +652,9 @@ public:
     }
 
 
-    /**
-     * @brief Hook into draw method
-     * @param vg
-     */
-    void draw(NVGcontext *vg) override {
-        shader->draw(vg);
-        SVGPort::draw(vg);
+    void draw(const Widget::DrawArgs &args) override {
+        shader->draw(args);
+        SvgPort::draw(args);
     }
 };
 
@@ -667,7 +662,7 @@ public:
 /**
  * @brief Alternative IO Port
  */
-struct LRIOPortD : SVGPort, LRGestaltVariant, LRGestaltChangeAction { //TODO: rename after migration
+struct LRIOPortD : SvgPort, LRGestaltVariant, LRGestaltChangeAction { //TODO: rename after migration
 private:
     LRShadow *shader;
 
@@ -680,9 +675,7 @@ public:
     void onGestaltChange(LREventGestaltChange &e) override {
         switch (*gestalt) {
             case LRGestalt::DARK:
-                background->svg = getSVGVariant(DARK);
-                background->wrap();
-                box.size = background->box.size;
+                setSvg(getSVGVariant(DARK));
 
                 shader->setBox(box);
                 shader->setSize(0.57);
@@ -690,9 +683,7 @@ public:
                 shader->setShadowPosition(2, 3);
                 break;
             case LRGestalt::LIGHT:
-                background->svg = getSVGVariant(LIGHT);
-                background->wrap();
-                box.size = background->box.size;
+                setSvg(getSVGVariant(LIGHT));
 
                 shader->setBox(box);
                 shader->setSize(0.52);
@@ -700,9 +691,7 @@ public:
                 shader->setShadowPosition(1, 2);
                 break;
             case LRGestalt::AGED:
-                background->svg = getSVGVariant(AGED);
-                background->wrap();
-                box.size = background->box.size;
+                setSvg(getSVGVariant(AGED));
 
                 shader->setBox(box);
                 shader->setSize(0.52);
@@ -717,13 +706,9 @@ public:
     }
 
 
-    /**
-     * @brief Hook into draw method
-     * @param vg
-     */
-    void draw(NVGcontext *vg) override {
-        shader->draw(vg);
-        SVGPort::draw(vg);
+    void draw(const Widget::DrawArgs &args) override {
+        shader->draw(args);
+        SvgPort::draw(args);
     }
 };
 
