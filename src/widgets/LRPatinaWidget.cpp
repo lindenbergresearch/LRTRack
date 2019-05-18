@@ -9,7 +9,7 @@
 **    heapdump@icloud.com                                              **
 **		                                                               **
 **    Sound Modules for VCV Rack                                       **
-**    Copyright 2017/2018 by Patrick Lindenberg / LRT                  **
+**    Copyright 2017-2019 by Patrick Lindenberg / LRT                  **
 **                                                                     **
 **    For Redistribution and use in source and binary forms,           **
 **    with or without modification please see LICENSE.                 **
@@ -25,8 +25,8 @@ using std::string;
  * Standard constructor with a given filename
  */
 LRPatinaWidget::LRPatinaWidget(const string &filename, const Vec &size) {
-    svg = new SVGWidget();
-    svg->setSVG(SVG::load(assetPlugin(pluginInstance, filename)));
+    svg = new SvgWidget();
+    svg->setSvg(APP->window->loadSvg(asset::plugin(pluginInstance, filename)));
 
     addChild(svg);
     box.size = size;
@@ -40,15 +40,15 @@ void LRPatinaWidget::randomize() {
     float maxx = svg->box.size.x - box.size.x;
     float maxy = svg->box.size.y - box.size.y;
 
-    svg->box.pos = Vec(-randomUniform() * maxx, -randomUniform() * maxy);
+    svg->box.pos = Vec(-random::uniform() * maxx, -random::uniform() * maxy);
 }
 
 
 /**
  * @brief Override draw to set global (widget) transparency (strength)
- * @param vg
+ * @param args.vg
  */
-void LRPatinaWidget::draw(NVGcontext *vg) {
-    nvgGlobalAlpha(vg, strength);
-    TransparentWidget::draw(vg);
+void LRPatinaWidget::draw(const Widget::DrawArgs &args) {
+    nvgGlobalAlpha(args.vg, strength);
+    TransparentWidget::draw(args.vg);
 }

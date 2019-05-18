@@ -866,7 +866,7 @@ struct LRPatinaWidget : TransparentWidget {
     float strength = 0.99f;
 
     LRPatinaWidget(const string &filename, const Vec &size);
-    void draw(NVGcontext *vg) override;
+    void draw(const Widget::DrawArgs &args) override;
     void randomize();
 
 };
