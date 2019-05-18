@@ -740,7 +740,7 @@ struct LRIOPortCV : LRIOPortD {
 /**
  * @brief Alternative screw head A
  */
-struct ScrewLight : SVGScrew, LRGestaltVariant, LRGestaltChangeAction {
+struct ScrewLight : SvgScrew, LRGestaltVariant, LRGestaltChangeAction {
     ScrewLight() {
         sw->svg = APP->window->loadSvg(asset::plugin(pluginInstance, "res/elements/ScrewLight.svg"));
         sw->wrap();
@@ -766,7 +766,7 @@ struct ScrewLight : SVGScrew, LRGestaltVariant, LRGestaltChangeAction {
 /**
  * @brief Alternative screw head A
  */
-struct ScrewDarkB : SVGScrew {
+struct ScrewDarkB : SvgScrew {
     ScrewDarkB() {
         sw->svg = APP->window->loadSvg(asset::plugin(pluginInstance, "res/elements/ScrewDarkB.svg"));
         sw->wrap();
@@ -778,8 +778,9 @@ struct ScrewDarkB : SVGScrew {
 /**
  * @brief Custom switch based on original Rack files
  */
-struct LRSwitch : SVGSwitch, ToggleSwitch {
+struct LRSwitch : SvgSwitch {
     LRSwitch() {
+        momentary = true; //TODO: [2019-05-18 19:40] => check if momentary needed!
         addFrame(APP->window->loadSvg(asset::plugin(pluginInstance, "res/elements/Switch0.svg")));
         addFrame(APP->window->loadSvg(asset::plugin(pluginInstance, "res/elements/Switch1.svg")));
     }
