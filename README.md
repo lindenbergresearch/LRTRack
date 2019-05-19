@@ -1,9 +1,16 @@
 # Lindenberg Research Tec. - VCV Rack modules
 LRT Rack modules is a collection of modules made for [VCV Rack](https://vcvrack.com) virtual modular system.
 
-Copyright (C) 2017-2018 by Lindenberg Research / Patrick Lindenberg
+Copyright (C) 2017-2019 by Lindenberg Research / Patrick Lindenberg
 
-![SCREENSHOT](doc/LRTRackModules_0.6.3.png)
+## _**NEWS:**_ 
+
+Currently the __migration to V1__ is in process to be ready for the upcoming VCV Rack v1.x!
+Due to the heavy time consumption please consider a __donation__ to support the developer (that's me.) ;)
+
+[Donate on PayPal](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=MF9AVCUQ73ELN&source=url)
+
+__THANKS!__
 
 
 ## 1. Installation
