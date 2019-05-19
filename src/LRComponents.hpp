@@ -29,8 +29,6 @@ using std::shared_ptr;
 using std::string;
 using std::map;
 
-extern Plugin *pluginInstance;
-
 namespace lrt {
 
 /* Type definitions for common used data structures */
@@ -50,7 +48,7 @@ struct LRLCDWidget : FramebufferWidget, LRGestaltVariant, LRGestaltChangeAction 
     };
 
     TransformWidget *tw;
-    SVGWidget *sw; //TODO: remove svg widget
+    SvgWidget *sw;
 
     TrueType ttfLCDDIG7;
 
