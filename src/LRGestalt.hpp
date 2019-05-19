@@ -74,7 +74,7 @@ struct LRGestaltChangeAction {
 struct LRGestaltVariant {
 
     /* SVG pool - Holds all needed SVG images */
-    map<LRGestalt, shared_ptr<SVG>> pool; //TODO: drop depr. SVG class
+    map<LRGestalt, shared_ptr<Svg>> pool; //TODO: drop depr. SVG class
 
 
     /**
@@ -82,7 +82,7 @@ struct LRGestaltVariant {
      * @param gestalt Matching ID for variant
      * @param svg SVG Image
      */
-    void addSVGVariant(LRGestalt gestalt, shared_ptr<SVG> svg) {
+    void addSVGVariant(LRGestalt gestalt, shared_ptr<Svg> svg) {
         pool[gestalt] = svg;
 
         /* first element inserted => set default */
@@ -97,7 +97,7 @@ struct LRGestaltVariant {
      * @param gestalt
      * @return SVG Image if found, default if not found
      */
-    shared_ptr<SVG> getSVGVariant(LRGestalt gestalt) {
+    shared_ptr<Svg> getSVGVariant(LRGestalt gestalt) {
 
         /* return default value if key not found */
         if (pool.count(gestalt) != 1) {
