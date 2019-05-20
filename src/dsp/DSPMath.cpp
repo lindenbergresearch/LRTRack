@@ -35,13 +35,15 @@ float wrapTWOPI(float n) {
     return (b - lroundf(b)) * TWOPI;
 }
 
+
 /**
  * @brief Get PLL increment depending on frequency
  * @param frq Frequency
+ * @param sr Samplerate
  * @return  PLL increment
  */
-float getPhaseIncrement(float frq) {
-    return TWOPI * frq / engineGetSampleRate();
+float getPhaseIncrement(float frq, float sr) {
+    return TWOPI * frq / sr;
 }
 
 
@@ -119,7 +121,7 @@ float LP6DBFilter::filter(float x) {
 void LP6DBFilter::updateFrequency(float fc, int factor) {
     LP6DBFilter::fc = fc;
     RC = 1.f / (LP6DBFilter::fc * TWOPI);
-    dt = 1.f / engineGetSampleRate() * factor;
+    dt = 1.f / args.sampleRate * factor;
     alpha = dt / (RC + dt);
 }
 
