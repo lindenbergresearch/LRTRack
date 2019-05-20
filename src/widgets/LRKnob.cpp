@@ -16,6 +16,7 @@
 **                                                                     **
 \*                                                                     */
 #include "../LRComponents.hpp"
+#include "String.hpp"
 
 namespace lrt {
 
@@ -35,7 +36,7 @@ LRKnob::LRKnob() {
 }
 
 
-void LRKnob::setSvg(std::shared_ptr<SVG> svg) {
+void LRKnob::setSvg(std::shared_ptr<Svg> svg) {
     SvgKnob::setSvg(svg);
 
     /** inherit dimensions after loaded svg */
@@ -121,7 +122,7 @@ void LRKnob::onGestaltChange(LREventGestaltChange &e) {
     auto svg = getSVGVariant(*gestalt);
 
     if (svg != nullptr) {
-        setSVG(svg);
+        setSvg(svg);
     }
 
     switch (*gestalt) {
