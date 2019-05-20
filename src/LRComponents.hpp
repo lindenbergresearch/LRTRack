@@ -29,6 +29,8 @@ using std::shared_ptr;
 using std::string;
 using std::map;
 
+extern Plugin *pluginInstance;
+
 namespace lrt {
 
 /* Type definitions for common used data structures */
@@ -303,8 +305,7 @@ public:
      * @return Pointer to new subclass of LRKnob
      */
     template<class TParamWidget>
-    static TParamWidget *create(Vec pos, Module *module, int paramId, float minValue, float maxValue, float
-    defaultValue) {
+    static TParamWidget *create(Vec pos, Module *module, int paramId, float minValue, float maxValue, float defaultValue) {
         auto *param = new TParamWidget();
         param->box.pos = pos;
         param->module = module;
