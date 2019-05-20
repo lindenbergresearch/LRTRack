@@ -170,11 +170,45 @@ inline float clipl(float in, float clip) {
 }
 
 
-float getPhaseIncrement(float frq, float sr);
+/**
+ * @brief Get PLL increment depending on frequency
+ * @param frq Frequency
+ * @param sr Samplerate
+ * @return  PLL increment
+ */
+inline float getPhaseIncrement(float frq, float sr) {
+    return TWOPI * frq / sr;
+}
 
 float cliph(float in, float clip);
 
-float BLIT(float N, float phase);
+
+/**
+ * @brief Actual BLIT core computation
+ * @param N Harmonics
+ * @param phase Current phase value
+ * @return
+ */
+inline float BLITcore(float N, float phase) {
+    float a = wrapTWOPI((clipl(N - 1.f, 0.f) + 0.5f) * phase);
+    float x = fastSin(a) * 1.f / fastSin(0.5f * phase);
+
+    clipl(1, 2);
+
+    return (x - 1.f) * 2.f;
+}
+
+
+/**
+ * @brief BLIT generator based on current phase
+ * @param N Harmonics
+ * @param phase Current phase of PLL
+ * @return
+ */
+inline float BLIT(float N, float phase) {
+    if (phase == 0.f) return 1.f;
+    else return BLITcore(N, phase);
+}
 
 float shape1(float a, float x);
 
