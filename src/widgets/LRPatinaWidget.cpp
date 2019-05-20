@@ -50,5 +50,5 @@ void LRPatinaWidget::randomize() {
  */
 void LRPatinaWidget::draw(const Widget::DrawArgs &args) {
     nvgGlobalAlpha(args.vg, strength);
-    TransparentWidget::draw(args.vg);
+    TransparentWidget::draw(args);
 }
