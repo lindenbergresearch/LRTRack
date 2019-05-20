@@ -28,7 +28,7 @@ void MS20zdf::process() {
     rs->doUpsample(IN, input[IN].value);
 
     float s1, s2;
-    float gain = quadraticBipolar(param[DRIVE].value) * DRIVE_GAIN + 1.f;
+    float gain = pow2bpol(param[DRIVE].value) * DRIVE_GAIN + 1.f;
     float type = param[TYPE].value;
     float x = 0;
 

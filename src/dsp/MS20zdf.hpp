@@ -87,12 +87,12 @@ public:
 
 
     void setFrequency(float value) {
-        setParam(FREQUENCY, clamp(value, 0.f, 1.1f));
+        setParam(FREQUENCY, clampf(value, 0.f, 1.1f));
     }
 
 
     void setDrive(float value) {
-        setParam(DRIVE, clamp(value, 0.f, 1.1f));
+        setParam(DRIVE, clampf(value, 0.f, 1.1f));
     }
 
 
@@ -107,7 +107,7 @@ public:
 
 
     void setPeak(float value) {
-        setParam(PEAK, clamp(value, 0.f, 1.1f));
+        setParam(PEAK, clampf(value, 0.f, 1.1f));
     }
 
 
