@@ -21,6 +21,8 @@ struct Pair {
     Pair(float a, float b) : a(a), b(b) {}
 
 
+    Pair() : a(0), b(0) {}
+
     float getA() const {
         return a;
     }

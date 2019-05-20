@@ -20,7 +20,6 @@
 
 
 #include "DSPEffect.hpp"
-#include "engine.hpp"
 #include "DSPMath.hpp"
 
 namespace lrt {

@@ -107,8 +107,8 @@ void lrt::Type35Filter::init() {
 void lrt::Type35Filter::invalidate() {
     float frqHz;
 
-    fc = clamp(fc, 0.f, 1.1f);
-    peak = clamp(peak, 0.0001, 1.1f);
+    fc = clampf(fc, 0.f, 1.1f);
+    peak = clampf(peak, 0.0001, 1.1f);
 
     if (type == LPF)
         frqHz = (MAX_FREQUENCY / 1000.f) * powf(950.f, fc) - 20.f;
