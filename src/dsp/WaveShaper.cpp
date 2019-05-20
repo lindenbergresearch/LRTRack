@@ -54,7 +54,7 @@ void WaveShaper::setOut(double out) {
 }
 
 
-const Vec &WaveShaper::getAmplitude() const {
+const Pair &WaveShaper::getAmplitude() const {
     return amp;
 }
 

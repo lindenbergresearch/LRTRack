@@ -27,7 +27,7 @@ protected:
 
     double in, gain, bias, k;
     double out;
-    Vec amp;
+    Pair amp;
 
 public:
 
@@ -55,11 +55,11 @@ public:
 
 
     void setAmplitude(double kpos, double kneg) {
-        amp = Vec(kpos, kneg);
+        amp = Pair(kpos, kneg);
     }
 
 
-    const Vec &getAmplitude() const;
+    const Pair &getAmplitude() const;
 
     bool isBlockDC() const;
     void setBlockDC(bool blockDC);
@@ -75,7 +75,7 @@ public:
         out = 0;
         k = 0;
         bias = 0;
-        amp = Vec(0, 0);
+        amp = Pair(0, 0);
     }
 
 

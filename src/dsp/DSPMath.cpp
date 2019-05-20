@@ -71,36 +71,6 @@ DCBlocker::DCBlocker(double r) : r(r) {}
 
 
 /**
- * @brief Cheap class to hold two numbers
- */
-struct Vec {
-    float a, b;
-
-
-    Vec(float a, float b) : a(a), b(b) {}
-
-
-    float getA() const {
-        return a;
-    }
-
-
-    void setA(float a) {
-        Vec::a = a;
-    }
-
-
-    float getB() const {
-        return b;
-    }
-
-
-    void setB(float b) {
-        Vec::b = b;
-    }
-};
-
-/**
  * @brief Shaper type 1 (Saturate)
  * @param a Amount from 0 - x
  * @param x Input sample

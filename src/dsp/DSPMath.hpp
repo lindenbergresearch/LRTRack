@@ -12,6 +12,36 @@ const static float TWOPI = PI * 2.f;
 
 
 /**
+ * @brief Cheap class to hold two numbers
+ */
+struct Pair {
+    float a, b;
+
+
+    Pair(float a, float b) : a(a), b(b) {}
+
+
+    float getA() const {
+        return a;
+    }
+
+
+    void setA(float a) {
+        Pair::a = a;
+    }
+
+
+    float getB() const {
+        return b;
+    }
+
+
+    void setB(float b) {
+        Pair::b = b;
+    }
+};
+
+/**
  * @brief Basic leaky integrator
  */
 struct Integrator {
