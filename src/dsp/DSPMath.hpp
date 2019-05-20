@@ -48,45 +48,6 @@ struct DCBlocker {
 
 
 /**
- * @brief Simple 6dB lowpass filter
- */
-struct LP6DBFilter {
-private:
-    float RC;
-    float dt;
-    float alpha;
-    float y0;
-    float fc;
-
-public:
-
-    /**
-     * @brief Create a new filter with a given cutoff frequency
-     * @param fc cutoff frequency
-     * @param factor Oversampling factor
-     */
-    LP6DBFilter(float fc, int factor) {
-        updateFrequency(fc, factor);
-        y0 = 0.f;
-    }
-
-
-    /**
-     * @brief Set new cutoff frequency
-     * @param fc cutoff frequency
-     */
-    void updateFrequency(float fc, int factor);
-
-    /**
-     * @brief Filter signal
-     * @param x Input sample
-     * @return Filtered output
-     */
-    float filter(float x);
-};
-
-
-/**
  * @brief Simple noise generator
  */
 struct Noise {
@@ -157,7 +118,7 @@ inline float fastSin(float angle) {
 
 float wrapTWOPI(float n);
 
-float getPhaseIncrement(float frq);
+float getPhaseIncrement(float frq, float sr);
 
 float clipl(float in, float clip);
 

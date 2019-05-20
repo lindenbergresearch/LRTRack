@@ -102,31 +102,6 @@ DCBlocker::DCBlocker(double r) : r(r) {}
 
 
 /**
- * @brief Filter function for simple 6dB lowpass filter
- * @param x Input sample
- * @return
- */
-float LP6DBFilter::filter(float x) {
-    float y = y0 + (alpha * (x - y0));
-    y0 = y;
-
-    return y;
-}
-
-
-/**
- * @brief Update filter parameter
- * @param fc Cutoff frequency
- */
-void LP6DBFilter::updateFrequency(float fc, int factor) {
-    LP6DBFilter::fc = fc;
-    RC = 1.f / (LP6DBFilter::fc * TWOPI);
-    dt = 1.f / args.sampleRate * factor;
-    alpha = dt / (RC + dt);
-}
-
-
-/**
  * @brief Shaper type 1 (Saturate)
  * @param a Amount from 0 - x
  * @param x Input sample
