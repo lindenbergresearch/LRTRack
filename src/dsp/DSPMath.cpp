@@ -1,40 +1,6 @@
 #include "DSPMath.hpp"
 
-
-/**
- * @brief Clip signal at bottom by value
- * @param in Sample input
- * @param clip Clipping value
- * @return Clipped sample
- */
-float clipl(float in, float clip) {
-    if (in < clip) return clip;
-    else return in;
-}
-
-
-/**
- * @brief Clip signal at top by value
- * @param in Sample input
- * @param clip Clipping value
- * @return Clipped sample
- */
-float cliph(float in, float clip) {
-    if (in > clip) return clip;
-    else return in;
-}
-
-
-/**
- * @brief Wrap input number between -PI..PI
- * @param n Input number
- * @return Wrapped value
- */
-float wrapTWOPI(float n) {
-    float b = 1.f / TWOPI * n;
-    return (b - lroundf(b)) * TWOPI;
-}
-
+using namespace lrt;
 
 /**
  * @brief Get PLL increment depending on frequency
@@ -54,8 +20,11 @@ float getPhaseIncrement(float frq, float sr) {
  * @return
  */
 float BLITcore(float N, float phase) {
-    float a = wrapTWOPI((clipl(N - 1, 0.f) + 0.5f) * phase);
+    float a = wrapTWOPI((clipl(N - 1.f, 0.f) + 0.5f) * phase);
     float x = fastSin(a) * 1.f / fastSin(0.5f * phase);
+
+    clipl(1, 2);
+
     return (x - 1.f) * 2.f;
 }
 
@@ -100,6 +69,36 @@ double DCBlocker::filter(double x) {
 
 DCBlocker::DCBlocker(double r) : r(r) {}
 
+
+/**
+ * @brief Cheap class to hold two numbers
+ */
+struct Vec {
+    float a, b;
+
+
+    Vec(float a, float b) : a(a), b(b) {}
+
+
+    float getA() const {
+        return a;
+    }
+
+
+    void setA(float a) {
+        Vec::a = a;
+    }
+
+
+    float getB() const {
+        return b;
+    }
+
+
+    void setB(float b) {
+        Vec::b = b;
+    }
+};
 
 /**
  * @brief Shaper type 1 (Saturate)

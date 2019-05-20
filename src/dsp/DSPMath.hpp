@@ -4,7 +4,8 @@
 #include <random>
 #include "DSPEffect.hpp"
 
-using namespace rack;
+
+namespace lrt {
 
 const static float PI = 3.1415926535897932384626433832795;
 const static float TWOPI = PI * 2.f;
@@ -114,11 +115,30 @@ inline float fastSin(float angle) {
 }
 
 
-float wrapTWOPI(float n);
+/**
+ * @brief Wrap input number between -PI..PI
+ * @param n Input number
+ * @return Wrapped value
+ */
+inline float wrapTWOPI(float n) {
+    float b = 1.f / TWOPI * n;
+    return (b - lroundf(b)) * TWOPI;
+}
+
+
+/**
+ * @brief Clip signal at bottom by value
+ * @param in Sample input
+ * @param clip Clipping value
+ * @return Clipped sample
+ */
+inline float clipl(float in, float clip) {
+    if (in < clip) return clip;
+    else return in;
+}
+
 
 float getPhaseIncrement(float frq, float sr);
-
-float clipl(float in, float clip);
 
 float cliph(float in, float clip);
 
@@ -155,6 +175,7 @@ inline double clampd(double x, double min, double max) {
 inline float clampf(float x, float min, float max) {
     return fmax(fmin(x, max), min);
 }
+
 
 /**
  * @brief Soft clipping
@@ -548,7 +569,7 @@ inline float pow2bpol(float x) {
     return x * x * (x < 0 ? -1 : 1);
 }
 
-
+}
 
 
 
