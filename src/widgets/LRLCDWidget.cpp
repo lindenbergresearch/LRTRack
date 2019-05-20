@@ -27,7 +27,7 @@ LRLCDWidget::LRLCDWidget(unsigned char length, std::string format, LCDType type,
     tw = new TransformWidget();
     addChild(tw);
 
-    sw = new SVGWidget();
+    sw = new SvgWidget();
     tw->addChild(sw);
 
     /** load LCD ttf font */
@@ -145,7 +145,7 @@ void LRLCDWidget::onGestaltChange(LREventGestaltChange &e) {
     if (svg != nullptr) {
         tw->identity();
 
-        sw->setSVG(svg);
+        sw->setSvg(svg);
         sw->wrap();
 
         dirty = true;
