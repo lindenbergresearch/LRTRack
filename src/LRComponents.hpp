@@ -4,6 +4,7 @@
 #include "rack.hpp"
 #include "asset.hpp"
 #include "LRGestalt.hpp"
+#include "String.hpp"
 
 #define LCD_FONT_DIG7 "res/digital-7.ttf"
 #define LCD_FONTSIZE 11
