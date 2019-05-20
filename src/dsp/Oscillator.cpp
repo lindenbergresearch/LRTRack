@@ -18,7 +18,7 @@ DSPBLOscillator::DSPBLOscillator(float sr) : DSPSystem(sr) {
  * @brief Trigger recalculation of internal state
  */
 void DSPBLOscillator::invalidate() {
-    incr = getPhaseIncrement(param[FREQUENCY].value);
+    incr = getPhaseIncrement(param[FREQUENCY].value, sr);
     n = floorf(sr * 0.5 / param[FREQUENCY].value);
 }
 
@@ -132,7 +132,7 @@ void DSPBLOscillator::updatePitch() {
     if (lfoMode) {
         /* convert knob value to unipolar */
         fm = input[FM_CV].value;
-        tune = quadraticBipolar((input[TUNE].value + 1) / 2);
+        tune = pow2bpol((input[TUNE].value + 1) / 2);
         tune *= LFO_SCALE;
         fm *= LFO_SCALE;
         oct = -8;
@@ -145,7 +145,7 @@ void DSPBLOscillator::updatePitch() {
     /* optimize the usage of expensive exp function and other computations */
     float coeff = (_oct != oct) ? powf(2.f, oct) : _coeff;
     float base = (_cv != cv) ? powf(2.f, cv) : _base;
-    float biqufm = (_tune != tune + fm) ? quadraticBipolar(tune + fm) : _biqufm;
+    float biqufm = (_tune != tune + fm) ? pow2bpol(tune + fm) : _biqufm;
 
     if (lfoMode)
         setFrequency(tune + fm);
@@ -163,7 +163,7 @@ void DSPBLOscillator::updatePitch() {
 
 
 void DSPBLOscillator::setFrequency(float frq) {
-    setParam(FREQUENCY, clamp(frq, 0.00001f, 18000.f), true);
+    setParam(FREQUENCY, clampf(frq, 0.00001f, 18000.f), true);
 }
 
 
