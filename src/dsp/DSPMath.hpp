@@ -146,6 +146,17 @@ inline double clampd(double x, double min, double max) {
 
 
 /**
+ * @brief float version of clamp
+ * @param x
+ * @param min
+ * @param max
+ * @return
+ */
+inline float clampf(float x, float min, float max) {
+    return fmax(fmin(x, max), min);
+}
+
+/**
  * @brief Soft clipping
  * @param x
  * @param sat
@@ -528,7 +539,14 @@ inline double fakedLambertW(double x) {
 }
 
 
-
+/**
+ * @brief Quadratic bipolar
+ * @param x
+ * @return
+ */
+inline float pow2bpol(float x) {
+    return x * x * (x < 0 ? -1 : 1);
+}
 
 
 
