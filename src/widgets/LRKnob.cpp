@@ -16,7 +16,6 @@
 **                                                                     **
 \*                                                                     */
 #include "../LRComponents.hpp"
-#include "String.hpp"
 
 namespace lrt {
 
