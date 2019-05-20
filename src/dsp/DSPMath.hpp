@@ -2,8 +2,6 @@
 
 #include <cmath>
 #include <random>
-#include "rack.hpp"
-#include "dsp/resampler.hpp"
 #include "DSPEffect.hpp"
 
 using namespace rack;
