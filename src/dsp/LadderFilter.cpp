@@ -61,7 +61,7 @@ void LadderFilter::process() {
         rs->data[LOWPASS][i] = fastatan(y);
     }
 
-    lpOut = rs->getDownsampled(LOWPASS) * (INPUT_GAIN / (drive * 20 + 1) * (quadraticBipolar(drive * 3) + 1));
+    lpOut = rs->getDownsampled(LOWPASS) * (INPUT_GAIN / (drive * 20 + 1) * (pow2bpol(drive * 3) + 1));
 }
 
 
@@ -83,7 +83,7 @@ void LadderFilter::setFrequency(float frequency) {
         LadderFilter::frequency = frequency;
         // translate frequency to logarithmic scale
         freqHz = 20.f * powf(1000.f, frequency);
-        freqExp = clamp(freqHz * (1.f / (sr * OVERSAMPLE / 2.f)), 0.f, 0.9f);
+        freqExp = clampf(freqHz * (1.f / (sr * OVERSAMPLE / 2.f)), 0.f, 0.9f);
 
         updateResExp();
         invalidate();
@@ -95,7 +95,7 @@ void LadderFilter::setFrequency(float frequency) {
  * @brief Update resonance factor
  */
 void LadderFilter::updateResExp() {
-    resExp = clamp(resonance, 0.f, 1.5f);
+    resExp = clampf(resonance, 0.f, 1.5f);
 }
 
 
@@ -137,7 +137,7 @@ float LadderFilter::getDrive() const {
  */
 void LadderFilter::setDrive(float drive) {
     if (LadderFilter::drive != drive) {
-        LadderFilter::drive = clamp(drive, 0.f, 1.f);
+        LadderFilter::drive = clampf(drive, 0.f, 1.f);
 
         updateResExp();
         invalidate();
@@ -150,7 +150,7 @@ void LadderFilter::setDrive(float drive) {
  * @param in
  */
 void LadderFilter::setIn(float in) {
-    float x = clamp(in / INPUT_GAIN, -0.8f, 0.8f);
+    float x = clampf(in / INPUT_GAIN, -0.8f, 0.8f);
 
     LadderFilter::in = x;
 }
@@ -188,7 +188,7 @@ float LadderFilter::getSlope() const {
  * @param slope
  */
 void LadderFilter::setSlope(float slope) {
-    LadderFilter::slope = clamp(slope, 0.f, 4.f);
+    LadderFilter::slope = clampf(slope, 0.f, 4.f);
 }
 
 
