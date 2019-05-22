@@ -42,7 +42,7 @@ typedef std::string string;
 /**
  * @brief Emulation of a LCD monochrome display
  */
-struct LRLCDWidget : FramebufferWidget, LRGestaltVariant, LRGestaltChangeAction {
+struct LRLCDWidget : ParamWidget, LRGestaltVariant, LRGestaltChangeAction {
 
     enum LCDType {
         NUMERIC,
@@ -205,7 +205,6 @@ private:
 protected:
     /** shader */
     LRShadow *shader;
-    bool dirty;
 public:
 
     LRKnob();
@@ -217,7 +216,7 @@ public:
      */
     void setIndicatorValue(float value) {
         indicator->cv = value;
-        dirty = true;
+        fb->dirty = true;
     }
 
 
@@ -227,7 +226,7 @@ public:
      */
     void setIndicatorActive(bool active) {
         indicator->active = active;
-        dirty = true;
+        fb->dirty = true;
     }
 
 
@@ -246,7 +245,7 @@ public:
      */
     void setIndicatorDistance(float distance) {
         indicator->distance = distance;
-        dirty = true;
+        fb->dirty = true;
     }
 
 
@@ -256,7 +255,7 @@ public:
      */
     void setIndicatorShape(float d1, float d2) {
         indicator->setDistances(d1, d2);
-        dirty = true;
+        fb->dirty = true;
     }
 
 
@@ -757,7 +756,7 @@ struct ScrewLight : SvgScrew, LRGestaltVariant, LRGestaltChangeAction {
         LRGestaltChangeAction::onGestaltChange(e);
 
         sw->svg = getSVGVariant(*gestalt);
-        dirty = true;
+        //dirty = true;
     }
 
 };

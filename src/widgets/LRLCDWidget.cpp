@@ -54,7 +54,10 @@ LRLCDWidget::LRLCDWidget(unsigned char length, std::string format, LCDType type,
  * @param args.vg
  */
 void LRLCDWidget::draw(const Widget::DrawArgs &args) {
-    FramebufferWidget::draw(args);
+    ParamWidget::draw(args);
+
+    if (paramQuantity)
+        value = paramQuantity->getValue();
 
     nvgFontSize(args.vg, fontsize);
     nvgFontFaceId(args.vg, ttfLCDDIG7->handle);
@@ -148,7 +151,7 @@ void LRLCDWidget::onGestaltChange(LREventGestaltChange &e) {
         sw->setSvg(svg);
         sw->wrap();
 
-        dirty = true;
+        // dirty = true;
     }
 
     LRGestaltChangeAction::onGestaltChange(e);
@@ -180,13 +183,14 @@ void LRLCDWidget::doResize(Vec v) {
     tw->box.size = sw->box.size;
     box.size = sw->box.size;
 
-    dirty = true;
+    // dirty = true;
 }
 
 
 void LRLCDWidget::onButton(const event::Button &e) {
-    Widget::onButton(e);
-
+    ParamWidget::onButton(e);
+    if (paramQuantity)
+        value = paramQuantity->getValue();
 
     //TODO: check correct mouse button
 
