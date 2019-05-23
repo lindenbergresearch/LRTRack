@@ -15,6 +15,14 @@
       "tags": [
         "FILTER"
       ]
+    },
+    {
+      "slug": "DIODE VCF",
+      "name": "Laika Diode-Ladder Filter",
+      "description": "Classic diode driven ladder filter with 12/dB/oct",
+      "tags": [
+        "FILTER"
+      ]
     }
   ]
 }

@@ -27,6 +27,7 @@ using namespace rack;
 extern Plugin *pluginInstance;
 
 extern Model *modelType35;
+extern Model *modelDiodeVCF;
 
 
 /*extern Model *modelSimpleFilter;
@@ -40,7 +41,7 @@ extern Model *modelBlankPanelSmall;
 extern Model *modelBlankPanelWood;
 extern Model *modelWestcoast;
 extern Model *modelQuickMix;
-extern Model *modelDiodeVCF;
+
 extern Model *modelType35;
 extern Model *modelTestDriver;
 extern Model *modelEchoBox;

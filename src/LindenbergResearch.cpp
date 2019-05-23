@@ -8,6 +8,7 @@ void init(Plugin *p) {
 
 
     p->addModel(modelType35);
+    p->addModel(modelDiodeVCF);
 
 
 /*    p->addModel(modelSimpleFilter);
@@ -16,7 +17,7 @@ void init(Plugin *p) {
     p->addModel(modelReShaper);
     p->addModel(modelWestcoast);
     p->addModel(modelQuickMix);
-    p->addModel(modelDiodeVCF);
+
     p->addModel(modelTestDriver);
     p->addModel(modelEchoBox);
     p->addModel(modelVCO);
