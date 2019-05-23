@@ -24,11 +24,11 @@ struct BlankPanel : LRModule {
     BlankPanel() : LRModule(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS) {}
 
 
-    void step() override;
+    void process(const ProcessArgs &args) override;
 };
 
 
-void BlankPanel::step() {
+void BlankPanel::process(const ProcessArgs &args) {
 
 }
 
@@ -42,9 +42,9 @@ struct BlankPanelWidget : LRModuleWidget {
 
 
 BlankPanelWidget::BlankPanelWidget(BlankPanel *module) : LRModuleWidget(module) {
-    panel->addSVGVariant(LRGestalt::DARK, SVG::load(assetPlugin(pluginInstance, "res/panels/BlankPanel.svg")));
-    panel->addSVGVariant(LRGestalt::LIGHT, SVG::load(assetPlugin(pluginInstance, "res/panels/BlankPanelLight.svg")));
-    panel->addSVGVariant(LRGestalt::AGED, SVG::load(assetPlugin(pluginInstance, "res/panels/BlankPanelLight.svg")));
+    panel->addSVGVariant(LRGestalt::DARK, APP->window->loadSvg(asset::plugin(pluginInstance, "res/panels/BlankPanel.svg")));
+    panel->addSVGVariant(LRGestalt::LIGHT, APP->window->loadSvg(asset::plugin(pluginInstance, "res/panels/BlankPanelLight.svg")));
+    panel->addSVGVariant(LRGestalt::AGED, APP->window->loadSvg(asset::plugin(pluginInstance, "res/panels/BlankPanelLight.svg")));
 
     gestalt = LRGestalt::AGED;
     patina = true;
@@ -64,11 +64,13 @@ BlankPanelWidget::BlankPanelWidget(BlankPanel *module) : LRModuleWidget(module) 
 
     float speed = 0.007;
 
-    addChild(SVGRotator::create(Vec(105.5, 55), SVG::load(assetPlugin(pluginInstance, "res/elements/CogBig.svg")), speed, 0.7, 0.4));
-    addChild(SVGRotator::create(Vec(139, 43.7), SVG::load(assetPlugin(pluginInstance, "res/elements/CogMiddle.svg")), speed * 1.9f, 0.7,
+    addChild(SVGRotator::create(Vec(105.5, 55), APP->window->loadSvg(asset::plugin(pluginInstance, "res/elements/CogBig.svg")), speed, 0.7,
                                 0.4));
-    addChild(
-            SVGRotator::create(Vec(120, 40), SVG::load(assetPlugin(pluginInstance, "res/elements/CogSmall.svg")), -speed * 1.3f, 0.7, 0.4));
+    addChild(SVGRotator::create(Vec(139, 43.7), APP->window->loadSvg(asset::plugin(pluginInstance, "res/elements/CogMiddle.svg")),
+                                speed * 1.9f, 0.7,
+                                0.4));
+    addChild(SVGRotator::create(Vec(120, 40), APP->window->loadSvg(asset::plugin(pluginInstance, "res/elements/CogSmall.svg")),
+                                -speed * 1.3f, 0.7, 0.4));
 
 
     // ***** SCREWS **********
@@ -80,4 +82,4 @@ BlankPanelWidget::BlankPanelWidget(BlankPanel *module) : LRModuleWidget(module) 
 }
 
 
-Model *modelBlankPanel = createModel<BlankPanel, BlankPanelWidget>("Lindenberg Research", "BlankPanel 01", "Blank: Logo", BLANK_TAG);
+Model *modelBlankPanel = createModel<BlankPanel, BlankPanelWidget>("BlankPanel 01");
