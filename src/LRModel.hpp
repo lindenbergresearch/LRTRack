@@ -37,12 +37,17 @@ static const char *const JSON_PATINA_B_Y = "patina_b_y";
 
 static const string STR_CHECKMARK_UNICODE = "✔";
 
+// forward declaration
+struct LRModuleWidget;
+
 
 /**
  * @brief Standard LR Module definition
  */
 struct LRModule : public Module {
-    LRGestalt *gestalt = nullptr;
+
+    // reflect back to push events to UI
+    LRModuleWidget *reflect;
 
     /**
      * @brief Default constructor derived from rack
@@ -71,8 +76,9 @@ struct LRModuleWidget : ModuleWidget {
     bool gradient = true;           // gradient used at panel
     bool patina = false;            // patina used at panel
     bool noVariants = false;        // if set all gestalt options and menus are disabled
+    bool isPreview = false;         // wiget is created in module less state for preview etc.
 
-    Vec patinaXY = Vec(0, 0);        // randomized coordinates
+
     /**
      * @brief Default constructor derived from rack
      * @param module LRModule instance
@@ -80,8 +86,12 @@ struct LRModuleWidget : ModuleWidget {
     explicit LRModuleWidget(LRModule *module) {
         setModule(module);
 
-        // pass gestalt pointer to module, to point to the origin at the widget
-        module->gestalt = &gestalt;
+        if (!module) isPreview = true;
+
+        if (module) {
+            module->reflect = this;
+        }
+
         panel = new LRPanel();
     }
 
@@ -103,6 +113,7 @@ struct LRModuleWidget : ModuleWidget {
                 widget->gestalt = gestaltM;
             }
         }
+
 
         void step() override {
             rightText = (widget->gestalt == gestaltM) ? STR_CHECKMARK_UNICODE : "";
@@ -139,6 +150,7 @@ struct LRModuleWidget : ModuleWidget {
      */
     struct PatinaItem : MenuItem {
         LRPanel *panel;
+
 
         explicit PatinaItem(LRPanel *panel) : panel(panel) {}
 
