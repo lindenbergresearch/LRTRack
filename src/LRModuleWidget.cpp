@@ -27,7 +27,7 @@ void LRModuleWidget::appendContextMenu(ui::Menu *menu) {
 
     auto count = panel->pool.size() - 1; // NIL does not count!
 
-    if (noVariants) return; // if gestalt is disabled do nothing
+    if (isPreview || noVariants) return; // if gestalt is disabled do nothing
 
     auto *spacerLabel = new MenuLabel();
     menu->addChild(spacerLabel);
@@ -168,7 +168,7 @@ void LRModuleWidget::randomize() {
 void LRModuleWidget::step() {
     Widget::step();
 
-    bool modified = gestalt != prevGestalt;
+    auto modified = gestalt != prevGestalt;
 
     if (modified) {
         for (Widget *child : children) {
@@ -187,6 +187,7 @@ void LRModuleWidget::step() {
 
         prevGestalt = gestalt;
     }
+
 }
 
 
