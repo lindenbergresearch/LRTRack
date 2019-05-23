@@ -22,6 +22,7 @@
 namespace lrt {
 
 void LRPanel::init() {
+    oversample = 2.0;
     /* set panel svg */
     panelWidget = new SvgWidget();
     auto svg = (gestalt == nullptr) ? getSVGVariant(DARK) : getSVGVariant(*gestalt);  // INIT
@@ -118,18 +119,12 @@ void LRPanel::onGestaltChange(LREventGestaltChange &e) {
     e.consumed = true;
 }
 
-
+/*
 void LRPanel::step() {
-    oversample = 2.0; //TODO: [2019-05-18 21:21] => need this???
-    FramebufferWidget::step();
-}
-
-
-/**
- * @brief Constructor
- */
-LRPanel::LRPanel() {
-
-}
+  //  oversample = 2.0; //TODO: [2019-05-18 21:21] => need this???
+  oversample = 1.0;
+  FramebufferWidget::step();
+    oversample = 2.0;
+}*/
 
 }
