@@ -914,11 +914,9 @@ struct LRPanel : FramebufferWidget, LRGestaltVariant, LRGestaltChangeAction {
     map<LRGestalt, LRGradientWidget *> gradients;
     LRPatinaWidget *patinaWidgetClassic, *patinaWidgetWhite;
 
-    LRPanel();
-
     void setGradientVariant(bool enabled);
     void setPatina(bool enabled);
-    void step() override;
+    //  void step() override;
     void init();
     void onGestaltChange(LREventGestaltChange &e) override;
 };
