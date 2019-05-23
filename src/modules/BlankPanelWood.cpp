@@ -25,9 +25,11 @@ struct BlankPanelWood : LRModule {
     BlankPanelWood() : LRModule(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS) {}
 
 
-    void updateComponents();
+};
 
-    SVGWidget *patina, *logoStamp;
+
+struct BlankPanelWidgetWood : LRModuleWidget {
+    SvgWidget *patina, *logoStamp;
     ScrewDarkB *screw1, *screw2;
     LRPanel *panel;
 
@@ -35,11 +37,22 @@ struct BlankPanelWood : LRModule {
     bool screws = true;
     bool logo = true;
 
-    void step() override;
-    void randomize() override;
+    BlankPanelWidgetWood(BlankPanelWood *module);
+    void appendContextMenu(Menu *menu) override;
+
+    void randomizeAction();
 
 
-    json_t *dataToJson() override {
+    void updateComponents() {
+        screw1->visible = screws;
+        screw2->visible = screws;
+        logoStamp->visible = logo;
+        patina->visible = aged;
+        panel->dirty = true;
+    }
+
+
+    json_t *toJson() override {
         json_t *rootJ = json_object();
 
         json_object_set_new(rootJ, "AGED", json_boolean(aged));
@@ -49,8 +62,8 @@ struct BlankPanelWood : LRModule {
     }
 
 
-    void dataFromJson(json_t *rootJ) override {
-        LRModule::dataFromJson(rootJ);
+    void fromJson(json_t *rootJ) override {
+        LRModuleWidget::fromJson(rootJ);
 
         json_t *agedJ = json_object_get(rootJ, "AGED");
         if (agedJ)
@@ -64,57 +77,24 @@ struct BlankPanelWood : LRModule {
         if (logoJ)
             logo = json_boolean_value(logoJ);
 
-        updateComponents();
+        //updateComponents();
     }
 };
 
 
-void BlankPanelWood::step() {
-}
-
-
-void BlankPanelWood::updateComponents() {
-    //randomize();
-    screw1->visible = screws;
-    screw2->visible = screws;
-
-    logoStamp->visible = logo;
-
-    patina->visible = aged;
-
-    panel->dirty = true;
-    //panel->dirty = true;
-}
-
-
-void BlankPanelWood::randomize() {
-    Module::randomize();
-    patina->box.pos = Vec(-randomUniform() * 1000, -randomUniform() * 200);
-    //panel->dirty = true;
-}
-
-
-struct BlankPanelWidgetWood : LRModuleWidget {
-    BlankPanelWidgetWood(BlankPanelWood *module);
-
-    void appendContextMenu(Menu *menu) override;
-};
-
-
 BlankPanelWidgetWood::BlankPanelWidgetWood(BlankPanelWood *module) : LRModuleWidget(module) {
-    panel->addSVGVariant(LRGestalt::DARK, SVG::load(assetPlugin(pluginInstance, "res/panels/WoodLeftTop.svg")));
-    // panel->addSVGVariant(SVG::load(assetPlugin(plugin, "res/panels/WoodLeftTop.svg")));
-    // panel->addSVGVariant(SVG::load(assetPlugin(plugin, "res/panels/WoodLeftTop.svg")));
+    panel->addSVGVariant(LRGestalt::DARK, APP->window->loadSvg(asset::plugin(pluginInstance, "res/panels/WoodLeftTop.svg")));
+    // panel->addSVGVariant(APP->window->loadSvg(asset::plugin(plugin, "res/panels/WoodLeftTop.svg")));
+    // panel->addSVGVariant(APP->window->loadSvg(asset::plugin(plugin, "res/panels/WoodLeftTop.svg")));
 
     noVariants = true;
     gestalt = LRGestalt::DARK;
-    patina = false;
+    // patina = false;
     gradient = false;
 
     panel->init();
     addChild(panel);
 
-    module->panel = panel;
 
     box.size = panel->box.size;
 
@@ -124,39 +104,34 @@ BlankPanelWidgetWood::BlankPanelWidgetWood(BlankPanelWood *module) : LRModuleWid
 
     panel->addChild(gradientDark);
 
-    module->patina = new SVGWidget();
-    module->patina->setSVG(SVG::load(assetPlugin(pluginInstance, "res/panels/WoodPatina.svg")));
-    panel->addChild(module->patina);
+    patina = new SvgWidget();
+    patina->setSvg(APP->window->loadSvg(asset::plugin(pluginInstance, "res/panels/WoodPatina.svg")));
+    panel->addChild(patina);
 
-    module->logoStamp = new SVGWidget();
-    module->logoStamp->setSVG(SVG::load(assetPlugin(pluginInstance, "res/elements/LogoSmallPlate.svg")));
-    module->logoStamp->box.pos = Vec(8.5, 348.8);
-    addChild(module->logoStamp);
+    logoStamp = new SvgWidget();
+    logoStamp->setSvg(APP->window->loadSvg(asset::plugin(pluginInstance, "res/elements/LogoSmallPlate.svg")));
+    logoStamp->box.pos = Vec(8.5, 348.8);
+    addChild(logoStamp);
 
-    module->randomize();
+    randomizeAction();
 
 
     // ***** SCREWS **********
-    module->screw1 = createWidget<ScrewDarkB>(Vec(23, 6));
-    addChild(module->screw1);
+    screw1 = createWidget<ScrewDarkB>(Vec(23, 6));
+    addChild(screw1);
 
-    module->screw2 = createWidget<ScrewDarkB>(Vec(23, box.size.y - 20));
-    addChild(module->screw2);
+    screw2 = createWidget<ScrewDarkB>(Vec(23, box.size.y - 20));
+    addChild(screw2);
     // ***** SCREWS **********
 }
 
 
 struct BlankPanelWoodAged : MenuItem {
-    BlankPanelWood *blankPanelWood;
+    BlankPanelWidgetWood *blankPanelWood;
 
 
-    void onAction(EventAction &e) override {
-        if (blankPanelWood->aged) {
-            blankPanelWood->aged = false;
-        } else {
-            blankPanelWood->aged = true;
-        }
-
+    void onAction(const event::Action &e) override {
+        blankPanelWood->aged ^= true;
         blankPanelWood->updateComponents();
     }
 
@@ -168,16 +143,11 @@ struct BlankPanelWoodAged : MenuItem {
 
 
 struct BlankPanelWoodScrews : MenuItem {
-    BlankPanelWood *blankPanelWood;
+    BlankPanelWidgetWood *blankPanelWood;
 
 
-    void onAction(EventAction &e) override {
-        if (blankPanelWood->screws) {
-            blankPanelWood->screws = false;
-        } else {
-            blankPanelWood->screws = true;
-        }
-
+    void onAction(const event::Action &e) override {
+        blankPanelWood->screws ^= true;
         blankPanelWood->updateComponents();
     }
 
@@ -189,16 +159,11 @@ struct BlankPanelWoodScrews : MenuItem {
 
 
 struct BlankPanelWoodLogo : MenuItem {
-    BlankPanelWood *blankPanelWood;
+    BlankPanelWidgetWood *blankPanelWood;
 
 
-    void onAction(EventAction &e) override {
-        if (blankPanelWood->logo) {
-            blankPanelWood->logo = false;
-        } else {
-            blankPanelWood->logo = true;
-        }
-
+    void onAction(const event::Action &e) override {
+        blankPanelWood->logo ^= true;
         blankPanelWood->updateComponents();
     }
 
@@ -210,27 +175,27 @@ struct BlankPanelWoodLogo : MenuItem {
 
 
 void BlankPanelWidgetWood::appendContextMenu(Menu *menu) {
-    menu->addChild(MenuEntry::create());
+    auto *pBlankPanelWidgetWood = dynamic_cast<BlankPanelWidgetWood *>(module);
+    assert(pBlankPanelWidgetWood);
 
-    BlankPanelWood *blankPanelWood = dynamic_cast<BlankPanelWood *>(module);
-    assert(blankPanelWood);
-
-    BlankPanelWoodAged *mergeItemAged = createMenuItem<BlankPanelWoodAged>("Use AGED look");
-    mergeItemAged->blankPanelWood = blankPanelWood;
+    auto *mergeItemAged = createMenuItem<BlankPanelWoodAged>("Use AGED look");
+    mergeItemAged->blankPanelWood = pBlankPanelWidgetWood;
     menu->addChild(mergeItemAged);
 
-    BlankPanelWoodScrews *mergeItemScrews = createMenuItem<BlankPanelWoodScrews>("Show Screws");
-    mergeItemScrews->blankPanelWood = blankPanelWood;
+    auto *mergeItemScrews = createMenuItem<BlankPanelWoodScrews>("Show Screws");
+    mergeItemScrews->blankPanelWood = pBlankPanelWidgetWood;
     menu->addChild(mergeItemScrews);
 
-    BlankPanelWoodLogo *mergeItemLogo = createMenuItem<BlankPanelWoodLogo>("Show Logo Plate");
-    mergeItemLogo->blankPanelWood = blankPanelWood;
+    auto *mergeItemLogo = createMenuItem<BlankPanelWoodLogo>("Show Logo Plate");
+    mergeItemLogo->blankPanelWood = pBlankPanelWidgetWood;
     menu->addChild(mergeItemLogo);
 }
 
 
-Model *modelBlankPanelWood = createModel<BlankPanelWood, BlankPanelWidgetWood>(
-        "Lindenberg Research",
-        "BlankPanel Wood",
-        "Blank: Wood ",
-        BLANK_TAG);
+void BlankPanelWidgetWood::randomizeAction() {
+    ModuleWidget::randomizeAction();
+    patina->box.pos = Vec(-random::uniform() * 1000, -random::uniform() * 200);
+}
+
+
+Model *modelBlankPanelWood = createModel<BlankPanelWood, BlankPanelWidgetWood>("BlankPanel Wood");
