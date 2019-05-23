@@ -10,6 +10,8 @@ using namespace lrt;
 
 using lrt::DiodeLadderFilter;
 
+struct DiodeVCFWidget;
+
 
 struct DiodeVCF : LRModule {
     enum ParamIds {
@@ -52,11 +54,84 @@ struct DiodeVCF : LRModule {
     DiodeLadderFilter *lpf = new DiodeLadderFilter(APP->engine->getSampleRate());
     LRPanel *panel;
 
+    DiodeVCFWidget *reflect;
+
     bool aged = false;
     bool hidef = false;
 
     void process(const ProcessArgs &args) override;
     void onSampleRateChange() override;
+};
+
+
+void DiodeVCF::onSampleRateChange() {
+    Module::onSampleRateChange();
+    lpf->setSamplerate(APP->engine->getSampleRate());
+}
+
+
+/**
+ * @brief Blank Panel with Logo
+ */
+struct DiodeVCFWidget : LRModuleWidget {
+    LRBigKnob *frqKnob, *resKnob;
+    LRMiddleKnob *saturateKnob;
+
+
+    DiodeVCFWidget(DiodeVCF *module) : LRModuleWidget(module) {
+        panel->addSVGVariant(LRGestalt::DARK, APP->window->loadSvg(asset::plugin(pluginInstance, "res/panels/DiodeLadderVCFClassic.svg")));
+        panel->addSVGVariant(LRGestalt::LIGHT, APP->window->loadSvg(asset::plugin(pluginInstance, "res/panels/DiodeLadderVCF.svg")));
+        panel->addSVGVariant(LRGestalt::AGED, APP->window->loadSvg(asset::plugin(pluginInstance, "res/panels/DiodeLadderVCFAged.svg")));
+
+        panel->init();
+        addChild(panel);
+
+        box.size = panel->box.size;
+
+        // reflect module widget
+        if (!isPreview) module->reflect = this;
+
+        // ***** SCREWS **********
+        addChild(createWidget<ScrewLight>(Vec(15, 1)));
+        addChild(createWidget<ScrewLight>(Vec(box.size.x - 30, 1)));
+        addChild(createWidget<ScrewLight>(Vec(15, 366)));
+        addChild(createWidget<ScrewLight>(Vec(box.size.x - 30, 366)));
+        // ***** SCREWS **********
+
+        // ***** MAIN KNOBS ******
+        frqKnob = createParam<LRBigKnob>(Vec(32.5, 74.4), module, DiodeVCF::FREQUENCY_PARAM);
+        resKnob = createParam<LRBigKnob>(Vec(151.5, 74.4), module, DiodeVCF::RES_PARAM);
+        saturateKnob = createParam<LRMiddleKnob>(Vec(99.5, 164.4), module, DiodeVCF::SATURATE_PARAM);
+
+        frqKnob->setIndicatorColors(nvgRGBAf(0.9f, 0.9f, 0.9f, 1.0f));
+        resKnob->setIndicatorColors(nvgRGBAf(0.9f, 0.9f, 0.9f, 1.0f));
+        saturateKnob->setIndicatorColors(nvgRGBAf(0.9f, 0.9f, 0.9f, 1.0f));
+
+        addParam(frqKnob);
+        addParam(resKnob);
+        addParam(saturateKnob);
+
+        addParam(createParam<LRSmallKnob>(Vec(39.9, 251.4), module, DiodeVCF::FREQUENCY_CV_PARAM));
+        addParam(createParam<LRSmallKnob>(Vec(177, 251.4), module, DiodeVCF::RESONANCE_CV_PARAM));
+        addParam(createParam<LRSmallKnob>(Vec(108.5, 251.4), module, DiodeVCF::SATURATE_CV_PARAM));
+        // ***** MAIN KNOBS ******
+
+        // ***** CV INPUTS *******
+        addInput(createInput<LRIOPortCV>(Vec(37.4, 284.4), module, DiodeVCF::FREQUCENCY_CV_INPUT));
+        addInput(createInput<LRIOPortCV>(Vec(175.3, 284.4), module, DiodeVCF::RESONANCE_CV_INPUT));
+        addInput(createInput<LRIOPortCV>(Vec(106.4, 284.4), module, DiodeVCF::SATURATE_CV_INPUT));
+        // ***** CV INPUTS *******
+
+
+        // ***** INPUTS **********
+        addInput(createInput<LRIOPortAudio>(Vec(37.4, 318.5), module, DiodeVCF::FILTER_INPUT));
+        // ***** INPUTS **********
+
+        // ***** OUTPUTS *********
+        addOutput(createOutput<LRIOPortAudio>(Vec(175.3, 318.5), module, DiodeVCF::LP_OUTPUT));
+        addOutput(createOutput<LRIOPortAudio>(Vec(106.4, 318.5), module, DiodeVCF::HP_OUTPUT));
+        // ***** OUTPUTS *********
+    }
 };
 
 
@@ -80,15 +155,13 @@ void DiodeVCF::process(const ProcessArgs &args) {
     float res = clamp((params[RES_PARAM].getValue() + rescv) * DiodeLadderFilter::MAX_RESONANCE, 0.f, DiodeLadderFilter::MAX_RESONANCE);
     float sat = clamp(dsp::quarticBipolar((params[SATURATE_PARAM].getValue()) + satcv) * 14 + 1, 0.f, 15.f);
 
-    /*if (frqKnob != nullptr && resKnob != nullptr && saturateKnob != nullptr) {
-        frqKnob->setIndicatorActive(inputs[FREQUCENCY_CV_INPUT].isConnected());
-        resKnob->setIndicatorActive(inputs[RESONANCE_CV_INPUT].isConnected());
-        saturateKnob->setIndicatorActive(inputs[SATURATE_CV_INPUT].isConnected());
+    reflect->frqKnob->setIndicatorActive(inputs[FREQUCENCY_CV_INPUT].isConnected());
+    reflect->resKnob->setIndicatorActive(inputs[RESONANCE_CV_INPUT].isConnected());
+    reflect->saturateKnob->setIndicatorActive(inputs[SATURATE_CV_INPUT].isConnected());
 
-        frqKnob->setIndicatorValue(params[FREQUENCY_PARAM].getValue() + freqcv);
-        resKnob->setIndicatorValue(params[RES_PARAM].getValue() + rescv);
-        saturateKnob->setIndicatorValue(params[SATURATE_PARAM].getValue() + satcv);
-    }*/
+    reflect->frqKnob->setIndicatorValue(params[FREQUENCY_PARAM].getValue() + freqcv);
+    reflect->resKnob->setIndicatorValue(params[RES_PARAM].getValue() + rescv);
+    reflect->saturateKnob->setIndicatorValue(params[SATURATE_PARAM].getValue() + satcv);
 
     lpf->setFrequency(frq);
     lpf->setResonance(res);
@@ -105,77 +178,6 @@ void DiodeVCF::process(const ProcessArgs &args) {
 
     outputs[HP_OUTPUT].setVoltage(lpf->getOut2() * 6.5f);  // hipass
     outputs[LP_OUTPUT].setVoltage(lpf->getOut() * 10.f);   // lowpass
-}
-
-
-void DiodeVCF::onSampleRateChange() {
-    Module::onSampleRateChange();
-    lpf->setSamplerate(APP->engine->getSampleRate());
-}
-
-
-/**
- * @brief Blank Panel with Logo
- */
-struct DiodeVCFWidget : LRModuleWidget {
-    LRBigKnob *frqKnob, *resKnob;
-    LRMiddleKnob *saturateKnob;
-
-    DiodeVCFWidget(DiodeVCF *module);
-    void appendContextMenu(Menu *menu) override;
-};
-
-
-DiodeVCFWidget::DiodeVCFWidget(DiodeVCF *module) : LRModuleWidget(module) {
-    panel->addSVGVariant(LRGestalt::DARK, APP->window->loadSvg(asset::plugin(pluginInstance, "res/panels/DiodeLadderVCFClassic.svg")));
-    panel->addSVGVariant(LRGestalt::LIGHT, APP->window->loadSvg(asset::plugin(pluginInstance, "res/panels/DiodeLadderVCF.svg")));
-    panel->addSVGVariant(LRGestalt::AGED, APP->window->loadSvg(asset::plugin(pluginInstance, "res/panels/DiodeLadderVCFAged.svg")));
-
-    panel->init();
-    addChild(panel);
-
-    box.size = panel->box.size;
-
-    // ***** SCREWS **********
-    addChild(createWidget<ScrewLight>(Vec(15, 1)));
-    addChild(createWidget<ScrewLight>(Vec(box.size.x - 30, 1)));
-    addChild(createWidget<ScrewLight>(Vec(15, 366)));
-    addChild(createWidget<ScrewLight>(Vec(box.size.x - 30, 366)));
-    // ***** SCREWS **********
-
-    // ***** MAIN KNOBS ******
-    frqKnob = createParam<LRBigKnob>(Vec(32.5, 74.4), module, DiodeVCF::FREQUENCY_PARAM);
-    resKnob = createParam<LRBigKnob>(Vec(151.5, 74.4), module, DiodeVCF::RES_PARAM);
-    saturateKnob = createParam<LRMiddleKnob>(Vec(99.5, 164.4), module, DiodeVCF::SATURATE_PARAM);
-
-    frqKnob->setIndicatorColors(nvgRGBAf(0.9f, 0.9f, 0.9f, 1.0f));
-    resKnob->setIndicatorColors(nvgRGBAf(0.9f, 0.9f, 0.9f, 1.0f));
-    saturateKnob->setIndicatorColors(nvgRGBAf(0.9f, 0.9f, 0.9f, 1.0f));
-
-    addParam(frqKnob);
-    addParam(resKnob);
-    addParam(saturateKnob);
-
-    addParam(createParam<LRSmallKnob>(Vec(39.9, 251.4), module, DiodeVCF::FREQUENCY_CV_PARAM));
-    addParam(createParam<LRSmallKnob>(Vec(177, 251.4), module, DiodeVCF::RESONANCE_CV_PARAM));
-    addParam(createParam<LRSmallKnob>(Vec(108.5, 251.4), module, DiodeVCF::SATURATE_CV_PARAM));
-    // ***** MAIN KNOBS ******
-
-    // ***** CV INPUTS *******
-    addInput(createInput<LRIOPortCV>(Vec(37.4, 284.4), module, DiodeVCF::FREQUCENCY_CV_INPUT));
-    addInput(createInput<LRIOPortCV>(Vec(175.3, 284.4), module, DiodeVCF::RESONANCE_CV_INPUT));
-    addInput(createInput<LRIOPortCV>(Vec(106.4, 284.4), module, DiodeVCF::SATURATE_CV_INPUT));
-    // ***** CV INPUTS *******
-
-
-    // ***** INPUTS **********
-    addInput(createInput<LRIOPortAudio>(Vec(37.4, 318.5), module, DiodeVCF::FILTER_INPUT));
-    // ***** INPUTS **********
-
-    // ***** OUTPUTS *********
-    addOutput(createOutput<LRIOPortAudio>(Vec(175.3, 318.5), module, DiodeVCF::LP_OUTPUT));
-    addOutput(createOutput<LRIOPortAudio>(Vec(106.4, 318.5), module, DiodeVCF::HP_OUTPUT));
-    // ***** OUTPUTS *********
 }
 
 //TODO: [2019-05-23 10:32] => recover oversampling menu
