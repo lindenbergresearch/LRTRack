@@ -947,6 +947,7 @@ struct SVGRotator : FramebufferWidget {
     SVGRotator static *create(Vec pos, shared_ptr<Svg> svg, float inc, float scale = 1.0f, float transperency = 1.f) {
         SVGRotator *rotator = new SVGRotator();
 
+        rotator->box.pos = pos;
         rotator->setSvg(svg);
         rotator->inc = inc;
         rotator->scale = scale;
