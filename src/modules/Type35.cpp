@@ -39,6 +39,7 @@ struct Type35 : LRModule {
         PEAK1_CV_PARAM,
         CUTOFF2_CV_PARAM,
         PEAK2_CV_PARAM,
+        LCD_PARAM,
         NUM_PARAMS
     };
     enum InputIds {
@@ -58,18 +59,11 @@ struct Type35 : LRModule {
         NUM_LIGHTS
     };
 
-    LRKnob *frqKnobLP, *peakKnobLP, *frqKnobHP, *peakKnobHP, *driveKnob;
     Type35Filter *lpf = new Type35Filter(APP->engine->getSampleRate(), Type35Filter::LPF);
     Type35Filter *hpf = new Type35Filter(APP->engine->getSampleRate(), Type35Filter::HPF);
-    LRLCDWidget *lcd = new LRLCDWidget(10, "%s", LRLCDWidget::LIST, 10);
 
 
     Type35() : LRModule(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS) {
-        frqKnobLP = createParam<LRBigKnob>(Vec(32.9, 68.6 + 7), this, FREQ1_PARAM);
-        peakKnobLP = createParam<LRMiddleKnob>(Vec(39.9, 174.1 + 7), this, PEAK1_PARAM);
-        frqKnobHP = createParam<LRBigKnob>(Vec(196.2, 68.6 + 7), this, FREQ2_PARAM);
-        peakKnobHP = createParam<LRMiddleKnob>(Vec(203.1, 174.1 + 7), this, PEAK2_PARAM);
-        driveKnob = createParam<LRMiddleKnob>(Vec(122, 101.2), this, DRIVE_PARAM);
 
 
         configParam(FREQ1_PARAM, 0.f, 1.0f, 1.f);
@@ -94,7 +88,8 @@ struct Type35 : LRModule {
         float frq2cv = inputs[CUTOFF2_CV_INPUT].getVoltage() * 0.1f * dsp::quadraticBipolar(params[CUTOFF2_CV_PARAM].getValue());
         float peak2cv = inputs[PEAK2_CV_INPUT].getVoltage() * 0.1f * dsp::quadraticBipolar(params[PEAK2_CV_PARAM].getValue());
 
-        float drivecv = inputs[DRIVE_CV_INPUT].getVoltage();//* 0.1f * quadraticBipolar(params[DRIVE_CV_PARAM].getValue());
+        float drivecv = inputs[DRIVE_CV_INPUT].getVoltage();
+
 
         // set vc parameter and knob values
         lpf->fc = params[FREQ1_PARAM].getValue() + frq1cv;
@@ -105,22 +100,23 @@ struct Type35 : LRModule {
         lpf->sat = params[DRIVE_PARAM].getValue() + drivecv;
         hpf->sat = params[DRIVE_PARAM].getValue() + drivecv;
 
+        auto lcdi = params[LCD_PARAM].getValue();
 
-        if (frqKnobLP != nullptr && frqKnobHP != nullptr && peakKnobLP != nullptr && peakKnobHP != nullptr && driveKnob != nullptr) {
-            frqKnobLP->setIndicatorActive(inputs[CUTOFF1_CV_INPUT].isConnected());
-            peakKnobLP->setIndicatorActive(inputs[PEAK1_CV_INPUT].isConnected());
-            frqKnobHP->setIndicatorActive(inputs[CUTOFF2_CV_INPUT].isConnected());
-            peakKnobHP->setIndicatorActive(inputs[PEAK2_CV_INPUT].isConnected());
-            driveKnob->setIndicatorActive(inputs[DRIVE_CV_INPUT].isConnected());
+        /*  if (frqKnobLP != nullptr && frqKnobHP != nullptr && peakKnobLP != nullptr && peakKnobHP != nullptr && driveKnob != nullptr) {
+              frqKnobLP->setIndicatorActive(inputs[CUTOFF1_CV_INPUT].isConnected());
+              peakKnobLP->setIndicatorActive(inputs[PEAK1_CV_INPUT].isConnected());
+              frqKnobHP->setIndicatorActive(inputs[CUTOFF2_CV_INPUT].isConnected());
+              peakKnobHP->setIndicatorActive(inputs[PEAK2_CV_INPUT].isConnected());
+              driveKnob->setIndicatorActive(inputs[DRIVE_CV_INPUT].isConnected());
 
-            frqKnobLP->setIndicatorValue(params[FREQ1_PARAM].getValue() + frq1cv);
-            peakKnobLP->setIndicatorValue(params[PEAK1_PARAM].getValue() + peak1cv);
-            frqKnobHP->setIndicatorValue(params[FREQ2_PARAM].getValue() + frq2cv);
-            peakKnobHP->setIndicatorValue(params[PEAK2_PARAM].getValue() + peak2cv);
-            driveKnob->setIndicatorValue(params[DRIVE_PARAM].getValue() + drivecv);
-        }
+              frqKnobLP->setIndicatorValue(params[FREQ1_PARAM].getValue() + frq1cv);
+              peakKnobLP->setIndicatorValue(params[PEAK1_PARAM].getValue() + peak1cv);
+              frqKnobHP->setIndicatorValue(params[FREQ2_PARAM].getValue() + frq2cv);
+              peakKnobHP->setIndicatorValue(params[PEAK2_PARAM].getValue() + peak2cv);
+              driveKnob->setIndicatorValue(params[DRIVE_PARAM].getValue() + drivecv);
+          }*/
 
-        if (lround(lcd->value) == 0) {
+        if (lround(lcdi) == 0) {
             hpf->in = inputs[FILTER_INPUT].getVoltage();
             hpf->invalidate();
             hpf->process2();
@@ -130,13 +126,13 @@ struct Type35 : LRModule {
             lpf->process2();
 
             outputs[OUTPUT].setVoltage(lpf->out);
-        } else if (lround(lcd->value) == 1) {
+        } else if (lround(lcdi) == 1) {
             lpf->in = inputs[FILTER_INPUT].getVoltage();
             lpf->invalidate();
             lpf->process2();
 
             outputs[OUTPUT].setVoltage(lpf->out);
-        } else if (lround(lcd->value) == 2) {
+        } else if (lround(lcdi) == 2) {
             lpf->in = inputs[FILTER_INPUT].getVoltage();
             lpf->invalidate();
             lpf->process2();
@@ -146,13 +142,13 @@ struct Type35 : LRModule {
             hpf->process2();
 
             outputs[OUTPUT].setVoltage(hpf->out + lpf->out);
-        } else if (lround(lcd->value) == 3) {
+        } else if (lround(lcdi) == 3) {
             hpf->in = inputs[FILTER_INPUT].getVoltage();
             hpf->invalidate();
             hpf->process2();
 
             outputs[OUTPUT].setVoltage(hpf->out);
-        } else if (lround(lcd->value) == 4) {
+        } else if (lround(lcdi) == 4) {
             lpf->in = inputs[FILTER_INPUT].getVoltage();
             lpf->invalidate();
             lpf->process2();
@@ -170,7 +166,7 @@ struct Type35 : LRModule {
 
     json_t *dataToJson() override {
         json_t *rootJ = json_object();
-        json_object_set_new(rootJ, "filtermode", json_integer((int) lround(lcd->value)));
+        json_object_set_new(rootJ, "filtermode", json_integer((int) lround(params[LCD_PARAM].getValue())));
 
         return rootJ;
     }
@@ -182,9 +178,7 @@ struct Type35 : LRModule {
         json_t *mode = json_object_get(rootJ, "filtermode");
 
         if (mode)
-            lcd->value = json_integer_value(mode);// json_real_value(mode);
-
-        lcd->dirty = true;
+            params[LCD_PARAM].setValue(json_integer_value(mode));
     }
 
 
@@ -196,10 +190,11 @@ struct Type35 : LRModule {
 };
 
 
-/**
- * @brief Blank Panel with Logo
- */
 struct Type35Widget : LRModuleWidget {
+    LRLCDWidget *lcd = new LRLCDWidget(10, "%s", LRLCDWidget::LIST, 10);
+    LRKnob *frqKnobLP, *peakKnobLP, *frqKnobHP, *peakKnobHP, *driveKnob;
+
+
     Type35Widget(Type35 *module) : LRModuleWidget(module) {
         panel->addSVGVariant(LRGestalt::DARK, APP->window->loadSvg(asset::plugin(pluginInstance, "res/panels/Type35VCF.svg")));
         panel->addSVGVariant(LRGestalt::LIGHT, APP->window->loadSvg(asset::plugin(pluginInstance, "res/panels/Type35VCFLight.svg")));
@@ -210,13 +205,6 @@ struct Type35Widget : LRModuleWidget {
 
         box.size = panel->box.size;
 
-        // **** SETUP LCD ********
-        module->lcd->box.pos = Vec(100, 221);
-        module->lcd->items = {"1: LP->HP", "2: LP", "3: LP + HP", "4: HP", " 5: HP->LP"};
-        module->lcd->format = "%s";
-        addChild(module->lcd);
-        // **** SETUP LCD ********
-
         // ***** SCREWS **********
         addChild(createWidget<ScrewLight>(Vec(15, 1)));
         addChild(createWidget<ScrewLight>(Vec(box.size.x - 30, 1)));
@@ -224,18 +212,36 @@ struct Type35Widget : LRModuleWidget {
         addChild(createWidget<ScrewLight>(Vec(box.size.x - 30, 366)));
         // ***** SCREWS **********
 
-        // ***** MAIN KNOBS ******
-        module->frqKnobLP->setIndicatorColors(nvgRGBAf(0.9f, 0.9f, 0.9f, 1.0f));
-        module->peakKnobLP->setIndicatorColors(nvgRGBAf(0.9f, 0.9f, 0.9f, 1.0f));
-        module->frqKnobHP->setIndicatorColors(nvgRGBAf(0.9f, 0.9f, 0.9f, 1.0f));
-        module->peakKnobHP->setIndicatorColors(nvgRGBAf(0.9f, 0.9f, 0.9f, 1.0f));
-        module->driveKnob->setIndicatorColors(nvgRGBAf(0.9f, 0.9f, 0.9f, 1.0f));
+        // **** SETUP LCD ********
+        lcd->box.pos = Vec(100, 221);
+        lcd->items = {"1: LP->HP", "2: LP", "3: LP + HP", "4: HP", " 5: HP->LP"};
+        lcd->format = "%s";
 
-        addParam(module->frqKnobLP);
-        addParam(module->peakKnobLP);
-        addParam(module->frqKnobHP);
-        addParam(module->peakKnobHP);
-        addParam(module->driveKnob);
+        // map quantity if not in preview mode
+        if (!isPreview) lcd->paramQuantity = module->paramQuantities[Type35::LCD_PARAM];
+
+        addParam(lcd);
+        // **** SETUP LCD ********
+
+        // ***** MAIN KNOBS ******
+        frqKnobLP = createParam<LRBigKnob>(Vec(32.9, 68.6 + 7), module, Type35::FREQ1_PARAM);
+        peakKnobLP = createParam<LRMiddleKnob>(Vec(39.9, 174.1 + 7), module, Type35::PEAK1_PARAM);
+        frqKnobHP = createParam<LRBigKnob>(Vec(196.2, 68.6 + 7), module, Type35::FREQ2_PARAM);
+        peakKnobHP = createParam<LRMiddleKnob>(Vec(203.1, 174.1 + 7), module, Type35::PEAK2_PARAM);
+        driveKnob = createParam<LRMiddleKnob>(Vec(122, 101.2), module, Type35::DRIVE_PARAM);
+
+        frqKnobLP->setIndicatorColors(nvgRGBAf(0.9f, 0.9f, 0.9f, 1.0f));
+        peakKnobLP->setIndicatorColors(nvgRGBAf(0.9f, 0.9f, 0.9f, 1.0f));
+        frqKnobHP->setIndicatorColors(nvgRGBAf(0.9f, 0.9f, 0.9f, 1.0f));
+        peakKnobHP->setIndicatorColors(nvgRGBAf(0.9f, 0.9f, 0.9f, 1.0f));
+        driveKnob->setIndicatorColors(nvgRGBAf(0.9f, 0.9f, 0.9f, 1.0f));
+
+        addParam(frqKnobLP);
+        addParam(peakKnobLP);
+        addParam(frqKnobHP);
+        addParam(peakKnobHP);
+        addParam(driveKnob);
+
 
         addParam(createParam<LRSmallKnob>(Vec(36.5 - 7.5, 269.4), module, Type35::CUTOFF1_CV_PARAM));
         addParam(createParam<LRSmallKnob>(Vec(78.5 - 7.5, 269.4), module, Type35::PEAK1_CV_PARAM));
