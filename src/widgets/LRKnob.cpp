@@ -26,9 +26,7 @@ LRKnob::LRKnob() {
     //gestalt = module->gestalt;
 
     shader = new LRShadow();
-    removeChild(shadow); // uninstall default
-
-    font = APP->window->loadFont(asset::system("res/fonts/ShareTechMono-Regular.ttf"));
+    if (shadow) fb->removeChild(shadow); // uninstall default
 
     indicator = new LRCVIndicator(15.f, ANGLE);
     // addChild(indicator);
@@ -52,8 +50,6 @@ void LRKnob::draw(const Widget::DrawArgs &args) {
     /** component */
     SvgKnob::draw(args);
 
-    auto value = paramQuantity->getValue();
-
     if (lightning) {
         nvgBeginPath(args.vg);
 
@@ -70,29 +66,6 @@ void LRKnob::draw(const Widget::DrawArgs &args) {
     }
 
     indicator->draw(args);
-
-    /** debug numerical values */
-    if (debug) {
-        auto text = stringf("%4.3f", value);
-        auto size = box.size.x / 2. > 15 ? 15 : box.size.x / 2.;
-        nvgFontSize(args.vg, size);
-
-        nvgFontFaceId(args.vg, font->handle);
-        nvgTextAlign(args.vg, NVG_ALIGN_LEFT | NVG_ALIGN_MIDDLE);
-
-        float bounds[4];
-
-        nvgTextBounds(args.vg, 0, 0, text.c_str(), nullptr, bounds);
-
-        nvgBeginPath(args.vg);
-        nvgFillColor(args.vg, nvgRGBAf(0., 0.1, 0.2, 0.8));
-        nvgRoundedRect(args.vg, bounds[0] - 4, bounds[1] - 2, (bounds[2] - bounds[0]) + 8, (bounds[3] - bounds[1]) + 4,
-                       ((bounds[3] - bounds[1]) + 4) / 2 - 1);
-        nvgFill(args.vg);
-
-        nvgFillColor(args.vg, nvgRGBAf(1.0f, 1.0f, 1.0f, .99f));
-        nvgText(args.vg, 0, 0, text.c_str(), NULL);
-    }
 }
 
 
@@ -139,7 +112,7 @@ void LRKnob::onGestaltChange(LREventGestaltChange &e) {
     }
 
 
-    dirty = true;
+    fb->dirty = true;
     e.consumed = true;
 }
 

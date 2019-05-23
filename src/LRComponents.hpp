@@ -184,9 +184,6 @@ private:
     /** setup indicator with default values */
     LRCVIndicator *indicator;
 
-    bool debug = DEBUG_VALUES;
-    TrueType font;
-
     /** snap mode */
     bool snap = false;
     /** position to snap */
