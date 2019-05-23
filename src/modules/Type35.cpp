@@ -27,6 +27,8 @@ using namespace lrt;
 
 using lrt::Type35Filter;
 
+struct Type35Widget;
+
 
 struct Type35 : LRModule {
     enum ParamIds {
@@ -51,21 +53,25 @@ struct Type35 : LRModule {
         DRIVE_CV_INPUT,
         NUM_INPUTS
     };
+
     enum OutputIds {
         OUTPUT,
         NUM_OUTPUTS
     };
+
     enum LightIds {
         NUM_LIGHTS
     };
 
+    Type35Widget *reflect;
+
     Type35Filter *lpf = new Type35Filter(APP->engine->getSampleRate(), Type35Filter::LPF);
     Type35Filter *hpf = new Type35Filter(APP->engine->getSampleRate(), Type35Filter::HPF);
 
+    void process(const ProcessArgs &args) override;
+
 
     Type35() : LRModule(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS) {
-
-
         configParam(FREQ1_PARAM, 0.f, 1.0f, 1.f);
         configParam(PEAK1_PARAM, 0.f, 1.0f, 0.f);
         configParam(FREQ2_PARAM, 0.f, 1.0f, 0.f);
@@ -77,90 +83,6 @@ struct Type35 : LRModule {
         configParam(PEAK1_CV_PARAM, -1.f, 1.0f, 0.f);
         configParam(CUTOFF2_CV_PARAM, -1.f, 1.0f, 0.f);
         configParam(PEAK2_CV_PARAM, -1.f, 1.0f, 0.f);
-    }
-
-
-    void process(const ProcessArgs &args) override {
-        // compute all cv values
-        float frq1cv = inputs[CUTOFF1_CV_INPUT].getVoltage() * 0.1f * dsp::quadraticBipolar(params[CUTOFF1_CV_PARAM].getValue());
-        float peak1cv = inputs[PEAK1_CV_INPUT].getVoltage() * 0.1f * dsp::quadraticBipolar(params[PEAK1_CV_PARAM].getValue());
-
-        float frq2cv = inputs[CUTOFF2_CV_INPUT].getVoltage() * 0.1f * dsp::quadraticBipolar(params[CUTOFF2_CV_PARAM].getValue());
-        float peak2cv = inputs[PEAK2_CV_INPUT].getVoltage() * 0.1f * dsp::quadraticBipolar(params[PEAK2_CV_PARAM].getValue());
-
-        float drivecv = inputs[DRIVE_CV_INPUT].getVoltage();
-
-
-        // set vc parameter and knob values
-        lpf->fc = params[FREQ1_PARAM].getValue() + frq1cv;
-        lpf->peak = params[PEAK1_PARAM].getValue() + peak1cv;
-        hpf->fc = params[FREQ2_PARAM].getValue() + frq2cv;
-        hpf->peak = params[PEAK2_PARAM].getValue() + peak2cv;
-
-        lpf->sat = params[DRIVE_PARAM].getValue() + drivecv;
-        hpf->sat = params[DRIVE_PARAM].getValue() + drivecv;
-
-        auto lcdi = params[LCD_PARAM].getValue();
-
-        /*  if (frqKnobLP != nullptr && frqKnobHP != nullptr && peakKnobLP != nullptr && peakKnobHP != nullptr && driveKnob != nullptr) {
-              frqKnobLP->setIndicatorActive(inputs[CUTOFF1_CV_INPUT].isConnected());
-              peakKnobLP->setIndicatorActive(inputs[PEAK1_CV_INPUT].isConnected());
-              frqKnobHP->setIndicatorActive(inputs[CUTOFF2_CV_INPUT].isConnected());
-              peakKnobHP->setIndicatorActive(inputs[PEAK2_CV_INPUT].isConnected());
-              driveKnob->setIndicatorActive(inputs[DRIVE_CV_INPUT].isConnected());
-
-              frqKnobLP->setIndicatorValue(params[FREQ1_PARAM].getValue() + frq1cv);
-              peakKnobLP->setIndicatorValue(params[PEAK1_PARAM].getValue() + peak1cv);
-              frqKnobHP->setIndicatorValue(params[FREQ2_PARAM].getValue() + frq2cv);
-              peakKnobHP->setIndicatorValue(params[PEAK2_PARAM].getValue() + peak2cv);
-              driveKnob->setIndicatorValue(params[DRIVE_PARAM].getValue() + drivecv);
-          }*/
-
-        if (lround(lcdi) == 0) {
-            hpf->in = inputs[FILTER_INPUT].getVoltage();
-            hpf->invalidate();
-            hpf->process2();
-
-            lpf->in = hpf->out;
-            lpf->invalidate();
-            lpf->process2();
-
-            outputs[OUTPUT].setVoltage(lpf->out);
-        } else if (lround(lcdi) == 1) {
-            lpf->in = inputs[FILTER_INPUT].getVoltage();
-            lpf->invalidate();
-            lpf->process2();
-
-            outputs[OUTPUT].setVoltage(lpf->out);
-        } else if (lround(lcdi) == 2) {
-            lpf->in = inputs[FILTER_INPUT].getVoltage();
-            lpf->invalidate();
-            lpf->process2();
-
-            hpf->in = inputs[FILTER_INPUT].getVoltage();
-            hpf->invalidate();
-            hpf->process2();
-
-            outputs[OUTPUT].setVoltage(hpf->out + lpf->out);
-        } else if (lround(lcdi) == 3) {
-            hpf->in = inputs[FILTER_INPUT].getVoltage();
-            hpf->invalidate();
-            hpf->process2();
-
-            outputs[OUTPUT].setVoltage(hpf->out);
-        } else if (lround(lcdi) == 4) {
-            lpf->in = inputs[FILTER_INPUT].getVoltage();
-            lpf->invalidate();
-            lpf->process2();
-
-            hpf->in = lpf->out;
-            hpf->invalidate();
-            hpf->process2();
-
-            outputs[OUTPUT].setVoltage(hpf->out);
-        }
-
-
     }
 
 
@@ -204,6 +126,9 @@ struct Type35Widget : LRModuleWidget {
         addChild(panel);
 
         box.size = panel->box.size;
+
+        // reflect module widget
+        if (!isPreview) module->reflect = this;
 
         // ***** SCREWS **********
         addChild(createWidget<ScrewLight>(Vec(15, 1)));
@@ -269,6 +194,91 @@ struct Type35Widget : LRModuleWidget {
         // addParam(ParamcreateWidget<LRSwitch>(Vec(135, 55), module, Type35::MODE_SWITCH_PARAM, 0, 1, 0));
     }
 };
+
+
+void Type35::process(const ProcessArgs &args) {
+// compute all cv values
+    float frq1cv = inputs[CUTOFF1_CV_INPUT].getVoltage() * 0.1f * dsp::quadraticBipolar(params[CUTOFF1_CV_PARAM].getValue());
+    float peak1cv = inputs[PEAK1_CV_INPUT].getVoltage() * 0.1f * dsp::quadraticBipolar(params[PEAK1_CV_PARAM].getValue());
+
+    float frq2cv = inputs[CUTOFF2_CV_INPUT].getVoltage() * 0.1f * dsp::quadraticBipolar(params[CUTOFF2_CV_PARAM].getValue());
+    float peak2cv = inputs[PEAK2_CV_INPUT].getVoltage() * 0.1f * dsp::quadraticBipolar(params[PEAK2_CV_PARAM].getValue());
+
+    float drivecv = inputs[DRIVE_CV_INPUT].getVoltage();
+
+
+// set vc parameter and knob values
+    lpf->fc = params[FREQ1_PARAM].getValue() + frq1cv;
+    lpf->peak = params[PEAK1_PARAM].getValue() + peak1cv;
+    hpf->fc = params[FREQ2_PARAM].getValue() + frq2cv;
+    hpf->peak = params[PEAK2_PARAM].getValue() + peak2cv;
+
+    lpf->sat = params[DRIVE_PARAM].getValue() + drivecv;
+    hpf->sat = params[DRIVE_PARAM].getValue() + drivecv;
+
+    auto lcdi = params[LCD_PARAM].getValue();
+
+    reflect->frqKnobLP->setIndicatorActive(inputs[CUTOFF1_CV_INPUT].isConnected());
+    reflect->frqKnobLP->setIndicatorValue(params[FREQ1_PARAM].getValue() + frq1cv);
+
+/*  if (frqKnobLP != nullptr && frqKnobHP != nullptr && peakKnobLP != nullptr && peakKnobHP != nullptr && driveKnob != nullptr) {
+      frqKnobLP->setIndicatorActive(inputs[CUTOFF1_CV_INPUT].isConnected());
+      peakKnobLP->setIndicatorActive(inputs[PEAK1_CV_INPUT].isConnected());
+      frqKnobHP->setIndicatorActive(inputs[CUTOFF2_CV_INPUT].isConnected());
+      peakKnobHP->setIndicatorActive(inputs[PEAK2_CV_INPUT].isConnected());
+      driveKnob->setIndicatorActive(inputs[DRIVE_CV_INPUT].isConnected());
+
+      frqKnobLP->setIndicatorValue(params[FREQ1_PARAM].getValue() + frq1cv);
+      peakKnobLP->setIndicatorValue(params[PEAK1_PARAM].getValue() + peak1cv);
+      frqKnobHP->setIndicatorValue(params[FREQ2_PARAM].getValue() + frq2cv);
+      peakKnobHP->setIndicatorValue(params[PEAK2_PARAM].getValue() + peak2cv);
+      driveKnob->setIndicatorValue(params[DRIVE_PARAM].getValue() + drivecv);
+  }*/
+
+    if (lround(lcdi) == 0) {
+        hpf->in = inputs[FILTER_INPUT].getVoltage();
+        hpf->invalidate();
+        hpf->process2();
+
+        lpf->in = hpf->out;
+        lpf->invalidate();
+        lpf->process2();
+
+        outputs[OUTPUT].setVoltage(lpf->out);
+    } else if (lround(lcdi) == 1) {
+        lpf->in = inputs[FILTER_INPUT].getVoltage();
+        lpf->invalidate();
+        lpf->process2();
+
+        outputs[OUTPUT].setVoltage(lpf->out);
+    } else if (lround(lcdi) == 2) {
+        lpf->in = inputs[FILTER_INPUT].getVoltage();
+        lpf->invalidate();
+        lpf->process2();
+
+        hpf->in = inputs[FILTER_INPUT].getVoltage();
+        hpf->invalidate();
+        hpf->process2();
+
+        outputs[OUTPUT].setVoltage(hpf->out + lpf->out);
+    } else if (lround(lcdi) == 3) {
+        hpf->in = inputs[FILTER_INPUT].getVoltage();
+        hpf->invalidate();
+        hpf->process2();
+
+        outputs[OUTPUT].setVoltage(hpf->out);
+    } else if (lround(lcdi) == 4) {
+        lpf->in = inputs[FILTER_INPUT].getVoltage();
+        lpf->invalidate();
+        lpf->process2();
+
+        hpf->in = lpf->out;
+        hpf->invalidate();
+        hpf->process2();
+
+        outputs[OUTPUT].setVoltage(hpf->out);
+    }
+}
 
 
 Model *modelType35 = createModel<Type35, Type35Widget>("TYPE35 VCF");
