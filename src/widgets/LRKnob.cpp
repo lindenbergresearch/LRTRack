@@ -23,10 +23,11 @@ LRKnob::LRKnob() {
     minAngle = -ANGLE * (float) M_PI;
     maxAngle = ANGLE * (float) M_PI;
 
-    //gestalt = module->gestalt;
-
     shader = new LRShadow();
-    if (shadow) fb->removeChild(shadow); // uninstall default
+    if (shadow) shadow->visible = false; // uninstall default shadow
+
+    //TODO: [2019-05-24 09:11] => redefine shader AND indicator to act as normal childs
+    //fb->addChild(shader);
 
     indicator = new LRCVIndicator(15.f, ANGLE);
     // addChild(indicator);
@@ -37,6 +38,7 @@ void LRKnob::setSvg(std::shared_ptr<Svg> svg) {
     SvgKnob::setSvg(svg);
 
     /** inherit dimensions after loaded svg */
+    shader->setBox(sw->box);
     indicator->box.size = sw->box.size;
     indicator->middle = Vec(box.size.x / 2, box.size.y / 2);
     shader->setBox(box);
@@ -65,6 +67,7 @@ void LRKnob::draw(const Widget::DrawArgs &args) {
         nvgFill(args.vg);
     }
 
+    /** cv indicator */
     indicator->draw(args);
 }
 
