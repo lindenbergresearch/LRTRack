@@ -103,10 +103,6 @@ struct DiodeVCFWidget : LRModuleWidget {
         resKnob = createParam<LRBigKnob>(Vec(151.5, 74.4), module, DiodeVCF::RES_PARAM);
         saturateKnob = createParam<LRMiddleKnob>(Vec(99.5, 164.4), module, DiodeVCF::SATURATE_PARAM);
 
-        frqKnob->setIndicatorColors(nvgRGBAf(0.9f, 0.9f, 0.9f, 1.0f));
-        resKnob->setIndicatorColors(nvgRGBAf(0.9f, 0.9f, 0.9f, 1.0f));
-        saturateKnob->setIndicatorColors(nvgRGBAf(0.9f, 0.9f, 0.9f, 1.0f));
-
         addParam(frqKnob);
         addParam(resKnob);
         addParam(saturateKnob);
