@@ -38,9 +38,9 @@ LRLCDWidget::LRLCDWidget(unsigned char length, std::string format, LCDType type,
     LRLCDWidget::format = format;
     LRLCDWidget::fg = LCD_DEFAULT_COLOR_DARK;
 
-    addSVGVariant(LRGestalt::DARK, APP->window->loadSvg(asset::plugin(pluginInstance, "res/elements/LCDFrameDark.svg")));
-    addSVGVariant(LRGestalt::LIGHT, APP->window->loadSvg(asset::plugin(pluginInstance, "res/elements/LCDFrameLight.svg")));
-    addSVGVariant(LRGestalt::AGED, APP->window->loadSvg(asset::plugin(pluginInstance, "res/elements/LCDFrameAged.svg")));
+    addSVGVariant(LRGestaltType::DARK, APP->window->loadSvg(asset::plugin(pluginInstance, "res/elements/LCDFrameDark.svg")));
+    addSVGVariant(LRGestaltType::LIGHT, APP->window->loadSvg(asset::plugin(pluginInstance, "res/elements/LCDFrameLight.svg")));
+    addSVGVariant(LRGestaltType::AGED, APP->window->loadSvg(asset::plugin(pluginInstance, "res/elements/LCDFrameAged.svg")));
 
     for (int i = 0; i < LRLCDWidget::length; ++i) {
         s1.append("O");
@@ -142,8 +142,8 @@ void LRLCDWidget::draw(const Widget::DrawArgs &args) {
 }
 
 
-void LRLCDWidget::onGestaltChange(LREventGestaltChange &e) {
-    auto svg = getSVGVariant(*gestalt);
+void LRLCDWidget::onGestaltChangeAction(lrt::LRGestaltChangeEvent *e) {
+    auto svg = getSVGVariant(e->current);
 
     if (svg != nullptr) {
         tw->identity();
@@ -154,9 +154,7 @@ void LRLCDWidget::onGestaltChange(LREventGestaltChange &e) {
         // dirty = true;
     }
 
-    LRGestaltChangeAction::onGestaltChange(e);
-
-    switch (*gestalt) {
+    switch (e->current) {
         case DARK:
             fg = LCD_DEFAULT_COLOR_DARK;
             break;
