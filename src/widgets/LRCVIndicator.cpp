@@ -39,19 +39,19 @@ LRCVIndicator::LRCVIndicator(float distance, float angle) {
  * @param args.vg
  */
 void LRCVIndicator::draw(const Widget::DrawArgs &args) {
-    NVGcolor current = lightMode ? normalColorLight : normalColor;
+    NVGcolor current = normal;
 
     if (active) {
         /** underrun */
         if (cv < 0.f - OVERFLOW_THRESHOLD) {
             cv = 0.f - OVERFLOW_THRESHOLD;
-            current = lightMode ? overflowColorLight : overflowColor;
+            current = overflow;
         }
 
         /** overrun */
         if (cv > 1.f + OVERFLOW_THRESHOLD) {
             cv = 1.f + OVERFLOW_THRESHOLD;
-            current = lightMode ? overflowColorLight : overflowColor;
+            current = overflow;
         }
 
 
@@ -85,6 +85,28 @@ void LRCVIndicator::draw(const Widget::DrawArgs &args) {
 void LRCVIndicator::setDistances(float d1, float d2) {
     LRCVIndicator::d1 = d1;
     LRCVIndicator::d2 = d2;
+}
+
+
+void LRCVIndicator::onGestaltChange(LREventGestaltChange &e) {
+    LRGestaltChangeAction::onGestaltChange(e);
+
+    switch (*gestalt) {
+        case NIL:
+        case DARK:
+            normal = nvgRGBAf(0, 0, 0, 0.9);
+            overflow = nvgRGBAf(0.9, 0, 0, 0.9);
+            break;
+        case LIGHT:
+        case AGED:
+            normal = nvgRGBAf(0.9, 0.9, 0.9, 0.9);
+            overflow = nvgRGBAf(0.9, 0.1, 0, 0.9);
+            break;
+        default:
+            normal = nvgRGBAf(0, 0, 0, 0.9);
+            overflow = nvgRGBAf(0.9, 0, 0, 0.9);
+            break;
+    }
 }
 
 
