@@ -1,3 +1,20 @@
+/*                                                                     *\
+**       __   ___  ______                                              **
+**      / /  / _ \/_  __/                                              **
+**     / /__/ , _/ / /    Lindenberg                                   **
+**    /____/_/|_| /_/  Research Tec.                                   **
+**                                                                     **
+**                                                                     **
+**	  https://github.com/lindenbergresearch/LRTRack	                   **
+**    heapdump@icloud.com                                              **
+**		                                                               **
+**    Sound Modules for VCV Rack                                       **
+**    Copyright 2017-2019 by Patrick Lindenberg / LRT                  **
+**                                                                     **
+**    For Redistribution and use in source and binary forms,           **
+**    with or without modification please see LICENSE.                 **
+**                                                                     **
+\*                                                                     */
 #pragma once
 
 #include <map>
@@ -20,9 +37,6 @@
 #define LED_DEFAULT_COLOR_LIGHT nvgRGBAf(1.0, 0.32, 0.12, 1.0)
 #define LED_DEFAULT_COLOR_AGED nvgRGBAf(1.0, 1.0, 0.12, 1.0)
 
-
-/* show values of all knobs */
-#define DEBUG_VALUES false
 
 using namespace rack;
 using std::vector;
@@ -85,19 +99,11 @@ struct LRLCDWidget : ParamWidget, LRGestaltVariant, LRGestaltChangeAction {
 /**
  * @brief Indicator for control voltages on knobs
  */
-struct LRCVIndicator : TransparentWidget {
+struct LRCVIndicator : TransparentWidget, LRGestaltChangeAction {
     static constexpr float OVERFLOW_THRESHOLD = 0.01f;
 
-    /** flag to control drawing */
+    /** enabled or not */
     bool active = false;
-    bool lightMode = false;
-
-    /** color of indicator */
-    NVGcolor normalColor = nvgRGBA(0x00, 0x00, 0x00, 0xBB);
-    NVGcolor overflowColor = nvgRGBA(0xBB, 0x00, 0x00, 0xBB);
-
-    NVGcolor normalColorLight = nvgRGBA(0xDD, 0xDD, 0xDD, 0xBB);
-    NVGcolor overflowColorLight = nvgRGBA(0xDD, 0x00, 0x00, 0xBB);
 
     /** radius from middle */
     float distance;
@@ -116,6 +122,7 @@ struct LRCVIndicator : TransparentWidget {
     /** middle of parent */
     Vec middle;
 
+    NVGcolor normal, overflow;
 
     /**
      * @brief Init indicator
@@ -124,6 +131,11 @@ struct LRCVIndicator : TransparentWidget {
      */
     LRCVIndicator(float distance, float angle);
 
+    /**
+     * @brief Catch gestalt change to adapt indicator colors
+     * @param e
+     */
+    void onGestaltChange(LREventGestaltChange &e) override;
 
     /**
      * @brief Manipulate the indicator symbol
@@ -152,6 +164,11 @@ private:
     /** shadow shift */
     Vec shadowPos = Vec(3, 5);
 public:
+
+
+    LRShadow() {
+        box.size = math::Vec();
+    }
 
 
     /**
@@ -253,17 +270,6 @@ public:
     void setIndicatorShape(float d1, float d2) {
         indicator->setDistances(d1, d2);
         fb->dirty = true;
-    }
-
-
-    /**
-     * @brief Set new colors for the indicator (default red overflow)
-     * @param normal Normal indicator color
-     * @param overflow Optional overflow color
-     */
-    void setIndicatorColors(NVGcolor normal, NVGcolor overflow = nvgRGBA(0xBB, 0x00, 0x00, 0xBB)) {
-        indicator->normalColor = normal;
-        indicator->overflowColor = overflow;
     }
 
 
@@ -913,7 +919,7 @@ struct LRPanel : FramebufferWidget, LRGestaltVariant, LRGestaltChangeAction {
 
     void setGradientVariant(bool enabled);
     void setPatina(bool enabled);
-    //  void step() override;
+    void step() override;
     void init();
     void onGestaltChange(LREventGestaltChange &e) override;
 };
