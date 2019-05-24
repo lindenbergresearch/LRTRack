@@ -155,12 +155,6 @@ struct Type35Widget : LRModuleWidget {
         peakKnobHP = createParam<LRMiddleKnob>(Vec(203.1, 174.1 + 7), module, Type35::PEAK2_PARAM);
         driveKnob = createParam<LRMiddleKnob>(Vec(122, 101.2), module, Type35::DRIVE_PARAM);
 
-        frqKnobLP->setIndicatorColors(nvgRGBAf(0.9f, 0.9f, 0.9f, 1.0f));
-        peakKnobLP->setIndicatorColors(nvgRGBAf(0.9f, 0.9f, 0.9f, 1.0f));
-        frqKnobHP->setIndicatorColors(nvgRGBAf(0.9f, 0.9f, 0.9f, 1.0f));
-        peakKnobHP->setIndicatorColors(nvgRGBAf(0.9f, 0.9f, 0.9f, 1.0f));
-        driveKnob->setIndicatorColors(nvgRGBAf(0.9f, 0.9f, 0.9f, 1.0f));
-
         addParam(frqKnobLP);
         addParam(peakKnobLP);
         addParam(frqKnobHP);
