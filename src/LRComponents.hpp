@@ -56,7 +56,7 @@ typedef std::string string;
 /**
  * @brief Emulation of a LCD monochrome display
  */
-struct LRLCDWidget : ParamWidget, LRGestaltVariant, LRGestaltChangeAction {
+struct LRLCDWidget : ParamWidget, LRGestaltVariant, LRGestaltChangeAction1 {
 
     enum LCDType {
         NUMERIC,
@@ -92,14 +92,14 @@ struct LRLCDWidget : ParamWidget, LRGestaltVariant, LRGestaltChangeAction {
     void draw(const DrawArgs &args) override;
     void onButton(const event::Button &e) override;
     void doResize(Vec v);
-    void onGestaltChange(LREventGestaltChange &e) override;
+    void onGestaltChangeAction(LRGestaltChangeEvent *e) override;
 };
 
 
 /**
  * @brief Indicator for control voltages on knobs
  */
-struct LRCVIndicator : TransparentWidget, LRGestaltChangeAction {
+struct LRCVIndicator : TransparentWidget, LRGestaltChangeAction1 {
     static constexpr float OVERFLOW_THRESHOLD = 0.01f;
 
     /** enabled or not */
@@ -131,11 +131,6 @@ struct LRCVIndicator : TransparentWidget, LRGestaltChangeAction {
      */
     LRCVIndicator(float distance, float angle);
 
-    /**
-     * @brief Catch gestalt change to adapt indicator colors
-     * @param e
-     */
-    void onGestaltChange(LREventGestaltChange &e) override;
 
     /**
      * @brief Manipulate the indicator symbol
@@ -149,6 +144,9 @@ struct LRCVIndicator : TransparentWidget, LRGestaltChangeAction {
      * @param args
      */
     void draw(const DrawArgs &args) override;
+
+
+    void onGestaltChangeAction(LRGestaltChangeEvent *e) override;
 };
 
 
@@ -194,7 +192,7 @@ public:
 /**
  * @brief The base of all knobs used in LR panels, includes a indicator
  */
-struct LRKnob : SvgKnob, LRGestaltVariant, LRGestaltChangeAction {
+struct LRKnob : SvgKnob, LRGestaltVariant, LRGestaltChangeAction1 {
 private:
     static constexpr float ANGLE = 0.83f;
 
@@ -337,7 +335,7 @@ public:
      */
     void unsetSnap();
 
-    void onGestaltChange(LREventGestaltChange &e) override;
+    void onGestaltChangeAction(LRGestaltChangeEvent *e) override;
     void onChange(const event::Change &e) override;
 };
 
@@ -353,9 +351,9 @@ struct LRToggleKnob : LRKnob {
 
         setSvg(APP->window->loadSvg(asset::plugin(pluginInstance, "res/knobs/ToggleKnob.svg")));
 
-        addSVGVariant(LRGestalt::DARK, APP->window->loadSvg(asset::plugin(pluginInstance, "res/knobs/ToggleKnob.svg")));
-        addSVGVariant(LRGestalt::LIGHT, APP->window->loadSvg(asset::plugin(pluginInstance, "res/knobs/AlternateToggleKnobLight.svg")));
-        addSVGVariant(LRGestalt::AGED, APP->window->loadSvg(asset::plugin(pluginInstance, "res/knobs/AlternateToggleKnobLight.svg")));
+        addSVGVariant(LRGestaltType::DARK, APP->window->loadSvg(asset::plugin(pluginInstance, "res/knobs/ToggleKnob.svg")));
+        addSVGVariant(LRGestaltType::LIGHT, APP->window->loadSvg(asset::plugin(pluginInstance, "res/knobs/AlternateToggleKnobLight.svg")));
+        addSVGVariant(LRGestaltType::AGED, APP->window->loadSvg(asset::plugin(pluginInstance, "res/knobs/AlternateToggleKnobLight.svg")));
 
         speed = 2.f;
     }
@@ -373,23 +371,21 @@ struct LRToggleKnob : LRKnob {
     }
 
 
-    void onGestaltChange(LREventGestaltChange &e) override {
-        LRKnob::onGestaltChange(e);
-
-        switch (*gestalt) {
-            case LRGestalt::DARK:
+    void onGestaltChangeAction(LRGestaltChangeEvent *e) override {
+        switch (e->current) {
+            case LRGestaltType::DARK:
                 shader->setShadowPosition(3, 4);
                 shader->setStrength(1.2f);
                 shader->setSize(0.7f);
                 setGradientParameter(20.f, nvgRGBAf(1, 1, 1, 0.01), nvgRGBAf(0, 0, 0, 0.34));
                 break;
-            case LRGestalt::LIGHT:
+            case LRGestaltType::LIGHT:
                 shader->setShadowPosition(2, 3);
                 shader->setStrength(0.5f);
                 shader->setSize(0.6f);
                 setGradientParameter(20.f, nvgRGBAf(0.9, 0.9, 0.9, 0.10), nvgRGBAf(0, 0, 0, 0.22));
                 break;
-            case LRGestalt::AGED:
+            case LRGestaltType::AGED:
                 shader->setShadowPosition(2, 3);
                 shader->setStrength(0.5f);
                 shader->setSize(0.6f);
@@ -409,17 +405,15 @@ struct LRBigKnob : LRKnob {
     LRBigKnob() {
         setSvg(APP->window->loadSvg(asset::plugin(pluginInstance, "res/knobs/BigKnob.svg")));
 
-        addSVGVariant(LRGestalt::DARK, APP->window->loadSvg(asset::plugin(pluginInstance, "res/knobs/BigKnob.svg")));
-        addSVGVariant(LRGestalt::LIGHT, APP->window->loadSvg(asset::plugin(pluginInstance, "res/knobs/AlternateBigLight.svg")));
-        addSVGVariant(LRGestalt::AGED, APP->window->loadSvg(asset::plugin(pluginInstance, "res/knobs/AlternateBigLight.svg")));
+        addSVGVariant(LRGestaltType::DARK, APP->window->loadSvg(asset::plugin(pluginInstance, "res/knobs/BigKnob.svg")));
+        addSVGVariant(LRGestaltType::LIGHT, APP->window->loadSvg(asset::plugin(pluginInstance, "res/knobs/AlternateBigLight.svg")));
+        addSVGVariant(LRGestaltType::AGED, APP->window->loadSvg(asset::plugin(pluginInstance, "res/knobs/AlternateBigLight.svg")));
     }
 
 
-    void onGestaltChange(LREventGestaltChange &e) override {
-        LRKnob::onGestaltChange(e);
-
-        switch (*gestalt) {
-            case LRGestalt::DARK:
+    void onGestaltChangeAction(LRGestaltChangeEvent *e) override {
+        switch (e->current) {
+            case LRGestaltType::DARK:
                 setIndicatorDistance(15);
                 setIndicatorShape(4.8, 0.12);
                 shader->setShadowPosition(4, 5);
@@ -427,7 +421,7 @@ struct LRBigKnob : LRKnob {
                 shader->setSize(.65f);
                 setGradientParameter(27.f, nvgRGBAf(1, 1, 1, 0.01), nvgRGBAf(0, 0, 0, 0.34));
                 break;
-            case LRGestalt::LIGHT:
+            case LRGestaltType::LIGHT:
                 setIndicatorDistance(17);
                 setIndicatorShape(4.1, 0.08);
                 shader->setShadowPosition(4, 5);
@@ -435,7 +429,7 @@ struct LRBigKnob : LRKnob {
                 shader->setSize(0.6f);
                 setGradientParameter(27.f, nvgRGBAf(0.9, 0.9, 0.9, 0.10), nvgRGBAf(0, 0, 0, 0.22));
                 break;
-            case LRGestalt::AGED:
+            case LRGestaltType::AGED:
                 setIndicatorDistance(17);
                 setIndicatorShape(4.1, 0.08);
                 shader->setShadowPosition(4, 5);
@@ -457,17 +451,15 @@ struct LRMiddleKnob : LRKnob {
     LRMiddleKnob() {
         setSvg(APP->window->loadSvg(asset::plugin(pluginInstance, "res/knobs/MiddleKnob.svg")));
 
-        addSVGVariant(LRGestalt::DARK, APP->window->loadSvg(asset::plugin(pluginInstance, "res/knobs/MiddleKnob.svg")));
-        addSVGVariant(LRGestalt::LIGHT, APP->window->loadSvg(asset::plugin(pluginInstance, "res/knobs/AlternateMiddleLight.svg")));
-        addSVGVariant(LRGestalt::AGED, APP->window->loadSvg(asset::plugin(pluginInstance, "res/knobs/AlternateMiddleLight.svg")));
+        addSVGVariant(LRGestaltType::DARK, APP->window->loadSvg(asset::plugin(pluginInstance, "res/knobs/MiddleKnob.svg")));
+        addSVGVariant(LRGestaltType::LIGHT, APP->window->loadSvg(asset::plugin(pluginInstance, "res/knobs/AlternateMiddleLight.svg")));
+        addSVGVariant(LRGestaltType::AGED, APP->window->loadSvg(asset::plugin(pluginInstance, "res/knobs/AlternateMiddleLight.svg")));
     }
 
 
-    void onGestaltChange(LREventGestaltChange &e) override {
-        LRKnob::onGestaltChange(e);
-
-        switch (*gestalt) {
-            case LRGestalt::DARK:
+    void onGestaltChangeAction(LRGestaltChangeEvent *e) override {
+        switch (e->current) {
+            case LRGestaltType::DARK:
                 setIndicatorDistance(13);
                 setIndicatorShape(5, 0.13);
                 shader->setShadowPosition(2, 3);
@@ -475,7 +467,7 @@ struct LRMiddleKnob : LRKnob {
                 shader->setSize(.65f);
                 setGradientParameter(20.f, nvgRGBAf(1, 1, 1, 0.13), nvgRGBAf(0, 0, 0, 0.32));
                 break;
-            case LRGestalt::LIGHT:
+            case LRGestaltType::LIGHT:
                 setIndicatorDistance(11);
                 setIndicatorShape(4.3, 0.11);
                 shader->setShadowPosition(2, 3);
@@ -483,7 +475,7 @@ struct LRMiddleKnob : LRKnob {
                 shader->setSize(0.6f);
                 setGradientParameter(20.f, nvgRGBAf(0.9, 0.9, 0.9, 0.1), nvgRGBAf(0, 0, 0, 0.22));
                 break;
-            case LRGestalt::AGED:
+            case LRGestaltType::AGED:
                 setIndicatorDistance(11);
                 setIndicatorShape(4.3, 0.11);
                 shader->setShadowPosition(2, 3);
@@ -505,20 +497,18 @@ struct LRSmallKnob : LRKnob {
     LRSmallKnob() {
         setSvg(APP->window->loadSvg(asset::plugin(pluginInstance, "res/knobs/SmallKnob.svg")));
 
-        addSVGVariant(LRGestalt::DARK, APP->window->loadSvg(asset::plugin(pluginInstance, "res/knobs/SmallKnob.svg")));
-        addSVGVariant(LRGestalt::LIGHT, APP->window->loadSvg(asset::plugin(pluginInstance, "res/knobs/AlternateSmallLight.svg")));
-        addSVGVariant(LRGestalt::AGED, APP->window->loadSvg(asset::plugin(pluginInstance, "res/knobs/AlternateSmallLight.svg")));
+        addSVGVariant(LRGestaltType::DARK, APP->window->loadSvg(asset::plugin(pluginInstance, "res/knobs/SmallKnob.svg")));
+        addSVGVariant(LRGestaltType::LIGHT, APP->window->loadSvg(asset::plugin(pluginInstance, "res/knobs/AlternateSmallLight.svg")));
+        addSVGVariant(LRGestaltType::AGED, APP->window->loadSvg(asset::plugin(pluginInstance, "res/knobs/AlternateSmallLight.svg")));
 
         setSnap(0.0f, 0.02f);
         speed = 0.9f;
     }
 
 
-    void onGestaltChange(LREventGestaltChange &e) override {
-        LRKnob::onGestaltChange(e);
-
-        switch (*gestalt) {
-            case LRGestalt::DARK:
+    void onGestaltChangeAction(LRGestaltChangeEvent *e) override {
+        switch (e->current) {
+            case LRGestaltType::DARK:
                 setIndicatorDistance(13);
                 setIndicatorShape(5, 0.13);
                 shader->setShadowPosition(3, 3);
@@ -526,14 +516,14 @@ struct LRSmallKnob : LRKnob {
                 shader->setSize(.65f);
                 setGradientParameter(12.f, nvgRGBAf(1, 1, 1, 0.13), nvgRGBAf(0, 0, 0, 0.22));
                 break;
-            case LRGestalt::LIGHT:
+            case LRGestaltType::LIGHT:
                 shader->setShadowPosition(3, 3);
                 shader->setShadowPosition(2, 3);
                 shader->setStrength(0.5f);
                 shader->setSize(0.7f);
                 setGradientParameter(12.f, nvgRGBAf(0.9, 0.9, 0.9, 0.19), nvgRGBAf(0, 0, 0, 0.19));
                 break;
-            case LRGestalt::AGED:
+            case LRGestaltType::AGED:
                 shader->setShadowPosition(3, 3);
                 shader->setShadowPosition(2, 3);
                 shader->setStrength(0.5f);
@@ -558,9 +548,9 @@ struct LRSmallToggleKnob : LRKnob {
 
         setSvg(APP->window->loadSvg(asset::plugin(pluginInstance, "res/knobs/AlternateSmallToggle.svg")));
 
-        addSVGVariant(LRGestalt::DARK, APP->window->loadSvg(asset::plugin(pluginInstance, "res/knobs/AlternateSmallToggle.svg")));
-        addSVGVariant(LRGestalt::LIGHT, APP->window->loadSvg(asset::plugin(pluginInstance, "res/knobs/AlternateSmallToggleLight.svg")));
-        addSVGVariant(LRGestalt::AGED, APP->window->loadSvg(asset::plugin(pluginInstance, "res/knobs/AlternateSmallToggleLight.svg")));
+        addSVGVariant(LRGestaltType::DARK, APP->window->loadSvg(asset::plugin(pluginInstance, "res/knobs/AlternateSmallToggle.svg")));
+        addSVGVariant(LRGestaltType::LIGHT, APP->window->loadSvg(asset::plugin(pluginInstance, "res/knobs/AlternateSmallToggleLight.svg")));
+        addSVGVariant(LRGestaltType::AGED, APP->window->loadSvg(asset::plugin(pluginInstance, "res/knobs/AlternateSmallToggleLight.svg")));
 
         speed = 3.0;
     }
@@ -578,11 +568,9 @@ struct LRSmallToggleKnob : LRKnob {
     }
 
 
-    void onGestaltChange(LREventGestaltChange &e) override {
-        LRKnob::onGestaltChange(e);
-
-        switch (*gestalt) {
-            case LRGestalt::DARK:
+    void onGestaltChangeAction(LRGestaltChangeEvent *e) override {
+        switch (e->current) {
+            case LRGestaltType::DARK:
                 setIndicatorDistance(13);
                 setIndicatorShape(5, 0.13);
                 shader->setShadowPosition(3, 3);
@@ -590,14 +578,14 @@ struct LRSmallToggleKnob : LRKnob {
                 shader->setSize(.65f);
                 setGradientParameter(14.f, nvgRGBAf(1, 1, 1, 0.17), nvgRGBAf(0, 0, 0, 0.32));
                 break;
-            case LRGestalt::LIGHT:
+            case LRGestaltType::LIGHT:
                 shader->setShadowPosition(3, 3);
                 shader->setShadowPosition(2, 3);
                 shader->setStrength(0.3f);
                 shader->setSize(0.7f);
                 setGradientParameter(14.f, nvgRGBAf(0.9, 0.9, 0.9, 0.19), nvgRGBAf(0, 0, 0, 0.29));
                 break;
-            case LRGestalt::AGED:
+            case LRGestaltType::AGED:
                 shader->setShadowPosition(3, 3);
                 shader->setShadowPosition(2, 3);
                 shader->setStrength(0.5f);
@@ -664,7 +652,7 @@ public:
 /**
  * @brief Alternative IO Port
  */
-struct LRIOPortD : SvgPort, LRGestaltVariant, LRGestaltChangeAction { //TODO: rename after migration
+struct LRIOPortD : SvgPort, LRGestaltVariant, LRGestaltChangeAction1 { //TODO: rename after migration
 private:
     LRShadow *shader;
 
@@ -674,9 +662,9 @@ public:
     }
 
 
-    void onGestaltChange(LREventGestaltChange &e) override {
-        switch (*gestalt) {
-            case LRGestalt::DARK:
+    void onGestaltChangeAction(LRGestaltChangeEvent *e) override {
+        switch (e->current) {
+            case LRGestaltType::DARK:
                 setSvg(getSVGVariant(DARK));
 
                 shader->setBox(box);
@@ -684,7 +672,7 @@ public:
                 shader->setStrength(0.3);
                 shader->setShadowPosition(2, 3);
                 break;
-            case LRGestalt::LIGHT:
+            case LRGestaltType::LIGHT:
                 setSvg(getSVGVariant(LIGHT));
 
                 shader->setBox(box);
@@ -692,7 +680,7 @@ public:
                 shader->setStrength(0.5);
                 shader->setShadowPosition(1, 2);
                 break;
-            case LRGestalt::AGED:
+            case LRGestaltType::AGED:
                 setSvg(getSVGVariant(AGED));
 
                 shader->setBox(box);
@@ -742,23 +730,21 @@ struct LRIOPortCV : LRIOPortD {
 /**
  * @brief Alternative screw head A
  */
-struct ScrewLight : SvgScrew, LRGestaltVariant, LRGestaltChangeAction {
+struct ScrewLight : SvgScrew, LRGestaltVariant, LRGestaltChangeAction1 {
     ScrewLight() {
         sw->svg = APP->window->loadSvg(asset::plugin(pluginInstance, "res/elements/ScrewLight.svg"));
         sw->wrap();
         box.size = sw->box.size;
 
 
-        addSVGVariant(LRGestalt::DARK, APP->window->loadSvg(asset::plugin(pluginInstance, "res/elements/ScrewDarkC.svg")));
-        addSVGVariant(LRGestalt::LIGHT, APP->window->loadSvg(asset::plugin(pluginInstance, "res/elements/ScrewDarkLightC.svg")));
-        addSVGVariant(LRGestalt::AGED, APP->window->loadSvg(asset::plugin(pluginInstance, "res/elements/ScrewDarkLightC.svg")));
+        addSVGVariant(LRGestaltType::DARK, APP->window->loadSvg(asset::plugin(pluginInstance, "res/elements/ScrewDarkC.svg")));
+        addSVGVariant(LRGestaltType::LIGHT, APP->window->loadSvg(asset::plugin(pluginInstance, "res/elements/ScrewDarkLightC.svg")));
+        addSVGVariant(LRGestaltType::AGED, APP->window->loadSvg(asset::plugin(pluginInstance, "res/elements/ScrewDarkLightC.svg")));
     }
 
 
-    void onGestaltChange(LREventGestaltChange &e) override {
-        LRGestaltChangeAction::onGestaltChange(e);
-
-        sw->svg = getSVGVariant(*gestalt);
+    void onGestaltChangeAction(LRGestaltChangeEvent *e) override {
+        sw->svg = getSVGVariant(e->current);
         //dirty = true;
     }
 
@@ -792,14 +778,14 @@ struct LRSwitch : SvgSwitch {
 /**
  * @brief Standard LED
  */
-struct LRLight : ModuleLightWidget, LRGestaltChangeAction {
+struct LRLight : ModuleLightWidget, LRGestaltChangeAction1 {
     float glowIntensity = 0.25;
 
     LRLight();
 
     void draw(const Widget::DrawArgs &args) override;
     void setColor(NVGcolor color);
-    void onGestaltChange(LREventGestaltChange &e) override;
+    void onGestaltChangeAction(LRGestaltChangeEvent *e) override;
 };
 
 
@@ -911,17 +897,17 @@ struct LRPanelBorder : TransparentWidget {
 /**
  * @brief Standard LR module Panel
  */
-struct LRPanel : FramebufferWidget, LRGestaltVariant, LRGestaltChangeAction {
+struct LRPanel : FramebufferWidget, LRGestaltVariant, LRGestaltChangeAction1 {
     SvgWidget *panelWidget;
     LRPanelBorder *pb;
-    map<LRGestalt, LRGradientWidget *> gradients;
+    map<LRGestaltType, LRGradientWidget *> gradients;
     LRPatinaWidget *patinaWidgetClassic, *patinaWidgetWhite;
 
     void setGradientVariant(bool enabled);
     void setPatina(bool enabled);
     void step() override;
     void init();
-    void onGestaltChange(LREventGestaltChange &e) override;
+    void onGestaltChangeAction(LRGestaltChangeEvent *e) override;
 };
 
 
