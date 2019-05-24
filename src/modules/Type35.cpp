@@ -213,21 +213,16 @@ void Type35::process(const ProcessArgs &args) {
     auto lcdi = params[LCD_PARAM].getValue();
 
     reflect->frqKnobLP->setIndicatorActive(inputs[CUTOFF1_CV_INPUT].isConnected());
+    reflect->peakKnobLP->setIndicatorActive(inputs[PEAK1_CV_INPUT].isConnected());
+    reflect->frqKnobHP->setIndicatorActive(inputs[CUTOFF2_CV_INPUT].isConnected());
+    reflect->peakKnobHP->setIndicatorActive(inputs[PEAK2_CV_INPUT].isConnected());
+    reflect->driveKnob->setIndicatorActive(inputs[DRIVE_CV_INPUT].isConnected());
+
     reflect->frqKnobLP->setIndicatorValue(params[FREQ1_PARAM].getValue() + frq1cv);
-
-/*  if (frqKnobLP != nullptr && frqKnobHP != nullptr && peakKnobLP != nullptr && peakKnobHP != nullptr && driveKnob != nullptr) {
-      frqKnobLP->setIndicatorActive(inputs[CUTOFF1_CV_INPUT].isConnected());
-      peakKnobLP->setIndicatorActive(inputs[PEAK1_CV_INPUT].isConnected());
-      frqKnobHP->setIndicatorActive(inputs[CUTOFF2_CV_INPUT].isConnected());
-      peakKnobHP->setIndicatorActive(inputs[PEAK2_CV_INPUT].isConnected());
-      driveKnob->setIndicatorActive(inputs[DRIVE_CV_INPUT].isConnected());
-
-      frqKnobLP->setIndicatorValue(params[FREQ1_PARAM].getValue() + frq1cv);
-      peakKnobLP->setIndicatorValue(params[PEAK1_PARAM].getValue() + peak1cv);
-      frqKnobHP->setIndicatorValue(params[FREQ2_PARAM].getValue() + frq2cv);
-      peakKnobHP->setIndicatorValue(params[PEAK2_PARAM].getValue() + peak2cv);
-      driveKnob->setIndicatorValue(params[DRIVE_PARAM].getValue() + drivecv);
-  }*/
+    reflect->peakKnobLP->setIndicatorValue(params[PEAK1_PARAM].getValue() + peak1cv);
+    reflect->frqKnobHP->setIndicatorValue(params[FREQ2_PARAM].getValue() + frq2cv);
+    reflect->peakKnobHP->setIndicatorValue(params[PEAK2_PARAM].getValue() + peak2cv);
+    reflect->driveKnob->setIndicatorValue(params[DRIVE_PARAM].getValue() + drivecv);
 
     if (lround(lcdi) == 0) {
         hpf->in = inputs[FILTER_INPUT].getVoltage();
