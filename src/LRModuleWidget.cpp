@@ -84,7 +84,7 @@ void LRModuleWidget::appendContextMenu(ui::Menu *menu) {
 json_t *LRModuleWidget::toJson() {
     auto *rootJ = ModuleWidget::toJson();
 
-    LRGestalt gestaltid = gestalt;
+    LRGestaltType gestaltid = gestalt;
 
     json_object_set_new(rootJ, JSON_GESTALT_KEY, json_integer(gestaltid));
     json_object_set_new(rootJ, JSON_GRADIENT_KEY, json_boolean(gradient));
@@ -163,31 +163,31 @@ void LRModuleWidget::randomize() {
 
 
 /**
+ * @brief
+ * @param w
+ */
+void LRModuleWidget::fireEvent(Widget *w, LREvent *e) {
+    for (Widget *child : w->children) {
+        auto *gc = dynamic_cast<LRGestaltChangeAction1 *>(child);
+
+        // if implements the action catch interface
+        if (gc != nullptr) {
+            gc->onEventAction(e);
+        }
+        // spreed to all childs
+        if (!child->children.empty()) fireEvent(child, e);
+    }
+}
+
+
+/**
  * @brief Detect gestalt change and fire event to all children
  */
 void LRModuleWidget::step() {
-    Widget::step();
-
-    auto modified = gestalt != prevGestalt;
-
-    if (modified) {
-        for (Widget *child : children) {
-            auto *gc = dynamic_cast<LRGestaltChangeAction *>(child);
-
-            if (gc != nullptr) {
-                /* link variables */
-                gc->gestalt = &gestalt;
-                gc->patina = &patina;
-                gc->gradient = &gradient;
-
-                auto *e = new LREventGestaltChange();
-                gc->onGestaltChange(*e);
-            }
-        }
-
+    if (gestalt != prevGestalt) {
+        fireEvent(this, new LRGestaltChangeEvent(prevGestalt, gestalt, patina, gradient));
         prevGestalt = gestalt;
     }
-
 }
 
 

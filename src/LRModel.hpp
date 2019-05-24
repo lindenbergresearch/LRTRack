@@ -70,8 +70,8 @@ struct LRModuleWidget : ModuleWidget {
 
 
     /* Gestalt ID and UI settings */
-    LRGestalt gestalt = LIGHT;      // DARK == default
-    LRGestalt prevGestalt = NIL;    // set to NIL to trigger change event on first start
+    LRGestaltType gestalt = LIGHT;      // DARK == default
+    LRGestaltType prevGestalt = NIL;    // set to NIL to trigger change event on first start
 
     bool gradient = true;           // gradient used at panel
     bool patina = false;            // patina used at panel
@@ -86,7 +86,7 @@ struct LRModuleWidget : ModuleWidget {
     explicit LRModuleWidget(LRModule *module) {
         setModule(module);
 
-        if (!module) isPreview = true;
+        isPreview = (module == nullptr);
 
         if (module) {
             module->reflect = this;
@@ -100,11 +100,11 @@ struct LRModuleWidget : ModuleWidget {
      * @brief Represents an Item for selecting the gestalt
      */
     struct GestaltItem : MenuItem {
-        LRGestalt gestaltM;
+        LRGestaltType gestaltM;
         LRModuleWidget *widget;
 
 
-        GestaltItem(LRGestalt gestaltM, LRModuleWidget *widget) : gestaltM(gestaltM), widget(widget) {}
+        GestaltItem(LRGestaltType gestaltM, LRModuleWidget *widget) : gestaltM(gestaltM), widget(widget) {}
 
 
         void onAction(const event::Action &e) override {
@@ -173,6 +173,7 @@ struct LRModuleWidget : ModuleWidget {
     void appendContextMenu(ui::Menu *menu) override;
     json_t *toJson() override;
     void fromJson(json_t *rootJ) override;
+    static void fireEvent(Widget *w, LREvent *e);
 
     //void randomize() override;
     //TODO: check randomize on widgets!
