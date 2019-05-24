@@ -89,6 +89,8 @@ void LRKnob::onChange(const event::Change &e) {
 
     // if the value still inside snap-tolerance keep the value zero
     if (snap && value > -snapSens + snapAt && value < snapSens + snapAt) value = 0;
+    paramQuantity->setValue(value);
+
     SvgKnob::onChange(e);
 }
 
@@ -100,20 +102,8 @@ void LRKnob::onGestaltChange(LREventGestaltChange &e) {
         setSvg(svg);
     }
 
-    switch (*gestalt) {
-        case DARK:
-            indicator->lightMode = false;
-            break;
-        case LIGHT:
-            indicator->lightMode = true;
-            break;
-        case AGED:
-            indicator->lightMode = true;
-            break;
-        default:
-            indicator->lightMode = false;
-    }
-
+    indicator->gestalt = gestalt;
+    indicator->onGestaltChange(e);
 
     fb->dirty = true;
     e.consumed = true;
