@@ -118,9 +118,9 @@ struct Type35Widget : LRModuleWidget {
 
 
     Type35Widget(Type35 *module) : LRModuleWidget(module) {
-        panel->addSVGVariant(LRGestalt::DARK, APP->window->loadSvg(asset::plugin(pluginInstance, "res/panels/Type35VCF.svg")));
-        panel->addSVGVariant(LRGestalt::LIGHT, APP->window->loadSvg(asset::plugin(pluginInstance, "res/panels/Type35VCFLight.svg")));
-        panel->addSVGVariant(LRGestalt::AGED, APP->window->loadSvg(asset::plugin(pluginInstance, "res/panels/Type35VCFAged.svg")));
+        panel->addSVGVariant(LRGestaltType::DARK, APP->window->loadSvg(asset::plugin(pluginInstance, "res/panels/Type35VCF.svg")));
+        panel->addSVGVariant(LRGestaltType::LIGHT, APP->window->loadSvg(asset::plugin(pluginInstance, "res/panels/Type35VCFLight.svg")));
+        panel->addSVGVariant(LRGestaltType::AGED, APP->window->loadSvg(asset::plugin(pluginInstance, "res/panels/Type35VCFAged.svg")));
 
         panel->init();
         addChild(panel);
@@ -184,8 +184,6 @@ struct Type35Widget : LRModuleWidget {
         // ***** OUTPUTS *********
         addOutput(createOutput<LRIOPortAudio>(Vec(156 - 8, 269), module, Type35::OUTPUT));
         // ***** OUTPUTS *********
-
-        // addParam(ParamcreateWidget<LRSwitch>(Vec(135, 55), module, Type35::MODE_SWITCH_PARAM, 0, 1, 0));
     }
 };
 
@@ -212,17 +210,19 @@ void Type35::process(const ProcessArgs &args) {
 
     auto lcdi = params[LCD_PARAM].getValue();
 
-    reflect->frqKnobLP->setIndicatorActive(inputs[CUTOFF1_CV_INPUT].isConnected());
-    reflect->peakKnobLP->setIndicatorActive(inputs[PEAK1_CV_INPUT].isConnected());
-    reflect->frqKnobHP->setIndicatorActive(inputs[CUTOFF2_CV_INPUT].isConnected());
-    reflect->peakKnobHP->setIndicatorActive(inputs[PEAK2_CV_INPUT].isConnected());
-    reflect->driveKnob->setIndicatorActive(inputs[DRIVE_CV_INPUT].isConnected());
+    if (reflect) {
+        reflect->frqKnobLP->setIndicatorActive(inputs[CUTOFF1_CV_INPUT].isConnected());
+        reflect->peakKnobLP->setIndicatorActive(inputs[PEAK1_CV_INPUT].isConnected());
+        reflect->frqKnobHP->setIndicatorActive(inputs[CUTOFF2_CV_INPUT].isConnected());
+        reflect->peakKnobHP->setIndicatorActive(inputs[PEAK2_CV_INPUT].isConnected());
+        reflect->driveKnob->setIndicatorActive(inputs[DRIVE_CV_INPUT].isConnected());
 
-    reflect->frqKnobLP->setIndicatorValue(params[FREQ1_PARAM].getValue() + frq1cv);
-    reflect->peakKnobLP->setIndicatorValue(params[PEAK1_PARAM].getValue() + peak1cv);
-    reflect->frqKnobHP->setIndicatorValue(params[FREQ2_PARAM].getValue() + frq2cv);
-    reflect->peakKnobHP->setIndicatorValue(params[PEAK2_PARAM].getValue() + peak2cv);
-    reflect->driveKnob->setIndicatorValue(params[DRIVE_PARAM].getValue() + drivecv);
+        reflect->frqKnobLP->setIndicatorValue(params[FREQ1_PARAM].getValue() + frq1cv);
+        reflect->peakKnobLP->setIndicatorValue(params[PEAK1_PARAM].getValue() + peak1cv);
+        reflect->frqKnobHP->setIndicatorValue(params[FREQ2_PARAM].getValue() + frq2cv);
+        reflect->peakKnobHP->setIndicatorValue(params[PEAK2_PARAM].getValue() + peak2cv);
+        reflect->driveKnob->setIndicatorValue(params[DRIVE_PARAM].getValue() + drivecv);
+    }
 
     if (lround(lcdi) == 0) {
         hpf->in = inputs[FILTER_INPUT].getVoltage();
