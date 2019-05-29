@@ -66,12 +66,12 @@ struct EchoBox : LRModule {
     LRPanel *panel;
 
 
-    void step() override;
+    void process(const ProcessArgs &args) override;
     void onSampleRateChange() override;
 };
 
 
-void EchoBox::step() {
+void EchoBox::process(const ProcessArgs &args) {
 
 }
 
@@ -102,9 +102,9 @@ struct EchoBoxWidget : LRModuleWidget {
 
 
 EchoBoxWidget::EchoBoxWidget(EchoBox *module) : LRModuleWidget(module) {
-    panel->addSVGVariant(LRGestalt::DARK, SVG::load(assetPlugin(pluginInstance, "res/panels/EchoBox.svg")));
-    // panel->addSVGVariant(LRGestalt::LIGHT, SVG::load(assetPlugin(plugin, "res/panels/DiodeLadderVCF.svg")));
-    //  panel->addSVGVariant(LRGestalt::AGED, SVG::load(assetPlugin(plugin, "res/panels/DiodeLadderVCFAged.svg")));
+    panel->addSVGVariant(LRGestaltType::DARK, APP->window->loadSvg(asset::plugin(pluginInstance, "res/panels/EchoBox.svg")));
+    // panel->addSVGVariant(LRGestaltType::LIGHT, APP->window->loadSvg(asset::plugin(plugin, "res/panels/DiodeLadderVCF.svg")));
+    //  panel->addSVGVariant(LRGestaltType::AGED, APP->window->loadSvg(asset::plugin(plugin, "res/panels/DiodeLadderVCFAged.svg")));
 
     panel->init();
     addChild(panel);
@@ -134,19 +134,19 @@ EchoBoxWidget::EchoBoxWidget(EchoBox *module) : LRModuleWidget(module) {
     // ***** MAIN KNOBS ******
 
     // ***** CV INPUTS *******
-    //  addInput(createPort<LRIOPortCV>(Vec(37.4, 284.4), PortWidget::INPUT, module, DiodeVCF::FREQUCENCY_CV_INPUT));
-    //  addInput(createPort<LRIOPortCV>(Vec(175.3, 284.4), PortWidget::INPUT, module, DiodeVCF::RESONANCE_CV_INPUT));
-    //  addInput(createPort<LRIOPortCV>(Vec(106.4, 284.4), PortWidget::INPUT, module, DiodeVCF::SATURATE_CV_INPUT));
+    //  addInput(createInput<LRIOPortCV>(Vec(37.4, 284.4), module, DiodeVCF::FREQUCENCY_CV_INPUT));
+    //  addInput(createInput<LRIOPortCV>(Vec(175.3, 284.4), module, DiodeVCF::RESONANCE_CV_INPUT));
+    //  addInput(createInput<LRIOPortCV>(Vec(106.4, 284.4), module, DiodeVCF::SATURATE_CV_INPUT));
     // ***** CV INPUTS *******
 
 
     // ***** INPUTS **********
-    //  addInput(createPort<LRIOPortAudio>(Vec(37.4, 318.5), PortWidget::INPUT, module, DiodeVCF::FILTER_INPUT));
+    //  addInput(createInput<LRIOPortAudio>(Vec(37.4, 318.5), module, DiodeVCF::FILTER_INPUT));
     // ***** INPUTS **********
 
     // ***** OUTPUTS *********
-    // addOutput(createPort<LRIOPortAudio>(Vec(175.3, 318.5), PortWidget::OUTPUT, module, DiodeVCF::LP_OUTPUT));
-    //  addOutput(createPort<LRIOPortAudio>(Vec(106.4, 318.5), PortWidget::OUTPUT, module, DiodeVCF::HP_OUTPUT));
+    // addOutput(createOutput<LRIOPortAudio>(Vec(175.3, 318.5), module, DiodeVCF::LP_OUTPUT));
+    //  addOutput(createOutput<LRIOPortAudio>(Vec(106.4, 318.5), module, DiodeVCF::HP_OUTPUT));
     // ***** OUTPUTS *********
 }
 
@@ -167,7 +167,7 @@ struct DiodeVCFAged : MenuItem {
     }
 
 
-    void step() override {
+    void process(const ProcessArgs &args) override {
         rightText = CHECKMARK(diodeVCF->aged);
     }
 };
@@ -188,7 +188,7 @@ struct DiodeVCFHiDef : MenuItem {
     }
 
 
-    void step() override {
+    void process(const ProcessArgs &args) override {
         rightText = CHECKMARK(diodeVCF->hidef);
     }
 };

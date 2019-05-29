@@ -62,8 +62,8 @@ struct TestDriver : LRModule {
 
     LRLCDWidget *lcd = new LRLCDWidget(10, "%s", LRLCDWidget::LIST, 10);
 
-    lrt::DelayLine *ddlL = new lrt::DelayLine(engineGetSampleRate());
-    lrt::DelayLine *ddlR = new lrt::DelayLine(engineGetSampleRate());
+    lrt::DelayLine *ddlL = new lrt::DelayLine(args.sampleRate);
+    lrt::DelayLine *ddlR = new lrt::DelayLine(args.sampleRate);
 
     lrt::IIRFilter *iir, *iir2;
 
@@ -80,7 +80,7 @@ struct TestDriver : LRModule {
         float antiAliasBCoefVals[8] = {1.00000000000000000000, 0.27002485476511250972, -2.35210121584816533868, -0.47624252782494447267,
                                        1.85825180320240179732, 0.30789821629786440216, -0.48145639585378052772, -0.07721597509005941051};
 
-        iir = new lrt::IIRFilter(engineGetSampleRate(), antiAliasACoefVals, antiAliasBCoefVals, 8);
+        iir = new lrt::IIRFilter(args.sampleRate, antiAliasACoefVals, antiAliasBCoefVals, 8);
 
         /* float reconstruction1BCoefVals[6] = {0.00051516013318437094, 0.03041821522444834724, 0.06752981661722373685, 0
                                                .04770540623300938837,
@@ -92,72 +92,72 @@ struct TestDriver : LRModule {
         float reconstruction2ACoefVals[3] = {1.00000000000000000000, -1.75672492751137410139, 0.90805921207607520618};
 
 
-        iir2 = new lrt::IIRFilter(engineGetSampleRate(), reconstruction2BCoefVals, reconstruction2ACoefVals, 3);
+        iir2 = new lrt::IIRFilter(args.sampleRate, reconstruction2BCoefVals, reconstruction2ACoefVals, 3);
 
 
     }
 
 
-    void step() override {
+    void process(const ProcessArgs &args) override {
         // compute all cv values
-        float a1value = inputs[A1_CV_INPUT].value * 0.1f * quadraticBipolar(params[A1_CV_PARAM].value);
-        float a2value = inputs[A2_CV_INPUT].value * 0.1f * quadraticBipolar(params[A2_CV_PARAM].value);
+        float a1value = inputs[A1_CV_INPUT].getVoltage() * 0.1f * quadraticBipolar(params[A1_CV_PARAM].getValue());
+        float a2value = inputs[A2_CV_INPUT].getVoltage() * 0.1f * quadraticBipolar(params[A2_CV_PARAM].getValue());
 
-        float frq2cv = inputs[B1_CV_INPUT].value * 0.1f * quadraticBipolar(params[B1_CV_PARAM].value);
-        float peak2cv = inputs[B2_CV_INPUT].value * 0.1f * quadraticBipolar(params[B2_CV_PARAM].value);
+        float frq2cv = inputs[B1_CV_INPUT].getVoltage() * 0.1f * quadraticBipolar(params[B1_CV_PARAM].getValue());
+        float peak2cv = inputs[B2_CV_INPUT].getVoltage() * 0.1f * quadraticBipolar(params[B2_CV_PARAM].getValue());
 
 
         // set vc parameter and knob values
-        auto a1 = params[A1_PARAM].value + a1value;
-        auto a2 = params[A2_PARAM].value + a2value;
-        auto b1 = params[B1_PARAM].value + frq2cv;
-        auto b2 = params[B2_PARAM].value + peak2cv;
+        auto a1 = params[A1_PARAM].getValue() + a1value;
+        auto a2 = params[A2_PARAM].getValue() + a2value;
+        auto b1 = params[B1_PARAM].getValue() + frq2cv;
+        auto b2 = params[B2_PARAM].getValue() + peak2cv;
 
-        auto s1 = params[S1_PARAM].value == 1;
+        auto s1 = params[S1_PARAM].getValue() == 1;
 
 
         if (a1Knob != nullptr && b1Knob != nullptr && a2Knob != nullptr && b2Knob != nullptr) {
-            a1Knob->setIndicatorActive(inputs[A1_CV_INPUT].active);
-            a2Knob->setIndicatorActive(inputs[A2_CV_INPUT].active);
-            b1Knob->setIndicatorActive(inputs[B1_CV_INPUT].active);
-            b2Knob->setIndicatorActive(inputs[B2_CV_INPUT].active);
+            a1Knob->setIndicatorActive(inputs[A1_CV_INPUT].isConnected());
+            a2Knob->setIndicatorActive(inputs[A2_CV_INPUT].isConnected());
+            b1Knob->setIndicatorActive(inputs[B1_CV_INPUT].isConnected());
+            b2Knob->setIndicatorActive(inputs[B2_CV_INPUT].isConnected());
 
-            a1Knob->setIndicatorValue(params[A1_PARAM].value + a1value);
-            a2Knob->setIndicatorValue(params[A2_PARAM].value + a2value);
-            b1Knob->setIndicatorValue(params[B1_PARAM].value + frq2cv);
-            b2Knob->setIndicatorValue(params[B2_PARAM].value + peak2cv);
+            a1Knob->setIndicatorValue(params[A1_PARAM].getValue() + a1value);
+            a2Knob->setIndicatorValue(params[A2_PARAM].getValue() + a2value);
+            b1Knob->setIndicatorValue(params[B1_PARAM].getValue() + frq2cv);
+            b2Knob->setIndicatorValue(params[B2_PARAM].getValue() + peak2cv);
         }
 
         /* computations */
-        /*auto dL = params[A1_PARAM].value * (engineGetSampleRate() - 1) + 1;
-        auto fbL = params[A2_PARAM].value;
+        /*auto dL = params[A1_PARAM].getValue() * (args.sampleRate - 1) + 1;
+        auto fbL = params[A2_PARAM].getValue();
 
-        auto dR = params[B1_PARAM].value * (engineGetSampleRate() - 1) + 1;
-        auto fbR = params[B2_PARAM].value;
+        auto dR = params[B1_PARAM].getValue() * (args.sampleRate - 1) + 1;
+        auto fbR = params[B2_PARAM].getValue();
 
         ddlL->delay = dL;
         ddlL->fb = fbL;
         ddlL->invalidate();
-        ddlL->in = inputs[INPUT_A].value;
+        ddlL->in = inputs[INPUT_A].getVoltage();
         ddlL->process();
 
-        outputs[OUTPUT_A].value = ddlL->out + inputs[INPUT_A].value;
+        outputs[OUTPUT_A].setVoltage(ddlL->out + inputs[INPUT_A].getVoltage());
 
         ddlR->delay = dR;
         ddlR->fb = fbR;
         ddlR->invalidate();
-        ddlR->in = inputs[INPUT_B].active ? inputs[INPUT_B].value : inputs[INPUT_A].value;
+        ddlR->in = inputs[INPUT_B].isConnected() ? inputs[INPUT_B].getVoltage() : inputs[INPUT_A].getVoltage();
         ddlR->process();
 
-        outputs[OUTPUT_B].value = inputs[INPUT_B].active ? ddlR->out + inputs[INPUT_B].value : ddlR->out + inputs[INPUT_A].value;*/
+        outputs[OUTPUT_B].setVoltage(inputs[INPUT_B].isConnected() ? ddlR->out + inputs[INPUT_B].getVoltage() : ddlR->out + inputs[INPUT_A].getVoltage());*/
 
-        iir->in = inputs[INPUT_A].value;
+        iir->in = inputs[INPUT_A].getVoltage();
         iir->process();
-        outputs[OUTPUT_A].value = iir->out;
+        outputs[OUTPUT_A].setVoltage(iir->out);
 
-        iir2->in = inputs[INPUT_A].value;
+        iir2->in = inputs[INPUT_A].getVoltage();
         iir2->process();
-        outputs[OUTPUT_B].value = iir2->out;
+        outputs[OUTPUT_B].setVoltage(iir2->out);
     }
 
 
@@ -196,9 +196,9 @@ struct TestDriverWidget : LRModuleWidget {
 
 
 TestDriverWidget::TestDriverWidget(TestDriver *module) : LRModuleWidget(module) {
-    panel->addSVGVariant(LRGestalt::DARK, SVG::load(assetPlugin(pluginInstance, "res/panels/TestDriver.svg")));
-    panel->addSVGVariant(LRGestalt::LIGHT, SVG::load(assetPlugin(pluginInstance, "res/panels/TestDriver.svg")));
-    panel->addSVGVariant(LRGestalt::AGED, SVG::load(assetPlugin(pluginInstance, "res/panels/TestDriver.svg")));
+    panel->addSVGVariant(LRGestaltType::DARK, APP->window->loadSvg(asset::plugin(pluginInstance, "res/panels/TestDriver.svg")));
+    panel->addSVGVariant(LRGestaltType::LIGHT, APP->window->loadSvg(asset::plugin(pluginInstance, "res/panels/TestDriver.svg")));
+    panel->addSVGVariant(LRGestaltType::AGED, APP->window->loadSvg(asset::plugin(pluginInstance, "res/panels/TestDriver.svg")));
 
     panel->init();
     addChild(panel);
@@ -240,20 +240,20 @@ TestDriverWidget::TestDriverWidget(TestDriver *module) : LRModuleWidget(module) 
     // ***** MAIN KNOBS ******
 
     // ***** CV INPUTS *******
-    addInput(createPort<LRIOPortCV>(Vec(34.4 - 7.5, 312), PortWidget::INPUT, module, TestDriver::A1_CV_INPUT));
-    addInput(createPort<LRIOPortCV>(Vec(76.4 - 7.5, 312), PortWidget::INPUT, module, TestDriver::A2_CV_INPUT));
-    addInput(createPort<LRIOPortCV>(Vec(195.4 - 7.5, 312), PortWidget::INPUT, module, TestDriver::B1_CV_INPUT));
-    addInput(createPort<LRIOPortCV>(Vec(237.4 - 7.5, 312), PortWidget::INPUT, module, TestDriver::B2_CV_INPUT));
+    addInput(createInput<LRIOPortCV>(Vec(34.4 - 7.5, 312), module, TestDriver::A1_CV_INPUT));
+    addInput(createInput<LRIOPortCV>(Vec(76.4 - 7.5, 312), module, TestDriver::A2_CV_INPUT));
+    addInput(createInput<LRIOPortCV>(Vec(195.4 - 7.5, 312), module, TestDriver::B1_CV_INPUT));
+    addInput(createInput<LRIOPortCV>(Vec(237.4 - 7.5, 312), module, TestDriver::B2_CV_INPUT));
     // ***** CV INPUTS *******
 
     // ***** INPUTS **********
-    addInput(createPort<LRIOPortAudio>(Vec(118 - 8, 269), PortWidget::INPUT, module, TestDriver::INPUT_A));
-    addInput(createPort<LRIOPortAudio>(Vec(118 - 8, 312), PortWidget::INPUT, module, TestDriver::INPUT_B));
+    addInput(createInput<LRIOPortAudio>(Vec(118 - 8, 269), module, TestDriver::INPUT_A));
+    addInput(createInput<LRIOPortAudio>(Vec(118 - 8, 312), module, TestDriver::INPUT_B));
     // ***** INPUTS **********
 
     // ***** OUTPUTS *********
-    addOutput(createPort<LRIOPortAudio>(Vec(156 - 8, 269), PortWidget::OUTPUT, module, TestDriver::OUTPUT_A));
-    addOutput(createPort<LRIOPortAudio>(Vec(156 - 8, 312), PortWidget::OUTPUT, module, TestDriver::OUTPUT_B));
+    addOutput(createOutput<LRIOPortAudio>(Vec(156 - 8, 269), module, TestDriver::OUTPUT_A));
+    addOutput(createOutput<LRIOPortAudio>(Vec(156 - 8, 312), module, TestDriver::OUTPUT_B));
     // ***** OUTPUTS *********
 
     addParam(ParamcreateWidget<LRSwitch>(Vec(131.1, 245.2), module, TestDriver::S1_PARAM, 0, 1, 0));

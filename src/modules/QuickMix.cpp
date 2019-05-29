@@ -97,18 +97,18 @@ struct QuickMix : LRModule {
     QuickMix() : LRModule(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS) {}
 
 
-    void step() override;
+    void process(const ProcessArgs &args) override;
 };
 
 
-void QuickMix::step() {
+void QuickMix::process(const ProcessArgs &args) {
     float out = 0;
 
     /* lights */
     for (int i = 0; i < NUM_LIGHTS - 1; i++) {
-        lightVals[i] = clamp(inputs[i].value * abs(quadraticBipolar(params[i].value)) / 6, 0.f, 1.f);
+        lightVals[i] = clamp(inputs[i].getVoltage() * abs(quadraticBipolar(params[i].getValue())) / 6, 0.f, 1.f);
 
-        if (inputs[i].active) {
+        if (inputs[i].isConnected()) {
             lights[i].setBrightnessSmooth(lightVals[i]);
         } else {
             lights[i].value = 0;
@@ -117,19 +117,19 @@ void QuickMix::step() {
 
     /* mixup all signals */
     for (int i = 0; i < NUM_INPUTS - 1; i++) {
-        out += inputs[i].value * quadraticBipolar(params[i].value);
+        out += inputs[i].getVoltage() * quadraticBipolar(params[i].getValue());
     }
 
     /* VCA mode active */
-    if (inputs[CV_INPUT].active) {
-        float cv = inputs[CV_INPUT].value / 5;
+    if (inputs[CV_INPUT].isConnected()) {
+        float cv = inputs[CV_INPUT].getVoltage() / 5;
 
-        out *= vca.getWeightedGain(cv, params[SHAPE_PARAM].value);
+        out *= vca.getWeightedGain(cv, params[SHAPE_PARAM].getValue());
     }
 
-    out *= quadraticBipolar(params[LEVELM_PARAM].value) * 2;
+    out *= quadraticBipolar(params[LEVELM_PARAM].getValue()) * 2;
 
-    outputs[MASTER_OUTPUT].value = out;
+    outputs[MASTER_OUTPUT].setVoltage(out);
 }
 
 
@@ -142,9 +142,9 @@ struct QuickMixWidget : LRModuleWidget {
 
 
 QuickMixWidget::QuickMixWidget(QuickMix *module) : LRModuleWidget(module) {
-    panel->addSVGVariant(LRGestalt::DARK, SVG::load(assetPlugin(pluginInstance, "res/panels/QuickMix.svg")));
-    panel->addSVGVariant(LRGestalt::LIGHT, SVG::load(assetPlugin(pluginInstance, "res/panels/QuickMixLight.svg")));
-    panel->addSVGVariant(LRGestalt::AGED, SVG::load(assetPlugin(pluginInstance, "res/panels/QuickMixAged.svg")));
+    panel->addSVGVariant(LRGestaltType::DARK, APP->window->loadSvg(asset::plugin(pluginInstance, "res/panels/QuickMix.svg")));
+    panel->addSVGVariant(LRGestaltType::LIGHT, APP->window->loadSvg(asset::plugin(pluginInstance, "res/panels/QuickMixLight.svg")));
+    panel->addSVGVariant(LRGestaltType::AGED, APP->window->loadSvg(asset::plugin(pluginInstance, "res/panels/QuickMixAged.svg")));
 
     panel->init();
     addChild(panel);
@@ -170,17 +170,17 @@ QuickMixWidget::QuickMixWidget(QuickMix *module) : LRModuleWidget(module) {
     // ***** MAIN KNOBS ******
 
     // ***** INPUTS **********
-    addInput(createPort<LRIOPortAudio>(Vec(16.5, 52.6), PortWidget::INPUT, module, QuickMix::M1_INPUT));
-    addInput(createPort<LRIOPortAudio>(Vec(16.5, 87.6), PortWidget::INPUT, module, QuickMix::M2_INPUT));
-    addInput(createPort<LRIOPortAudio>(Vec(16.5, 122.6), PortWidget::INPUT, module, QuickMix::M3_INPUT));
-    addInput(createPort<LRIOPortAudio>(Vec(16.5, 157.6), PortWidget::INPUT, module, QuickMix::M4_INPUT));
-    addInput(createPort<LRIOPortAudio>(Vec(16.5, 192.6), PortWidget::INPUT, module, QuickMix::M5_INPUT));
+    addInput(createInput<LRIOPortAudio>(Vec(16.5, 52.6), module, QuickMix::M1_INPUT));
+    addInput(createInput<LRIOPortAudio>(Vec(16.5, 87.6), module, QuickMix::M2_INPUT));
+    addInput(createInput<LRIOPortAudio>(Vec(16.5, 122.6), module, QuickMix::M3_INPUT));
+    addInput(createInput<LRIOPortAudio>(Vec(16.5, 157.6), module, QuickMix::M4_INPUT));
+    addInput(createInput<LRIOPortAudio>(Vec(16.5, 192.6), module, QuickMix::M5_INPUT));
 
-    addInput(createPort<LRIOPortCV>(Vec(16.5, 240.8f), PortWidget::INPUT, module, QuickMix::CV_INPUT));
+    addInput(createInput<LRIOPortCV>(Vec(16.5, 240.8f), module, QuickMix::CV_INPUT));
     // ***** INPUTS **********
 
     // ***** OUTPUTS *********
-    addOutput(createPort<LRIOPortAudio>(Vec(60.9, 304.8), PortWidget::OUTPUT, module, QuickMix::MASTER_OUTPUT));
+    addOutput(createOutput<LRIOPortAudio>(Vec(60.9, 304.8), module, QuickMix::MASTER_OUTPUT));
     // ***** OUTPUTS *********
 
 
