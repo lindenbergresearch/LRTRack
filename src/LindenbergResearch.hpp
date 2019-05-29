@@ -32,11 +32,12 @@ extern Model *modelBlankPanel;
 extern Model *modelBlankPanelWood;
 extern Model *modelVCO;
 extern Model *modelSimpleFilter;
+extern Model *modelReShaper;
 
 /*
 extern Model *modelMS20Filter;
 extern Model *modelAlmaFilter;
-extern Model *modelReShaper;
+
 extern Model *modelBlankPanelEmpty;
 extern Model *modelBlankPanelSmall;
 extern Model *modelWestcoast;

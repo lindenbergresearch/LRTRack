@@ -55,6 +55,14 @@
       "tags": [
         "FILTER"
       ]
+    },
+    {
+      "slug": "ReShaper",
+      "name": "ReShaper wavefolder",
+      "description": "Simple wavefolder module",
+      "tags": [
+        "WAVESHAPER"
+      ]
     }
   ]
 }

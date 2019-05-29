@@ -13,11 +13,12 @@ void init(Plugin *p) {
     p->addModel(modelBlankPanelWood);
     p->addModel(modelVCO);
     p->addModel(modelSimpleFilter);
+    p->addModel(modelReShaper);
 
 /*
     p->addModel(modelMS20Filter);
     p->addModel(modelAlmaFilter);
-    p->addModel(modelReShaper);
+
     p->addModel(modelWestcoast);
     p->addModel(modelQuickMix);
 

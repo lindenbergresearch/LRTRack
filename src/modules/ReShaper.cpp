@@ -29,23 +29,26 @@ struct ReShaper : LRModule {
     };
 
 
-    ReShaper() : LRModule(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS) {}
+    ReShaper() : LRModule(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS) {
+        configParam(RESHAPER_AMOUNT, 1.f, 50.f, 1.f);
+        configParam(RESHAPER_CV_AMOUNT, 0.f, 5.f, 0.f);
+    }
 
 
-    void step() override;
+    void process(const ProcessArgs &args) override;
 };
 
 
-void ReShaper::step() {
+void ReShaper::process(const ProcessArgs &args) {
     // normalize signal input to [-1.0...+1.0]
-    float x = clamp(inputs[RESHAPER_INPUT].value * 0.1f, -1.f, 1.f);
-    float cv = inputs[RESHAPER_CV_INPUT].value * params[RESHAPER_CV_AMOUNT].value;
-    float a = clamp(params[RESHAPER_AMOUNT].value + cv, 1.f, 50.f);
+    float x = clamp(inputs[RESHAPER_INPUT].getVoltage() * 0.1f, -1.f, 1.f);
+    float cv = inputs[RESHAPER_CV_INPUT].getVoltage() * params[RESHAPER_CV_AMOUNT].getValue();
+    float a = clamp(params[RESHAPER_AMOUNT].getValue() + cv, 1.f, 50.f);
 
     // do the acid!
     float out = x * (fabs(x) + a) / (x * x + (a - 1) * fabs(x) + 1);
 
-    outputs[RESHAPER_OUTPUT].value = out * 5.0f;
+    outputs[RESHAPER_OUTPUT].setVoltage(out * 5.0f);
 }
 
 
@@ -53,14 +56,16 @@ void ReShaper::step() {
  * @brief Reshaper Panel
  */
 struct ReShaperWidget : LRModuleWidget {
+    LRBigKnob *amountKnob;
+
     ReShaperWidget(ReShaper *module);
 };
 
 
 ReShaperWidget::ReShaperWidget(ReShaper *module) : LRModuleWidget(module) {
-    panel->addSVGVariant(LRGestalt::DARK, SVG::load(assetPlugin(pluginInstance, "res/panels/ReShaper.svg")));
-    // panel->addSVGVariant(SVG::load(assetPlugin(plugin, "res/panels/ReShaper.svg")));
-    // panel->addSVGVariant(SVG::load(assetPlugin(plugin, "res/panels/ReShaper.svg")));
+    panel->addSVGVariant(LRGestaltType::DARK, APP->window->loadSvg(asset::plugin(pluginInstance, "res/panels/ReShaper.svg")));
+    // panel->addSVGVariant(APP->window->loadSvg(asset::plugin(plugin, "res/panels/ReShaper.svg")));
+    // panel->addSVGVariant(APP->window->loadSvg(asset::plugin(plugin, "res/panels/ReShaper.svg")));
 
     auto newGestalt = DARK;
 
@@ -79,20 +84,22 @@ ReShaperWidget::ReShaperWidget(ReShaper *module) : LRModuleWidget(module) {
 
 
     // ***** MAIN KNOBS ******
-    addParam(ParamcreateWidget<LRBigKnob>(Vec(32.7, 228), module, ReShaper::RESHAPER_AMOUNT, 1.f, 50.f, 1.f));
-    addParam(ParamcreateWidget<LRSmallKnob>(Vec(48.9, 126), module, ReShaper::RESHAPER_CV_AMOUNT, 0.f, 5.f, 0.f));
+    amountKnob = createParam<LRBigKnob>(Vec(32.7, 228), module, ReShaper::RESHAPER_AMOUNT);
+
+    addParam(amountKnob);
+    addParam(createParam<LRSmallKnob>(Vec(48.9, 126), module, ReShaper::RESHAPER_CV_AMOUNT));
     // ***** MAIN KNOBS ******
 
 
     // ***** INPUTS **********
-    addInput(createPort<LRIOPortAudio>(Vec(21.5, 52.3), PortWidget::INPUT, module, ReShaper::RESHAPER_INPUT));
-    addInput(createPort<LRIOPortCV>(Vec(71.2, 52.3), PortWidget::INPUT, module, ReShaper::RESHAPER_CV_INPUT));
+    addInput(createInput<LRIOPortAudio>(Vec(21.5, 52.3), module, ReShaper::RESHAPER_INPUT));
+    addInput(createInput<LRIOPortCV>(Vec(71.2, 52.3), module, ReShaper::RESHAPER_CV_INPUT));
     // ***** INPUTS **********
 
     // ***** OUTPUTS *********
-    addOutput(createPort<LRIOPortAudio>(Vec(46.2, 311.6), PortWidget::OUTPUT, module, ReShaper::RESHAPER_OUTPUT));
+    addOutput(createOutput<LRIOPortAudio>(Vec(46.2, 311.6), module, ReShaper::RESHAPER_OUTPUT));
     // ***** OUTPUTS *********
 }
 
 
-Model *modelReShaper = createModel<ReShaper, ReShaperWidget>("Lindenberg Research", "ReShaper", "ReShaper Wavefolder", WAVESHAPER_TAG);
+Model *modelReShaper = createModel<ReShaper, ReShaperWidget>("ReShaper");
