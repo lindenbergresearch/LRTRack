@@ -29,9 +29,8 @@ struct BlankPanelWood : LRModule {
 
 
 struct BlankPanelWidgetWood : LRModuleWidget {
-    SvgWidget *patina, *logoStamp;
+    SvgWidget *patinaWidget, *logoStamp;
     ScrewDarkB *screw1, *screw2;
-    LRPanel *panel;
 
     bool aged = true;
     bool screws = true;
@@ -40,20 +39,19 @@ struct BlankPanelWidgetWood : LRModuleWidget {
     BlankPanelWidgetWood(BlankPanelWood *module);
     void appendContextMenu(Menu *menu) override;
 
-    void randomizeAction();
-
 
     void updateComponents() {
         screw1->visible = screws;
         screw2->visible = screws;
         logoStamp->visible = logo;
-        patina->visible = aged;
-        panel->dirty = true;
+        patinaWidget->visible = aged;
+
+        // panel->dirty = true;
     }
 
 
     json_t *toJson() override {
-        json_t *rootJ = json_object();
+        json_t *rootJ = LRModuleWidget::toJson();
 
         json_object_set_new(rootJ, "AGED", json_boolean(aged));
         json_object_set_new(rootJ, "screws", json_boolean(screws));
@@ -77,19 +75,21 @@ struct BlankPanelWidgetWood : LRModuleWidget {
         if (logoJ)
             logo = json_boolean_value(logoJ);
 
-        //updateComponents();
+        updateComponents();
     }
 };
 
 
 BlankPanelWidgetWood::BlankPanelWidgetWood(BlankPanelWood *module) : LRModuleWidget(module) {
-    panel->addSVGVariant(LRGestalt::DARK, APP->window->loadSvg(asset::plugin(pluginInstance, "res/panels/WoodLeftTop.svg")));
+    panel->addSVGVariant(LRGestaltType::DARK, APP->window->loadSvg(asset::plugin(pluginInstance, "res/panels/WoodLeftTop.svg")));
+    panel->addSVGVariant(LRGestaltType::LIGHT, APP->window->loadSvg(asset::plugin(pluginInstance, "res/panels/WoodLeftTop.svg")));
+    panel->addSVGVariant(LRGestaltType::AGED, APP->window->loadSvg(asset::plugin(pluginInstance, "res/panels/WoodLeftTop.svg")));
     // panel->addSVGVariant(APP->window->loadSvg(asset::plugin(plugin, "res/panels/WoodLeftTop.svg")));
     // panel->addSVGVariant(APP->window->loadSvg(asset::plugin(plugin, "res/panels/WoodLeftTop.svg")));
 
     noVariants = true;
-    gestalt = LRGestalt::DARK;
-    // patina = false;
+    gestalt = LRGestaltType::DARK;
+    patina = false;
     gradient = false;
 
     panel->init();
@@ -98,22 +98,24 @@ BlankPanelWidgetWood::BlankPanelWidgetWood(BlankPanelWood *module) : LRModuleWid
 
     box.size = panel->box.size;
 
+    box.size.y = 380;
+
     auto gradientDark = new LRGradientWidget(box.size, nvgRGBAf(1.4f * .369f, 1.4f * 0.357f, 1.4f * 0.3333f, 0.05f),
                                              nvgRGBAf(0.f, 0.f, 0.f, 0.15f), Vec(-10, 10));
     gradientDark->visible = true;
 
     panel->addChild(gradientDark);
 
-    patina = new SvgWidget();
-    patina->setSvg(APP->window->loadSvg(asset::plugin(pluginInstance, "res/panels/WoodPatina.svg")));
-    panel->addChild(patina);
+    patinaWidget = new SvgWidget();
+    patinaWidget->setSvg(APP->window->loadSvg(asset::plugin(pluginInstance, "res/panels/WoodPatina.svg")));
+    panel->addChild(patinaWidget);
 
     logoStamp = new SvgWidget();
     logoStamp->setSvg(APP->window->loadSvg(asset::plugin(pluginInstance, "res/elements/LogoSmallPlate.svg")));
     logoStamp->box.pos = Vec(8.5, 348.8);
     addChild(logoStamp);
 
-    randomizeAction();
+    patinaWidget->box.pos = Vec(-random::uniform() * 1000, -random::uniform() * 200);
 
 
     // ***** SCREWS **********
@@ -148,6 +150,7 @@ struct BlankPanelWoodScrews : MenuItem {
 
     void onAction(const event::Action &e) override {
         blankPanelWood->screws ^= true;
+        blankPanelWood->box.size.y = 2 * 380;
         blankPanelWood->updateComponents();
     }
 
@@ -175,7 +178,7 @@ struct BlankPanelWoodLogo : MenuItem {
 
 
 void BlankPanelWidgetWood::appendContextMenu(Menu *menu) {
-    auto *pBlankPanelWidgetWood = dynamic_cast<BlankPanelWidgetWood *>(module);
+    auto *pBlankPanelWidgetWood = dynamic_cast<BlankPanelWidgetWood *>(this);
     assert(pBlankPanelWidgetWood);
 
     auto *mergeItemAged = createMenuItem<BlankPanelWoodAged>("Use AGED look");
@@ -192,10 +195,11 @@ void BlankPanelWidgetWood::appendContextMenu(Menu *menu) {
 }
 
 
+/*
 void BlankPanelWidgetWood::randomizeAction() {
     ModuleWidget::randomizeAction();
-    patina->box.pos = Vec(-random::uniform() * 1000, -random::uniform() * 200);
-}
+
+}*/
 
 
 Model *modelBlankPanelWood = createModel<BlankPanelWood, BlankPanelWidgetWood>("BlankPanel Wood");
