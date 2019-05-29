@@ -9,6 +9,14 @@
   "sourceUrl": "https://github.com/lindenbergresearch/LRTRack",
   "modules": [
     {
+      "slug": "VCO",
+      "name": "Woldemar analog VCO",
+      "description": "Analog oscillator",
+      "tags": [
+        "OSCILLATOR"
+      ]
+    },
+    {
       "slug": "TYPE35 VCF",
       "name": "Vampyr type35 VCF",
       "description": "Sallen-Key type dual filter: Lowpass: 12dB/oct Highpass: 6dB/oct",
@@ -22,6 +30,22 @@
       "description": "Classic diode driven ladder filter with 12/dB/oct",
       "tags": [
         "FILTER"
+      ]
+    },
+    {
+      "slug": "BlankPanel 01",
+      "name": "Blank: Logo",
+      "description": "Blank panel with Logo and Information",
+      "tags": [
+        "BLANK"
+      ]
+    },
+    {
+      "slug": "BlankPanel Wood",
+      "name": "Blank: Wood-Panel",
+      "description": "Wooden side panel",
+      "tags": [
+        "BLANK"
       ]
     }
   ]

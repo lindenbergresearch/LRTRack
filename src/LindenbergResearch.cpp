@@ -9,6 +9,9 @@ void init(Plugin *p) {
 
     p->addModel(modelType35);
     p->addModel(modelDiodeVCF);
+    p->addModel(modelBlankPanel);
+    p->addModel(modelBlankPanelWood);
+    p->addModel(modelVCO);
 
 
 /*    p->addModel(modelSimpleFilter);
@@ -20,14 +23,14 @@ void init(Plugin *p) {
 
     p->addModel(modelTestDriver);
     p->addModel(modelEchoBox);
-    p->addModel(modelVCO);
+
 
 
 
     //  p->addModel(modelSpeck);
 
-    p->addModel(modelBlankPanel);
+
     p->addModel(modelBlankPanelEmpty);
     p->addModel(modelBlankPanelSmall);
-    p->addModel(modelBlankPanelWood);*/
+    */
 }
