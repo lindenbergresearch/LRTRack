@@ -85,18 +85,20 @@ void LRKnob::unsetSnap() {
 
 
 void LRKnob::onChange(const event::Change &e) {
-    auto value = paramQuantity->getValue();
-
-    // if the value still inside snap-tolerance keep the value zero
-    if (snap && value > -snapSens + snapAt && value < snapSens + snapAt) value = 0;
-    //  paramQuantity->setValue(value);
-
     SvgKnob::onChange(e);
+    /* auto value = paramQuantity->getValue();
+
+     // if the value still inside snap-tolerance keep the value zero
+     if (snap && value > -snapSens + snapAt && value < snapSens + snapAt) value = 0;
+       paramQuantity->setValue(value);*/
+
 }
 
 
-void LRKnob::onGestaltChangeAction(lrt::LRGestaltChangeEvent *e) {
-    auto svg = getSVGVariant(e->current);
+void LRKnob::onGestaltChangeAction(LRGestaltChangeEvent &e) {
+    indicator->onGestaltChangeAction(e); // forward event for non child widgets
+
+    auto svg = getSVGVariant(e.current);
 
     if (svg != nullptr) {
         setSvg(svg);
