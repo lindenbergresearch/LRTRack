@@ -353,7 +353,8 @@ struct LRToggleKnob : LRKnob {
         addSVGVariant(LRGestaltType::LIGHT, APP->window->loadSvg(asset::plugin(pluginInstance, "res/knobs/AlternateToggleKnobLight.svg")));
         addSVGVariant(LRGestaltType::AGED, APP->window->loadSvg(asset::plugin(pluginInstance, "res/knobs/AlternateToggleKnobLight.svg")));
 
-        speed = 2.f;
+        speed = 10.f; //workaround
+        smooth = false;
     }
 
 
@@ -365,7 +366,7 @@ struct LRToggleKnob : LRKnob {
         auto value = paramQuantity->getValue();
         paramQuantity->setValue(round(value));
 
-        SvgKnob::onChange(e);//TODO: [2019-05-18 19:29] => check if value get/set works with new v1 api
+        SvgKnob::onChange(e);//TODO: [2019-05-29 09:18] => Implement own version of ParamWidget
     }
 
 
