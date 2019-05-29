@@ -913,7 +913,6 @@ struct LRPanel : FramebufferWidget, LRGestaltVariant, LRGestaltChangeAction {
 
     void setGradientVariant(LRGestaltType gestalt, bool gradient);
     void setPatina(LRGestaltType gestalt, bool enabled);
-    void step() override;
     void init();
     void onGestaltChangeAction(LRGestaltChangeEvent &e) override;
 };
