@@ -22,9 +22,16 @@
 namespace lrt {
 
 void LRPanel::init() {
+    if (math::isNear(APP->window->pixelRatio, 1.0)) {
+        // Small details draw poorly at low DPI, so oversample when drawing to the framebuffer
+        //  oversample = 2.0;
+
+        DEBUG("OS");
+    }
+
     /* set panel svg */
     panelWidget = new SvgWidget();
-    auto svg = getSVGVariant(gestalt);  // INIT
+    auto svg = getSVGVariant(NIL);  // INIT
 
     if (svg != nullptr) {
         panelWidget->setSvg(svg);
@@ -74,9 +81,7 @@ void LRPanel::init() {
  * @brief Set the gradient for the current variant on or off
  * @param invert Automaticaly invert state
  */
-void LRPanel::setGradientVariant(bool invert) {
-    gradient = invert == !gradient;
-
+void LRPanel::setGradientVariant(LRGestaltType gestalt, bool gradient) {
     gradients[LRGestaltType::DARK]->visible = false;
     gradients[LRGestaltType::LIGHT]->visible = false;
     gradients[LRGestaltType::AGED]->visible = false;
@@ -91,24 +96,16 @@ void LRPanel::setGradientVariant(bool invert) {
  * @brief Setup patina on / off
  * @param enabled
  */
-void LRPanel::setPatina(bool enabled) {
-    patina = enabled;
-
-    patinaWidgetClassic->visible = patina && gestalt == LRGestaltType::DARK;
-
-    // TODO: extra patina for aged mode?
-    patinaWidgetWhite->visible = patina && gestalt != LRGestaltType::DARK;
+void LRPanel::setPatina(LRGestaltType gestalt, bool enabled) {
+    patinaWidgetClassic->visible = enabled && gestalt == LRGestaltType::DARK;
+    patinaWidgetWhite->visible = enabled && gestalt != LRGestaltType::DARK;
 
     dirty = true;
 }
 
 
-void LRPanel::onGestaltChangeAction(lrt::LRGestaltChangeEvent *e) {
-    gestalt = e->current;
-    patina = e->patina;
-    gradient = e->gradient;
-
-    auto svg = getSVGVariant(gestalt);
+void LRPanel::onGestaltChangeAction(LRGestaltChangeEvent &e) {
+    auto svg = getSVGVariant(e.current);
 
     if (svg != nullptr) {
         panelWidget->setSvg(svg);
@@ -116,20 +113,10 @@ void LRPanel::onGestaltChangeAction(lrt::LRGestaltChangeEvent *e) {
         box.size = panelWidget->box.size.div(RACK_GRID_SIZE).round().mult(RACK_GRID_SIZE);
     }
 
-    setGradientVariant(false);
-    setPatina(patina);
+    setGradientVariant(e.current, e.gradient);
+    setPatina(e.current, e.patina);
 
     dirty = true;
-}
-
-
-void LRPanel::step() {
-    if (math::isNear(APP->window->pixelRatio, 1.0)) {
-        // Small details draw poorly at low DPI, so oversample when drawing to the framebuffer
-        oversample = 2.0;
-    }
-
-    FramebufferWidget::step();
 }
 
 }
