@@ -26,11 +26,11 @@ struct BlankPanelEmpty : LRModule {
     }
 
 
-    void step() override;
+    void process(const ProcessArgs &args) override;
 };
 
 
-void BlankPanelEmpty::step() {
+void BlankPanelEmpty::process(const ProcessArgs &args) {
 }
 
 
@@ -38,19 +38,16 @@ void BlankPanelEmpty::step() {
  * @brief Blank Panel Mark I
  */
 struct BlankPanelEmptyWidget : LRModuleWidget {
-    ModuleResizeWidget *resizeWidget, *resizeWidgetRight;
     ScrewLight *screw1, *screw2;
 
     BlankPanelEmptyWidget(BlankPanelEmpty *module);
-
-    void step() override;
 };
 
 
 BlankPanelEmptyWidget::BlankPanelEmptyWidget(BlankPanelEmpty *module) : LRModuleWidget(module) {
-    panel->addSVGVariant(LRGestalt::DARK, SVG::load(assetPlugin(pluginInstance, "res/panels/BlankPanelM1.svg")));
-    panel->addSVGVariant(LRGestalt::LIGHT, SVG::load(assetPlugin(pluginInstance, "res/panels/BlankPanelM1Light.svg")));
-    panel->addSVGVariant(LRGestalt::AGED, SVG::load(assetPlugin(pluginInstance, "res/panels/BlankPanelM1Aged.svg")));
+    panel->addSVGVariant(LRGestaltType::DARK, APP->window->loadSvg(asset::plugin(pluginInstance, "res/panels/BlankPanelM1.svg")));
+    panel->addSVGVariant(LRGestaltType::LIGHT, APP->window->loadSvg(asset::plugin(pluginInstance, "res/panels/BlankPanelM1Light.svg")));
+    panel->addSVGVariant(LRGestaltType::AGED, APP->window->loadSvg(asset::plugin(pluginInstance, "res/panels/BlankPanelM1Aged.svg")));
 
     panel->init();
     addChild(panel);
@@ -80,25 +77,6 @@ BlankPanelEmptyWidget::BlankPanelEmptyWidget(BlankPanelEmpty *module) : LRModule
 }
 
 
-void BlankPanelEmptyWidget::step() {
-    /* panel->box.size = box.size;
-     resizeWidgetRight->box.pos.x = box.size.x - resizeWidgetRight->box.size.x;
-     resizeWidgetRight->box.pos.y = box.size.y - resizeWidgetRight->box.size.y;
-     resizeWidget->box.pos.y = box.size.y - resizeWidget->box.size.y;
-
-     screw1->box.pos.x = box.size.x - 30;
-     screw2->box.pos.x = box.size.x - 30;
-
-     panel->dirty = true;*/
-
-    LRModuleWidget::step();
-}
-
-
-Model *modelBlankPanelEmpty = createModel<BlankPanelEmpty, BlankPanelEmptyWidget>(
-        "Lindenberg Research",
-        "BlankPanel 02",
-        "Blank: Empty",
-        BLANK_TAG);
+Model *modelBlankPanelEmpty = createModel<BlankPanelEmpty, BlankPanelEmptyWidget>("BlankPanel 02");
 
 

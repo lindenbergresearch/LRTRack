@@ -12,7 +12,7 @@ LDFLAGS +=
 
 SOURCES += $(wildcard src/*.cpp src/dsp/*.cpp src/dsp/kiss_fft/*.c src/widgets/*.cpp src/modules/Type35.cpp src/modules/DiodeVCF.cpp)
 SOURCES += $(wildcard src/modules/BlankPanel.cpp src/modules/BlankPanelWood.cpp src/modules/VCO.cpp src/modules/VCO.cpp)
-SOURCES += $(wildcard src/modules/SimpleFilter.cpp src/modules/ReShaper.cpp)
+SOURCES += $(wildcard src/modules/SimpleFilter.cpp src/modules/ReShaper.cpp src/modules/BlankPanelEmpty.cpp)
 
 DISTRIBUTABLES += $(wildcard LICENSE*) res
 

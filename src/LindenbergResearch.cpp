@@ -14,6 +14,7 @@ void init(Plugin *p) {
     p->addModel(modelVCO);
     p->addModel(modelSimpleFilter);
     p->addModel(modelReShaper);
+    p->addModel(modelBlankPanelEmpty);
 
 /*
     p->addModel(modelMS20Filter);
@@ -31,7 +32,7 @@ void init(Plugin *p) {
     //  p->addModel(modelSpeck);
 
 
-    p->addModel(modelBlankPanelEmpty);
+
     p->addModel(modelBlankPanelSmall);
     */
 }

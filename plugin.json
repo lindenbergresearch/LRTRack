@@ -63,6 +63,14 @@
       "tags": [
         "WAVESHAPER"
       ]
+    },
+    {
+      "slug": "BlankPanel 02",
+      "name": "Big Blankpanel",
+      "description": "Big Blankpanel",
+      "tags": [
+        "BLANK"
+      ]
     }
   ]
 }
