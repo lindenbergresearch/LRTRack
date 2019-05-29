@@ -31,8 +31,9 @@ extern Model *modelDiodeVCF;
 extern Model *modelBlankPanel;
 extern Model *modelBlankPanelWood;
 extern Model *modelVCO;
+extern Model *modelSimpleFilter;
 
-/*extern Model *modelSimpleFilter;
+/*
 extern Model *modelMS20Filter;
 extern Model *modelAlmaFilter;
 extern Model *modelReShaper;

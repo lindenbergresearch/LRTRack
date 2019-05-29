@@ -47,6 +47,14 @@
       "tags": [
         "BLANK"
       ]
+    },
+    {
+      "slug": "LPFilter24dB",
+      "name": "Simple lowpass filter",
+      "description": "Simple ladder style filter with 24dB7oct",
+      "tags": [
+        "FILTER"
+      ]
     }
   ]
 }

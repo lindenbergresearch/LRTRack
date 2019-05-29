@@ -12,9 +12,9 @@ void init(Plugin *p) {
     p->addModel(modelBlankPanel);
     p->addModel(modelBlankPanelWood);
     p->addModel(modelVCO);
+    p->addModel(modelSimpleFilter);
 
-
-/*    p->addModel(modelSimpleFilter);
+/*
     p->addModel(modelMS20Filter);
     p->addModel(modelAlmaFilter);
     p->addModel(modelReShaper);

@@ -48,10 +48,15 @@ struct SimpleFilter : LRModule {
         frequency = 0;
         resonance = 0;
         in = 0;
+
+        configParam(CUTOFF_PARAM, 0.f, 1.f, 0.f);
+        configParam(RESONANCE_PARAM, 0.f, 1.f, 0.f);
+        configParam(CUTOFF_CV_PARAM, 0.f, 1.f, 0.f);
+        configParam(RESONANCE_CV_PARAM, 0.f, 1.f, 0.f);
     }
 
 
-    void step() override;
+    void process(const ProcessArgs &args) override;
 
 
     // For more advanced Module features, read Rack's engine.hpp header file
@@ -76,7 +81,7 @@ float clip(float in, float level) {
 }
 
 
-void SimpleFilter::step() {
+void SimpleFilter::process(const ProcessArgs &args) {
     // Moog 24 dB/oct resonant lowpass VCF
     // References: CSound source code, Stilson/Smith CCRMA paper.
     // Modified by paul.kellett@maxim.abel.co.uk July 2000
@@ -85,17 +90,17 @@ void SimpleFilter::step() {
     // http://musicdsp.org/showArchiveComment.php?ArchiveID=25
 
     // calculate CV inputs
-    float cutoffCVValue = (inputs[CUTOFF_CV_INPUT].value * 0.05f * params[CUTOFF_CV_PARAM].value);
-    float resonanceCVValue = (inputs[RESONANCE_CV_INPUT].value * 0.1f * params[RESONANCE_CV_PARAM].value);
+    float cutoffCVValue = (inputs[CUTOFF_CV_INPUT].getVoltage() * 0.05f * params[CUTOFF_CV_PARAM].getValue());
+    float resonanceCVValue = (inputs[RESONANCE_CV_INPUT].getVoltage() * 0.1f * params[RESONANCE_CV_PARAM].getValue());
 
     // translate frequency to logarithmic scale
-    float freqHz = 20.f * powf(1000.f, params[CUTOFF_PARAM].value + cutoffCVValue);
-    frequency = clip(freqHz * (1.f / (engineGetSampleRate() / 2.0f)), 1.f);
-    resonance = clip(params[RESONANCE_PARAM].value + resonanceCVValue, 1.f);
+    float freqHz = 20.f * powf(1000.f, params[CUTOFF_PARAM].getValue() + cutoffCVValue);
+    frequency = clip(freqHz * (1.f / (args.sampleRate / 2.0f)), 1.f);
+    resonance = clip(params[RESONANCE_PARAM].getValue() + resonanceCVValue, 1.f);
 
     // normalize signal input to [-1.0...+1.0]
     // lpf starts to be very unstable for input gain above 1.f and below 0.f
-    in = clip(inputs[FILTER_INPUT].value * 0.1f, 1.0f);
+    in = clip(inputs[FILTER_INPUT].getVoltage() * 0.1f, 1.0f);
 
     // Set coefficients given frequency & resonance [0.0...1.0]
     q = 1.0f - frequency;
@@ -126,7 +131,7 @@ void SimpleFilter::step() {
 
 
     // scale normalized output back to +/-5V
-    outputs[FILTER_OUTPUT].value = clip(b4, 1.0f) * 5.0f;
+    outputs[FILTER_OUTPUT].setVoltage(clip(b4, 1.0f) * 5.0f);
 }
 
 
@@ -134,14 +139,17 @@ void SimpleFilter::step() {
  * @brief Recover of old filer
  */
 struct SimpleFilterWidget : LRModuleWidget {
+    LRBigKnob *frqKnob;
+    LRMiddleKnob *resKnob;
+
     SimpleFilterWidget(SimpleFilter *module);
 };
 
 
 SimpleFilterWidget::SimpleFilterWidget(SimpleFilter *module) : LRModuleWidget(module) {
-    panel->addSVGVariant(LRGestalt::DARK, SVG::load(assetPlugin(pluginInstance, "res/panels/SimpleFilter.svg")));
-    //panel->addSVGVariant(SVG::load(assetPlugin(plugin, "res/panels/SimpleFilter.svg")));
-    // panel->addSVGVariant(SVG::load(assetPlugin(plugin, "res/panels/SimpleFilter.svg")));
+    panel->addSVGVariant(LRGestaltType::DARK, APP->window->loadSvg(asset::plugin(pluginInstance, "res/panels/SimpleFilter.svg")));
+    //panel->addSVGVariant(APP->window->loadSvg(asset::plugin(plugin, "res/panels/SimpleFilter.svg")));
+    // panel->addSVGVariant(APP->window->loadSvg(asset::plugin(plugin, "res/panels/SimpleFilter.svg")));
 
     auto newGestalt = DARK;
 
@@ -159,27 +167,29 @@ SimpleFilterWidget::SimpleFilterWidget(SimpleFilter *module) : LRModuleWidget(mo
     // ***** SCREWS **********
 
     // ***** MAIN KNOBS ******
-    addParam(ParamcreateWidget<LRBigKnob>(Vec(46.9, 171.5), module, SimpleFilter::CUTOFF_PARAM, 0.f, 1.f, 0.f));
-    addParam(ParamcreateWidget<LRMiddleKnob>(Vec(54.0, 254.0), module, SimpleFilter::RESONANCE_PARAM, -0.f, 1.f, 0.0f));
+    frqKnob = createParam<LRBigKnob>(Vec(46.9, 171.5), module, SimpleFilter::CUTOFF_PARAM);
+    resKnob = createParam<LRMiddleKnob>(Vec(54.0, 254.0), module, SimpleFilter::RESONANCE_PARAM);
+
+    addParam(frqKnob);
+    addParam(resKnob);
     // ***** MAIN KNOBS ******
 
     // ***** CV INPUTS *******
-    addParam(ParamcreateWidget<LRSmallKnob>(Vec(27, 122), module, SimpleFilter::CUTOFF_CV_PARAM, 0.f, 1.f, 0.f));
-    addParam(ParamcreateWidget<LRSmallKnob>(Vec(99, 122), module, SimpleFilter::RESONANCE_CV_PARAM, 0.f, 1.f, 0.f));
+    addParam(createParam<LRSmallKnob>(Vec(27, 122), module, SimpleFilter::CUTOFF_CV_PARAM));
+    addParam(createParam<LRSmallKnob>(Vec(99, 122), module, SimpleFilter::RESONANCE_CV_PARAM));
 
-    addInput(createPort<LRIOPortCV>(Vec(25.4, 52.9), PortWidget::INPUT, module, SimpleFilter::CUTOFF_CV_INPUT));
-    addInput(createPort<LRIOPortCV>(Vec(97.2, 52.9), PortWidget::INPUT, module, SimpleFilter::RESONANCE_CV_INPUT));
+    addInput(createInput<LRIOPortCV>(Vec(25.4, 52.9), module, SimpleFilter::CUTOFF_CV_INPUT));
+    addInput(createInput<LRIOPortCV>(Vec(97.2, 52.9), module, SimpleFilter::RESONANCE_CV_INPUT));
     // ***** CV INPUTS *******
 
     // ***** INPUTS **********
-    addInput(createPort<LRIOPortAudio>(Vec(25.4, 324.4), PortWidget::INPUT, module, SimpleFilter::FILTER_INPUT));
+    addInput(createInput<LRIOPortAudio>(Vec(25.4, 324.4), module, SimpleFilter::FILTER_INPUT));
     // ***** INPUTS **********
 
     // ***** OUTPUTS *********
-    addOutput(createPort<LRIOPortAudio>(Vec(97.2, 324.4), PortWidget::OUTPUT, module, SimpleFilter::FILTER_OUTPUT));
+    addOutput(createOutput<LRIOPortAudio>(Vec(97.2, 324.4), module, SimpleFilter::FILTER_OUTPUT));
     // ***** OUTPUTS *********
 }
 
 
-Model *modelSimpleFilter = createModel<SimpleFilter, SimpleFilterWidget>("Lindenberg Research", "LPFilter24dB", "24dB Lowpass Filter",
-                                                                         FILTER_TAG);
+Model *modelSimpleFilter = createModel<SimpleFilter, SimpleFilterWidget>("LPFilter24dB");
