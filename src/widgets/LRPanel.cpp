@@ -26,7 +26,7 @@ void LRPanel::init() {
         // Small details draw poorly at low DPI, so oversample when drawing to the framebuffer
         //  oversample = 2.0;
 
-        DEBUG("OS");
+        // DEBUG("OS");
     }
 
     /* set panel svg */
