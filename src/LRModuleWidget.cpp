@@ -67,11 +67,11 @@ void LRModuleWidget::appendContextMenu(ui::Menu *menu) {
     sectionLabelBottom->text = "Module Style";
     menu->addChild(sectionLabelBottom);
 
-    auto *gradientItem = new GradientItem(this->panel);
+    auto *gradientItem = new GradientItem(this);
     gradientItem->text = "Metallic Look";
     menu->addChild(gradientItem);
 
-    auto *patinaItem = new PatinaItem(this->panel);
+    auto *patinaItem = new PatinaItem(this);
     patinaItem->text = "Used Look";
     menu->addChild(patinaItem);
 }
@@ -163,19 +163,16 @@ void LRModuleWidget::randomize() {
 
 
 /**
- * @brief
+ * @brief Fire a event recoursive to all childs which implements the LREventAction interface
  * @param w
  */
-void LRModuleWidget::fireEvent(Widget *w, LREvent *e) {
+void LRModuleWidget::fireGestaltChange(Widget *w, LRGestaltChangeEvent *e) {
     for (Widget *child : w->children) {
-        auto *gc = dynamic_cast<LRGestaltChangeAction1 *>(child);
-
-        // if implements the action catch interface
-        if (gc != nullptr) {
-            gc->onEventAction(e);
+        if (auto *gc = dynamic_cast<LRGestaltChangeAction *>(child)) {
+            //DEBUG("send: %s %p target box: %f %f", typeid(gc).name() ,gc, child->box.pos.x, child->box.pos.y);
+            gc->onGestaltChangeAction(*e);
         }
-        // spreed to all childs
-        if (!child->children.empty()) fireEvent(child, e);
+        if (!child->children.empty()) fireGestaltChange(child, e);
     }
 }
 
@@ -184,10 +181,12 @@ void LRModuleWidget::fireEvent(Widget *w, LREvent *e) {
  * @brief Detect gestalt change and fire event to all children
  */
 void LRModuleWidget::step() {
-    if (gestalt != prevGestalt) {
-        fireEvent(this, new LRGestaltChangeEvent(prevGestalt, gestalt, patina, gradient));
+    if (gdirty || gestalt != prevGestalt) {
+        fireGestaltChange(this, new LRGestaltChangeEvent(prevGestalt, gestalt, patina, gradient));
         prevGestalt = gestalt;
     }
+
+    ModuleWidget::step();
 }
 
 

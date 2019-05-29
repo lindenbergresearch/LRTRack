@@ -18,6 +18,9 @@
 #pragma once
 
 #include "LRGestalt.hpp"
+#include "rack.hpp"
+
+using namespace rack;
 
 namespace lrt {
 
@@ -45,7 +48,7 @@ struct LREventAction {
      * @brief To be overridden event catcher
      * @param e
      */
-    virtual void onEventAction(LREvent *e);
+    virtual void onEventAction(LREvent *e) {};
 };
 
 

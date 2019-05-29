@@ -44,7 +44,7 @@ struct LRModuleWidget;
 /**
  * @brief Standard LR Module definition
  */
-struct LRModule : public Module {
+struct LRModule : Module {
 
     // reflect back to push events to UI
     LRModuleWidget *reflect;
@@ -75,6 +75,8 @@ struct LRModuleWidget : ModuleWidget {
 
     bool gradient = true;           // gradient used at panel
     bool patina = false;            // patina used at panel
+    bool gdirty = false;            // dirty flag for gestalt
+
     bool noVariants = false;        // if set all gestalt options and menus are disabled
     bool isPreview = false;         // wiget is created in module less state for preview etc.
 
@@ -125,22 +127,21 @@ struct LRModuleWidget : ModuleWidget {
      * @brief Represents a gradient select item
      */
     struct GradientItem : MenuItem {
-        LRPanel *panel;
+        LRModuleWidget *widget;
 
 
-        explicit GradientItem(LRPanel *panel) : panel(panel) {}
+        explicit GradientItem(LRModuleWidget *widget) : widget(widget) {}
 
 
         void onAction(const event::Action &e) override {
-            if (panel != nullptr) {
-                panel->setGradientVariant(true);
-                panel->dirty = true;
-            }
+            // switch by invert
+            widget->gradient = !widget->gradient;
+            widget->gdirty = true;
         }
 
 
         void step() override {
-            rightText = *panel->gradient ? STR_CHECKMARK_UNICODE : "";
+            rightText = widget->gradient ? STR_CHECKMARK_UNICODE : "";
         }
     };
 
@@ -149,22 +150,21 @@ struct LRModuleWidget : ModuleWidget {
      * @brief Represents a gradient select item
      */
     struct PatinaItem : MenuItem {
-        LRPanel *panel;
+        LRModuleWidget *widget;
 
 
-        explicit PatinaItem(LRPanel *panel) : panel(panel) {}
+        explicit PatinaItem(LRModuleWidget *widget) : widget(widget) {}
 
 
         void onAction(const event::Action &e) override {
-            if (panel != nullptr) {
-                panel->setPatina(!*panel->patina); // invert flag on trigger
-                panel->dirty = true;
-            }
+            // switch by invert
+            widget->patina = !widget->patina;
+            widget->gdirty = true;
         }
 
 
         void step() override {
-            rightText = *panel->patina ? STR_CHECKMARK_UNICODE : "";
+            rightText = widget->patina ? STR_CHECKMARK_UNICODE : "";
         }
     };
 
@@ -173,7 +173,7 @@ struct LRModuleWidget : ModuleWidget {
     void appendContextMenu(ui::Menu *menu) override;
     json_t *toJson() override;
     void fromJson(json_t *rootJ) override;
-    static void fireEvent(Widget *w, LREvent *e);
+    void fireGestaltChange(Widget *w, LRGestaltChangeEvent *e);
 
     //void randomize() override;
     //TODO: check randomize on widgets!

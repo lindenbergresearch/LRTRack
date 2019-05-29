@@ -56,7 +56,7 @@ typedef std::string string;
 /**
  * @brief Emulation of a LCD monochrome display
  */
-struct LRLCDWidget : ParamWidget, LRGestaltVariant, LRGestaltChangeAction1 {
+struct LRLCDWidget : ParamWidget, LRGestaltVariant, LRGestaltChangeAction {
 
     enum LCDType {
         NUMERIC,
@@ -92,14 +92,14 @@ struct LRLCDWidget : ParamWidget, LRGestaltVariant, LRGestaltChangeAction1 {
     void draw(const DrawArgs &args) override;
     void onButton(const event::Button &e) override;
     void doResize(Vec v);
-    void onGestaltChangeAction(LRGestaltChangeEvent *e) override;
+    void onGestaltChangeAction(LRGestaltChangeEvent &e) override;
 };
 
 
 /**
  * @brief Indicator for control voltages on knobs
  */
-struct LRCVIndicator : TransparentWidget, LRGestaltChangeAction1 {
+struct LRCVIndicator : TransparentWidget, LRGestaltChangeAction {
     static constexpr float OVERFLOW_THRESHOLD = 0.01f;
 
     /** enabled or not */
@@ -144,9 +144,7 @@ struct LRCVIndicator : TransparentWidget, LRGestaltChangeAction1 {
      * @param args
      */
     void draw(const DrawArgs &args) override;
-
-
-    void onGestaltChangeAction(LRGestaltChangeEvent *e) override;
+    void onGestaltChangeAction(LRGestaltChangeEvent &e) override;
 };
 
 
@@ -192,7 +190,7 @@ public:
 /**
  * @brief The base of all knobs used in LR panels, includes a indicator
  */
-struct LRKnob : SvgKnob, LRGestaltVariant, LRGestaltChangeAction1 {
+struct LRKnob : SvgKnob, LRGestaltVariant, public LRGestaltChangeAction {
 private:
     static constexpr float ANGLE = 0.83f;
 
@@ -335,7 +333,7 @@ public:
      */
     void unsetSnap();
 
-    void onGestaltChangeAction(LRGestaltChangeEvent *e) override;
+    void onGestaltChangeAction(LRGestaltChangeEvent &e) override;
     void onChange(const event::Change &e) override;
 };
 
@@ -371,8 +369,10 @@ struct LRToggleKnob : LRKnob {
     }
 
 
-    void onGestaltChangeAction(LRGestaltChangeEvent *e) override {
-        switch (e->current) {
+    void onGestaltChangeAction(LRGestaltChangeEvent &e) override {
+        LRKnob::onGestaltChangeAction(e);
+
+        switch (e.current) {
             case LRGestaltType::DARK:
                 shader->setShadowPosition(3, 4);
                 shader->setStrength(1.2f);
@@ -411,8 +411,10 @@ struct LRBigKnob : LRKnob {
     }
 
 
-    void onGestaltChangeAction(LRGestaltChangeEvent *e) override {
-        switch (e->current) {
+    void onGestaltChangeAction(LRGestaltChangeEvent &e) override {
+        LRKnob::onGestaltChangeAction(e);
+
+        switch (e.current) {
             case LRGestaltType::DARK:
                 setIndicatorDistance(15);
                 setIndicatorShape(4.8, 0.12);
@@ -457,8 +459,10 @@ struct LRMiddleKnob : LRKnob {
     }
 
 
-    void onGestaltChangeAction(LRGestaltChangeEvent *e) override {
-        switch (e->current) {
+    void onGestaltChangeAction(LRGestaltChangeEvent &e) override {
+        LRKnob::onGestaltChangeAction(e);
+
+        switch (e.current) {
             case LRGestaltType::DARK:
                 setIndicatorDistance(13);
                 setIndicatorShape(5, 0.13);
@@ -506,8 +510,10 @@ struct LRSmallKnob : LRKnob {
     }
 
 
-    void onGestaltChangeAction(LRGestaltChangeEvent *e) override {
-        switch (e->current) {
+    void onGestaltChangeAction(LRGestaltChangeEvent &e) override {
+        LRKnob::onGestaltChangeAction(e);
+
+        switch (e.current) {
             case LRGestaltType::DARK:
                 setIndicatorDistance(13);
                 setIndicatorShape(5, 0.13);
@@ -568,8 +574,10 @@ struct LRSmallToggleKnob : LRKnob {
     }
 
 
-    void onGestaltChangeAction(LRGestaltChangeEvent *e) override {
-        switch (e->current) {
+    void onGestaltChangeAction(LRGestaltChangeEvent &e) override {
+        LRKnob::onGestaltChangeAction(e);
+
+        switch (e.current) {
             case LRGestaltType::DARK:
                 setIndicatorDistance(13);
                 setIndicatorShape(5, 0.13);
@@ -652,7 +660,7 @@ public:
 /**
  * @brief Alternative IO Port
  */
-struct LRIOPortD : SvgPort, LRGestaltVariant, LRGestaltChangeAction1 { //TODO: rename after migration
+struct LRIOPortD : SvgPort, LRGestaltVariant, LRGestaltChangeAction { //TODO: rename after migration
 private:
     LRShadow *shader;
 
@@ -662,8 +670,8 @@ public:
     }
 
 
-    void onGestaltChangeAction(LRGestaltChangeEvent *e) override {
-        switch (e->current) {
+    void onGestaltChangeAction(LRGestaltChangeEvent &e) override {
+        switch (e.current) {
             case LRGestaltType::DARK:
                 setSvg(getSVGVariant(DARK));
 
@@ -730,7 +738,7 @@ struct LRIOPortCV : LRIOPortD {
 /**
  * @brief Alternative screw head A
  */
-struct ScrewLight : SvgScrew, LRGestaltVariant, LRGestaltChangeAction1 {
+struct ScrewLight : SvgScrew, LRGestaltVariant, LRGestaltChangeAction {
     ScrewLight() {
         sw->svg = APP->window->loadSvg(asset::plugin(pluginInstance, "res/elements/ScrewLight.svg"));
         sw->wrap();
@@ -743,8 +751,8 @@ struct ScrewLight : SvgScrew, LRGestaltVariant, LRGestaltChangeAction1 {
     }
 
 
-    void onGestaltChangeAction(LRGestaltChangeEvent *e) override {
-        sw->svg = getSVGVariant(e->current);
+    void onGestaltChangeAction(LRGestaltChangeEvent &e) override {
+        sw->svg = getSVGVariant(e.current);
         //dirty = true;
     }
 
@@ -778,14 +786,14 @@ struct LRSwitch : SvgSwitch {
 /**
  * @brief Standard LED
  */
-struct LRLight : ModuleLightWidget, LRGestaltChangeAction1 {
+struct LRLight : ModuleLightWidget, LRGestaltChangeAction {
     float glowIntensity = 0.25;
 
     LRLight();
 
     void draw(const Widget::DrawArgs &args) override;
     void setColor(NVGcolor color);
-    void onGestaltChangeAction(LRGestaltChangeEvent *e) override;
+    void onGestaltChangeAction(LRGestaltChangeEvent &e) override;
 };
 
 
@@ -897,17 +905,17 @@ struct LRPanelBorder : TransparentWidget {
 /**
  * @brief Standard LR module Panel
  */
-struct LRPanel : FramebufferWidget, LRGestaltVariant, LRGestaltChangeAction1 {
+struct LRPanel : FramebufferWidget, LRGestaltVariant, LRGestaltChangeAction {
     SvgWidget *panelWidget;
     LRPanelBorder *pb;
     map<LRGestaltType, LRGradientWidget *> gradients;
     LRPatinaWidget *patinaWidgetClassic, *patinaWidgetWhite;
 
-    void setGradientVariant(bool enabled);
-    void setPatina(bool enabled);
+    void setGradientVariant(LRGestaltType gestalt, bool gradient);
+    void setPatina(LRGestaltType gestalt, bool enabled);
     void step() override;
     void init();
-    void onGestaltChangeAction(LRGestaltChangeEvent *e) override;
+    void onGestaltChangeAction(LRGestaltChangeEvent &e) override;
 };
 
 

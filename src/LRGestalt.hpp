@@ -18,6 +18,7 @@
 #pragma once
 
 #include <map>
+#include "LREvent.hpp"
 
 using namespace rack;
 using std::vector;
@@ -30,7 +31,7 @@ namespace lrt {
 /**
  * @brief Gestalt IDs
  */
-enum LRGestalt : int {
+enum LRGestaltType : int {
     NIL,    // virtuell element to mark unset
     DARK,   // DARK theme (as standard)
     LIGHT,  // LIGHT theme
@@ -39,32 +40,32 @@ enum LRGestalt : int {
 
 
 /**
- * @brief Base event class
+ * @brief
  */
-struct EventChange {
-    bool consumed = false;
+struct LRGestaltChangeEvent : LREvent {
+
+    /** gestalt type transition and setup */
+    LRGestaltType previous, current;
+    bool patina, gradient;
+
+
+    LRGestaltChangeEvent(LRGestaltType previous, LRGestaltType current, bool patina, bool gradient) : previous(previous), current(current),
+                                                                                                      patina(patina), gradient(gradient) {}
 };
 
 
 /**
- * @brief Empty change event for a gestalt change
+ * @brief Event Action interface for gestalt changes
  */
-struct LREventGestaltChange : EventChange {
-};
+struct LRGestaltChangeAction : LREventAction {
 
 
-/**
- * @brief Interface for catching gestalt change events
- */
-struct LRGestaltChangeAction {
+    /**
+     * @brief To be implemented
+     * @param e
+     */
+    virtual void onGestaltChangeAction(LRGestaltChangeEvent &e) = 0;
 
-    /* vars filled automatic on change event */
-    LRGestalt *gestalt = nullptr;
-    bool *patina = nullptr;
-    bool *gradient = nullptr;
-
-
-    virtual void onGestaltChange(LREventGestaltChange &e) {};
 };
 
 
@@ -74,7 +75,7 @@ struct LRGestaltChangeAction {
 struct LRGestaltVariant {
 
     /* SVG pool - Holds all needed SVG images */
-    map<LRGestalt, shared_ptr<Svg>> pool; //TODO: drop depr. SVG class
+    map<LRGestaltType, shared_ptr<Svg>> pool;
 
 
     /**
@@ -82,12 +83,12 @@ struct LRGestaltVariant {
      * @param gestalt Matching ID for variant
      * @param svg SVG Image
      */
-    void addSVGVariant(LRGestalt gestalt, shared_ptr<Svg> svg) {
+    void addSVGVariant(LRGestaltType gestalt, shared_ptr<Svg> svg) {
         pool[gestalt] = svg;
 
         /* first element inserted => set default */
         if (pool.size() == 1) {
-            pool[LRGestalt::NIL] = svg;
+            pool[LRGestaltType::NIL] = svg;
         }
     }
 
@@ -97,11 +98,11 @@ struct LRGestaltVariant {
      * @param gestalt
      * @return SVG Image if found, default if not found
      */
-    shared_ptr<Svg> getSVGVariant(LRGestalt gestalt) {
+    shared_ptr<Svg> getSVGVariant(LRGestaltType gestalt) {
 
         /* return default value if key not found */
         if (pool.count(gestalt) != 1) {
-            return pool[LRGestalt::NIL];
+            return pool[LRGestaltType::NIL];
         }
 
         return pool[gestalt];
