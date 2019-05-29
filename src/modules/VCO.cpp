@@ -63,7 +63,7 @@ struct VCO : LRModule {
     };
 
     VCOWidget *reflect;
-    DSPBLOscillator *osc = new DSPBLOscillator(APP->engine->getSampleRate());
+    vector<DSPBLOscillator *> osc;
 
 
     VCO() : LRModule(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS) {
@@ -77,6 +77,10 @@ struct VCO : LRModule {
         configParam(PULSE_PARAM, -1.f, 1.f, 0.f);
         configParam(SINE_PARAM, -1.f, 1.f, 0.f);
         configParam(TRI_PARAM, -1.f, 1.f, 0.f);
+
+        osc.resize(16);
+
+        osc[0] = new DSPBLOscillator(APP->engine->getSampleRate());
     }
 
 
@@ -87,7 +91,10 @@ struct VCO : LRModule {
 
 void VCO::onSampleRateChange() {
     Module::onSampleRateChange();
-    osc->updateSampleRate(APP->engine->getSampleRate());
+
+    for (int i = 0; i < inputs[VOCT1_INPUT].getChannels(); i++)
+        if (osc[i] != nullptr)
+            osc[i]->updateSampleRate(APP->engine->getSampleRate());
 }
 
 /*
@@ -178,52 +185,59 @@ VCOWidget::VCOWidget(VCO *module) : LRModuleWidget(module) {
 
 
 void VCO::process(const ProcessArgs &args) {
-    float fm =
-            clamp(inputs[FM_CV_INPUT].getVoltage(), -CV_BOUNDS, CV_BOUNDS) * 0.4f * dsp::quadraticBipolar(params[FM_CV_PARAM].getValue());
-    float tune = params[FREQUENCY_PARAM].getValue();
-    float pw;
 
-    if (inputs[PW_CV_INPUT].isConnected()) {
-        pw = clamp(inputs[PW_CV_INPUT].getVoltage(), -CV_BOUNDS, CV_BOUNDS) * 0.6f *
-             dsp::quadraticBipolar(params[PW_CV_PARAM].getValue() / 2.f) + 1;
-        pw = clamp(pw, 0.01, 1.99);
-    } else {
-        pw = params[PW_CV_PARAM].getValue() * 0.99f + 1;
-    }
+    for (int i = 0; i < inputs[VOCT1_INPUT].getChannels(); i++) {
+        // if no oscillator for that channel found => create it
+        if (osc[i] == nullptr) {
+            DEBUG("osc created. channel: %d sum: %d", i, inputs[VOCT1_INPUT].getChannels());
+            osc[i] = new DSPBLOscillator(args.sampleRate);
+        }
 
-    reflect->frqKnob->setIndicatorActive(inputs[FM_CV_INPUT].isConnected());
-    reflect->frqKnob->setIndicatorValue((params[FREQUENCY_PARAM].getValue() + 1) / 2 + (fm / 2));
+        float fm = clamp(inputs[FM_CV_INPUT].getVoltage(), -CV_BOUNDS, CV_BOUNDS) * 0.4f * dsp::quadraticBipolar(params[FM_CV_PARAM].getValue());
+        float tune = params[FREQUENCY_PARAM].getValue();
+        float pw;
 
-    osc->setInputs(inputs[VOCT1_INPUT].getVoltage(), inputs[VOCT2_INPUT].getVoltage(), fm, tune, params[OCTAVE_PARAM].getValue());
-    osc->setPulseWidth(pw);
+        if (inputs[PW_CV_INPUT].isConnected()) {
+            pw = clamp(inputs[PW_CV_INPUT].getVoltage(), -CV_BOUNDS, CV_BOUNDS) * 0.6f *
+                 dsp::quadraticBipolar(params[PW_CV_PARAM].getValue() / 2.f) + 1;
+            pw = clamp(pw, 0.01, 1.99);
+        } else {
+            pw = params[PW_CV_PARAM].getValue() * 0.99f + 1;
+        }
 
-    osc->process();
+        reflect->frqKnob->setIndicatorActive(inputs[FM_CV_INPUT].isConnected());
+        reflect->frqKnob->setIndicatorValue((params[FREQUENCY_PARAM].getValue() + 1) / 2 + (fm / 2));
 
-    outputs[SAW_OUTPUT].setVoltage(osc->getSawWave());
-    outputs[PULSE_OUTPUT].setVoltage(osc->getPulseWave());
-    outputs[SINE_OUTPUT].setVoltage(osc->getSineWave());
-    outputs[TRI_OUTPUT].setVoltage(osc->getTriWave());
-    outputs[NOISE_OUTPUT].setVoltage(osc->getNoise());
+        osc[i]->setInputs(inputs[VOCT1_INPUT].getVoltage(i), inputs[VOCT2_INPUT].getVoltage(), fm, tune, lround(params[OCTAVE_PARAM].getValue()));
+        osc[i]->setPulseWidth(pw);
+
+        osc[i]->process();
+
+        outputs[SAW_OUTPUT].setVoltage(osc[i]->getSawWave(), i);
+        outputs[PULSE_OUTPUT].setVoltage(osc[i]->getPulseWave(), i);
+        outputs[SINE_OUTPUT].setVoltage(osc[i]->getSineWave(), i);
+        outputs[TRI_OUTPUT].setVoltage(osc[i]->getTriWave(), i);
+        outputs[NOISE_OUTPUT].setVoltage(osc[i]->getNoise(), i);
 
 
-    if (outputs[MIX_OUTPUT].isConnected()) {
-        float mix = 0.f;
+        if (outputs[MIX_OUTPUT].isConnected()) {
+            float mix = 0.f;
 
-        mix += osc->getSawWave() * params[SAW_PARAM].getValue();
-        mix += osc->getPulseWave() * params[PULSE_PARAM].getValue();
-        mix += osc->getSineWave() * params[SINE_PARAM].getValue();
-        mix += osc->getTriWave() * params[TRI_PARAM].getValue();
+            mix += osc[i]->getSawWave() * params[SAW_PARAM].getValue();
+            mix += osc[i]->getPulseWave() * params[PULSE_PARAM].getValue();
+            mix += osc[i]->getSineWave() * params[SINE_PARAM].getValue();
+            mix += osc[i]->getTriWave() * params[TRI_PARAM].getValue();
 
-        outputs[MIX_OUTPUT].setVoltage(mix);
+            outputs[MIX_OUTPUT].setVoltage(mix, i);
+        }
     }
 
     /* for LFO mode */
-    if (osc->isLFO())
-        lights[LFO_LIGHT].setSmoothBrightness(osc->getSineWave() / 10.f + 0.3f, args.sampleTime);
+    if (osc[0]->isLFO()) lights[LFO_LIGHT].setSmoothBrightness(osc[0]->getSineWave() / 10.f + 0.3f, args.sampleTime);
     else lights[LFO_LIGHT].value = 0.f;
 
-    reflect->lcd->active = osc->isLFO();
-    reflect->lcd->value = osc->getFrequency();
+    reflect->lcd->active = osc[0]->isLFO();
+    reflect->lcd->value = osc[0]->getFrequency();
 }
 
 
