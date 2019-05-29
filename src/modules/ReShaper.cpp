@@ -5,6 +5,7 @@
 using namespace rack;
 using namespace lrt;
 
+struct ReShaperWidget;
 
 struct ReShaper : LRModule {
     enum ParamIds {
@@ -28,6 +29,7 @@ struct ReShaper : LRModule {
         NUM_LIGHTS
     };
 
+    ReShaperWidget *reflect;
 
     ReShaper() : LRModule(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS) {
         configParam(RESHAPER_AMOUNT, 1.f, 50.f, 1.f);
@@ -37,19 +39,6 @@ struct ReShaper : LRModule {
 
     void process(const ProcessArgs &args) override;
 };
-
-
-void ReShaper::process(const ProcessArgs &args) {
-    // normalize signal input to [-1.0...+1.0]
-    float x = clamp(inputs[RESHAPER_INPUT].getVoltage() * 0.1f, -1.f, 1.f);
-    float cv = inputs[RESHAPER_CV_INPUT].getVoltage() * params[RESHAPER_CV_AMOUNT].getValue();
-    float a = clamp(params[RESHAPER_AMOUNT].getValue() + cv, 1.f, 50.f);
-
-    // do the acid!
-    float out = x * (fabs(x) + a) / (x * x + (a - 1) * fabs(x) + 1);
-
-    outputs[RESHAPER_OUTPUT].setVoltage(out * 5.0f);
-}
 
 
 /**
@@ -74,6 +63,9 @@ ReShaperWidget::ReShaperWidget(ReShaper *module) : LRModuleWidget(module) {
     gestalt = newGestalt;
     addChild(panel);
     box.size = panel->box.size;
+
+    // reflect module widget
+    if (!isPreview) module->reflect = this;
 
     // ***** SCREWS **********
     addChild(createWidget<ScrewLight>(Vec(15, 1)));
@@ -101,5 +93,20 @@ ReShaperWidget::ReShaperWidget(ReShaper *module) : LRModuleWidget(module) {
     // ***** OUTPUTS *********
 }
 
+
+void ReShaper::process(const ProcessArgs &args) {
+    // normalize signal input to [-1.0...+1.0]
+    float x = clamp(inputs[RESHAPER_INPUT].getVoltage() * 0.1f, -1.f, 1.f);
+    float cv = inputs[RESHAPER_CV_INPUT].getVoltage() * params[RESHAPER_CV_AMOUNT].getValue();
+    float a = clamp(params[RESHAPER_AMOUNT].getValue() + cv, 1.f, 50.f);
+
+    reflect->amountKnob->setIndicatorActive(inputs[RESHAPER_CV_INPUT].isConnected());
+    reflect->amountKnob->setIndicatorValue((params[RESHAPER_AMOUNT].getValue() + cv) / 50.f);
+
+    // do the acid!
+    float out = x * (fabs(x) + a) / (x * x + (a - 1) * fabs(x) + 1);
+
+    outputs[RESHAPER_OUTPUT].setVoltage(out * 5.0f);
+}
 
 Model *modelReShaper = createModel<ReShaper, ReShaperWidget>("ReShaper");
