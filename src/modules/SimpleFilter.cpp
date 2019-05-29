@@ -5,6 +5,7 @@
 using namespace rack;
 using namespace lrt;
 
+struct SimpleFilterWidget;
 
 struct SimpleFilter : LRModule {
     enum ParamIds {
@@ -32,6 +33,8 @@ struct SimpleFilter : LRModule {
     float b0, b1, b2, b3, b4;
     float t1, t2;
     float frequency, resonance, in;
+
+    SimpleFilterWidget *reflect;
 
 
     SimpleFilter() : LRModule(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS) {
@@ -81,6 +84,66 @@ float clip(float in, float level) {
 }
 
 
+/**
+ * @brief Recover of old filer
+ */
+struct SimpleFilterWidget : LRModuleWidget {
+    LRBigKnob *frqKnob;
+    LRMiddleKnob *resKnob;
+
+    SimpleFilterWidget(SimpleFilter *module);
+};
+
+
+SimpleFilterWidget::SimpleFilterWidget(SimpleFilter *module) : LRModuleWidget(module) {
+    panel->addSVGVariant(LRGestaltType::DARK, APP->window->loadSvg(asset::plugin(pluginInstance, "res/panels/SimpleFilter.svg")));
+    //panel->addSVGVariant(APP->window->loadSvg(asset::plugin(plugin, "res/panels/SimpleFilter.svg")));
+    // panel->addSVGVariant(APP->window->loadSvg(asset::plugin(plugin, "res/panels/SimpleFilter.svg")));
+
+    auto newGestalt = DARK;
+
+    noVariants = true;
+    panel->init();
+    gestalt = newGestalt;
+    addChild(panel);
+    box.size = panel->box.size;
+
+    // reflect module widget
+    if (!isPreview) module->reflect = this;
+
+    // ***** SCREWS **********
+    addChild(createWidget<ScrewLight>(Vec(15, 1)));
+    addChild(createWidget<ScrewLight>(Vec(box.size.x - 30, 1)));
+    addChild(createWidget<ScrewLight>(Vec(15, 366)));
+    addChild(createWidget<ScrewLight>(Vec(box.size.x - 30, 366)));
+    // ***** SCREWS **********
+
+    // ***** MAIN KNOBS ******
+    frqKnob = createParam<LRBigKnob>(Vec(46.9, 171.5), module, SimpleFilter::CUTOFF_PARAM);
+    resKnob = createParam<LRMiddleKnob>(Vec(54.0, 254.0), module, SimpleFilter::RESONANCE_PARAM);
+
+    addParam(frqKnob);
+    addParam(resKnob);
+    // ***** MAIN KNOBS ******
+
+    // ***** CV INPUTS *******
+    addParam(createParam<LRSmallKnob>(Vec(27, 122), module, SimpleFilter::CUTOFF_CV_PARAM));
+    addParam(createParam<LRSmallKnob>(Vec(99, 122), module, SimpleFilter::RESONANCE_CV_PARAM));
+
+    addInput(createInput<LRIOPortCV>(Vec(25.4, 52.9), module, SimpleFilter::CUTOFF_CV_INPUT));
+    addInput(createInput<LRIOPortCV>(Vec(97.2, 52.9), module, SimpleFilter::RESONANCE_CV_INPUT));
+    // ***** CV INPUTS *******
+
+    // ***** INPUTS **********
+    addInput(createInput<LRIOPortAudio>(Vec(25.4, 324.4), module, SimpleFilter::FILTER_INPUT));
+    // ***** INPUTS **********
+
+    // ***** OUTPUTS *********
+    addOutput(createOutput<LRIOPortAudio>(Vec(97.2, 324.4), module, SimpleFilter::FILTER_OUTPUT));
+    // ***** OUTPUTS *********
+}
+
+
 void SimpleFilter::process(const ProcessArgs &args) {
     // Moog 24 dB/oct resonant lowpass VCF
     // References: CSound source code, Stilson/Smith CCRMA paper.
@@ -97,6 +160,13 @@ void SimpleFilter::process(const ProcessArgs &args) {
     float freqHz = 20.f * powf(1000.f, params[CUTOFF_PARAM].getValue() + cutoffCVValue);
     frequency = clip(freqHz * (1.f / (args.sampleRate / 2.0f)), 1.f);
     resonance = clip(params[RESONANCE_PARAM].getValue() + resonanceCVValue, 1.f);
+
+    reflect->frqKnob->setIndicatorActive(inputs[CUTOFF_CV_INPUT].isConnected());
+    reflect->resKnob->setIndicatorActive(inputs[RESONANCE_CV_INPUT].isConnected());
+
+    reflect->frqKnob->setIndicatorValue(params[CUTOFF_PARAM].getValue() + cutoffCVValue);
+    reflect->resKnob->setIndicatorValue(params[RESONANCE_PARAM].getValue() + resonanceCVValue);
+
 
     // normalize signal input to [-1.0...+1.0]
     // lpf starts to be very unstable for input gain above 1.f and below 0.f
@@ -133,63 +203,5 @@ void SimpleFilter::process(const ProcessArgs &args) {
     // scale normalized output back to +/-5V
     outputs[FILTER_OUTPUT].setVoltage(clip(b4, 1.0f) * 5.0f);
 }
-
-
-/**
- * @brief Recover of old filer
- */
-struct SimpleFilterWidget : LRModuleWidget {
-    LRBigKnob *frqKnob;
-    LRMiddleKnob *resKnob;
-
-    SimpleFilterWidget(SimpleFilter *module);
-};
-
-
-SimpleFilterWidget::SimpleFilterWidget(SimpleFilter *module) : LRModuleWidget(module) {
-    panel->addSVGVariant(LRGestaltType::DARK, APP->window->loadSvg(asset::plugin(pluginInstance, "res/panels/SimpleFilter.svg")));
-    //panel->addSVGVariant(APP->window->loadSvg(asset::plugin(plugin, "res/panels/SimpleFilter.svg")));
-    // panel->addSVGVariant(APP->window->loadSvg(asset::plugin(plugin, "res/panels/SimpleFilter.svg")));
-
-    auto newGestalt = DARK;
-
-    noVariants = true;
-    panel->init();
-    gestalt = newGestalt;
-    addChild(panel);
-    box.size = panel->box.size;
-
-    // ***** SCREWS **********
-    addChild(createWidget<ScrewLight>(Vec(15, 1)));
-    addChild(createWidget<ScrewLight>(Vec(box.size.x - 30, 1)));
-    addChild(createWidget<ScrewLight>(Vec(15, 366)));
-    addChild(createWidget<ScrewLight>(Vec(box.size.x - 30, 366)));
-    // ***** SCREWS **********
-
-    // ***** MAIN KNOBS ******
-    frqKnob = createParam<LRBigKnob>(Vec(46.9, 171.5), module, SimpleFilter::CUTOFF_PARAM);
-    resKnob = createParam<LRMiddleKnob>(Vec(54.0, 254.0), module, SimpleFilter::RESONANCE_PARAM);
-
-    addParam(frqKnob);
-    addParam(resKnob);
-    // ***** MAIN KNOBS ******
-
-    // ***** CV INPUTS *******
-    addParam(createParam<LRSmallKnob>(Vec(27, 122), module, SimpleFilter::CUTOFF_CV_PARAM));
-    addParam(createParam<LRSmallKnob>(Vec(99, 122), module, SimpleFilter::RESONANCE_CV_PARAM));
-
-    addInput(createInput<LRIOPortCV>(Vec(25.4, 52.9), module, SimpleFilter::CUTOFF_CV_INPUT));
-    addInput(createInput<LRIOPortCV>(Vec(97.2, 52.9), module, SimpleFilter::RESONANCE_CV_INPUT));
-    // ***** CV INPUTS *******
-
-    // ***** INPUTS **********
-    addInput(createInput<LRIOPortAudio>(Vec(25.4, 324.4), module, SimpleFilter::FILTER_INPUT));
-    // ***** INPUTS **********
-
-    // ***** OUTPUTS *********
-    addOutput(createOutput<LRIOPortAudio>(Vec(97.2, 324.4), module, SimpleFilter::FILTER_OUTPUT));
-    // ***** OUTPUTS *********
-}
-
 
 Model *modelSimpleFilter = createModel<SimpleFilter, SimpleFilterWidget>("LPFilter24dB");
