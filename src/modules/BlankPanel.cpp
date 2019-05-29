@@ -22,15 +22,7 @@ struct BlankPanel : LRModule {
 
 
     BlankPanel() : LRModule(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS) {}
-
-
-    void process(const ProcessArgs &args) override;
 };
-
-
-void BlankPanel::process(const ProcessArgs &args) {
-
-}
 
 
 /**
@@ -42,35 +34,20 @@ struct BlankPanelWidget : LRModuleWidget {
 
 
 BlankPanelWidget::BlankPanelWidget(BlankPanel *module) : LRModuleWidget(module) {
-    panel->addSVGVariant(LRGestalt::DARK, APP->window->loadSvg(asset::plugin(pluginInstance, "res/panels/BlankPanel.svg")));
-    panel->addSVGVariant(LRGestalt::LIGHT, APP->window->loadSvg(asset::plugin(pluginInstance, "res/panels/BlankPanelLight.svg")));
-    panel->addSVGVariant(LRGestalt::AGED, APP->window->loadSvg(asset::plugin(pluginInstance, "res/panels/BlankPanelLight.svg")));
-
-    gestalt = LRGestalt::AGED;
-    patina = true;
-    gradient = true;
-
-    noVariants = true;
+    panel->addSVGVariant(LRGestaltType::DARK, APP->window->loadSvg(asset::plugin(pluginInstance, "res/panels/BlankPanel.svg")));
+    panel->addSVGVariant(LRGestaltType::LIGHT, APP->window->loadSvg(asset::plugin(pluginInstance, "res/panels/BlankPanelLight.svg")));
+    panel->addSVGVariant(LRGestaltType::AGED, APP->window->loadSvg(asset::plugin(pluginInstance, "res/panels/BlankPanelLight.svg")));
 
     panel->init();
     addChild(panel);
     box.size = panel->box.size;
 
-    panel->patinaWidgetClassic->strength = .5f;
-    panel->patinaWidgetWhite->strength = .5f;
-
-    panel->gradients[LIGHT]->setInnerColor(nvgRGBAf(0.5, 0.5, 0.f, 0.1f));
-    panel->gradients[LIGHT]->setOuterColor(nvgRGBAf(0.f, 0.f, 0.f, 0.73f));
 
     float speed = 0.007;
 
-    addChild(SVGRotator::create(Vec(105.5, 55), APP->window->loadSvg(asset::plugin(pluginInstance, "res/elements/CogBig.svg")), speed, 0.7,
-                                0.4));
-    addChild(SVGRotator::create(Vec(139, 43.7), APP->window->loadSvg(asset::plugin(pluginInstance, "res/elements/CogMiddle.svg")),
-                                speed * 1.9f, 0.7,
-                                0.4));
-    addChild(SVGRotator::create(Vec(120, 40), APP->window->loadSvg(asset::plugin(pluginInstance, "res/elements/CogSmall.svg")),
-                                -speed * 1.3f, 0.7, 0.4));
+    addChild(SVGRotator::create(Vec(105.5, 55), APP->window->loadSvg(asset::plugin(pluginInstance, "res/elements/CogBig.svg")), speed, 0.7, 0.4));
+    addChild(SVGRotator::create(Vec(139, 43.7), APP->window->loadSvg(asset::plugin(pluginInstance, "res/elements/CogMiddle.svg")), speed * 1.9f, 0.7, 0.4));
+    addChild(SVGRotator::create(Vec(120, 40), APP->window->loadSvg(asset::plugin(pluginInstance, "res/elements/CogSmall.svg")), -speed * 1.3f, 0.7, 0.4));
 
 
     // ***** SCREWS **********
