@@ -79,9 +79,9 @@ struct DiodeVCFWidget : LRModuleWidget {
 
 
     DiodeVCFWidget(DiodeVCF *module) : LRModuleWidget(module) {
-        panel->addSVGVariant(LRGestalt::DARK, APP->window->loadSvg(asset::plugin(pluginInstance, "res/panels/DiodeLadderVCFClassic.svg")));
-        panel->addSVGVariant(LRGestalt::LIGHT, APP->window->loadSvg(asset::plugin(pluginInstance, "res/panels/DiodeLadderVCF.svg")));
-        panel->addSVGVariant(LRGestalt::AGED, APP->window->loadSvg(asset::plugin(pluginInstance, "res/panels/DiodeLadderVCFAged.svg")));
+        panel->addSVGVariant(LRGestaltType::DARK, APP->window->loadSvg(asset::plugin(pluginInstance, "res/panels/DiodeLadderVCFClassic.svg")));
+        panel->addSVGVariant(LRGestaltType::LIGHT, APP->window->loadSvg(asset::plugin(pluginInstance, "res/panels/DiodeLadderVCF.svg")));
+        panel->addSVGVariant(LRGestaltType::AGED, APP->window->loadSvg(asset::plugin(pluginInstance, "res/panels/DiodeLadderVCFAged.svg")));
 
         panel->init();
         addChild(panel);
