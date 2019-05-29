@@ -142,8 +142,8 @@ void LRLCDWidget::draw(const Widget::DrawArgs &args) {
 }
 
 
-void LRLCDWidget::onGestaltChangeAction(lrt::LRGestaltChangeEvent *e) {
-    auto svg = getSVGVariant(e->current);
+void LRLCDWidget::onGestaltChangeAction(LRGestaltChangeEvent &e) {
+    auto svg = getSVGVariant(e.current);
 
     if (svg != nullptr) {
         tw->identity();
@@ -154,7 +154,7 @@ void LRLCDWidget::onGestaltChangeAction(lrt::LRGestaltChangeEvent *e) {
         // dirty = true;
     }
 
-    switch (e->current) {
+    switch (e.current) {
         case DARK:
             fg = LCD_DEFAULT_COLOR_DARK;
             break;

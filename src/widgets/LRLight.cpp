@@ -76,18 +76,17 @@ LRLight::LRLight() {
 }
 
 
-void LRLight::onGestaltChangeAction(lrt::LRGestaltChangeEvent *e) {
-    {
-        switch (e->current) {
-            case LRGestaltType::DARK:
+void LRLight::onGestaltChangeAction(LRGestaltChangeEvent &e) {
+    switch (e.current) {
+        case LRGestaltType::DARK:
             setColor(LED_DEFAULT_COLOR_DARK);
             glowIntensity = 0.25; // does better effect on dark surfaces
             break;
-            case LRGestaltType::LIGHT:
+        case LRGestaltType::LIGHT:
             setColor(LED_DEFAULT_COLOR_LIGHT);
             glowIntensity = 0.25;
             break;
-            case LRGestaltType::AGED:
+        case LRGestaltType::AGED:
             setColor(LED_DEFAULT_COLOR_AGED);
             glowIntensity = 0.15;
             break;

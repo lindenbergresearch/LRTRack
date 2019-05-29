@@ -88,10 +88,8 @@ void LRCVIndicator::setDistances(float d1, float d2) {
 }
 
 
-void LRCVIndicator::onGestaltChange(LREventGestaltChange &e) {
-    LRGestaltChangeAction::onGestaltChange(e);
-
-    switch (*gestalt) {
+void LRCVIndicator::onGestaltChangeAction(LRGestaltChangeEvent &e) {
+    switch (e.current) {
         case NIL:
         case DARK:
             normal = nvgRGBAf(0, 0, 0, 0.9);
