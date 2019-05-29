@@ -41,7 +41,7 @@ struct DiodeVCF : LRModule {
 
 
     DiodeVCF() : LRModule(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS) {
-        configParam(FREQUENCY_PARAM, -1.f, 1.0f, 0.f);
+        configParam(FREQUENCY_PARAM, 0.f, 1.0f, 0.f);
         configParam(RES_PARAM, 0.0f, 1.0, 0.0f);
         configParam(SATURATE_PARAM, 0.f, 1.0, 0.0f);
 
