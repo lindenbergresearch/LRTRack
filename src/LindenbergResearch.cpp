@@ -16,10 +16,11 @@ void init(Plugin *p) {
     p->addModel(modelReShaper);
     p->addModel(modelBlankPanelEmpty);
     p->addModel(modelBlankPanelSmall);
+    p->addModel(modelAlmaFilter);
 
 /*
     p->addModel(modelMS20Filter);
-    p->addModel(modelAlmaFilter);
+
 
     p->addModel(modelWestcoast);
     p->addModel(modelQuickMix);

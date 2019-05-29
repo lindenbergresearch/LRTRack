@@ -35,10 +35,11 @@ extern Model *modelSimpleFilter;
 extern Model *modelReShaper;
 extern Model *modelBlankPanelEmpty;
 extern Model *modelBlankPanelSmall;
+extern Model *modelAlmaFilter;
 
 /*
 extern Model *modelMS20Filter;
-extern Model *modelAlmaFilter;
+
 
 
 

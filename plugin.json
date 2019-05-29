@@ -80,6 +80,14 @@
         "BLANK",
         "MULTIPLE"
       ]
+    },
+    {
+      "slug": "VCF",
+      "name": "Alma 24dB/oct ladder filter",
+      "description": "Alma 24dB/oct lowpass ladder filter",
+      "tags": [
+        "FILTER"
+      ]
     }
   ]
 }
