@@ -39,7 +39,6 @@ struct VCO : LRModule {
         PULSE_PARAM,
         SINE_PARAM,
         TRI_PARAM,
-        LCD_PARAM,
         NUM_PARAMS
     };
     enum InputIds {
@@ -124,10 +123,6 @@ VCOWidget::VCOWidget(VCO *module) : LRModuleWidget(module) {
     // **** SETUP LCD ********
     lcd->box.pos = Vec(22, 222);
     lcd->format = "%00004.3f Hz";
-
-    // map quantity if not in preview mode
-    if (!isPreview) lcd->paramQuantity = module->paramQuantities[VCO::LCD_PARAM];
-
     addChild(lcd);
     // **** SETUP LCD ********
 
