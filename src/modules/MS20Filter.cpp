@@ -6,6 +6,8 @@
 using namespace rack;
 using namespace lrt;
 
+struct MS20FilterWidget;
+
 
 struct MS20Filter : LRModule {
 
@@ -37,59 +39,32 @@ struct MS20Filter : LRModule {
         NUM_LIGHTS
     };
 
-    lrt::MS20zdf *ms20zdf = new lrt::MS20zdf(engineGetSampleRate());
+    lrt::MS20zdf *ms20zdf = new lrt::MS20zdf(APP->engine->getSampleRate());
 
-    LRBigKnob *frqKnob = NULL;
-    LRMiddleKnob *peakKnob = NULL;
-    LRMiddleKnob *driveKnob = NULL;
+    MS20FilterWidget *reflect;
 
 
     MS20Filter() : LRModule(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS) {
-        frqKnob = LRKnob::create<LRBigKnob>(Vec(102, 64.9), this, MS20Filter::FREQUENCY_PARAM, 0.f, 1.f, 1.f);
-        peakKnob = LRKnob::create<LRMiddleKnob>(Vec(109, 159.8), this, MS20Filter::PEAK_PARAM, 0.0f, 1.0, 0.0f);
-        driveKnob = LRKnob::create<LRMiddleKnob>(Vec(109, 229.6), this, MS20Filter::DRIVE_PARAM, 0.f, 1.0, 0.0f);
+        configParam(FREQUENCY_PARAM, 0.f, 1.f, 1.f);
+        configParam(PEAK_PARAM, 0.0f, 1.0, 0.0f);
+        configParam(DRIVE_PARAM, 0.f, 1.0, 0.0f);
+
+        configParam(CUTOFF_CV_PARAM, -1.f, 1.0f, 0.f);
+        configParam(PEAK_CV_PARAM, -1.f, 1.0f, 0.f);
+        configParam(GAIN_CV_PARAM, -1.f, 1.0f, 0.f);
+
+        configParam(MODE_SWITCH_PARAM, 0.0, 1.0, 1.0);
     }
 
 
-    void step() override;
+    void process(const ProcessArgs &args) override;
     void onSampleRateChange() override;
 };
 
 
-void MS20Filter::step() {
-    /* compute control voltages */
-    float frqcv = inputs[CUTOFF_CV_INPUT].value * 0.1f * quadraticBipolar(params[CUTOFF_CV_PARAM].value);
-    float peakcv = inputs[PEAK_CV_INPUT].value * 0.1f * quadraticBipolar(params[PEAK_CV_PARAM].value);
-    float gaincv = inputs[GAIN_CV_INPUT].value * 0.1f * quadraticBipolar(params[GAIN_CV_PARAM].value);
-
-    /* set cv modulated parameters */
-    ms20zdf->setFrequency(params[FREQUENCY_PARAM].value + frqcv);
-    ms20zdf->setPeak(params[PEAK_PARAM].value + peakcv);
-    ms20zdf->setDrive(params[DRIVE_PARAM].value + gaincv);
-
-    /* pass modulated parameter to knob widget for cv indicator */
-    if (frqKnob != NULL && peakKnob != NULL && driveKnob != NULL) {
-        frqKnob->setIndicatorActive(inputs[CUTOFF_CV_INPUT].active);
-        peakKnob->setIndicatorActive(inputs[PEAK_CV_INPUT].active);
-        driveKnob->setIndicatorActive(inputs[GAIN_CV_INPUT].active);
-
-        frqKnob->setIndicatorValue(params[FREQUENCY_PARAM].value + frqcv);
-        peakKnob->setIndicatorValue(params[PEAK_PARAM].value + peakcv);
-        driveKnob->setIndicatorValue(params[DRIVE_PARAM].value + gaincv);
-    }
-
-    /* process signal */
-    ms20zdf->setType(params[MODE_SWITCH_PARAM].value);
-    ms20zdf->setIn(inputs[FILTER_INPUT].value);
-    ms20zdf->process();
-
-    outputs[FILTER_OUTPUT].value = ms20zdf->getLPOut();
-}
-
-
 void MS20Filter::onSampleRateChange() {
     Module::onSampleRateChange();
-    ms20zdf->updateSampleRate(engineGetSampleRate());
+    ms20zdf->updateSampleRate(APP->engine->getSampleRate());
 }
 
 
@@ -97,19 +72,25 @@ void MS20Filter::onSampleRateChange() {
  * @brief Valerie MS20 filter
  */
 struct MS20FilterWidget : LRModuleWidget {
+    LRBigKnob *frqKnob;
+    LRMiddleKnob *peakKnob;
+    LRMiddleKnob *driveKnob;
+
     MS20FilterWidget(MS20Filter *module);
 };
 
 
 MS20FilterWidget::MS20FilterWidget(MS20Filter *module) : LRModuleWidget(module) {
-    panel->addSVGVariant(LRGestalt::DARK, SVG::load(assetPlugin(pluginInstance, "res/panels/MS20.svg")));
-    panel->addSVGVariant(LRGestalt::LIGHT, SVG::load(assetPlugin(pluginInstance, "res/panels/MS20Light.svg")));
-    panel->addSVGVariant(LRGestalt::AGED, SVG::load(assetPlugin(pluginInstance, "res/panels/MS20Aged.svg")));
+    panel->addSVGVariant(LRGestaltType::DARK, APP->window->loadSvg(asset::plugin(pluginInstance, "res/panels/MS20.svg")));
+    panel->addSVGVariant(LRGestaltType::LIGHT, APP->window->loadSvg(asset::plugin(pluginInstance, "res/panels/MS20Light.svg")));
+    panel->addSVGVariant(LRGestaltType::AGED, APP->window->loadSvg(asset::plugin(pluginInstance, "res/panels/MS20Aged.svg")));
 
     panel->init();
     addChild(panel);
     box.size = panel->box.size;
 
+    // reflect module widget
+    if (!isPreview) module->reflect = this;
 
     // ***** SCREWS **********
     addChild(createWidget<ScrewLight>(Vec(15, 1)));
@@ -119,33 +100,66 @@ MS20FilterWidget::MS20FilterWidget(MS20Filter *module) : LRModuleWidget(module) 
     // ***** SCREWS **********
 
     // ***** MAIN KNOBS ******
-    addParam(module->frqKnob);
-    addParam(module->peakKnob);
-    addParam(module->driveKnob);
+    frqKnob = createParam<LRBigKnob>(Vec(102, 64.9), module, MS20Filter::FREQUENCY_PARAM);
+    peakKnob = createParam<LRMiddleKnob>(Vec(109, 159.8), module, MS20Filter::PEAK_PARAM);
+    driveKnob = createParam<LRMiddleKnob>(Vec(109, 229.6), module, MS20Filter::DRIVE_PARAM);
+
+    addParam(frqKnob);
+    addParam(peakKnob);
+    addParam(driveKnob);
     // ***** MAIN KNOBS ******
 
     // ***** CV INPUTS *******
-    addParam(LRKnob::create<LRSmallKnob>(Vec(61, 169.3), module, MS20Filter::PEAK_CV_PARAM, -1.f, 1.0f, 0.f));
-    addParam(LRKnob::create<LRSmallKnob>(Vec(61, 82.4), module, MS20Filter::CUTOFF_CV_PARAM, -1.f, 1.f, 0.f));
-    addParam(LRKnob::create<LRSmallKnob>(Vec(61, 239), module, MS20Filter::GAIN_CV_PARAM, -1.f, 1.f, 0.f));
+    addParam(createParam<LRSmallKnob>(Vec(61, 169.3), module, MS20Filter::PEAK_CV_PARAM));
+    addParam(createParam<LRSmallKnob>(Vec(61, 82.4), module, MS20Filter::CUTOFF_CV_PARAM));
+    addParam(createParam<LRSmallKnob>(Vec(61, 239), module, MS20Filter::GAIN_CV_PARAM));
 
-    addInput(createPort<LRIOPortCV>(Vec(18, 168.5), PortWidget::INPUT, module, MS20Filter::PEAK_CV_INPUT));
-    addInput(createPort<LRIOPortCV>(Vec(18, 81.5), PortWidget::INPUT, module, MS20Filter::CUTOFF_CV_INPUT));
-    addInput(createPort<LRIOPortCV>(Vec(18, 239), PortWidget::INPUT, module, MS20Filter::GAIN_CV_INPUT));
+    addInput(createInput<LRIOPortCV>(Vec(18, 168.5), module, MS20Filter::PEAK_CV_INPUT));
+    addInput(createInput<LRIOPortCV>(Vec(18, 81.5), module, MS20Filter::CUTOFF_CV_INPUT));
+    addInput(createInput<LRIOPortCV>(Vec(18, 239), module, MS20Filter::GAIN_CV_INPUT));
     // ***** CV INPUTS *******
 
     // ***** INPUTS **********
-    addInput(createPort<LRIOPortAudio>(Vec(17.999, 326.05), PortWidget::INPUT, module, MS20Filter::FILTER_INPUT));
+    addInput(createInput<LRIOPortAudio>(Vec(17.999, 326.05), module, MS20Filter::FILTER_INPUT));
     // ***** INPUTS **********
 
     // ***** OUTPUTS *********
-    addOutput(createPort<LRIOPortAudio>(Vec(58.544, 326.05), PortWidget::OUTPUT, module, MS20Filter::FILTER_OUTPUT));
+    addOutput(createOutput<LRIOPortAudio>(Vec(58.544, 326.05), module, MS20Filter::FILTER_OUTPUT));
     // ***** OUTPUTS *********
 
     // ***** SWITCH  *********
-    addParam(ParamcreateWidget<LRSwitch>(Vec(119, 331), module, MS20Filter::MODE_SWITCH_PARAM, 0.0, 1.0, 1.0));
+    addParam(createParam<LRSwitch>(Vec(119, 331), module, MS20Filter::MODE_SWITCH_PARAM));
     // ***** SWITCH  *********
 }
 
 
-Model *modelMS20Filter = createModel<MS20Filter, MS20FilterWidget>("Lindenberg Research", "MS20 VCF", "Valerie MS20 Filter", FILTER_TAG);
+void MS20Filter::process(const ProcessArgs &args) {
+    /* compute control voltages */
+    float frqcv = inputs[CUTOFF_CV_INPUT].getVoltage() * 0.1f * dsp::quadraticBipolar(params[CUTOFF_CV_PARAM].getValue());
+    float peakcv = inputs[PEAK_CV_INPUT].getVoltage() * 0.1f * dsp::quadraticBipolar(params[PEAK_CV_PARAM].getValue());
+    float gaincv = inputs[GAIN_CV_INPUT].getVoltage() * 0.1f * dsp::quadraticBipolar(params[GAIN_CV_PARAM].getValue());
+
+    /* set cv modulated parameters */
+    ms20zdf->setFrequency(params[FREQUENCY_PARAM].getValue() + frqcv);
+    ms20zdf->setPeak(params[PEAK_PARAM].getValue() + peakcv);
+    ms20zdf->setDrive(params[DRIVE_PARAM].getValue() + gaincv);
+
+    /* pass modulated parameter to knob widget for cv indicator */
+    reflect->frqKnob->setIndicatorActive(inputs[CUTOFF_CV_INPUT].isConnected());
+    reflect->peakKnob->setIndicatorActive(inputs[PEAK_CV_INPUT].isConnected());
+    reflect->driveKnob->setIndicatorActive(inputs[GAIN_CV_INPUT].isConnected());
+
+    reflect->frqKnob->setIndicatorValue(params[FREQUENCY_PARAM].getValue() + frqcv);
+    reflect->peakKnob->setIndicatorValue(params[PEAK_PARAM].getValue() + peakcv);
+    reflect->driveKnob->setIndicatorValue(params[DRIVE_PARAM].getValue() + gaincv);
+
+    /* process signal */
+    ms20zdf->setType(params[MODE_SWITCH_PARAM].getValue());
+    ms20zdf->setIn(inputs[FILTER_INPUT].getVoltage());
+    ms20zdf->process();
+
+    outputs[FILTER_OUTPUT].setVoltage(ms20zdf->getLPOut());
+}
+
+
+Model *modelMS20Filter = createModel<MS20Filter, MS20FilterWidget>("MS20 VCF");

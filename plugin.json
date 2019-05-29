@@ -75,7 +75,7 @@
     {
       "slug": "BlankPanel Small",
       "name": "Blankpanel | Multiple",
-      "description": "Small blankpanel switchable to a 2x4 multiple",
+      "description": "Small blankpanel extendable to a 2x4 multiple",
       "tags": [
         "BLANK",
         "MULTIPLE"
@@ -85,6 +85,14 @@
       "slug": "VCF",
       "name": "Alma 24dB/oct ladder filter",
       "description": "Alma 24dB/oct lowpass ladder filter",
+      "tags": [
+        "FILTER"
+      ]
+    },
+    {
+      "slug": "MS20 VCF",
+      "name": "Valerie MS20 filter",
+      "description": "Valerie MS20 type 12dB/oct lowpass filter",
       "tags": [
         "FILTER"
       ]

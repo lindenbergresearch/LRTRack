@@ -17,9 +17,10 @@ void init(Plugin *p) {
     p->addModel(modelBlankPanelEmpty);
     p->addModel(modelBlankPanelSmall);
     p->addModel(modelAlmaFilter);
+    p->addModel(modelMS20Filter);
 
 /*
-    p->addModel(modelMS20Filter);
+
 
 
     p->addModel(modelWestcoast);
