@@ -34,13 +34,14 @@ extern Model *modelVCO;
 extern Model *modelSimpleFilter;
 extern Model *modelReShaper;
 extern Model *modelBlankPanelEmpty;
+extern Model *modelBlankPanelSmall;
 
 /*
 extern Model *modelMS20Filter;
 extern Model *modelAlmaFilter;
 
 
-extern Model *modelBlankPanelSmall;
+
 extern Model *modelWestcoast;
 extern Model *modelQuickMix;
 

@@ -71,6 +71,15 @@
       "tags": [
         "BLANK"
       ]
+    },
+    {
+      "slug": "BlankPanel Small",
+      "name": "Blankpanel | Multiple",
+      "description": "Small blankpanel switchable to a 2x4 multiple",
+      "tags": [
+        "BLANK",
+        "MULTIPLE"
+      ]
     }
   ]
 }

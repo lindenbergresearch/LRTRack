@@ -15,6 +15,7 @@ void init(Plugin *p) {
     p->addModel(modelSimpleFilter);
     p->addModel(modelReShaper);
     p->addModel(modelBlankPanelEmpty);
+    p->addModel(modelBlankPanelSmall);
 
 /*
     p->addModel(modelMS20Filter);
@@ -33,6 +34,6 @@ void init(Plugin *p) {
 
 
 
-    p->addModel(modelBlankPanelSmall);
+
     */
 }
