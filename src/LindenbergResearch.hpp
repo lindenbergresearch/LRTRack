@@ -37,6 +37,7 @@ extern Model *modelBlankPanelEmpty;
 extern Model *modelBlankPanelSmall;
 extern Model *modelAlmaFilter;
 extern Model *modelMS20Filter;
+extern Model *modelWestcoast;
 
 /*
 
@@ -44,7 +45,7 @@ extern Model *modelMS20Filter;
 
 
 
-extern Model *modelWestcoast;
+
 extern Model *modelQuickMix;
 
 extern Model *modelTestDriver;

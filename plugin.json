@@ -96,6 +96,14 @@
       "tags": [
         "FILTER"
       ]
+    },
+    {
+      "slug": "Westcoast VCS",
+      "name": "Westcoast Complex Shaper",
+      "description": "VWestcoast waveshaper with different modes",
+      "tags": [
+        "WAVESHAPER"
+      ]
     }
   ]
 }

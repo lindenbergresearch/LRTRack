@@ -18,12 +18,13 @@ void init(Plugin *p) {
     p->addModel(modelBlankPanelSmall);
     p->addModel(modelAlmaFilter);
     p->addModel(modelMS20Filter);
+    p->addModel(modelWestcoast);
 
 /*
 
 
 
-    p->addModel(modelWestcoast);
+
     p->addModel(modelQuickMix);
 
     p->addModel(modelTestDriver);
