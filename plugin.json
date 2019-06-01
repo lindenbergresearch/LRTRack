@@ -17,7 +17,7 @@
       ]
     },
     {
-      "slug": "TYPE35 VCF",
+      "slug": "TYPE35_VCF",
       "name": "Vampyr type35 VCF",
       "description": "Sallen-Key type dual filter: Lowpass: 12dB/oct Highpass: 6dB/oct",
       "tags": [
@@ -25,7 +25,7 @@
       ]
     },
     {
-      "slug": "DIODE VCF",
+      "slug": "DIODE_VCF",
       "name": "Laika Diode-Ladder Filter",
       "description": "Classic diode driven ladder filter with 12/dB/oct",
       "tags": [
@@ -33,7 +33,7 @@
       ]
     },
     {
-      "slug": "BlankPanel 01",
+      "slug": "BlankPanel_01",
       "name": "Blank: Logo",
       "description": "Blank panel with Logo and Information",
       "tags": [
@@ -41,7 +41,7 @@
       ]
     },
     {
-      "slug": "BlankPanel Wood",
+      "slug": "BlankPanel_Wood",
       "name": "Blank: Wood-Panel",
       "description": "Wooden side panel",
       "tags": [
@@ -65,7 +65,7 @@
       ]
     },
     {
-      "slug": "BlankPanel 02",
+      "slug": "BlankPanel_02",
       "name": "Big Blankpanel",
       "description": "Big Blankpanel",
       "tags": [
@@ -73,7 +73,7 @@
       ]
     },
     {
-      "slug": "BlankPanel Small",
+      "slug": "BlankPanel_Small",
       "name": "Blankpanel | Multiple",
       "description": "Small blankpanel extendable to a 2x4 multiple",
       "tags": [
@@ -90,7 +90,7 @@
       ]
     },
     {
-      "slug": "MS20 VCF",
+      "slug": "MS20_VCF",
       "name": "Valerie MS20 filter",
       "description": "Valerie MS20 type 12dB/oct lowpass filter",
       "tags": [
@@ -98,7 +98,7 @@
       ]
     },
     {
-      "slug": "Westcoast VCS",
+      "slug": "Westcoast_VCS",
       "name": "Westcoast Complex Shaper",
       "description": "VWestcoast waveshaper with different modes",
       "tags": [

@@ -178,4 +178,4 @@ void DiodeVCF::process(const ProcessArgs &args) {
 
 //TODO: [2019-05-23 10:32] => recover oversampling menu
 
-Model *modelDiodeVCF = createModel<DiodeVCF, DiodeVCFWidget>("DIODE VCF");
+Model *modelDiodeVCF = createModel<DiodeVCF, DiodeVCFWidget>("DIODE_VCF");

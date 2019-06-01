@@ -77,6 +77,6 @@ BlankPanelEmptyWidget::BlankPanelEmptyWidget(BlankPanelEmpty *module) : LRModule
 }
 
 
-Model *modelBlankPanelEmpty = createModel<BlankPanelEmpty, BlankPanelEmptyWidget>("BlankPanel 02");
+Model *modelBlankPanelEmpty = createModel<BlankPanelEmpty, BlankPanelEmptyWidget>("BlankPanel_02");
 
 

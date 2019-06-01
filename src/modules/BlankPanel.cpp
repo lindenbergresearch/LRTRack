@@ -45,9 +45,9 @@ BlankPanelWidget::BlankPanelWidget(BlankPanel *module) : LRModuleWidget(module) 
 
     float speed = 0.007;
 
-    addChild(SVGRotator::create(Vec(105.5, 55), APP->window->loadSvg(asset::plugin(pluginInstance, "res/elements/CogBig.svg")), speed, 0.7, 0.4));
-    addChild(SVGRotator::create(Vec(139, 43.7), APP->window->loadSvg(asset::plugin(pluginInstance, "res/elements/CogMiddle.svg")), speed * 1.9f, 0.7, 0.4));
-    addChild(SVGRotator::create(Vec(120, 40), APP->window->loadSvg(asset::plugin(pluginInstance, "res/elements/CogSmall.svg")), -speed * 1.3f, 0.7, 0.4));
+    addChild(SVGRotator::create(Vec(105.5, 55), APP->window->loadSvg(asset::plugin(pluginInstance, "res/elements/CogBig.svg")), speed, 0.7, 0.9));
+    addChild(SVGRotator::create(Vec(139, 43.7), APP->window->loadSvg(asset::plugin(pluginInstance, "res/elements/CogMiddle.svg")), speed * 1.9f, 0.7, 0.9));
+    addChild(SVGRotator::create(Vec(120, 40), APP->window->loadSvg(asset::plugin(pluginInstance, "res/elements/CogSmall.svg")), -speed * 1.3f, 0.7, 0.9));
 
 
     // ***** SCREWS **********
@@ -59,4 +59,4 @@ BlankPanelWidget::BlankPanelWidget(BlankPanel *module) : LRModuleWidget(module) 
 }
 
 
-Model *modelBlankPanel = createModel<BlankPanel, BlankPanelWidget>("BlankPanel 01");
+Model *modelBlankPanel = createModel<BlankPanel, BlankPanelWidget>("BlankPanel_01");

@@ -227,4 +227,4 @@ void BlankPanelSmall::process(const ProcessArgs &args) {
 }
 
 
-Model *modelBlankPanelSmall = createModel<BlankPanelSmall, BlankPanelWidgetSmall>("BlankPanel Small");
+Model *modelBlankPanelSmall = createModel<BlankPanelSmall, BlankPanelWidgetSmall>("BlankPanel_Small");

@@ -162,4 +162,4 @@ void MS20Filter::process(const ProcessArgs &args) {
 }
 
 
-Model *modelMS20Filter = createModel<MS20Filter, MS20FilterWidget>("MS20 VCF");
+Model *modelMS20Filter = createModel<MS20Filter, MS20FilterWidget>("MS20_VCF");

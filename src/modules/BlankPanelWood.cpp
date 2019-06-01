@@ -202,4 +202,4 @@ void BlankPanelWidgetWood::randomizeAction() {
 }*/
 
 
-Model *modelBlankPanelWood = createModel<BlankPanelWood, BlankPanelWidgetWood>("BlankPanel Wood");
+Model *modelBlankPanelWood = createModel<BlankPanelWood, BlankPanelWidgetWood>("BlankPanel_Wood");

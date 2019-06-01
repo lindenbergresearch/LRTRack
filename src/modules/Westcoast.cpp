@@ -249,4 +249,4 @@ void Westcoast::process(const ProcessArgs &args) {
 }
 
 
-Model *modelWestcoast = createModel<Westcoast, WestcoastWidget>("Westcoast VCS");
+Model *modelWestcoast = createModel<Westcoast, WestcoastWidget>("Westcoast_VCS");

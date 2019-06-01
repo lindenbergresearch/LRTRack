@@ -270,4 +270,4 @@ void Type35::process(const ProcessArgs &args) {
 }
 
 
-Model *modelType35 = createModel<Type35, Type35Widget>("TYPE35 VCF");
+Model *modelType35 = createModel<Type35, Type35Widget>("TYPE35_VCF");
