@@ -184,6 +184,7 @@ void LRModuleWidget::step() {
     if (gdirty || gestalt != prevGestalt) {
         fireGestaltChange(this, new LRGestaltChangeEvent(prevGestalt, gestalt, patina, gradient));
         prevGestalt = gestalt;
+        gdirty = false;
     }
 
     ModuleWidget::step();
