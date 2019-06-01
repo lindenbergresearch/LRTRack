@@ -874,7 +874,7 @@ struct LRPatinaWidget : TransparentWidget {
  */
 struct LRPanelBorder : TransparentWidget, LRGestaltChangeAction {
     static constexpr float VERT_BORDER_WIDTH = 1.0f;
-    static constexpr float HORIZ_BORDER_WIDTH = 2.3f;
+    static constexpr float HORIZ_BORDER_WIDTH = 2.4f;
 
     NVGcolor borderColorLight;
     NVGcolor borderColorDark;
@@ -908,7 +908,7 @@ struct LRPanelBorder : TransparentWidget, LRGestaltChangeAction {
         switch (e.current) {
             case DARK:
                 borderColorLight = nvgRGBAf(0.6, 0.6, 0.6, 0.2);
-                borderColorDark = nvgRGBAf(0.0, 0.0, 0.0, 0.6);
+                borderColorDark = nvgRGBAf(0.0, 0.0, 0.0, 0.3);
                 break;
             case LIGHT:
                 borderColorLight = nvgRGBAf(0.9, 0.9, 0.9, 0.2);
