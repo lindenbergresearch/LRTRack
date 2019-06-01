@@ -353,7 +353,7 @@ struct LRToggleKnob : LRKnob {
         addSVGVariant(LRGestaltType::LIGHT, APP->window->loadSvg(asset::plugin(pluginInstance, "res/knobs/AlternateToggleKnobLight.svg")));
         addSVGVariant(LRGestaltType::AGED, APP->window->loadSvg(asset::plugin(pluginInstance, "res/knobs/AlternateToggleKnobLight.svg")));
 
-        speed = 10.f; //workaround
+        speed = 2.f; //workaround
         smooth = false;
     }
 
@@ -362,12 +362,12 @@ struct LRToggleKnob : LRKnob {
         value = round(value);
         SVGKnob::onChange(e);
     }*/
-    void onChange(const event::Change &e) override {
-        auto value = paramQuantity->getValue();
-        paramQuantity->setValue(round(value));
+    /* void onChange(const event::Change &e) override {
+         auto value = paramQuantity->getValue();
+         paramQuantity->setValue(round(value));
 
-        SvgKnob::onChange(e);//TODO: [2019-05-29 09:18] => Implement own version of ParamWidget
-    }
+         SvgKnob::onChange(e);//TODO: [2019-05-29 09:18] => Implement own version of ParamWidget
+     }*/
 
 
     void onGestaltChangeAction(LRGestaltChangeEvent &e) override {
@@ -872,34 +872,76 @@ struct LRPatinaWidget : TransparentWidget {
 /**
  * @brief Default panel border
  */
-struct LRPanelBorder : TransparentWidget {
-    static constexpr float BORDER_WIDTH = 1.2f;
+struct LRPanelBorder : TransparentWidget, LRGestaltChangeAction {
+    static constexpr float VERT_BORDER_WIDTH = 1.0f;
+    static constexpr float HORIZ_BORDER_WIDTH = 2.3f;
+
+    NVGcolor borderColorLight;
+    NVGcolor borderColorDark;
 
 
     inline void draw(const Widget::DrawArgs &args) override {
-        NVGcolor borderColorLight = nvgRGBAf(0.9, 0.9, 0.9, 0.1);
-        NVGcolor borderColorDark = nvgRGBAf(0.1, 0.1, 0.1, 0.5);
 
         nvgBeginPath(args.vg);
-        nvgRect(args.vg, 0, BORDER_WIDTH, 0 + BORDER_WIDTH, box.size.y);
+        nvgRect(args.vg, 0, VERT_BORDER_WIDTH, 0 + VERT_BORDER_WIDTH, box.size.y);
         nvgFillColor(args.vg, borderColorLight);
         nvgFill(args.vg);
 
         nvgBeginPath(args.vg);
-        nvgRect(args.vg, 0, 0, box.size.x, BORDER_WIDTH);
+        nvgRect(args.vg, 0, 0, box.size.x, HORIZ_BORDER_WIDTH);
         nvgFillColor(args.vg, borderColorLight);
         nvgFill(args.vg);
 
         nvgBeginPath(args.vg);
-        nvgRect(args.vg, 0, box.size.y - BORDER_WIDTH, box.size.x, box.size.y - BORDER_WIDTH);
+        nvgRect(args.vg, 0, box.size.y - HORIZ_BORDER_WIDTH, box.size.x, box.size.y - HORIZ_BORDER_WIDTH);
         nvgFillColor(args.vg, borderColorDark);
         nvgFill(args.vg);
 
         nvgBeginPath(args.vg);
-        nvgRect(args.vg, box.size.x - BORDER_WIDTH, 0, box.size.x - BORDER_WIDTH, box.size.y);
+        nvgRect(args.vg, box.size.x - VERT_BORDER_WIDTH, 0, box.size.x - VERT_BORDER_WIDTH, box.size.y);
         nvgFillColor(args.vg, borderColorDark);
         nvgFill(args.vg);
     }
+
+
+    void onGestaltChangeAction(LRGestaltChangeEvent &e) override {
+        switch (e.current) {
+            case DARK:
+                borderColorLight = nvgRGBAf(0.6, 0.6, 0.6, 0.2);
+                borderColorDark = nvgRGBAf(0.0, 0.0, 0.0, 0.6);
+                break;
+            case LIGHT:
+                borderColorLight = nvgRGBAf(0.9, 0.9, 0.9, 0.2);
+                borderColorDark = nvgRGBAf(0.0, 0.0, 0.0, 0.3);
+                break;
+            case AGED:
+                borderColorLight = nvgRGBAf(0.9, 0.9, 0.9, 0.2);
+                borderColorDark = nvgRGBAf(0.0, 0.0, 0.0, 0.3);
+                break;
+            case NIL:
+                borderColorLight = nvgRGBAf(0.9, 0.9, 0.9, 0.2);
+                borderColorDark = nvgRGBAf(0.0, 0.0, 0.0, 0.3);
+                break;
+            default:
+                borderColorLight = nvgRGBAf(0.9, 0.9, 0.9, 0.2);
+                borderColorDark = nvgRGBAf(0.0, 0.0, 0.0, 0.3);
+                break;
+        }
+    }
+
+};
+
+
+struct BitmapWidget : FramebufferWidget {
+    string filename;
+    int handle;
+    float scale, angle;
+
+    BitmapWidget(const string &filename);
+
+    void draw(const DrawArgs &args) override;
+    void step() override;
+
 };
 
 
@@ -916,6 +958,17 @@ struct LRPanel : FramebufferWidget, LRGestaltVariant, LRGestaltChangeAction {
     void setPatina(LRGestaltType gestalt, bool enabled);
     void init();
     void onGestaltChangeAction(LRGestaltChangeEvent &e) override;
+};
+
+
+struct InformationWidget : TransparentWidget {
+
+    TrueType statsttf;
+
+    InformationWidget();
+
+    void draw(const DrawArgs &args) override;
+
 };
 
 
@@ -973,6 +1026,8 @@ struct FontIconWidget : FramebufferWidget {
 
     void draw(const Widget::DrawArgs &args) override;
 };
+
+
 
 
 //TODO: [2019-05-18 21:34] => implement resize panel
