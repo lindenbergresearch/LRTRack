@@ -6,7 +6,6 @@ Plugin *pluginInstance;
 void init(Plugin *p) {
     pluginInstance = p;
 
-
     p->addModel(modelType35);
     p->addModel(modelDiodeVCF);
     p->addModel(modelBlankPanel);
@@ -19,6 +18,11 @@ void init(Plugin *p) {
     p->addModel(modelAlmaFilter);
     p->addModel(modelMS20Filter);
     p->addModel(modelWestcoast);
+
+    #ifdef LRT_DEBUG
+    DEBUG("Operating in DEBUG mode...");
+    #endif
+
 
 /*
 
