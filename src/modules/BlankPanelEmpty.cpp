@@ -2,7 +2,6 @@
 #include "../LindenbergResearch.hpp"
 #include "../LRModel.hpp"
 
-
 using namespace rack;
 using namespace lrt;
 
@@ -45,7 +44,16 @@ struct BlankPanelEmptyWidget : LRModuleWidget {
 
 
 BlankPanelEmptyWidget::BlankPanelEmptyWidget(BlankPanelEmpty *module) : LRModuleWidget(module) {
+
+    #ifdef LRT_DEBUG
+    panel->addSVGVariant(LRGestaltType::DARK, APP->window->loadSvg(asset::plugin(pluginInstance, "res/panels/BlankPanelDebugger.svg")));
+    noVariants = false;
+    gestalt = DARK;
+    patina = false;
+    gradient = false;
+    #else
     panel->addSVGVariant(LRGestaltType::DARK, APP->window->loadSvg(asset::plugin(pluginInstance, "res/panels/BlankPanelM1.svg")));
+    #endif
     panel->addSVGVariant(LRGestaltType::LIGHT, APP->window->loadSvg(asset::plugin(pluginInstance, "res/panels/BlankPanelM1Light.svg")));
     panel->addSVGVariant(LRGestaltType::AGED, APP->window->loadSvg(asset::plugin(pluginInstance, "res/panels/BlankPanelM1Aged.svg")));
 
@@ -57,6 +65,11 @@ BlankPanelEmptyWidget::BlankPanelEmptyWidget(BlankPanelEmpty *module) : LRModule
 
     box.size = panel->box.size;
 
+    #ifdef LRT_DEBUG
+    auto *iw = new InformationWidget();
+    iw->box = box;
+    addChild(iw);
+    #endif
     /* resizeWidget = new ModuleResizeWidget(box.size.x);
      resizeWidgetRight = new ModuleResizeWidget(box.size.x);
      resizeWidgetRight->right = true;
@@ -65,14 +78,14 @@ BlankPanelEmptyWidget::BlankPanelEmptyWidget(BlankPanelEmpty *module) : LRModule
 
 
     // ***** SCREWS **********
-    addChild(createWidget<ScrewLight>(Vec(15, 1)));
-    addChild(createWidget<ScrewLight>(Vec(15, 366)));
+    panel->addChild(createWidget<ScrewLight>(Vec(15, 1)));
+    panel->addChild(createWidget<ScrewLight>(Vec(15, 366)));
 
     screw1 = createWidget<ScrewLight>(Vec(box.size.x - 30, 1));
     screw2 = createWidget<ScrewLight>(Vec(box.size.x - 30, 366));
 
-    addChild(screw1);
-    addChild(screw2);
+    panel->addChild(screw1);
+    panel->addChild(screw2);
     // ***** SCREWS **********
 }
 
