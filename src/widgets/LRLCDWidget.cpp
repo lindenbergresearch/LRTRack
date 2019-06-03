@@ -56,6 +56,7 @@ LRLCDWidget::LRLCDWidget(unsigned char length, std::string format, LCDType type,
 void LRLCDWidget::draw(const Widget::DrawArgs &args) {
     ParamWidget::draw(args);
 
+
     if (paramQuantity)
         value = paramQuantity->getValue();
 
@@ -195,7 +196,13 @@ void LRLCDWidget::onButton(const event::Button &e) {
     if (type == LIST) {
         if (value < items.size() - 1) value++;
         else value = 0;
+
+        paramQuantity->setValue(value);
     }
+
+
 }
+
+
 
 }
