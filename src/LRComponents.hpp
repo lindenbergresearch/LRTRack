@@ -99,7 +99,7 @@ struct LRLCDWidget : ParamWidget, LRGestaltVariant, LRGestaltChangeAction {
 /**
  * @brief Indicator for control voltages on knobs
  */
-struct LRCVIndicator : TransparentWidget, LRGestaltChangeAction {
+struct LRCVIndicator : FramebufferWidget, LRGestaltChangeAction {
     static constexpr float OVERFLOW_THRESHOLD = 0.01f;
 
     /** enabled or not */
@@ -226,6 +226,11 @@ public:
      */
     void setIndicatorValue(float value) {
         indicator->cv = value;
+        //  fb->dirty = true;
+    }
+
+
+    inline void invalidate() {
         fb->dirty = true;
     }
 
@@ -236,7 +241,7 @@ public:
      */
     void setIndicatorActive(bool active) {
         indicator->active = active;
-        fb->dirty = true;
+        // fb->dirty = true;
     }
 
 
@@ -333,6 +338,8 @@ public:
      */
     void unsetSnap();
 
+    void step() override;
+
     void onGestaltChangeAction(LRGestaltChangeEvent &e) override;
     void onChange(const event::Change &e) override;
 };
@@ -422,7 +429,7 @@ struct LRBigKnob : LRKnob {
                 shader->setShadowPosition(4, 5);
                 shader->setStrength(0.8f);
                 shader->setSize(.65f);
-                setGradientParameter(27.f, nvgRGBAf(1, 1, 1, 0.01), nvgRGBAf(0, 0, 0, 0.34));
+                setGradientParameter(37.f, nvgRGBAf(1, 1, 1, 0.01), nvgRGBAf(0, 0, 0, 0.04));
                 break;
             case LRGestaltType::LIGHT:
                 setIndicatorDistance(17);
@@ -430,7 +437,7 @@ struct LRBigKnob : LRKnob {
                 shader->setShadowPosition(4, 5);
                 shader->setStrength(0.5f);
                 shader->setSize(0.6f);
-                setGradientParameter(27.f, nvgRGBAf(0.9, 0.9, 0.9, 0.10), nvgRGBAf(0, 0, 0, 0.22));
+                setGradientParameter(37.f, nvgRGBAf(0.9, 0.9, 0.9, 0.25), nvgRGBAf(0, 0, 0, 0.02));
                 break;
             case LRGestaltType::AGED:
                 setIndicatorDistance(17);
@@ -438,7 +445,7 @@ struct LRBigKnob : LRKnob {
                 shader->setShadowPosition(4, 5);
                 shader->setStrength(0.5f);
                 shader->setSize(0.6f);
-                setGradientParameter(27.f, nvgRGBAf(0.9, 0.9, 0.9, 0.10), nvgRGBAf(0, 0, 0, 0.22));
+                setGradientParameter(37.f, nvgRGBAf(0.9, 0.9, 0.9, 0.25), nvgRGBAf(0, 0, 0, 0.02));
                 break;
             default:
                 break;
@@ -961,8 +968,7 @@ struct LRPanel : FramebufferWidget, LRGestaltVariant, LRGestaltChangeAction {
 };
 
 
-struct InformationWidget : TransparentWidget {
-
+struct InformationWidget : FramebufferWidget {
     TrueType statsttf;
 
     InformationWidget();
