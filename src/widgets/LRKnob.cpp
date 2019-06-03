@@ -31,6 +31,9 @@ LRKnob::LRKnob() {
 
     indicator = new LRCVIndicator(15.f, ANGLE);
     // addChild(indicator);
+    smooth = false;
+
+    fb->oversample = 1.0;
 }
 
 
@@ -105,6 +108,13 @@ void LRKnob::onGestaltChangeAction(LRGestaltChangeEvent &e) {
     }
 
     fb->dirty = true;
+}
+
+
+void LRKnob::step() {
+    ParamWidget::step();
+    // redraw if cv indicator is turned on
+    indicator->dirty = indicator->active;
 }
 
 
