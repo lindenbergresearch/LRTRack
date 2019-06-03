@@ -429,7 +429,7 @@ struct LRBigKnob : LRKnob {
                 shader->setShadowPosition(4, 5);
                 shader->setStrength(0.8f);
                 shader->setSize(.65f);
-                setGradientParameter(37.f, nvgRGBAf(1, 1, 1, 0.01), nvgRGBAf(0, 0, 0, 0.04));
+                setGradientParameter(28.f, nvgRGBAf(1, 1, 1, 0.01), nvgRGBAf(0, 0, 0, 0.1));
                 break;
             case LRGestaltType::LIGHT:
                 setIndicatorDistance(17);
@@ -437,7 +437,7 @@ struct LRBigKnob : LRKnob {
                 shader->setShadowPosition(4, 5);
                 shader->setStrength(0.5f);
                 shader->setSize(0.6f);
-                setGradientParameter(37.f, nvgRGBAf(0.9, 0.9, 0.9, 0.25), nvgRGBAf(0, 0, 0, 0.02));
+                setGradientParameter(28.f, nvgRGBAf(0.9, 0.9, 0.9, 0.2), nvgRGBAf(0, 0, 0, 0.09));
                 break;
             case LRGestaltType::AGED:
                 setIndicatorDistance(17);
@@ -445,7 +445,7 @@ struct LRBigKnob : LRKnob {
                 shader->setShadowPosition(4, 5);
                 shader->setStrength(0.5f);
                 shader->setSize(0.6f);
-                setGradientParameter(37.f, nvgRGBAf(0.9, 0.9, 0.9, 0.25), nvgRGBAf(0, 0, 0, 0.02));
+                setGradientParameter(28.f, nvgRGBAf(0.9, 0.9, 0.9, 0.2), nvgRGBAf(0, 0, 0, 0.09));
                 break;
             default:
                 break;
