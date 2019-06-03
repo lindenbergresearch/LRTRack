@@ -190,8 +190,6 @@ void LRLCDWidget::onButton(const event::Button &e) {
     if (paramQuantity)
         value = paramQuantity->getValue();
 
-    //TODO: check correct mouse button
-
     if (type == LIST && e.button == 0 && e.action == 1) {
         if (value < items.size() - 1) value++;
         else value = 0;
