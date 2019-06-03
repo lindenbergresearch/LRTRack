@@ -181,28 +181,25 @@ void LRLCDWidget::doResize(Vec v) {
     sw->box.size = v;
     tw->box.size = sw->box.size;
     box.size = sw->box.size;
-
-    // dirty = true;
 }
 
 
 void LRLCDWidget::onButton(const event::Button &e) {
     ParamWidget::onButton(e);
+
     if (paramQuantity)
         value = paramQuantity->getValue();
 
     //TODO: check correct mouse button
 
-    if (type == LIST) {
+    if (type == LIST && e.button == 0 && e.action == 1) {
         if (value < items.size() - 1) value++;
         else value = 0;
-
         paramQuantity->setValue(value);
     }
 
 
 }
-
 
 
 }
