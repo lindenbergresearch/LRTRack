@@ -319,17 +319,7 @@ public:
      * @param vg
      */
     void draw(const DrawArgs &args) override;
-
-    /**
-     * @brief Setup knob snapping
-     * @param position
-     * @param sensitivity
-     */
-    void setSnap(float position, float sensitivity);
-
-
     void step() override;
-
     void onGestaltChangeAction(LRGestaltChangeEvent &e) override;
 };
 
@@ -502,7 +492,8 @@ struct LRSmallKnob : LRKnob {
         addSVGVariant(LRGestaltType::LIGHT, APP->window->loadSvg(asset::plugin(pluginInstance, "res/knobs/AlternateSmallLight.svg")));
         addSVGVariant(LRGestaltType::AGED, APP->window->loadSvg(asset::plugin(pluginInstance, "res/knobs/AlternateSmallLight.svg")));
 
-        setSnap(0.0f, 0.02f);
+        snap = true;
+        snapValue = 0.f;
         speed = 0.9f;
     }
 
