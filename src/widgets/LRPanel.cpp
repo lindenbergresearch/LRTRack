@@ -22,12 +22,8 @@
 namespace lrt {
 
 void LRPanel::init() {
-    if (math::isNear(APP->window->pixelRatio, 1.0)) {
-        // Small details draw poorly at low DPI, so oversample when drawing to the framebuffer
-        //  oversample = 2.0;
-
-        // DEBUG("OS");
-    }
+    // improve quality
+    oversample = 2.0;
 
     /* set panel svg */
     panelWidget = new SvgWidget();
@@ -115,6 +111,12 @@ void LRPanel::onGestaltChangeAction(LRGestaltChangeEvent &e) {
 
     setGradientVariant(e.current, e.gradient);
     setPatina(e.current, e.patina);
+
+    //nvgluDeleteFramebuffer(fb);
+    //fb = nullptr;
+
+    // force framebuffer to redraw to take care of oversampling!
+    fbSize = Vec(1, 1);
 
     dirty = true;
 }
