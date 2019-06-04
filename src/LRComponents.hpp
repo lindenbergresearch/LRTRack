@@ -22,6 +22,7 @@
 #include "asset.hpp"
 #include "LRGestalt.hpp"
 #include "String.hpp"
+#include "LindenbergResearch.hpp"
 
 #define LCD_FONT_DIG7 "res/digital-7.ttf"
 #define LCD_FONTSIZE 11
@@ -950,10 +951,10 @@ struct LRPanel : FramebufferWidget, LRGestaltVariant, LRGestaltChangeAction {
 struct InformationWidget : FramebufferWidget {
     TrueType statsttf;
 
+    #ifdef LRT_DEBUG
     InformationWidget();
-
     void draw(const DrawArgs &args) override;
-
+    #endif
 };
 
 

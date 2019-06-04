@@ -16,14 +16,16 @@
 **                                                                     **
 \*                                                                     */
 #include "../LRComponents.hpp"
+#include "../LindenbergResearch.hpp"
 
 using namespace lrt;
 
+#ifdef LRT_DEBUG
 
 void InformationWidget::draw(const Widget::DrawArgs &args) {
     nvgSave(args.vg);
 
-    nvgFontSize(args.vg, 11);
+    nvgFontSize(args.vg, 12);
     nvgFontFaceId(args.vg, statsttf->handle);
     nvgTextLetterSpacing(args.vg, 0.6);
 
@@ -54,16 +56,15 @@ void InformationWidget::draw(const Widget::DrawArgs &args) {
     nvgTextBox(args.vg, 10, offs + dist * 4, box.size.x - 40, frame.c_str(), nullptr);
     //  nvgFill(args.vg);
 
-    float c = box.size.x / APP->window->stats.buffersize;
-    float avrg = 0;
-    float h, norm;
+    double c = box.size.x / APP->window->stats.curve.size();
+    double avrg = 0;
+    double h = 0, norm = 0;
 
-    for (int i = 0; i < APP->window->stats.buffersize; i++) {
+    for (unsigned long i = 0; i < APP->window->stats.curve.size(); i++) {
         h = APP->window->stats.curve[i];
         norm = tanh(h / 100);
 
-        if (h > 0) avrg = (avrg + h) / 2.;
-        else continue;
+        avrg += h;
 
         nvgBeginPath(args.vg);
         nvgFillColor(args.vg, nvgRGBAf(norm, 1 - norm, 0, 1));
@@ -71,6 +72,8 @@ void InformationWidget::draw(const Widget::DrawArgs &args) {
         nvgClosePath(args.vg);
         nvgFill(args.vg);
     }
+
+    avrg /= APP->window->stats.curve.size();
 
 
     string avrgs = stringf("%5.2f%%", avrg);
@@ -97,3 +100,5 @@ InformationWidget::InformationWidget() {
     APP->window->stats.interval = 2;
 }
 
+
+#endif
