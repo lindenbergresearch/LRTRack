@@ -186,7 +186,11 @@ VCOWidget::VCOWidget(VCO *module) : LRModuleWidget(module) {
 
 void VCO::process(const ProcessArgs &args) {
 
-    for (int i = 0; i < inputs[VOCT1_INPUT].getChannels(); i++) {
+    int size = inputs[VOCT1_INPUT].getChannels();
+
+    if (size == 0) size = 1;
+
+    for (int i = 0; i < size; i++) {
         // if no oscillator for that channel found => create it
         if (osc[i] == nullptr) {
             DEBUG("osc created. channel: %d sum: %d", i, inputs[VOCT1_INPUT].getChannels());
