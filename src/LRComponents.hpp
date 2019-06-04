@@ -784,7 +784,6 @@ struct ScrewDarkB : SvgScrew {
  */
 struct LRSwitch : SvgSwitch {
     LRSwitch() {
-        momentary = true; //TODO: [2019-05-18 19:40] => check if momentary needed!
         addFrame(APP->window->loadSvg(asset::plugin(pluginInstance, "res/elements/Switch0.svg")));
         addFrame(APP->window->loadSvg(asset::plugin(pluginInstance, "res/elements/Switch1.svg")));
     }
