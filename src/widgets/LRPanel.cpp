@@ -39,17 +39,18 @@ void LRPanel::init() {
     /* setup patina widget */
     patinaWidgetWhite = new LRPatinaWidget("res/panels/WhitePatina.svg", box.size);
     patinaWidgetWhite->randomize();
+    patinaWidgetWhite->strength = .99f;
     patinaWidgetWhite->visible = false;
     addChild(patinaWidgetWhite);
 
     patinaWidgetClassic = new LRPatinaWidget("res/panels/AlternatePatina.svg", box.size);
     patinaWidgetClassic->randomize();
-    patinaWidgetClassic->strength = .4f;
+    patinaWidgetClassic->strength = .8f;
     patinaWidgetClassic->visible = false;
     addChild(patinaWidgetClassic);
 
     /* setup gradient variants */
-    auto gradientDark = new LRGradientWidget(box.size, nvgRGBAf(.6f, .6f, .65f, 0.23f), nvgRGBAf(0.0f, 0.0f, 0.0f, 0.41f), Vec(50, 20));
+    auto gradientDark = new LRGradientWidget(box.size, nvgRGBAf(.6f, .68f, .68f, 0.23f), nvgRGBAf(0.0f, 0.0f, 0.0f, 0.41f), Vec(50, 20));
     gradientDark->visible = false;
     addChild(gradientDark);
     gradients[LRGestaltType::DARK] = gradientDark;
@@ -59,7 +60,7 @@ void LRPanel::init() {
     addChild(gradientLight);
     gradients[LRGestaltType::LIGHT] = gradientLight;
 
-    auto gradientAged = new LRGradientWidget(box.size, nvgRGBAf(0.4, 0.6, .5f, 0.26f), nvgRGBAf(0.f, 0.f, 0.f, 0.83f), Vec(100, -20));
+    auto gradientAged = new LRGradientWidget(box.size, nvgRGBAf(0.3, 0.3, .1f, 0.34f), nvgRGBAf(0.05f, 0.04f, 0.f, 0.78), Vec(0, 0));
     gradientAged->visible = false;
     addChild(gradientAged);
     gradients[LRGestaltType::AGED] = gradientAged;
