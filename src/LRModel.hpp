@@ -57,6 +57,8 @@ struct LRModule : Module {
      * @param numLights
      */
     explicit LRModule(int numParams, int numInputs, int numOutputs, int numLights);
+
+    void onRandomize() override;
 };
 
 
@@ -169,14 +171,29 @@ struct LRModuleWidget : ModuleWidget {
     };
 
 
+    virtual void onRandomize() {
+        panel->patinaWidgetClassic->randomize();
+        panel->patinaWidgetWhite->randomize();
+        panel->fbSize = Vec(1, 1); // invalidate
+        panel->dirty = true;
+    };
+
+
+    /**
+     * @brief For external calls
+     */
+    void randomize() {
+        onRandomize();
+        doRandomize(this);
+    }
+
+
     void step() override;
     void appendContextMenu(ui::Menu *menu) override;
     json_t *toJson() override;
     void fromJson(json_t *rootJ) override;
     void fireGestaltChange(Widget *w, LRGestaltChangeEvent *e);
-
-    //void randomize() override;
-    //TODO: check randomize on widgets!
+    void doRandomize(Widget *w);
 };
 
 

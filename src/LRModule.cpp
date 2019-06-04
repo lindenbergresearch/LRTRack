@@ -30,4 +30,13 @@ LRModule::LRModule(int numParams, int numInputs, int numOutputs, int numLights) 
 }
 
 
+/**
+ * @brief Dispatch randomize event to module widget
+ */
+void LRModule::onRandomize() {
+    Module::onRandomize();
+    reflect->randomize();
+}
+
+
 

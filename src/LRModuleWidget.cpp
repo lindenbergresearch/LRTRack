@@ -152,17 +152,6 @@ void LRModuleWidget::fromJson(json_t *rootJ) {
 
 
 /**
- * @brief Randomize parameters
-
-void LRModuleWidget::randomize() {
-    ModuleWidget::randomize();
-    panel->patinaWidgetClassic->randomize();
-    panel->patinaWidgetWhite->randomize();
-    panel->dirty = true;
-}*/
-
-
-/**
  * @brief Fire a event recoursive to all childs which implements the LREventAction interface
  * @param w
  */
@@ -173,6 +162,22 @@ void LRModuleWidget::fireGestaltChange(Widget *w, LRGestaltChangeEvent *e) {
             gc->onGestaltChangeAction(*e);
         }
         if (!child->children.empty()) fireGestaltChange(child, e);
+    }
+}
+
+
+/**
+ * @brief Call randomize on all subwidgets
+ * @param w
+ */
+void LRModuleWidget::doRandomize(Widget *w) {
+    for (Widget *child : w->children) {
+        if (auto *gc = dynamic_cast<LRModuleWidget *>(child)) {
+            //DEBUG("send: %s %p target box: %f %f", typeid(gc).name() ,gc, child->box.pos.x, child->box.pos.y);
+            gc->onRandomize();
+        }
+
+        if (!child->children.empty()) doRandomize(child);
     }
 }
 
@@ -189,6 +194,7 @@ void LRModuleWidget::step() {
 
     ModuleWidget::step();
 }
+
 
 
 
