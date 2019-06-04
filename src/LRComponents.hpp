@@ -197,12 +197,6 @@ private:
     /** setup indicator with default values */
     LRCVIndicator *indicator;
 
-    /** snap mode */
-    bool snap = false;
-    /** position to snap */
-    float snapAt = 0.0f;
-    /** snap sensitivity */
-    float snapSens = 0.1;
 
     /** use gradient */
     bool lightning = false;
@@ -333,15 +327,10 @@ public:
      */
     void setSnap(float position, float sensitivity);
 
-    /**
-     * @brief Remove knob snaping
-     */
-    void unsetSnap();
 
     void step() override;
 
     void onGestaltChangeAction(LRGestaltChangeEvent &e) override;
-    void onChange(const event::Change &e) override;
 };
 
 
@@ -649,6 +638,7 @@ public:
 
         shader = new LRShadow();
         //  addChild(shadow);
+        if (shadow) shadow->visible = false;
 
         /** inherit dimensions */
         shader->setBox(box);
@@ -675,6 +665,7 @@ private:
 public:
     LRIOPortD() {
         shader = new LRShadow();
+        if (shadow) shadow->visible = false;
     }
 
 

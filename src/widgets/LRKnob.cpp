@@ -32,8 +32,6 @@ LRKnob::LRKnob() {
     indicator = new LRCVIndicator(15.f, ANGLE);
     // addChild(indicator);
     smooth = false;
-
-    fb->oversample = 1.0;
 }
 
 
@@ -71,30 +69,8 @@ void LRKnob::draw(const Widget::DrawArgs &args) {
     }
 
     /** cv indicator */
-    indicator->draw(args);
-}
-
-
-void LRKnob::setSnap(float position, float sensitivity) {
-    snap = true;
-    snapSens = sensitivity;
-    snapAt = position;
-}
-
-
-void LRKnob::unsetSnap() {
-    snap = false;
-}
-
-
-void LRKnob::onChange(const event::Change &e) {
-    SvgKnob::onChange(e);
-    /* auto value = paramQuantity->getValue();
-
-     // if the value still inside snap-tolerance keep the value zero
-     if (snap && value > -snapSens + snapAt && value < snapSens + snapAt) value = 0;
-       paramQuantity->setValue(value);*/
-
+    if (indicator->active)
+        indicator->draw(args);
 }
 
 
