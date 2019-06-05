@@ -53,6 +53,17 @@ BlankPanelEmptyWidget::BlankPanelEmptyWidget(BlankPanelEmpty *module) : LRModule
     gradient = false;
     #else
     panel->addSVGVariant(LRGestaltType::DARK, APP->window->loadSvg(asset::plugin(pluginInstance, "res/panels/BlankPanelM1.svg")));
+
+     // ***** SCREWS **********
+    panel->addChild(createWidget<ScrewLight>(Vec(15, 1)));
+    panel->addChild(createWidget<ScrewLight>(Vec(15, 366)));
+
+    screw1 = createWidget<ScrewLight>(Vec(box.size.x - 30, 1));
+    screw2 = createWidget<ScrewLight>(Vec(box.size.x - 30, 366));
+
+    panel->addChild(screw1);
+    panel->addChild(screw2);
+    // ***** SCREWS **********
     #endif
     panel->addSVGVariant(LRGestaltType::LIGHT, APP->window->loadSvg(asset::plugin(pluginInstance, "res/panels/BlankPanelM1Light.svg")));
     panel->addSVGVariant(LRGestaltType::AGED, APP->window->loadSvg(asset::plugin(pluginInstance, "res/panels/BlankPanelM1Aged.svg")));
@@ -76,17 +87,6 @@ BlankPanelEmptyWidget::BlankPanelEmptyWidget(BlankPanelEmpty *module) : LRModule
      addChild(resizeWidget);
      addChild(resizeWidgetRight);*/
 
-
-    // ***** SCREWS **********
-    panel->addChild(createWidget<ScrewLight>(Vec(15, 1)));
-    panel->addChild(createWidget<ScrewLight>(Vec(15, 366)));
-
-    screw1 = createWidget<ScrewLight>(Vec(box.size.x - 30, 1));
-    screw2 = createWidget<ScrewLight>(Vec(box.size.x - 30, 366));
-
-    panel->addChild(screw1);
-    panel->addChild(screw2);
-    // ***** SCREWS **********
 }
 
 
