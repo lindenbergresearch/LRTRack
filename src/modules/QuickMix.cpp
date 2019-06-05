@@ -138,7 +138,8 @@ void QuickMix::process(const ProcessArgs &args) {
         lightVals[i] = clamp(inputs[i].getVoltage() * abs(dsp::quadraticBipolar(params[i].getValue())) / 6, 0.f, 1.f);
 
         if (inputs[i].isConnected()) {
-            lights[i].setSmoothBrightness(lightVals[i], 0.1);
+            //  lights[i].setBrightness(lightVals[i]);
+            lights[i].setSmoothBrightness(lightVals[i], 1.f); //TODO: fix light to be more smoothed
         } else {
             lights[i].value = 0;
         }
