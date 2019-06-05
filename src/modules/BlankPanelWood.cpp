@@ -46,7 +46,8 @@ struct BlankPanelWidgetWood : LRModuleWidget {
         logoStamp->visible = logo;
         patinaWidget->visible = aged;
 
-        // panel->dirty = true;
+        panel->dirty = true;
+        panel->fbSize = Vec(1, 1); // invalidate
     }
 
 
@@ -98,6 +99,7 @@ BlankPanelWidgetWood::BlankPanelWidgetWood(BlankPanelWood *module) : LRModuleWid
 
     box.size = panel->box.size;
 
+    panel->box.size.y = 380;
     box.size.y = 380;
 
     auto gradientDark = new LRGradientWidget(box.size, nvgRGBAf(1.4f * .369f, 1.4f * 0.357f, 1.4f * 0.3333f, 0.05f),
@@ -108,22 +110,24 @@ BlankPanelWidgetWood::BlankPanelWidgetWood(BlankPanelWood *module) : LRModuleWid
 
     patinaWidget = new SvgWidget();
     patinaWidget->setSvg(APP->window->loadSvg(asset::plugin(pluginInstance, "res/panels/WoodPatina.svg")));
+    patinaWidget->wrap();
     panel->addChild(patinaWidget);
 
     logoStamp = new SvgWidget();
     logoStamp->setSvg(APP->window->loadSvg(asset::plugin(pluginInstance, "res/elements/LogoSmallPlate.svg")));
-    logoStamp->box.pos = Vec(8.5, 348.8);
-    addChild(logoStamp);
+    logoStamp->box.pos = Vec(8.5, 168.8);
+    panel->addChild(logoStamp);
 
-    patinaWidget->box.pos = Vec(-random::uniform() * 1000, -random::uniform() * 200);
+    patinaWidget->box.pos = Vec(-random::uniform() * (patinaWidget->box.size.x - panel->box.size.x),
+                                -random::uniform() * (patinaWidget->box.size.y - panel->box.size.y));
 
 
     // ***** SCREWS **********
     screw1 = createWidget<ScrewDarkB>(Vec(23, 6));
-    addChild(screw1);
+    panel->addChild(screw1);
 
     screw2 = createWidget<ScrewDarkB>(Vec(23, box.size.y - 20));
-    addChild(screw2);
+    panel->addChild(screw2);
     // ***** SCREWS **********
 }
 
@@ -150,7 +154,7 @@ struct BlankPanelWoodScrews : MenuItem {
 
     void onAction(const event::Action &e) override {
         blankPanelWood->screws ^= true;
-        blankPanelWood->box.size.y = 2 * 380;
+        //  blankPanelWood->box.size.y = 380;
         blankPanelWood->updateComponents();
     }
 
