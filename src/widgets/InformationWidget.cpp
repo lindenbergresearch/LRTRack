@@ -37,8 +37,11 @@ void InformationWidget::draw(const Widget::DrawArgs &args) {
     float dist = 17;
     float offs = 95;
 
+    string ver = stringf("RACK AUDIO MODULES V%s", pluginInstance->version.c_str());
+
+    nvgTextBox(args.vg, 60, 14, box.size.x - 40, ver.c_str(), nullptr);
+
     nvgFillColor(args.vg, nvgRGBAf(0.19, 0.99, 0.99, 1.0));
-    nvgTextBox(args.vg, 10, 25, box.size.x - 40, "RACK AUDIO MODULES V1.0.0", nullptr);
     nvgTextBox(args.vg, 10, 25 + dist, box.size.x - 40, "(c) 2017-2019 Lindenberg Research.", nullptr);
     nvgTextBox(args.vg, 10, 25 + dist * 2, box.size.x - 40, "All rights reserved.", nullptr);
 
