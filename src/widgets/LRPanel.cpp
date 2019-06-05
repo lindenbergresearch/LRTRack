@@ -39,13 +39,13 @@ void LRPanel::init() {
     /* setup patina widget */
     patinaWidgetWhite = new LRPatinaWidget("res/panels/WhitePatina.svg", box.size);
     patinaWidgetWhite->randomize();
-    patinaWidgetWhite->strength = .99f;
+    patinaWidgetWhite->strength = .76f;
     patinaWidgetWhite->visible = false;
     addChild(patinaWidgetWhite);
 
     patinaWidgetClassic = new LRPatinaWidget("res/panels/AlternatePatina.svg", box.size);
     patinaWidgetClassic->randomize();
-    patinaWidgetClassic->strength = .8f;
+    patinaWidgetClassic->strength = .88f;
     patinaWidgetClassic->visible = false;
     addChild(patinaWidgetClassic);
 
