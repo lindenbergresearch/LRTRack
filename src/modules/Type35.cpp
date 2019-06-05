@@ -83,6 +83,9 @@ struct Type35 : LRModule {
         configParam(PEAK1_CV_PARAM, -1.f, 1.0f, 0.f);
         configParam(CUTOFF2_CV_PARAM, -1.f, 1.0f, 0.f);
         configParam(PEAK2_CV_PARAM, -1.f, 1.0f, 0.f);
+
+        // setup LCD modes
+        configParam(LCD_PARAM, 0.f, 6.0f, 0.f);
     }
 
 
