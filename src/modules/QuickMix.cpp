@@ -1,3 +1,4 @@
+#include <dsp/common.hpp>
 #include "../dsp/DSPMath.hpp"
 #include "../LindenbergResearch.hpp"
 #include "../LRModel.hpp"
@@ -5,6 +6,8 @@
 
 using namespace rack;
 using namespace lrt;
+
+struct QuickMixWidget;
 
 
 struct ShapedVCA {
@@ -94,7 +97,16 @@ struct QuickMix : LRModule {
     ShapedVCA vca;
 
 
-    QuickMix() : LRModule(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS) {}
+    QuickMix() : LRModule(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS) {
+        configParam(QuickMix::LEVEL1_PARAM, -1.f, 1.f, 0.f);
+        configParam(QuickMix::LEVEL2_PARAM, -1.f, 1.f, 0.f);
+        configParam(QuickMix::LEVEL3_PARAM, -1.f, 1.f, 0.f);
+        configParam(QuickMix::LEVEL4_PARAM, -1.f, 1.f, 0.f);
+        configParam(QuickMix::LEVEL5_PARAM, -1.f, 1.f, 0.f);
+
+        configParam(QuickMix::SHAPE_PARAM, -1.f, 1.f, 0.f);
+        configParam(QuickMix::LEVELM_PARAM, 0.f, 1.f, 0.5f);
+    }
 
 
     void process(const ProcessArgs &args) override;
@@ -106,10 +118,10 @@ void QuickMix::process(const ProcessArgs &args) {
 
     /* lights */
     for (int i = 0; i < NUM_LIGHTS - 1; i++) {
-        lightVals[i] = clamp(inputs[i].getVoltage() * abs(quadraticBipolar(params[i].getValue())) / 6, 0.f, 1.f);
+        lightVals[i] = clamp(inputs[i].getVoltage() * abs(dsp::quadraticBipolar(params[i].getValue())) / 6, 0.f, 1.f);
 
         if (inputs[i].isConnected()) {
-            lights[i].setBrightnessSmooth(lightVals[i]);
+            lights[i].setSmoothBrightness(lightVals[i], 0.1);
         } else {
             lights[i].value = 0;
         }
@@ -117,7 +129,7 @@ void QuickMix::process(const ProcessArgs &args) {
 
     /* mixup all signals */
     for (int i = 0; i < NUM_INPUTS - 1; i++) {
-        out += inputs[i].getVoltage() * quadraticBipolar(params[i].getValue());
+        out += inputs[i].getVoltage() * dsp::quadraticBipolar(params[i].getValue());
     }
 
     /* VCA mode active */
@@ -127,7 +139,7 @@ void QuickMix::process(const ProcessArgs &args) {
         out *= vca.getWeightedGain(cv, params[SHAPE_PARAM].getValue());
     }
 
-    out *= quadraticBipolar(params[LEVELM_PARAM].getValue()) * 2;
+    out *= dsp::quadraticBipolar(params[LEVELM_PARAM].getValue()) * 2;
 
     outputs[MASTER_OUTPUT].setVoltage(out);
 }
@@ -150,6 +162,10 @@ QuickMixWidget::QuickMixWidget(QuickMix *module) : LRModuleWidget(module) {
     addChild(panel);
     box.size = panel->box.size;
 
+
+    // reflect module widget
+    if (!isPreview) module->reflect = this;
+
     // ***** SCREWS **********
     // addChild(createWidget<ScrewLight>(Vec(15, 1)));
     // addChild(createWidget<ScrewLight>(Vec(box.size.x - 20, 1)));
@@ -158,15 +174,15 @@ QuickMixWidget::QuickMixWidget(QuickMix *module) : LRModuleWidget(module) {
     // ***** SCREWS **********
 
     // ***** MAIN KNOBS ******
-    addParam(ParamcreateWidget<LRSmallKnob>(Vec(62.3, 53.8), module, QuickMix::LEVEL1_PARAM, -1.f, 1.f, 0.f));
-    addParam(ParamcreateWidget<LRSmallKnob>(Vec(62.3, 88.8), module, QuickMix::LEVEL2_PARAM, -1.f, 1.f, 0.f));
-    addParam(ParamcreateWidget<LRSmallKnob>(Vec(62.3, 123.8), module, QuickMix::LEVEL3_PARAM, -1.f, 1.f, 0.f));
-    addParam(ParamcreateWidget<LRSmallKnob>(Vec(62.3, 158.8), module, QuickMix::LEVEL4_PARAM, -1.f, 1.f, 0.f));
-    addParam(ParamcreateWidget<LRSmallKnob>(Vec(62.3, 193.8), module, QuickMix::LEVEL5_PARAM, -1.f, 1.f, 0.f));
+    addParam(createParam<LRSmallKnob>(Vec(62.3, 53.8), module, QuickMix::LEVEL1_PARAM));
+    addParam(createParam<LRSmallKnob>(Vec(62.3, 88.8), module, QuickMix::LEVEL2_PARAM));
+    addParam(createParam<LRSmallKnob>(Vec(62.3, 123.8), module, QuickMix::LEVEL3_PARAM));
+    addParam(createParam<LRSmallKnob>(Vec(62.3, 158.8), module, QuickMix::LEVEL4_PARAM));
+    addParam(createParam<LRSmallKnob>(Vec(62.3, 193.8), module, QuickMix::LEVEL5_PARAM));
 
-    addParam(ParamcreateWidget<LRSmallKnob>(Vec(62.3, 242.0), module, QuickMix::SHAPE_PARAM, -1.f, 1.f, 0.f));
+    addParam(createParam<LRSmallKnob>(Vec(62.3, 242.0), module, QuickMix::SHAPE_PARAM));
 
-    addParam(ParamcreateWidget<LRSmallKnob>(Vec(18.8, 305.8), module, QuickMix::LEVELM_PARAM, 0.f, 1.f, 0.5f));
+    addParam(createParam<LRSmallKnob>(Vec(18.8, 305.8), module, QuickMix::LEVELM_PARAM));
     // ***** MAIN KNOBS ******
 
     // ***** INPUTS **********
@@ -200,4 +216,4 @@ QuickMixWidget::QuickMixWidget(QuickMix *module) : LRModuleWidget(module) {
 }
 
 
-Model *modelQuickMix = createModel<QuickMix, QuickMixWidget>("Lindenberg Research", "QuickMixer", "VC Mixer Amp", MIXER_TAG);
+Model *modelQuickMix = createModel<QuickMix, QuickMixWidget>("QuickMixer");

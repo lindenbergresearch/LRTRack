@@ -18,9 +18,11 @@ void init(Plugin *p) {
     p->addModel(modelAlmaFilter);
     p->addModel(modelMS20Filter);
     p->addModel(modelWestcoast);
+    p->addModel(modelQuickMix);
 
     #ifdef LRT_DEBUG
     DEBUG("Operating in DEBUG mode...");
+    DEBUG("Found %d research modules.", p->models.size());
     #endif
 
 
@@ -29,7 +31,7 @@ void init(Plugin *p) {
 
 
 
-    p->addModel(modelQuickMix);
+
 
     p->addModel(modelTestDriver);
     p->addModel(modelEchoBox);

@@ -100,9 +100,18 @@
     {
       "slug": "Westcoast_VCS",
       "name": "Westcoast Complex Shaper",
-      "description": "VWestcoast waveshaper with different modes",
+      "description": "Westcoast waveshaper with different modes",
       "tags": [
         "WAVESHAPER"
+      ]
+    },
+    {
+      "slug": "QuickMixer",
+      "name": "5 Channel Mixing Amp",
+      "description": "Voltage controlled 5 channel mixer amp with dynamic amp curve",
+      "tags": [
+        "MIXER",
+        "VCA"
       ]
     }
   ]
