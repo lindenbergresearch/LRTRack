@@ -51,27 +51,41 @@ void LRPanel::init() {
     addChild(patinaWidgetClassic);
 
     /* setup gradient variants */
-    auto gradientDark = new LRGradientWidget(box.size, nvgRGBAf(.6f, .68f, .68f, 0.23f), nvgRGBAf(0.0f, 0.0f, 0.0f, 0.41f), Vec(50, 20));
+    auto gradientDark = new LRGradientWidget(box.size, nvgRGBAf(.6f, .6f, .6f, 0.23f), nvgRGBAf(0.0f, 0.0f, 0.0f, 0.41f), Vec(50, 20));
     gradientDark->visible = false;
     addChild(gradientDark);
     gradients[LRGestaltType::DARK] = gradientDark;
 
-    auto gradientLight = new LRGradientWidget(box.size, nvgRGBAf(0.3, 0.3, 0.3f, 0.22f), nvgRGBAf(0.f, 0.f, 0.f, 0.41f), Vec(100, -20));
+    auto gradientLight = new LRGradientWidget(box.size, nvgRGBAf(0.8, 0.8, 0.8f, 0.12f), nvgRGBAf(0.f, 0.f, 0.f, 0.38f), Vec(0, -0));
     gradientLight->visible = false;
     addChild(gradientLight);
     gradients[LRGestaltType::LIGHT] = gradientLight;
 
-    auto gradientAged = new LRGradientWidget(box.size, nvgRGBAf(0.3, 0.3, .1f, 0.34f), nvgRGBAf(0.05f, 0.04f, 0.f, 0.4), Vec(0, 0));
+    auto gradientAged = new LRGradientWidget(box.size, nvgRGBAf(0.3, 0.3, .22f, 0.34f), nvgRGBAf(0.05f, 0.04f, 0.f, 0.4), Vec(0, 0));
     gradientAged->visible = false;
     addChild(gradientAged);
     gradients[LRGestaltType::AGED] = gradientAged;
 
 
-    /* add screws */
-    addChild(createWidget<LRScrew>(Vec(15, 1)));
-    addChild(createWidget<LRScrew>(Vec(box.size.x - 30, 1)));
-    addChild(createWidget<LRScrew>(Vec(15, 366)));
-    addChild(createWidget<LRScrew>(Vec(box.size.x - 30, 366)));
+    screws.resize(4);
+
+    screws[0] = new LRScrew;
+    screws[1] = new LRScrew;
+    screws[2] = new LRScrew;
+    screws[3] = new LRScrew;
+
+    if (box.size.x > 120) {
+        screws[0]->box.pos = Vec(15, 1);
+        screws[1]->box.pos = Vec(box.size.x - 30, 1);
+        screws[2]->box.pos = Vec(15, 366);
+        screws[3]->box.pos = Vec(box.size.x - 30, 366);
+
+        /* add screws */
+        addChild(screws[0]);
+        addChild(screws[1]);
+        addChild(screws[2]);
+        addChild(screws[3]);
+    }
 
     /* setup panel border */
     pb = new LRPanelBorder();

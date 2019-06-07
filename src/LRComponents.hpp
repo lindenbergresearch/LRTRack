@@ -941,6 +941,8 @@ struct BitmapWidget : FramebufferWidget {
 };
 
 
+struct LRScrew;
+
 /**
  * @brief Standard LR module Panel
  */
@@ -948,10 +950,9 @@ struct LRPanel : FramebufferWidget, LRGestaltVariant, LRGestaltChangeAction {
     SvgWidget *panelWidget;
     LRPanelBorder *pb;
     map<LRGestaltType, LRGradientWidget *> gradients;
+    vector<LRScrew *> screws;
     LRPatinaWidget *patinaWidgetClassic, *patinaWidgetWhite;
 
-    /* use integrated screws? */
-    bool screws = true;
 
     void setGradientVariant(LRGestaltType gestalt, bool gradient);
     void setPatina(LRGestaltType gestalt, bool enabled);
