@@ -61,7 +61,7 @@ void LRPanel::init() {
     addChild(gradientLight);
     gradients[LRGestaltType::LIGHT] = gradientLight;
 
-    auto gradientAged = new LRGradientWidget(box.size, nvgRGBAf(0.3, 0.3, .22f, 0.34f), nvgRGBAf(0.05f, 0.04f, 0.f, 0.4), Vec(0, 0));
+    auto gradientAged = new LRGradientWidget(box.size, nvgRGBAf(0.3, 0.3, .22f, 0.34f), nvgRGBAf(0.05f, 0.04f, 0.f, 0.43), Vec(0, 0));
     gradientAged->visible = false;
     addChild(gradientAged);
     gradients[LRGestaltType::AGED] = gradientAged;
