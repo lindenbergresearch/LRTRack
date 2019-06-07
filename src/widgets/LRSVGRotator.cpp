@@ -25,6 +25,8 @@ SVGRotator::SVGRotator() : FramebufferWidget() {
 
     sw = new SvgWidget();
     tw->addChild(sw);
+
+    oversample = 2.0;
 }
 
 
@@ -54,6 +56,7 @@ void SVGRotator::step() {
     tw->translate(center.neg());
 
     dirty = true;
+    fbSize = Vec(1, 1); // invalidate
 
     FramebufferWidget::step();
 }
