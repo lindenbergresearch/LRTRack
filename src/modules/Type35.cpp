@@ -134,10 +134,10 @@ struct Type35Widget : LRModuleWidget {
         if (!isPreview) module->reflect = this;
 
         // ***** SCREWS **********
-        panel->addChild(createWidget<ScrewLight>(Vec(15, 1)));
-        panel->addChild(createWidget<ScrewLight>(Vec(box.size.x - 30, 1)));
-        panel->addChild(createWidget<ScrewLight>(Vec(15, 366)));
-        panel->addChild(createWidget<ScrewLight>(Vec(box.size.x - 30, 366)));
+//        panel->addChild(createWidget<ScrewLight>(Vec(15, 1)));
+//        panel->addChild(createWidget<ScrewLight>(Vec(box.size.x - 30, 1)));
+//        panel->addChild(createWidget<ScrewLight>(Vec(15, 366)));
+//        panel->addChild(createWidget<ScrewLight>(Vec(box.size.x - 30, 366)));
         // ***** SCREWS **********
 
         // **** SETUP LCD ********

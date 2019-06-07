@@ -34,9 +34,9 @@ struct BlankPanelWidget : LRModuleWidget {
 
 
 BlankPanelWidget::BlankPanelWidget(BlankPanel *module) : LRModuleWidget(module) {
-    panel->addSVGVariant(LRGestaltType::DARK, APP->window->loadSvg(asset::plugin(pluginInstance, "res/panels/BlankPanel.svg")));
+    panel->addSVGVariant(LRGestaltType::DARK, APP->window->loadSvg(asset::plugin(pluginInstance, "res/panels/BlankPanelAged.svg")));
     panel->addSVGVariant(LRGestaltType::LIGHT, APP->window->loadSvg(asset::plugin(pluginInstance, "res/panels/BlankPanelLight.svg")));
-    panel->addSVGVariant(LRGestaltType::AGED, APP->window->loadSvg(asset::plugin(pluginInstance, "res/panels/BlankPanelLight.svg")));
+    panel->addSVGVariant(LRGestaltType::AGED, APP->window->loadSvg(asset::plugin(pluginInstance, "res/panels/BlankPanelAged.svg")));
 
     panel->init();
     addChild(panel);

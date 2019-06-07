@@ -96,6 +96,7 @@ BlankPanelWidgetWood::BlankPanelWidgetWood(BlankPanelWood *module) : LRModuleWid
     panel->init();
     addChild(panel);
 
+    panel->screws = false;
 
     box.size = panel->box.size;
 

@@ -106,10 +106,10 @@ WestcoastWidget::WestcoastWidget(Westcoast *module) : LRModuleWidget(module) {
 
 
     // ***** SCREWS **********
-    addChild(createWidget<ScrewLight>(Vec(15, 1)));
-    addChild(createWidget<ScrewLight>(Vec(box.size.x - 30, 1)));
-    addChild(createWidget<ScrewLight>(Vec(15, 366)));
-    addChild(createWidget<ScrewLight>(Vec(box.size.x - 30, 366)));
+//    addChild(createWidget<ScrewLight>(Vec(15, 1)));
+//    addChild(createWidget<ScrewLight>(Vec(box.size.x - 30, 1)));
+//    addChild(createWidget<ScrewLight>(Vec(15, 366)));
+//    addChild(createWidget<ScrewLight>(Vec(box.size.x - 30, 366)));
     // ***** SCREWS **********
 
     // ***** MAIN KNOBS ******

@@ -95,8 +95,8 @@ BlankPanelWidgetSmall::BlankPanelWidgetSmall(BlankPanelSmall *module) : LRModule
     if (!isPreview) module->reflect = this;
 
     // ***** SCREWS **********
-    addChild(createWidget<ScrewLight>(Vec(23.4, 1)));
-    addChild(createWidget<ScrewLight>(Vec(23.4, 366)));
+//    addChild(createWidget<ScrewLight>(Vec(23.4, 1)));
+//    addChild(createWidget<ScrewLight>(Vec(23.4, 366)));
     // ***** SCREWS **********
 
     ioports.resize(8);
