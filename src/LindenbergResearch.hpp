@@ -17,8 +17,6 @@
 \*                                                                     */
 #pragma once
 
-#define LRT_DEBUG 1
-
 #include <cmath>
 #include "rack.hpp"
 #include "asset.hpp"
