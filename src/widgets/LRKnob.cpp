@@ -23,6 +23,8 @@ LRKnob::LRKnob() {
     minAngle = -ANGLE * (float) M_PI;
     maxAngle = ANGLE * (float) M_PI;
 
+    if (oversampled) fb->oversample = 2.f;
+
     shader = new LRShadow();
     if (shadow) shadow->visible = false; // uninstall default shadow
 
@@ -53,10 +55,10 @@ void LRKnob::draw(const Widget::DrawArgs &args) {
     /** component */
     SvgKnob::draw(args);
 
-    if (lightning) {
+    if (!lightning) {
         nvgBeginPath(args.vg);
 
-        auto gradient = nvgLinearGradient(args.vg, box.size.x / 2 - radius / 2 * 1.1, box.size.y / 2 - radius / 2 * 1.1,
+        auto gradient = nvgLinearGradient(args.vg, box.size.x / 2 - radius / 2 * 1.1 - 2, box.size.y / 2 - radius / 2 * 1.1 - 2,
                                           box.size.x / 2 + radius / 2 * 1.1,
                                           box.size.y / 2 + radius / 2 * 1.1,
                                           startColor,
@@ -89,6 +91,9 @@ void LRKnob::onGestaltChangeAction(LRGestaltChangeEvent &e) {
 
 void LRKnob::step() {
     ParamWidget::step();
+
+    if (oversampled) fb->fbSize = Vec(1, 1);
+
     // redraw if cv indicator is turned on
     indicator->dirty = indicator->active;
 }
