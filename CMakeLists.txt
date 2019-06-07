@@ -77,7 +77,7 @@ set(SOURCE_FILES
         src/dsp/IIRFilter.hpp
         src/dsp/BBDCore.hpp
         src/modules/EchoBox.cpp
-        src/String.hpp src/LREvent.hpp)
+        src/String.hpp src/LREvent.hpp src/widgets/BitmapWidget.cpp src/widgets/InformationWidget.cpp src/widgets/LRScrew.cpp)
 
 include_directories(.)
 include_directories(src)
