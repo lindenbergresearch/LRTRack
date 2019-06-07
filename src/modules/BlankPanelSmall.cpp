@@ -163,6 +163,8 @@ struct BlankPanelMultiple : MenuItem {
 
 
 void BlankPanelWidgetSmall::appendContextMenu(Menu *menu) {
+    LRModuleWidget::appendContextMenu(menu);
+
     BlankPanelSmall *blankPanelSmall = dynamic_cast<BlankPanelSmall *>(module);
     assert(blankPanelSmall);
 

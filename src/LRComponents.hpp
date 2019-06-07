@@ -199,7 +199,6 @@ private:
     LRCVIndicator *indicator;
 
 
-
     /** use gradient */
     bool lightning = false;
     /** gradient radius */
@@ -869,8 +868,8 @@ struct LRPatinaWidget : TransparentWidget {
  * @brief Default panel border
  */
 struct LRPanelBorder : TransparentWidget, LRGestaltChangeAction {
-    static constexpr float VERT_BORDER_WIDTH = 1.0f;
-    static constexpr float HORIZ_BORDER_WIDTH = 2.4f;
+    static constexpr float VERT_BORDER_WIDTH = 1.3f;
+    static constexpr float HORIZ_BORDER_WIDTH = 5.4f;
 
     NVGcolor borderColorLight;
     NVGcolor borderColorDark;
@@ -883,7 +882,20 @@ struct LRPanelBorder : TransparentWidget, LRGestaltChangeAction {
         nvgFillColor(args.vg, borderColorLight);
         nvgFill(args.vg);
 
+        NVGpaint paint1 = nvgLinearGradient(args.vg, box.size.x / 2, 0, box.size.x / 2, HORIZ_BORDER_WIDTH, borderColorDark, nvgRGBAf(0, 0, 0, 0));
+        NVGpaint paint2 = nvgLinearGradient(args.vg, box.size.x / 2, box.size.y, box.size.x / 2, box.size.y - HORIZ_BORDER_WIDTH, borderColorDark, nvgRGBAf(0, 0, 0, 0));
+
         nvgBeginPath(args.vg);
+        nvgRect(args.vg, 0, 0, box.size.x, HORIZ_BORDER_WIDTH);
+        nvgFillPaint(args.vg, paint1);
+        nvgFill(args.vg);
+
+        nvgBeginPath(args.vg);
+        nvgRect(args.vg, 0, box.size.y - HORIZ_BORDER_WIDTH, box.size.x, box.size.y - HORIZ_BORDER_WIDTH);
+        nvgFillPaint(args.vg, paint2);
+        nvgFill(args.vg);
+
+        /*nvgBeginPath(args.vg);
         nvgRect(args.vg, 0, 0, box.size.x, HORIZ_BORDER_WIDTH);
         nvgFillColor(args.vg, borderColorLight);
         nvgFill(args.vg);
@@ -891,7 +903,9 @@ struct LRPanelBorder : TransparentWidget, LRGestaltChangeAction {
         nvgBeginPath(args.vg);
         nvgRect(args.vg, 0, box.size.y - HORIZ_BORDER_WIDTH, box.size.x, box.size.y - HORIZ_BORDER_WIDTH);
         nvgFillColor(args.vg, borderColorDark);
-        nvgFill(args.vg);
+        nvgFill(args.vg);*/
+
+
 
         nvgBeginPath(args.vg);
         nvgRect(args.vg, box.size.x - VERT_BORDER_WIDTH, 0, box.size.x - VERT_BORDER_WIDTH, box.size.y);
@@ -904,23 +918,23 @@ struct LRPanelBorder : TransparentWidget, LRGestaltChangeAction {
         switch (e.current) {
             case DARK:
                 borderColorLight = nvgRGBAf(0.6, 0.6, 0.6, 0.2);
-                borderColorDark = nvgRGBAf(0.0, 0.0, 0.0, 0.3);
+                borderColorDark = nvgRGBAf(0.0, 0.0, 0.0, 0.4);
                 break;
             case LIGHT:
                 borderColorLight = nvgRGBAf(0.9, 0.9, 0.9, 0.2);
-                borderColorDark = nvgRGBAf(0.0, 0.0, 0.0, 0.3);
+                borderColorDark = nvgRGBAf(0.0, 0.0, 0.0, 0.1);
                 break;
             case AGED:
                 borderColorLight = nvgRGBAf(0.9, 0.9, 0.9, 0.2);
-                borderColorDark = nvgRGBAf(0.0, 0.0, 0.0, 0.3);
+                borderColorDark = nvgRGBAf(0.0, 0.0, 0.0, 0.1);
                 break;
             case NIL:
                 borderColorLight = nvgRGBAf(0.9, 0.9, 0.9, 0.2);
-                borderColorDark = nvgRGBAf(0.0, 0.0, 0.0, 0.3);
+                borderColorDark = nvgRGBAf(0.0, 0.0, 0.0, 0.1);
                 break;
             default:
                 borderColorLight = nvgRGBAf(0.9, 0.9, 0.9, 0.2);
-                borderColorDark = nvgRGBAf(0.0, 0.0, 0.0, 0.3);
+                borderColorDark = nvgRGBAf(0.0, 0.0, 0.0, 0.1);
                 break;
         }
     }
@@ -942,6 +956,7 @@ struct BitmapWidget : FramebufferWidget {
 
 
 struct LRScrew;
+
 
 /**
  * @brief Standard LR module Panel
@@ -989,13 +1004,14 @@ struct LRScrew : FramebufferWidget, LRGestaltVariant, LRGestaltChangeAction {
     }
 };
 
+
 struct InformationWidget : FramebufferWidget {
     TrueType statsttf;
 
-    #ifdef LRT_DEBUG
+#ifdef LRT_DEBUG
     InformationWidget();
     void draw(const DrawArgs &args) override;
-    #endif
+#endif
 };
 
 
