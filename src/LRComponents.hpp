@@ -199,6 +199,7 @@ private:
     LRCVIndicator *indicator;
 
 
+
     /** use gradient */
     bool lightning = false;
     /** gradient radius */
@@ -210,6 +211,8 @@ private:
 protected:
     /** shader */
     LRShadow *shader;
+    /** use oversampling? */
+    bool oversampled = false;
 public:
 
     LRKnob();
@@ -227,6 +230,7 @@ public:
 
     inline void invalidate() {
         fb->dirty = true;
+        if (oversampled) fb->fbSize = Vec(1, 1); //invalidate
     }
 
 
@@ -256,6 +260,7 @@ public:
     void setIndicatorDistance(float distance) {
         indicator->distance = distance;
         fb->dirty = true;
+        if (oversampled) fb->fbSize = Vec(1, 1); //invalidate
     }
 
 
@@ -266,6 +271,7 @@ public:
     void setIndicatorShape(float d1, float d2) {
         indicator->setDistances(d1, d2);
         fb->dirty = true;
+        if (oversampled) fb->fbSize = Vec(1, 1); //invalidate
     }
 
 
@@ -492,6 +498,9 @@ struct LRSmallKnob : LRKnob {
         addSVGVariant(LRGestaltType::DARK, APP->window->loadSvg(asset::plugin(pluginInstance, "res/knobs/SmallKnob.svg")));
         addSVGVariant(LRGestaltType::LIGHT, APP->window->loadSvg(asset::plugin(pluginInstance, "res/knobs/AlternateSmallLight.svg")));
         addSVGVariant(LRGestaltType::AGED, APP->window->loadSvg(asset::plugin(pluginInstance, "res/knobs/AlternateSmallLight.svg")));
+
+        oversampled = true;
+        fb->oversample = 2.0;
 
         speed = 0.9f;
     }
@@ -941,12 +950,43 @@ struct LRPanel : FramebufferWidget, LRGestaltVariant, LRGestaltChangeAction {
     map<LRGestaltType, LRGradientWidget *> gradients;
     LRPatinaWidget *patinaWidgetClassic, *patinaWidgetWhite;
 
+    /* use integrated screws? */
+    bool screws = true;
+
     void setGradientVariant(LRGestaltType gestalt, bool gradient);
     void setPatina(LRGestaltType gestalt, bool enabled);
     void init();
     void onGestaltChangeAction(LRGestaltChangeEvent &e) override;
 };
 
+
+/**
+ * @brief Standard LR Screw
+ */
+struct LRScrew : FramebufferWidget, LRGestaltVariant, LRGestaltChangeAction {
+    TransformWidget *tw;
+    SvgWidget *sw;
+    float angle;
+
+    LRScrew();
+    void onGestaltChangeAction(LRGestaltChangeEvent &e) override;
+    void onButton(const event::Button &e) override;
+    void rotate(float amount);
+
+
+    /**
+     * @brief Trigger redraw if parent is a LRPanel
+     */
+    void invalidate() {
+        dirty = true;
+        fbSize = Vec(1, 1); // invalidate
+
+        if (auto *panel = dynamic_cast<LRPanel *>(parent)) {
+            panel->fbSize = Vec(1, 1);
+            panel->dirty = true;
+        }
+    }
+};
 
 struct InformationWidget : FramebufferWidget {
     TrueType statsttf;
