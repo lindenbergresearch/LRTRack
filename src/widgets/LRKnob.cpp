@@ -55,7 +55,7 @@ void LRKnob::draw(const Widget::DrawArgs &args) {
     /** component */
     SvgKnob::draw(args);
 
-    if (!lightning) {
+    if (lightning) {
         nvgBeginPath(args.vg);
 
         auto gradient = nvgLinearGradient(args.vg, box.size.x / 2 - radius / 2 * 1.1 - 2, box.size.y / 2 - radius / 2 * 1.1 - 2,

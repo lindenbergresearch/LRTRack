@@ -26,11 +26,11 @@ namespace lrt {
 void LRGradientWidget::draw(const Widget::DrawArgs &args) {
     nvgBeginPath(args.vg);
     nvgRect(args.vg, -margin, -margin, box.size.x + margin * 2, box.size.y + margin * 2);
+
     NVGpaint paint = nvgLinearGradient(args.vg, v1.x, v1.y, v2.x, v2.y, innerColor, outerColor);
     nvgFillPaint(args.vg, paint);
     nvgFill(args.vg);
 
-    nvgRestore(args.vg);
 }
 
 
