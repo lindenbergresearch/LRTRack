@@ -49,8 +49,8 @@ struct LRGestaltChangeEvent : LREvent {
     bool patina, gradient;
 
 
-    LRGestaltChangeEvent(LRGestaltType previous, LRGestaltType current, bool patina, bool gradient) : previous(previous), current(current),
-                                                                                                      patina(patina), gradient(gradient) {}
+    LRGestaltChangeEvent(LRGestaltType previous, LRGestaltType current, bool patina, bool gradient) :
+            previous(previous), current(current), patina(patina), gradient(gradient) {}
 };
 
 
