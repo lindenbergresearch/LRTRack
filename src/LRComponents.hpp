@@ -18,11 +18,13 @@
 #pragma once
 
 #include <map>
+#include <cmath>
 #include "rack.hpp"
 #include "asset.hpp"
 #include "LRGestalt.hpp"
 #include "String.hpp"
 #include "LindenbergResearch.hpp"
+#include "dsp/DSPMath.hpp"
 
 #define LCD_FONT_DIG7 "res/digital-7.ttf"
 #define LCD_FONTSIZE 11
@@ -336,8 +338,8 @@ public:
 struct LRToggleKnob : LRKnob {
     LRToggleKnob(float length = 0.5f) {
         //TODO: parametrize start and end angle
-        minAngle = -0.666666f * (float) M_PI;
-        maxAngle = length * (float) M_PI;
+        minAngle = -0.666666f * (float) PI;
+        maxAngle = length * (float) PI;
 
         setSvg(APP->window->loadSvg(asset::plugin(pluginInstance, "res/knobs/ToggleKnob.svg")));
 
@@ -370,7 +372,7 @@ struct LRToggleKnob : LRKnob {
                 shader->setShadowPosition(3, 4);
                 shader->setStrength(1.2f);
                 shader->setSize(0.7f);
-                setGradientParameter(20.f, nvgRGBAf(1, 1, 1, 0.01), nvgRGBAf(0, 0, 0, 0.42));
+                setGradientParameter(20.f, nvgRGBAf(1, 1, 1, 0.01), nvgRGBAf(0, 0, 0, 0.32));
                 break;
             case LRGestaltType::LIGHT:
                 shader->setShadowPosition(2, 3);
@@ -414,7 +416,7 @@ struct LRBigKnob : LRKnob {
                 shader->setShadowPosition(4, 5);
                 shader->setStrength(0.8f);
                 shader->setSize(.65f);
-                setGradientParameter(28.f, nvgRGBAf(1, 1, 1, 0.02), nvgRGBAf(0, 0, 0, 0.3));
+                setGradientParameter(28.f, nvgRGBAf(1, 1, 1, 0.02), nvgRGBAf(0, 0, 0, 0.28));
                 break;
             case LRGestaltType::LIGHT:
                 setIndicatorDistance(17);
@@ -422,7 +424,7 @@ struct LRBigKnob : LRKnob {
                 shader->setShadowPosition(4, 5);
                 shader->setStrength(0.58f);
                 shader->setSize(0.6f);
-                setGradientParameter(28.f, nvgRGBAf(1.0, 1.0, 1.0, 0.02), nvgRGBAf(0, 0, 0, 0.42));
+                setGradientParameter(28.f, nvgRGBAf(1.0, 1.0, 1.0, 0.09), nvgRGBAf(0.0, 0, 0, 0.42));
                 break;
             case LRGestaltType::AGED:
                 setIndicatorDistance(17);
@@ -430,7 +432,7 @@ struct LRBigKnob : LRKnob {
                 shader->setShadowPosition(4, 5);
                 shader->setStrength(0.58f);
                 shader->setSize(0.6f);
-                setGradientParameter(28.f, nvgRGBAf(1.0, 1.0, 1.0, 0.02), nvgRGBAf(0, 0, 0, 0.42));
+                setGradientParameter(28.f, nvgRGBAf(1.0, 1.0, 1.0, 0.09), nvgRGBAf(0.0, 0, 0, 0.42));
                 break;
             default:
                 break;
@@ -462,7 +464,7 @@ struct LRMiddleKnob : LRKnob {
                 shader->setShadowPosition(2, 3);
                 shader->setStrength(0.8f);
                 shader->setSize(.65f);
-                setGradientParameter(20.f, nvgRGBAf(1, 1, 1, 0.13), nvgRGBAf(0, 0, 0, 0.4));
+                setGradientParameter(20.f, nvgRGBAf(1, 1, 1, 0.13), nvgRGBAf(0, 0, 0, 0.28));
                 break;
             case LRGestaltType::LIGHT:
                 setIndicatorDistance(11);
@@ -470,7 +472,7 @@ struct LRMiddleKnob : LRKnob {
                 shader->setShadowPosition(2, 3);
                 shader->setStrength(0.5f);
                 shader->setSize(0.6f);
-                setGradientParameter(20.f, nvgRGBAf(1.0, 1.0, 1.0, 0.1), nvgRGBAf(0, 0, 0, 0.42));
+                setGradientParameter(20.f, nvgRGBAf(1.0, 1.0, 1.0, 0.09), nvgRGBAf(0.0, 0, 0, 0.42));
                 break;
             case LRGestaltType::AGED:
                 setIndicatorDistance(11);
@@ -478,7 +480,7 @@ struct LRMiddleKnob : LRKnob {
                 shader->setShadowPosition(2, 3);
                 shader->setStrength(0.5f);
                 shader->setSize(0.6f);
-                setGradientParameter(20.f, nvgRGBAf(1.0, 1.0, 1.0, 0.1), nvgRGBAf(0, 0, 0, 0.42));
+                setGradientParameter(20.f, nvgRGBAf(1.0, 1.0, 1.0, 0.09), nvgRGBAf(0.0, 0, 0, 0.42));
                 break;
             default:
                 break;
@@ -522,14 +524,14 @@ struct LRSmallKnob : LRKnob {
                 shader->setShadowPosition(2, 3);
                 shader->setStrength(0.5f);
                 shader->setSize(0.7f);
-                setGradientParameter(14.f, nvgRGBAf(1.0, 1.0, 1.0, 0.1), nvgRGBAf(0, 0, 0, 0.4));
+                setGradientParameter(14.f, nvgRGBAf(1.0, 1.0, 1.0, 0.03), nvgRGBAf(0.0, 0, 0, 0.32));
                 break;
             case LRGestaltType::AGED:
                 shader->setShadowPosition(3, 3);
                 shader->setShadowPosition(2, 3);
                 shader->setStrength(0.5f);
                 shader->setSize(0.7f);
-                setGradientParameter(14.f, nvgRGBAf(1.0, 1.0, 1.0, 0.1), nvgRGBAf(0, 0, 0, 0.4));
+                setGradientParameter(14.f, nvgRGBAf(1.0, 1.0, 1.0, 0.03), nvgRGBAf(0.0, 0, 0, 0.32));
                 break;
             default:
                 break;
@@ -544,8 +546,8 @@ struct LRSmallKnob : LRKnob {
 struct LRSmallToggleKnob : LRKnob {
     LRSmallToggleKnob(float length = 0.83) {
         //TODO: parametrize start and end angle
-        minAngle = -length * (float) M_PI;
-        maxAngle = length * (float) M_PI;
+        minAngle = -length * (float) PI;
+        maxAngle = length * (float) PI;
 
         setSvg(APP->window->loadSvg(asset::plugin(pluginInstance, "res/knobs/AlternateSmallToggle.svg")));
 
