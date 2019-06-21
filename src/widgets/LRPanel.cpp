@@ -54,17 +54,17 @@ void LRPanel::init() {
     auto v2 = Vec(box.size.x, box.size.y + 190);
 
     /* setup gradient variants */
-    auto gradientDark = new LRGradientWidget(v2, nvgRGBAf(.6f, .6f, .6f, 0.15f), nvgRGBAf(0.0f, 0.0f, 0.0f, 0.41f), Vec(50, 20));
+    auto gradientDark = new LRGradientWidget(v2, nvgRGBAf(.6f, .6f, .6f, 0.19f), nvgRGBAf(0.0f, 0.0f, 0.0f, 0.41f), Vec(50, 20));
     gradientDark->visible = false;
     addChild(gradientDark);
     gradients[LRGestaltType::DARK] = gradientDark;
 
-    auto gradientLight = new LRGradientWidget(v2, nvgRGBAf(0.8, 0.8, 0.8f, 0.12f), nvgRGBAf(0.f, 0.f, 0.f, 0.58f), Vec(0, -0));
+    auto gradientLight = new LRGradientWidget(v2, nvgRGBAf(0.9, 0.9, 0.9f, 0.12f), nvgRGBAf(0.f, 0.f, 0.f, 0.58f), Vec(0, -0));
     gradientLight->visible = false;
     addChild(gradientLight);
     gradients[LRGestaltType::LIGHT] = gradientLight;
 
-    auto gradientAged = new LRGradientWidget(v2, nvgRGBAf(0.3, 0.3, .22f, 0.34f), nvgRGBAf(0.05f, 0.04f, 0.f, 0.53), Vec(0, 0));
+    auto gradientAged = new LRGradientWidget(v2, nvgRGBAf(0.4, 0.3, .32f, 0.24f), nvgRGBAf(0.05f, 0.04f, 0.f, 0.93), Vec(0, 0));
     gradientAged->visible = false;
     addChild(gradientAged);
     gradients[LRGestaltType::AGED] = gradientAged;
