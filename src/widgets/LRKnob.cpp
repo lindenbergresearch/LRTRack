@@ -58,11 +58,21 @@ void LRKnob::draw(const Widget::DrawArgs &args) {
     if (lightning) {
         nvgBeginPath(args.vg);
 
-        auto gradient = nvgLinearGradient(args.vg, box.size.x / 2 - radius / 2 * 1.1 - 2, box.size.y / 2 - radius / 2 * 1.1 - 2,
+        auto gradient = nvgLinearGradient(
+                args.vg,
+                box.size.x / 2,
+                box.size.x / 3,
+                box.size.x / 2,
+                box.size.y,
+                startColor,
+                endColor
+        );
+
+        /*auto gradient = nvgLinearGradient(args.vg, box.size.x / 2 - radius / 2 * 1.1 - 2, box.size.y / 2 - radius / 2 * 1.1 - 2,
                                           box.size.x / 2 + radius / 2 * 1.1,
                                           box.size.y / 2 + radius / 2 * 1.1,
                                           startColor,
-                                          endColor);
+                                          endColor);*/
 
         nvgCircle(args.vg, box.size.x / 2, box.size.y / 2, radius);
 
