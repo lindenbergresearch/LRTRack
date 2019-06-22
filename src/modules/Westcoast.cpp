@@ -104,6 +104,8 @@ WestcoastWidget::WestcoastWidget(Westcoast *module) : LRModuleWidget(module) {
     addChild(panel);
     box.size = panel->box.size;
 
+    // reflect module widget
+    if (!isPreview) module->reflect = this;
 
     // ***** SCREWS **********
 //    addChild(createWidget<ScrewLight>(Vec(15, 1)));
@@ -165,11 +167,13 @@ void Westcoast::process(const ProcessArgs &args) {
         biascv = inputs[CV_BIAS_INPUT].getVoltage() * dsp::quadraticBipolar(params[CV_BIAS_PARAM].getValue()) * 2.0f;
     }
 
-    reflect->gainBtn->setIndicatorActive(inputs[CV_GAIN_INPUT].isConnected());
-    reflect->biasBtn->setIndicatorActive(inputs[CV_BIAS_INPUT].isConnected());
+    if (reflect) {
+        reflect->gainBtn->setIndicatorActive(inputs[CV_GAIN_INPUT].isConnected());
+        reflect->biasBtn->setIndicatorActive(inputs[CV_BIAS_INPUT].isConnected());
 
-    reflect->gainBtn->setIndicatorValue((params[GAIN_PARAM].getValue() + gaincv) / 20);
-    reflect->biasBtn->setIndicatorValue((params[BIAS_PARAM].getValue() + (biascv + 6)) / 12);
+        reflect->gainBtn->setIndicatorValue((params[GAIN_PARAM].getValue() + gaincv) / 20);
+        reflect->biasBtn->setIndicatorValue((params[BIAS_PARAM].getValue() + (biascv + 6)) / 12);
+    }
 
     float out;
     float gain = params[GAIN_PARAM].getValue() + gaincv;
