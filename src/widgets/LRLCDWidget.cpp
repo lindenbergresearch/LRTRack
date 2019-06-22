@@ -185,7 +185,7 @@ void LRLCDWidget::doResize(Vec v) {
 
 
 void LRLCDWidget::onButton(const event::Button &e) {
-    ParamWidget::onButton(e);
+    if (type == LIST) ParamWidget::onButton(e);
 
     if (paramQuantity)
         value = paramQuantity->getValue();
