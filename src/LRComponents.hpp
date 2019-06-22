@@ -501,7 +501,6 @@ struct LRSmallKnob : LRKnob {
         addSVGVariant(LRGestaltType::AGED, APP->window->loadSvg(asset::plugin(pluginInstance, "res/knobs/AlternateSmallLight.svg")));
 
         oversampled = true;
-        fb->oversample = 2.0;
 
         speed = 0.9f;
     }

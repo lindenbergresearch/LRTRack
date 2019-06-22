@@ -22,8 +22,6 @@
 namespace lrt {
 
 void LRPanel::init() {
-    // improve quality
-    oversample = 2.0;
 
     /* set panel svg */
     panelWidget = new SvgWidget();
@@ -126,6 +124,10 @@ void LRPanel::setPatina(LRGestaltType gestalt, bool enabled) {
 
 
 void LRPanel::onGestaltChangeAction(LRGestaltChangeEvent &e) {
+    // improve quality
+    // do not use oversampling on high-dpi like retina displays
+    if (APP->window->pixelRatio <= 1.f) oversample = 2.0;
+
     auto svg = getSVGVariant(e.current);
 
     if (svg != nullptr) {

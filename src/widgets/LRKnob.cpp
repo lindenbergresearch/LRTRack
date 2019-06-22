@@ -23,7 +23,7 @@ LRKnob::LRKnob() {
     minAngle = -ANGLE * (float) M_PI;
     maxAngle = ANGLE * (float) M_PI;
 
-    if (oversampled) fb->oversample = 2.f;
+    //if (oversampled) fb->oversample = 2.f;
 
     shader = new LRShadow();
     if (shadow) shadow->visible = false; // uninstall default shadow
@@ -87,6 +87,10 @@ void LRKnob::draw(const Widget::DrawArgs &args) {
 
 
 void LRKnob::onGestaltChangeAction(LRGestaltChangeEvent &e) {
+    // improve quality
+    // do not use oversampling on high-dpi like retina displays
+    if (APP->window->pixelRatio <= 1.f && oversampled) fb->oversample = 2.0;
+
     indicator->onGestaltChangeAction(e); // forward event for non child widgets
 
     auto svg = getSVGVariant(e.current);
