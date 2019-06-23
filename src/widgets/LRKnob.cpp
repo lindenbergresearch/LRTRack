@@ -33,7 +33,7 @@ LRKnob::LRKnob() {
 
     indicator = new LRCVIndicator(15.f, ANGLE);
     // addChild(indicator);
-    smooth = false;
+    //smooth = false;
 }
 
 
