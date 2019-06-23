@@ -347,8 +347,9 @@ struct LRToggleKnob : LRKnob {
         addSVGVariant(LRGestaltType::LIGHT, APP->window->loadSvg(asset::plugin(pluginInstance, "res/knobs/AlternateToggleKnobLight.svg")));
         addSVGVariant(LRGestaltType::AGED, APP->window->loadSvg(asset::plugin(pluginInstance, "res/knobs/AlternateToggleKnobLight.svg")));
 
+        snap = true;
         speed = 2.f; //workaround
-        smooth = false;
+        // smooth = false;
     }
 
 
