@@ -67,16 +67,16 @@ struct VCO : LRModule {
 
 
     VCO() : LRModule(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS) {
-        configParam(FREQUENCY_PARAM, -1.f, 1.f, 0.f);
-        configParam(OCTAVE_PARAM, -4.f, 3.f, 0.f);
+        configParam(FREQUENCY_PARAM, -1.f, 1.f, 0.f, "Tune");
+        configParam(OCTAVE_PARAM, -4.f, 3.f, 0.f, "Octave", "'");
 
-        configParam(FM_CV_PARAM, -1.f, 1.f, 0.f);
-        configParam(PW_CV_PARAM, -1, 1, 0.f);
+        configParam(FM_CV_PARAM, -1.f, 1.f, 0.f, "FM CV level", "x");
+        configParam(PW_CV_PARAM, -1, 1, 0.f, "PW CV level", "x");
 
-        configParam(SAW_PARAM, -1.f, 1.f, 0.f);
-        configParam(PULSE_PARAM, -1.f, 1.f, 0.f);
-        configParam(SINE_PARAM, -1.f, 1.f, 0.f);
-        configParam(TRI_PARAM, -1.f, 1.f, 0.f);
+        configParam(SAW_PARAM, -1.f, 1.f, 0.f, "SAW level => mixer");
+        configParam(PULSE_PARAM, -1.f, 1.f, 0.f, "PLS level => mixer");
+        configParam(SINE_PARAM, -1.f, 1.f, 0.f, "SIN level => mixer");
+        configParam(TRI_PARAM, -1.f, 1.f, 0.f, "TRI level => mixer");
 
         osc.resize(16);
 
