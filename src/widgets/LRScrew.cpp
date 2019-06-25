@@ -36,8 +36,8 @@ LRScrew::LRScrew() {
     oversample = 2.0;
 
     addSVGVariant(LRGestaltType::DARK, APP->window->loadSvg(asset::plugin(pluginInstance, "res/elements/ScrewDarkC.svg")));
-    addSVGVariant(LRGestaltType::LIGHT, APP->window->loadSvg(asset::plugin(pluginInstance, "res/elements/ScrewDarkLightC.svg")));
-    addSVGVariant(LRGestaltType::AGED, APP->window->loadSvg(asset::plugin(pluginInstance, "res/elements/ScrewDarkLightC.svg")));
+    addSVGVariant(LRGestaltType::LIGHT, APP->window->loadSvg(asset::plugin(pluginInstance, "res/elements/ScrewLightC.svg")));
+    addSVGVariant(LRGestaltType::AGED, APP->window->loadSvg(asset::plugin(pluginInstance, "res/elements/ScrewLightC.svg")));
 }
 
 
