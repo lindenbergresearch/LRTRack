@@ -1,7 +1,9 @@
 #include "MS20zdf.hpp"
+#include "logger.hpp"
 
 using namespace lrt;
-
+using namespace rack::logger;
+using rack::logger::log;
 
 /**
  * @brief Calculate prewarped vars on parameter change
@@ -43,12 +45,12 @@ void MS20zdf::process() {
 
         y = 1.f / (g2 * k - g * k + 1.f) * (g2 * x + g * s1 + s2);
 
-        ky = k * fastatan(y / 70.f) * 70.f;
+        ky = k * atanf(y / 50.f) * 50.f;
 
         if (type > 0) {
-            rs->data[IN][i] = atanShaper(gain * y / 10.f) * 10.f;
+            rs->data[IN][i] = atanShaper(gain * y / 6.f) * 6.f;
         } else {
-            rs->data[IN][i] = fastatan(gain * y / 10.f) * 10.f;
+            rs->data[IN][i] = atanf(gain * y / 6.f) * 6.f;
 
         }
     }
