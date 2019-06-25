@@ -1073,6 +1073,31 @@ struct FontIconWidget : FramebufferWidget {
 };
 
 
+struct LRLevelWidget : FramebufferWidget {
+    /* shapes of the led's */
+    enum Shape {
+        CIRCLE = 0,
+        RECT,
+        ROUNDEDRECT
+    };
+
+    Shape shape = RECT;
+    Vec ledSize = Vec(10, 5);
+    float dist = 2.f;
+    float margin = 3.f;
+    int count = 5;
+
+
+    LRLevelWidget() {
+        box.size = Vec(margin * 2 + ledSize.x, margin * 2 + count * ledSize.y + (count - 1) * dist);
+    }
+
+
+    void step() override;
+    void draw(const DrawArgs &args) override;
+
+
+};
 
 
 //TODO: [2019-05-18 21:34] => implement resize panel
