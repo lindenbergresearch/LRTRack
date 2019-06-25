@@ -63,7 +63,7 @@ void SVGRotator::step() {
 
 
 void SVGRotator::draw(const Widget::DrawArgs &args) {
-    nvgGlobalAlpha(args.vg, transperency);
+    //nvgGlobalAlpha(args.vg, transperency);
     FramebufferWidget::draw(args);
 }
 }
