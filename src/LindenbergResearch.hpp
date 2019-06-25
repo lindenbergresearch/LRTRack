@@ -39,6 +39,7 @@ extern Model *modelAlmaFilter;
 extern Model *modelMS20Filter;
 extern Model *modelWestcoast;
 extern Model *modelQuickMix;
+extern Model *modelVULevelMeter;
 
 /*
 extern Model *modelTestDriver;

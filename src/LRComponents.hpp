@@ -1073,16 +1073,32 @@ struct FontIconWidget : FramebufferWidget {
 };
 
 
-struct LRLevelWidget : FramebufferWidget {
-    /* shapes of the led's */
-    enum Shape {
-        CIRCLE = 0,
-        RECT,
-        ROUNDEDRECT
-    };
+struct LRLevelLED {
+    Vec pos, size;
+    bool enabled = false;
+    NVGcolor frame, bodyOff, bodyOn;
 
-    Shape shape = RECT;
+
+    virtual void drawShape(NVGcontext *vg) {
+        // just for debug
+        nvgBeginPath(vg);
+        nvgRect(vg, pos.x - (size.x / 2), pos.y - (size.y / 2), size.x, size.y);
+        nvgFillColor(vg, nvgRGBAf(1, 0, 0, 0.3));
+        nvgFill(vg);
+    };
+};
+
+
+struct LRRectLevelLED : LRLevelLED {
+    void drawShape(NVGcontext *vg) override;
+};
+
+
+template<class T>
+struct LRLevelWidget : FramebufferWidget {
     Vec ledSize = Vec(10, 5);
+    vector<LRLevelLED> elements;
+
     float dist = 2.f;
     float margin = 3.f;
     int count = 5;
@@ -1090,13 +1106,17 @@ struct LRLevelWidget : FramebufferWidget {
 
     LRLevelWidget() {
         box.size = Vec(margin * 2 + ledSize.x, margin * 2 + count * ledSize.y + (count - 1) * dist);
+        elements.resize(count);
+
+        for (int i = 0; i < count; ++i) {
+            auto e = new T;
+            elements.push_back(e);
+        }
     }
 
 
     void step() override;
     void draw(const DrawArgs &args) override;
-
-
 };
 
 

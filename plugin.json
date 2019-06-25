@@ -113,6 +113,14 @@
         "MIXER",
         "VCA"
       ]
+    },
+    {
+      "slug": "VULevelMeter",
+      "name": "VU Level Meter",
+      "description": "Visual bargraph level meter",
+      "tags": [
+        "TOOL"
+      ]
     }
   ]
 }

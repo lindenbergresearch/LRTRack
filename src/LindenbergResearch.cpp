@@ -19,8 +19,10 @@ void init(Plugin *p) {
     p->addModel(modelMS20Filter);
     p->addModel(modelWestcoast);
     p->addModel(modelQuickMix);
+    p->addModel(modelVULevelMeter);
 
-    #ifdef LRT_DEBUG
+
+#ifdef LRT_DEBUG
     DEBUG("Operating in DEBUG mode...");
     DEBUG("Found %d research modules.", p->models.size());
     #endif

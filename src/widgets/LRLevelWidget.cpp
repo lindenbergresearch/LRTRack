@@ -22,15 +22,9 @@
 namespace lrt {
 
 
-void LRLevelWidget::step() {
-    FramebufferWidget::step();
+void LRRectLevelLED::drawShape(NVGcontext *vg) {
+    LRLevelLED::drawShape(vg);
 }
 
-
-void LRLevelWidget::draw(const Widget::DrawArgs &args) {
-    FramebufferWidget::draw(args);
-
-
-}
 
 }
