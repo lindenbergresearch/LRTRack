@@ -23,11 +23,16 @@ using namespace rack;
 using namespace lrt;
 
 
+struct VULevelMeterWidget;
+
+
 struct VULevelMeter : LRModule {
     enum ParamIds {
         NUM_PARAMS
     };
     enum InputIds {
+        AUDIO_LEFT_INPUT,
+        AUDIO_RIGHT_INPUT,
         NUM_INPUTS
     };
     enum OutputIds {
@@ -36,6 +41,8 @@ struct VULevelMeter : LRModule {
     enum LightIds {
         NUM_LIGHTS
     };
+
+    VULevelMeterWidget *reflect;
 
 
     VULevelMeter() : LRModule(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS) {
@@ -46,29 +53,47 @@ struct VULevelMeter : LRModule {
 };
 
 
-void VULevelMeter::process(const ProcessArgs &args) {
-}
-
-
 /**
  * @brief Blank Panel Mark I
  */
 struct VULevelMeterWidget : LRModuleWidget {
+    LRLevelWidget<LRRoundRectLevelLED> *levelWidgetL = new LRLevelWidget<LRRoundRectLevelLED>(Vec(30, 30), Vec(19, 7), 2.0f, 4.f, 30);
+    LRLevelWidget<LRRoundRectLevelLED> *levelWidgetR = new LRLevelWidget<LRRoundRectLevelLED>(Vec(93, 30), Vec(19, 7), 2.0f, 4.f, 30);
+
     VULevelMeterWidget(VULevelMeter *module);
 };
 
 
 VULevelMeterWidget::VULevelMeterWidget(VULevelMeter *module) : LRModuleWidget(module) {
 
-    panel->addSVGVariant(LRGestaltType::DARK, APP->window->loadSvg(asset::plugin(pluginInstance, "res/panels/BlankPanelM1.svg")));
+    panel->addSVGVariant(LRGestaltType::DARK, APP->window->loadSvg(asset::plugin(pluginInstance, "res/panels/VULevelMeter.svg")));
     panel->addSVGVariant(LRGestaltType::LIGHT, APP->window->loadSvg(asset::plugin(pluginInstance, "res/panels/BlankPanelM1Light.svg")));
     panel->addSVGVariant(LRGestaltType::AGED, APP->window->loadSvg(asset::plugin(pluginInstance, "res/panels/BlankPanelM1Aged.svg")));
 
     panel->init();
     addChild(panel);
 
-
     box.size = panel->box.size;
+
+    // reflect module widget
+    if (!isPreview) module->reflect = this;
+
+    addChild(levelWidgetL);
+    addChild(levelWidgetR);
+
+    // ***** INPUTS **********
+    addInput(createInput<LRIOPortAudio>(Vec(30, 330), module, VULevelMeter::AUDIO_LEFT_INPUT));
+    addInput(createInput<LRIOPortAudio>(Vec(93, 330), module, VULevelMeter::AUDIO_RIGHT_INPUT));
+    // ***** INPUTS **********
+}
+
+
+void VULevelMeter::process(const ProcessArgs &args) {
+    if (reflect && reflect->levelWidgetL && inputs[AUDIO_LEFT_INPUT].isConnected())
+        reflect->levelWidgetL->setValue(fabs(inputs[AUDIO_LEFT_INPUT].getVoltage() / 10.f));
+
+    if (reflect && reflect->levelWidgetR && inputs[AUDIO_RIGHT_INPUT].isConnected())
+        reflect->levelWidgetR->setValue(fabs(inputs[AUDIO_RIGHT_INPUT].getVoltage() / 10.f));
 }
 
 

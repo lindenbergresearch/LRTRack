@@ -1079,45 +1079,123 @@ struct LRLevelLED {
     NVGcolor frame, bodyOff, bodyOn;
 
 
+    LRLevelLED() {}
+
+
+    virtual ~LRLevelLED() {}
+
+
     virtual void drawShape(NVGcontext *vg) {
         // just for debug
         nvgBeginPath(vg);
-        nvgRect(vg, pos.x - (size.x / 2), pos.y - (size.y / 2), size.x, size.y);
-        nvgFillColor(vg, nvgRGBAf(1, 0, 0, 0.3));
+        nvgRect(vg, getAbsX(), getAbsY(), size.x, size.y);
+        nvgFillColor(vg, nvgRGBAf(1, 0.5, 0, 0.3));
         nvgFill(vg);
     };
+
+
+    float getAbsX() { return pos.x - (size.x / 2); }
+
+
+    float getAbsY() { return pos.y - (size.y / 2); }
+
+
+    Vec getAbsolutePos() {
+        return Vec(getAbsX(), getAbsY());
+    }
+
 };
 
 
 struct LRRectLevelLED : LRLevelLED {
+    LRRectLevelLED();
+
+    virtual ~LRRectLevelLED();
+    void drawShape(NVGcontext *vg) override;
+};
+
+
+struct LRRoundRectLevelLED : LRLevelLED {
+    LRRoundRectLevelLED();
+
     void drawShape(NVGcontext *vg) override;
 };
 
 
 template<class T>
 struct LRLevelWidget : FramebufferWidget {
+    static constexpr int SAMPLE_FRQ = 5;
+
     Vec ledSize = Vec(10, 5);
-    vector<LRLevelLED> elements;
+    vector<LRLevelLED *> elements;
 
-    float dist = 2.f;
-    float margin = 3.f;
-    int count = 5;
+    float value, oldValue;
+    float dist;
+    float margin;
+    int count, interval;
 
 
-    LRLevelWidget() {
+    LRLevelWidget(Vec pos, Vec size = Vec(10, 5), float dist = 5.f, float margin = 15.f, int count = 10) :
+            ledSize(size), dist(dist), margin(margin), count(count) {
+
+        box.pos = pos;
         box.size = Vec(margin * 2 + ledSize.x, margin * 2 + count * ledSize.y + (count - 1) * dist);
-        elements.resize(count);
+        elements.reserve(count);
 
-        for (int i = 0; i < count; ++i) {
-            auto e = new T;
+        value = 0;
+        oldValue = 0;
+
+        for (int i = 0; i < count; i++) {
+            LRLevelLED *e = new T;
+            e->pos = getYLEDPosition(i + 1);
+            e->size = ledSize;
+
+            e->frame = nvgRGBAf(0.4, 0.4, 0.4, 0.3);
+            e->bodyOff = nvgRGBAf(0, 0.1, 0.2, 0);
+            e->bodyOn = nvgRGBAf(0, 0.65, 0.99, 1);
+
             elements.push_back(e);
         }
     }
 
 
-    void step() override;
-    void draw(const DrawArgs &args) override;
+    inline Vec getYLEDPosition(int pos) {
+        return Vec(margin + ledSize.x / 2, margin + (pos - 1) * dist + ledSize.y * pos - ledSize.y / 2);
+    }
+
+
+    void draw(const DrawArgs &args) override {
+        FramebufferWidget::draw(args);
+
+        nvgBeginPath(args.vg);
+        //nvgRect(args.vg, 0, 0, box.size.x, box.size.y);
+        nvgRoundedRect(args.vg, 0, 0, box.size.x, box.size.y, 2.f);
+        nvgFillColor(args.vg, nvgRGBAf(0, 0.0, 0.0, 0));
+        nvgFill(args.vg);
+
+        for (int i = 0; i < count; i++) {
+            elements[count - 1 - i]->enabled = (i + 1) <= value * count;
+            elements[count - 1 - i]->drawShape(args.vg);
+        }
+    }
+
+
+    void setValue(float val) {
+        value += val;
+        value /= 2;
+    }
+
+
+    void step() override {
+        if (interval++ >= SAMPLE_FRQ) {
+            interval = 0;
+            dirty = true;
+        }
+    }
 };
+
+
+
 
 
 //TODO: [2019-05-18 21:34] => implement resize panel
