@@ -26,7 +26,6 @@ SVGRotator::SVGRotator() : FramebufferWidget() {
     sw = new SvgWidget();
     tw->addChild(sw);
 
-    oversample = 2.0;
 }
 
 
@@ -46,6 +45,9 @@ void SVGRotator::setSvg(std::shared_ptr<Svg> svg) {
  */
 void SVGRotator::step() {
     tw->identity();
+
+    if (APP->window->pixelRatio <= 1.f) oversample = 2.0;
+    else oversample = 1.0f;
 
     angle = fmodf(angle + inc, 2 * (float) M_PI);
 
