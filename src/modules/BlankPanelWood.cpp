@@ -101,8 +101,8 @@ BlankPanelWidgetWood::BlankPanelWidgetWood(BlankPanelWood *module) : LRModuleWid
     panel->box.size.y = 380;
     box.size.y = 380;
 
-    auto gradientDark = new LRGradientWidget(box.size, nvgRGBAf(1.4f * .369f, 1.4f * 0.357f, 1.4f * 0.3333f, 0.05f),
-                                             nvgRGBAf(0.f, 0.f, 0.f, 0.15f), Vec(-10, 10));
+    auto gradientDark = new LRGradientWidget(box.size, nvgRGBAf(1.4f * .369f, 1.4f * 0.357f, 1.4f * 0.3333f, 0.01f),
+                                             nvgRGBAf(0.f, 0.f, 0.f, 0.01f), Vec(-10, 10));
     gradientDark->visible = true;
 
     panel->addChild(gradientDark);
