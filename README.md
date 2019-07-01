@@ -1,12 +1,19 @@
-# Lindenberg Research Tec. - VCV Rack modules
-LRT Rack modules is a collection of modules made for [VCV Rack](https://vcvrack.com) virtual modular system.
+![SCREENSHOT](doc/LRTRackGITHeader.png)
 
-Copyright (C) 2017-2019 by Lindenberg Research / Patrick Lindenberg
 
-## _**NEWS:**_ 
 
-Currently the __migration to V1__ is in process to be ready for the upcoming VCV Rack v1.x!
-Due to the heavy time consumption please consider a __donation__ to support the developer (that's me.) ;)
+![SCREENSHOT](doc/LRTRackModules_1.0.0.png)
+
+## _**+++ NEWS +++**_ 
+
+Finally v1 is ready for release it at the PM of VCV Rack. It took a lot
+of work, not even to adapt the code to work with Rack V1 - also many
+portions where cleaned and rewritten. The design has been improved, it
+looks now more fresh and modern. The only thing which is still left, is
+a full polyphony imlementation for V1 which will come in V1.1.0 on July.
+
+Thanks for supporting me, I received some donation which let me pay for
+pizza and beer's during development ;) But still:
 
 [Donate on PayPal](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=MF9AVCUQ73ELN&source=url)
 
@@ -17,7 +24,7 @@ __THANKS!__
 
 You can obtain the latest release via the VCV Rack package manager, or download and install it manually:
 
-https://github.com/lindenbergresearch/LRTRack/releases
+<https://github.com/lindenbergresearch/LRTRack/releases>
 
 
 Just download for you architecture and unzip in your _**Rack**_ folder located in your documents.
