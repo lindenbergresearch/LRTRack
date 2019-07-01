@@ -99,9 +99,9 @@ struct DiodeVCFWidget : LRModuleWidget {
         // ***** SCREWS **********
 
         // ***** MAIN KNOBS ******
-        frqKnob = createParam<LRBigKnob>(Vec(32.5, 74.4), module, DiodeVCF::FREQUENCY_PARAM);
-        resKnob = createParam<LRBigKnob>(Vec(151.5, 74.4), module, DiodeVCF::RES_PARAM);
-        saturateKnob = createParam<LRMiddleKnob>(Vec(99.5, 164.4), module, DiodeVCF::SATURATE_PARAM);
+        frqKnob = createParam<LRBigKnob>(Vec(32.6, 75.5), module, DiodeVCF::FREQUENCY_PARAM);
+        resKnob = createParam<LRBigKnob>(Vec(151.6, 75.5), module, DiodeVCF::RES_PARAM);
+        saturateKnob = createParam<LRMiddleKnob>(Vec(99.5, 164.8), module, DiodeVCF::SATURATE_PARAM);
 
         addParam(frqKnob);
         addParam(resKnob);
