@@ -7,6 +7,7 @@
   "authorEmail": "heapdump@icloud.com",
   "authorUrl": "https://github.com/lindenbergresearch",
   "sourceUrl": "https://github.com/lindenbergresearch/LRTRack",
+  "donateUrl": "paypal.me/heapdump",
   "modules": [
     {
       "slug": "VCO",
