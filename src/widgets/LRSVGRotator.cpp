@@ -25,7 +25,6 @@ SVGRotator::SVGRotator() : FramebufferWidget() {
 
     sw = new SvgWidget();
     tw->addChild(sw);
-
 }
 
 
