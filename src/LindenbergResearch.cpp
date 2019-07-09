@@ -20,6 +20,8 @@ void init(Plugin *p) {
     p->addModel(modelWestcoast);
     p->addModel(modelQuickMix);
     p->addModel(modelVULevelMeter);
+    p->addModel(modelTestDriver);
+
 
 
 #ifdef LRT_DEBUG
@@ -35,7 +37,6 @@ void init(Plugin *p) {
 
 
 
-    p->addModel(modelTestDriver);
     p->addModel(modelEchoBox);
 
 

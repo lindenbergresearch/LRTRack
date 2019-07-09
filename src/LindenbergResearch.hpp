@@ -40,9 +40,9 @@ extern Model *modelMS20Filter;
 extern Model *modelWestcoast;
 extern Model *modelQuickMix;
 extern Model *modelVULevelMeter;
+extern Model *modelTestDriver;
 
 /*
-extern Model *modelTestDriver;
 extern Model *modelEchoBox;
 extern Model *modelSpeck;
  */

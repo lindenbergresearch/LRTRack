@@ -20,7 +20,6 @@
 #include <dsp/common.hpp>
 #include "../dsp/IIRFilter.hpp"
 #include "../dsp/DelayLine.hpp"
-#include "../LindenbergResearch.hpp"
 #include "../LRModel.hpp"
 
 using namespace rack;
@@ -36,7 +35,6 @@ struct TestDriver : LRModule {
         B1_PARAM,
         B2_PARAM,
         S1_PARAM,
-        T1_PARAM,
         A1_CV_PARAM,
         A2_CV_PARAM,
         B1_CV_PARAM,
@@ -61,8 +59,6 @@ struct TestDriver : LRModule {
     enum LightIds {
         NUM_LIGHTS
     };
-
-    LRKnob *a1Knob, *a2Knob, *b1Knob, *b2Knob;
 
     TestDriverWidget *reflect;
 
@@ -90,10 +86,6 @@ struct TestDriver : LRModule {
         configParam(LCD_PARAM, 0.f, 6.0f, 0.f);
 
 
-        a1Knob = LRKnob::create<LRBigKnob>(Vec(32.9, 68.6 + 7), this, TestDriver::A1_PARAM, 0.f, 1.f, 1.f);
-        a2Knob = LRKnob::create<LRMiddleKnob>(Vec(39.9, 174.1 + 7), this, TestDriver::A2_PARAM, 0.f, 1.f, 0.f);
-        b1Knob = LRKnob::create<LRBigKnob>(Vec(196.2, 68.6 + 7), this, TestDriver::B1_PARAM, 0.f, 1.f, 0.f);
-        b2Knob = LRKnob::create<LRMiddleKnob>(Vec(203.1, 174.1 + 7), this, TestDriver::B2_PARAM, 0.f, 1.f, 0.f);
 
         float antiAliasACoefVals[8] = {0.00002808162654240159, 0.00324260184959550063, 0.01229358405255225224, 0.01781338547909389058,
                                        0.01191661427670600605, 0.00351674566780364349, 0.00034109599239625331, 0.00000665645917792087};
@@ -298,4 +290,4 @@ outputs[OUTPUT_B].setVoltage(inputs[INPUT_B].isConnected() ? ddlR->out + inputs[
 Model *modelTestDriver = createModel<TestDriver, TestDriverWidget>("Lindenberg Research", "TestDriver", "TestDrive Module for "
                                                                                                           "ProtoTyping", UTILITY_TAG);*/
 
-Model *modelType35 = createModel<TestDriver, TestDriverWidget>("TestDriver");
+Model *modelTestDriver = createModel<TestDriver, TestDriverWidget>("TestDriver");
