@@ -16,7 +16,8 @@
 **                                                                     **
 \*                                                                     */
 
-#include <dsp/functions.hpp>
+#include <rack.hpp>
+#include <dsp/common.hpp>
 #include "../dsp/IIRFilter.hpp"
 #include "../dsp/DelayLine.hpp"
 #include "../LindenbergResearch.hpp"
@@ -24,6 +25,8 @@
 
 using namespace rack;
 using namespace lrt;
+
+struct TestDriverWidget;
 
 
 struct TestDriver : LRModule {
@@ -38,6 +41,7 @@ struct TestDriver : LRModule {
         A2_CV_PARAM,
         B1_CV_PARAM,
         B2_CV_PARAM,
+        LCD_PARAM,
         NUM_PARAMS
     };
     enum InputIds {
@@ -60,15 +64,32 @@ struct TestDriver : LRModule {
 
     LRKnob *a1Knob, *a2Knob, *b1Knob, *b2Knob;
 
-    LRLCDWidget *lcd = new LRLCDWidget(10, "%s", LRLCDWidget::LIST, 10);
+    TestDriverWidget *reflect;
 
-    lrt::DelayLine *ddlL = new lrt::DelayLine(args.sampleRate);
-    lrt::DelayLine *ddlR = new lrt::DelayLine(args.sampleRate);
+    lrt::DelayLine *ddlL = new lrt::DelayLine(APP->engine->getSampleRate());
+    lrt::DelayLine *ddlR = new lrt::DelayLine(APP->engine->getSampleRate());
 
     lrt::IIRFilter *iir, *iir2;
 
 
     TestDriver() : LRModule(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS) {
+        configParam(A1_PARAM, 0.f, 1.0f, 1.f);
+        configParam(A2_PARAM, 0.f, 1.0f, 0.f);
+        configParam(B1_PARAM, 0.f, 1.0f, 0.f);
+        configParam(B2_PARAM, 0.f, 1.0f, 0.f);
+
+        configParam(S1_PARAM, 0, 1, 10);
+
+
+        configParam(A1_CV_PARAM, -1.f, 1.0f, 0.f);
+        configParam(A2_CV_PARAM, -1.f, 1.0f, 0.f);
+        configParam(B1_CV_PARAM, -1.f, 1.0f, 0.f);
+        configParam(B2_CV_PARAM, -1.f, 1.0f, 0.f);
+
+        // setup LCD modes
+        configParam(LCD_PARAM, 0.f, 6.0f, 0.f);
+
+
         a1Knob = LRKnob::create<LRBigKnob>(Vec(32.9, 68.6 + 7), this, TestDriver::A1_PARAM, 0.f, 1.f, 1.f);
         a2Knob = LRKnob::create<LRMiddleKnob>(Vec(39.9, 174.1 + 7), this, TestDriver::A2_PARAM, 0.f, 1.f, 0.f);
         b1Knob = LRKnob::create<LRBigKnob>(Vec(196.2, 68.6 + 7), this, TestDriver::B1_PARAM, 0.f, 1.f, 0.f);
@@ -80,7 +101,7 @@ struct TestDriver : LRModule {
         float antiAliasBCoefVals[8] = {1.00000000000000000000, 0.27002485476511250972, -2.35210121584816533868, -0.47624252782494447267,
                                        1.85825180320240179732, 0.30789821629786440216, -0.48145639585378052772, -0.07721597509005941051};
 
-        iir = new lrt::IIRFilter(args.sampleRate, antiAliasACoefVals, antiAliasBCoefVals, 8);
+        iir = new lrt::IIRFilter(APP->engine->getSampleRate(), antiAliasACoefVals, antiAliasBCoefVals, 8);
 
         /* float reconstruction1BCoefVals[6] = {0.00051516013318437094, 0.03041821522444834724, 0.06752981661722373685, 0
                                                .04770540623300938837,
@@ -92,78 +113,18 @@ struct TestDriver : LRModule {
         float reconstruction2ACoefVals[3] = {1.00000000000000000000, -1.75672492751137410139, 0.90805921207607520618};
 
 
-        iir2 = new lrt::IIRFilter(args.sampleRate, reconstruction2BCoefVals, reconstruction2ACoefVals, 3);
+        iir2 = new lrt::IIRFilter(APP->engine->getSampleRate(), reconstruction2BCoefVals, reconstruction2ACoefVals, 3);
 
 
     }
 
 
-    void process(const ProcessArgs &args) override {
-        // compute all cv values
-        float a1value = inputs[A1_CV_INPUT].getVoltage() * 0.1f * quadraticBipolar(params[A1_CV_PARAM].getValue());
-        float a2value = inputs[A2_CV_INPUT].getVoltage() * 0.1f * quadraticBipolar(params[A2_CV_PARAM].getValue());
-
-        float frq2cv = inputs[B1_CV_INPUT].getVoltage() * 0.1f * quadraticBipolar(params[B1_CV_PARAM].getValue());
-        float peak2cv = inputs[B2_CV_INPUT].getVoltage() * 0.1f * quadraticBipolar(params[B2_CV_PARAM].getValue());
-
-
-        // set vc parameter and knob values
-        auto a1 = params[A1_PARAM].getValue() + a1value;
-        auto a2 = params[A2_PARAM].getValue() + a2value;
-        auto b1 = params[B1_PARAM].getValue() + frq2cv;
-        auto b2 = params[B2_PARAM].getValue() + peak2cv;
-
-        auto s1 = params[S1_PARAM].getValue() == 1;
-
-
-        if (a1Knob != nullptr && b1Knob != nullptr && a2Knob != nullptr && b2Knob != nullptr) {
-            a1Knob->setIndicatorActive(inputs[A1_CV_INPUT].isConnected());
-            a2Knob->setIndicatorActive(inputs[A2_CV_INPUT].isConnected());
-            b1Knob->setIndicatorActive(inputs[B1_CV_INPUT].isConnected());
-            b2Knob->setIndicatorActive(inputs[B2_CV_INPUT].isConnected());
-
-            a1Knob->setIndicatorValue(params[A1_PARAM].getValue() + a1value);
-            a2Knob->setIndicatorValue(params[A2_PARAM].getValue() + a2value);
-            b1Knob->setIndicatorValue(params[B1_PARAM].getValue() + frq2cv);
-            b2Knob->setIndicatorValue(params[B2_PARAM].getValue() + peak2cv);
-        }
-
-        /* computations */
-        /*auto dL = params[A1_PARAM].getValue() * (args.sampleRate - 1) + 1;
-        auto fbL = params[A2_PARAM].getValue();
-
-        auto dR = params[B1_PARAM].getValue() * (args.sampleRate - 1) + 1;
-        auto fbR = params[B2_PARAM].getValue();
-
-        ddlL->delay = dL;
-        ddlL->fb = fbL;
-        ddlL->invalidate();
-        ddlL->in = inputs[INPUT_A].getVoltage();
-        ddlL->process();
-
-        outputs[OUTPUT_A].setVoltage(ddlL->out + inputs[INPUT_A].getVoltage());
-
-        ddlR->delay = dR;
-        ddlR->fb = fbR;
-        ddlR->invalidate();
-        ddlR->in = inputs[INPUT_B].isConnected() ? inputs[INPUT_B].getVoltage() : inputs[INPUT_A].getVoltage();
-        ddlR->process();
-
-        outputs[OUTPUT_B].setVoltage(inputs[INPUT_B].isConnected() ? ddlR->out + inputs[INPUT_B].getVoltage() : ddlR->out + inputs[INPUT_A].getVoltage());*/
-
-        iir->in = inputs[INPUT_A].getVoltage();
-        iir->process();
-        outputs[OUTPUT_A].setVoltage(iir->out);
-
-        iir2->in = inputs[INPUT_A].getVoltage();
-        iir2->process();
-        outputs[OUTPUT_B].setVoltage(iir2->out);
-    }
+    void process(const ProcessArgs &args) override;
 
 
     json_t *dataToJson() override {
         json_t *rootJ = json_object();
-        json_object_set_new(rootJ, "lcdindex", json_integer((int) lround(lcd->value)));
+        json_object_set_new(rootJ, "lcdindex", json_integer((int) lround(params[LCD_PARAM].getValue())));
 
         return rootJ;
     }
@@ -175,9 +136,7 @@ struct TestDriver : LRModule {
         json_t *mode = json_object_get(rootJ, "lcdindex");
 
         if (mode)
-            lcd->value = json_integer_value(mode);// json_real_value(mode);
-
-        lcd->dirty = true;
+            params[LCD_PARAM].setValue(json_integer_value(mode));
     }
 
 
@@ -191,6 +150,10 @@ struct TestDriver : LRModule {
  * @brief Blank Panel with Logo
  */
 struct TestDriverWidget : LRModuleWidget {
+    LRLCDWidget *lcd = new LRLCDWidget(10, "%s", LRLCDWidget::LIST, 10);
+    LRKnob *frqKnobLP, *peakKnobLP, *frqKnobHP, *peakKnobHP, *driveKnob;
+
+
     TestDriverWidget(TestDriver *module);
 };
 
@@ -205,37 +168,42 @@ TestDriverWidget::TestDriverWidget(TestDriver *module) : LRModuleWidget(module) 
 
     box.size = panel->box.size;
 
+    // reflect module widget
+    if (!isPreview) module->reflect = this;
+
     // **** SETUP LCD ********
-    module->lcd->box.pos = Vec(100, 194);
-    module->lcd->items = {"MODE A", "MODE B", "MODE C", "MODE D", "MODE E"};
-    module->lcd->format = "%s";
-    addChild(module->lcd);
+    lcd->box.pos = Vec(100, 194);
+    lcd->items = {"MODE A", "MODE B", "MODE C", "MODE D", "MODE E"};
+    lcd->format = "%s";
+    addChild(lcd);
     // **** SETUP LCD ********
 
     // ***** SCREWS **********
-    addChild(createWidget<ScrewLight>(Vec(15, 1)));
+    /*addChild(createWidget<ScrewLight>(Vec(15, 1)));
     addChild(createWidget<ScrewLight>(Vec(box.size.x - 30, 1)));
     addChild(createWidget<ScrewLight>(Vec(15, 366)));
-    addChild(createWidget<ScrewLight>(Vec(box.size.x - 30, 366)));
+    addChild(createWidget<ScrewLight>(Vec(box.size.x - 30, 366)));*/
     // ***** SCREWS **********
 
     // ***** MAIN KNOBS ******
-    module->a1Knob->setIndicatorColors(nvgRGBAf(0.9f, 0.9f, 0.9f, 1.0f));
-    module->a2Knob->setIndicatorColors(nvgRGBAf(0.9f, 0.9f, 0.9f, 1.0f));
-    module->b1Knob->setIndicatorColors(nvgRGBAf(0.9f, 0.9f, 0.9f, 1.0f));
-    module->b2Knob->setIndicatorColors(nvgRGBAf(0.9f, 0.9f, 0.9f, 1.0f));
+    /*  module->a1Knob->setIndicatorColors(nvgRGBAf(0.9f, 0.9f, 0.9f, 1.0f));
+      module->a2Knob->setIndicatorColors(nvgRGBAf(0.9f, 0.9f, 0.9f, 1.0f));
+      module->b1Knob->setIndicatorColors(nvgRGBAf(0.9f, 0.9f, 0.9f, 1.0f));
+      module->b2Knob->setIndicatorColors(nvgRGBAf(0.9f, 0.9f, 0.9f, 1.0f));*/
 
-    addParam(module->a1Knob);
-    addParam(module->a2Knob);
-    addParam(module->b1Knob);
-    addParam(module->b2Knob);
+    frqKnobLP = createParam<LRBigKnob>(Vec(32.9, 68.6 + 7), module, TestDriver::A1_PARAM);
+    peakKnobLP = createParam<LRMiddleKnob>(Vec(39.9, 174.1 + 7), module, TestDriver::A2_PARAM);
+    frqKnobHP = createParam<LRBigKnob>(Vec(196.2, 68.6 + 7), module, TestDriver::B1_PARAM);
+    peakKnobHP = createParam<LRMiddleKnob>(Vec(203.1, 174.1 + 7), module, TestDriver::B2_PARAM);
 
-    addParam(ParamcreateWidget<LRSmallKnob>(Vec(36.5 - 7.5, 269.4), module, TestDriver::A1_CV_PARAM, -1.f, 1.0f, 0.f));
-    addParam(ParamcreateWidget<LRSmallKnob>(Vec(78.5 - 7.5, 269.4), module, TestDriver::A2_CV_PARAM, -1.f, 1.0f, 0.f));
-    addParam(ParamcreateWidget<LRSmallKnob>(Vec(197.5 - 7.5, 269.4), module, TestDriver::B1_CV_PARAM, -1.f, 1.0f, 0.f));
-    addParam(ParamcreateWidget<LRSmallKnob>(Vec(239.5 - 7.5, 269.4), module, TestDriver::B2_CV_PARAM, -1.f, 1.0f, 0.f));
+    addParam(frqKnobLP);
+    addParam(peakKnobLP);
+    addParam(frqKnobHP);
+    addParam(peakKnobHP);
+    addParam(driveKnob);
 
-    addParam(ParamcreateWidget<LRSmallToggleKnob>(Vec(126.6, 112.2), module, TestDriver::T1_PARAM, 0.f, 10.0f, 0.f));
+
+    //  addParam(ParamcreateWidget<LRSmallToggleKnob>(Vec(126.6, 112.2), module, TestDriver::T1_PARAM, 0.f, 10.0f, 0.f));
 
     // ***** MAIN KNOBS ******
 
@@ -256,9 +224,78 @@ TestDriverWidget::TestDriverWidget(TestDriver *module) : LRModuleWidget(module) 
     addOutput(createOutput<LRIOPortAudio>(Vec(156 - 8, 312), module, TestDriver::OUTPUT_B));
     // ***** OUTPUTS *********
 
-    addParam(ParamcreateWidget<LRSwitch>(Vec(131.1, 245.2), module, TestDriver::S1_PARAM, 0, 1, 0));
+    addParam(createParam<LRSwitch>(Vec(131.1, 245.2), module, TestDriver::S1_PARAM));
 }
 
 
+void TestDriver::process(const ProcessArgs &args) {
+    // compute all cv values
+    float a1value = inputs[A1_CV_INPUT].getVoltage() * 0.1f * dsp::quadraticBipolar(params[A1_CV_PARAM].getValue());
+    float a2value = inputs[A2_CV_INPUT].getVoltage() * 0.1f * dsp::quadraticBipolar(params[A2_CV_PARAM].getValue());
+
+    float b1value = inputs[B1_CV_INPUT].getVoltage() * 0.1f * dsp::quadraticBipolar(params[B1_CV_PARAM].getValue());
+    float b2value = inputs[B2_CV_INPUT].getVoltage() * 0.1f * dsp::quadraticBipolar(params[B2_CV_PARAM].getValue());
+
+
+    // set vc parameter and knob values
+    auto a1 = params[A1_PARAM].getValue() + a1value;
+    auto a2 = params[A2_PARAM].getValue() + a2value;
+    auto b1 = params[B1_PARAM].getValue() + b1value;
+    auto b2 = params[B2_PARAM].getValue() + b2value;
+
+    auto s1 = params[S1_PARAM].getValue() == 1;
+
+    if (reflect) {
+        reflect->frqKnobLP->setIndicatorActive(inputs[A1_CV_INPUT].isConnected());
+        reflect->peakKnobLP->setIndicatorActive(inputs[A2_CV_INPUT].isConnected());
+        reflect->frqKnobHP->setIndicatorActive(inputs[B1_CV_INPUT].isConnected());
+        reflect->peakKnobHP->setIndicatorActive(inputs[B2_CV_INPUT].isConnected());
+        // reflect->driveKnob->setIndicatorActive(inputs[DRIVE_CV_INPUT].isConnected());
+
+        reflect->frqKnobLP->setIndicatorValue(params[A1_PARAM].getValue() + a1value);
+        reflect->peakKnobLP->setIndicatorValue(params[A2_PARAM].getValue() + a2value);
+        reflect->frqKnobHP->setIndicatorValue(params[B1_PARAM].getValue() + b1value);
+        reflect->peakKnobHP->setIndicatorValue(params[B2_PARAM].getValue() + b2value);
+        // reflect->driveKnob->setIndicatorValue(params[DRIVE_PARAM].getValue() + drivecv);
+    }
+
+
+
+/* computations */
+/*auto dL = params[A1_PARAM].getValue() * (args.sampleRate - 1) + 1;
+auto fbL = params[A2_PARAM].getValue();
+
+auto dR = params[B1_PARAM].getValue() * (args.sampleRate - 1) + 1;
+auto fbR = params[B2_PARAM].getValue();
+
+ddlL->delay = dL;
+ddlL->fb = fbL;
+ddlL->invalidate();
+ddlL->in = inputs[INPUT_A].getVoltage();
+ddlL->process();
+
+outputs[OUTPUT_A].setVoltage(ddlL->out + inputs[INPUT_A].getVoltage());
+
+ddlR->delay = dR;
+ddlR->fb = fbR;
+ddlR->invalidate();
+ddlR->in = inputs[INPUT_B].isConnected() ? inputs[INPUT_B].getVoltage() : inputs[INPUT_A].getVoltage();
+ddlR->process();
+
+outputs[OUTPUT_B].setVoltage(inputs[INPUT_B].isConnected() ? ddlR->out + inputs[INPUT_B].getVoltage() : ddlR->out + inputs[INPUT_A].getVoltage());*/
+
+    iir->in = inputs[INPUT_A].getVoltage();
+    iir->process();
+    outputs[OUTPUT_A].setVoltage(iir->out);
+
+    iir2->in = inputs[INPUT_A].getVoltage();
+    iir2->process();
+    outputs[OUTPUT_B].setVoltage(iir2->out);
+}
+
+
+/*
 Model *modelTestDriver = createModel<TestDriver, TestDriverWidget>("Lindenberg Research", "TestDriver", "TestDrive Module for "
-                                                                                                          "ProtoTyping", UTILITY_TAG);
+                                                                                                          "ProtoTyping", UTILITY_TAG);*/
+
+Model *modelType35 = createModel<TestDriver, TestDriverWidget>("TestDriver");
