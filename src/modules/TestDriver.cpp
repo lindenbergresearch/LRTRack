@@ -40,6 +40,7 @@ struct TestDriver : LRModule {
         B1_CV_PARAM,
         B2_CV_PARAM,
         LCD_PARAM,
+        T1_PARAM,
         NUM_PARAMS
     };
     enum InputIds {
@@ -82,9 +83,11 @@ struct TestDriver : LRModule {
         configParam(B1_CV_PARAM, -1.f, 1.0f, 0.f);
         configParam(B2_CV_PARAM, -1.f, 1.0f, 0.f);
 
+        // toggle knob
+        configParam(T1_PARAM, 0.f, 10.0f, 0.f);
+
         // setup LCD modes
         configParam(LCD_PARAM, 0.f, 6.0f, 0.f);
-
 
 
         float antiAliasACoefVals[8] = {0.00002808162654240159, 0.00324260184959550063, 0.01229358405255225224, 0.01781338547909389058,
@@ -192,11 +195,13 @@ TestDriverWidget::TestDriverWidget(TestDriver *module) : LRModuleWidget(module) 
     addParam(peakKnobLP);
     addParam(frqKnobHP);
     addParam(peakKnobHP);
-    addParam(driveKnob);
 
 
-    //  addParam(ParamcreateWidget<LRSmallToggleKnob>(Vec(126.6, 112.2), module, TestDriver::T1_PARAM, 0.f, 10.0f, 0.f));
-
+    addParam(createParam<LRSmallToggleKnob>(Vec(126.6, 112.2), module, TestDriver::T1_PARAM));
+    addParam(createParam<LRSmallKnob>(Vec(36.5 - 7.5, 269.4), module, TestDriver::A1_CV_PARAM));
+    addParam(createParam<LRSmallKnob>(Vec(78.5 - 7.5, 269.4), module, TestDriver::A2_CV_PARAM));
+    addParam(createParam<LRSmallKnob>(Vec(197.5 - 7.5, 269.4), module, TestDriver::B1_CV_PARAM));
+    addParam(createParam<LRSmallKnob>(Vec(239.5 - 7.5, 269.4), module, TestDriver::B2_CV_PARAM));
     // ***** MAIN KNOBS ******
 
     // ***** CV INPUTS *******

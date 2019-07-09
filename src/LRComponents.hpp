@@ -555,20 +555,10 @@ struct LRSmallToggleKnob : LRKnob {
         addSVGVariant(LRGestaltType::LIGHT, APP->window->loadSvg(asset::plugin(pluginInstance, "res/knobs/AlternateSmallToggleLight.svg")));
         addSVGVariant(LRGestaltType::AGED, APP->window->loadSvg(asset::plugin(pluginInstance, "res/knobs/AlternateSmallToggleLight.svg")));
 
-        speed = 3.0;
+        snap = true;
+        speed = 2.f;
     }
 
-
-    /*void onChange(EventChange &e) override {
-        value = round(value);
-        SVGKnob::onChange(e);
-    }*/
-    void onChange(const event::Change &e) override {
-        auto value = paramQuantity->getValue();
-        paramQuantity->setValue(round(value));
-
-        SvgKnob::onChange(e);
-    }
 
 
     void onGestaltChangeAction(LRGestaltChangeEvent &e) override {

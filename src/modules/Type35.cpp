@@ -148,7 +148,7 @@ struct Type35Widget : LRModuleWidget {
         // map quantity if not in preview mode
         if (!isPreview) lcd->paramQuantity = module->paramQuantities[Type35::LCD_PARAM];
 
-        addParam(lcd);
+        addChild(lcd);
         // **** SETUP LCD ********
 
         // ***** MAIN KNOBS ******
