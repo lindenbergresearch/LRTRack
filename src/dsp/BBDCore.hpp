@@ -15,12 +15,52 @@
 **    with or without modification please see LICENSE.                 **
 **                                                                     **
 \*                                                                     */
-
 #pragma once
 
 #include "DSPEffect.hpp"
 
 namespace lrt {
+
+/**
+ * @brief Helper class representing a fractional-index access to an array with interpolation
+ * @tparam T Floating point type
+ */
+template<class T>
+struct FracVector {
+    std::vector<T> data;
+
+
+    FracVector(int size) {
+        data.resize(size);
+    }
+
+
+    T get(float position) {
+        // get the fractional part of the float
+        int c0 = (int) truncf(position);
+        T c1 = position - (T) c0;
+        // get counterpart
+        T c2 = 1 - c1;
+        T v1 = data[c0];
+        T v2 = data[c0 + 1];
+
+        return c1 * v1 + c2 + v2;
+    }
+
+
+    void set(float position, T value) {
+        // get the fractional part of the float
+        int c0 = (int) truncf(position);
+        T c1 = position - (T) c0;
+        // get counterpart
+        T c2 = 1 - c1;
+
+        data[c0] = value * c1;
+        data[c0 + 1] = value * c2;
+    }
+
+};
+
 
 /**
  * Interpolation type used for value computation
