@@ -63,8 +63,7 @@ struct TestDriver : LRModule {
 
     TestDriverWidget *reflect;
 
-    lrt::DelayLine *ddlL = new lrt::DelayLine(APP->engine->getSampleRate());
-    lrt::DelayLine *ddlR = new lrt::DelayLine(APP->engine->getSampleRate());
+    float avrg;
 
     lrt::IIRFilter *iir, *iir2;
 
@@ -100,8 +99,8 @@ struct TestDriver : LRModule {
 
         float reconstruction1BCoefVals[6] = {0.00051516013318437094, 0.03041821522444834724, 0.06752981661722373685, 0.04770540623300938837,
                                              0.01033396947561467973, 0.00001106873510238544};
-         float reconstruction1ACoefVals[6] = {1.00000000000000000000, -0.63300309066683380088, -1.16456643091420186664,
-                                              0.76529508607787266605, 0.33776127751256762588, -0.14897208486870763822};
+        float reconstruction1ACoefVals[6] = {1.00000000000000000000, -0.63300309066683380088, -1.16456643091420186664,
+                                             0.76529508607787266605, 0.33776127751256762588, -0.14897208486870763822};
 
         float reconstruction2BCoefVals[3] = {0.01440296150822061375, 0.12374170373521460597, 0.01322614050481232296};
         float reconstruction2ACoefVals[3] = {1.00000000000000000000, -1.75672492751137410139, 0.90805921207607520618};
@@ -109,7 +108,7 @@ struct TestDriver : LRModule {
 
         iir2 = new lrt::IIRFilter(APP->engine->getSampleRate(), reconstruction1BCoefVals, reconstruction1ACoefVals, 6);
 
-
+        avrg = 0;
     }
 
 
@@ -277,6 +276,12 @@ outputs[OUTPUT_B].setVoltage(inputs[INPUT_B].isConnected() ? ddlR->out + inputs[
     iir2->in = inputs[INPUT_A].getVoltage();
     iir2->process();
     outputs[OUTPUT_B].setVoltage(iir2->out);
+
+    /* auto in = inputs[INPUT_B].getVoltage();
+
+     avrg = (avrg + abs(in)) / 2;
+     outputs[OUTPUT_B].setVoltage(in * avrg);*/
+
 }
 
 
