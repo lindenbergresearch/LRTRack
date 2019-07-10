@@ -578,14 +578,14 @@ struct LRSmallToggleKnob : LRKnob {
                 shader->setShadowPosition(2, 3);
                 shader->setStrength(0.3f);
                 shader->setSize(0.7f);
-                setGradientParameter(14.f, nvgRGBAf(0.9, 0.9, 0.9, 0.19), nvgRGBAf(0, 0, 0, 0.29));
+                setGradientParameter(14.f, nvgRGBAf(1.0, 1.0, 1.0, 0.03), nvgRGBAf(0.0, 0, 0, 0.32));
                 break;
             case LRGestaltType::AGED:
                 shader->setShadowPosition(3, 3);
                 shader->setShadowPosition(2, 3);
                 shader->setStrength(0.5f);
                 shader->setSize(0.7f);
-                setGradientParameter(14.f, nvgRGBAf(0.9, 0.9, 0.9, 0.19), nvgRGBAf(0, 0, 0, 0.29));
+                setGradientParameter(14.f, nvgRGBAf(1.0, 1.0, 1.0, 0.03), nvgRGBAf(0.0, 0, 0, 0.32));
                 break;
             default:
                 break;
