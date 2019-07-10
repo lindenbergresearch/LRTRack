@@ -98,17 +98,16 @@ struct TestDriver : LRModule {
 
         iir = new lrt::IIRFilter(APP->engine->getSampleRate(), antiAliasACoefVals, antiAliasBCoefVals, 8);
 
-        /* float reconstruction1BCoefVals[6] = {0.00051516013318437094, 0.03041821522444834724, 0.06752981661722373685, 0
-                                               .04770540623300938837,
-                                              0.01033396947561467973, 0.00001106873510238544};
+        float reconstruction1BCoefVals[6] = {0.00051516013318437094, 0.03041821522444834724, 0.06752981661722373685, 0.04770540623300938837,
+                                             0.01033396947561467973, 0.00001106873510238544};
          float reconstruction1ACoefVals[6] = {1.00000000000000000000, -0.63300309066683380088, -1.16456643091420186664,
-                                              0.76529508607787266605, 0.33776127751256762588, -0.14897208486870763822};*/
+                                              0.76529508607787266605, 0.33776127751256762588, -0.14897208486870763822};
 
         float reconstruction2BCoefVals[3] = {0.01440296150822061375, 0.12374170373521460597, 0.01322614050481232296};
         float reconstruction2ACoefVals[3] = {1.00000000000000000000, -1.75672492751137410139, 0.90805921207607520618};
 
 
-        iir2 = new lrt::IIRFilter(APP->engine->getSampleRate(), reconstruction2BCoefVals, reconstruction2ACoefVals, 3);
+        iir2 = new lrt::IIRFilter(APP->engine->getSampleRate(), reconstruction1BCoefVals, reconstruction1ACoefVals, 6);
 
 
     }
@@ -146,7 +145,7 @@ struct TestDriver : LRModule {
  */
 struct TestDriverWidget : LRModuleWidget {
     LRLCDWidget *lcd = new LRLCDWidget(10, "%s", LRLCDWidget::LIST, 10);
-    LRKnob *frqKnobLP, *peakKnobLP, *frqKnobHP, *peakKnobHP, *driveKnob;
+    LRKnob *frqKnobLP, *peakKnobLP, *frqKnobHP, *peakKnobHP;
 
 
     TestDriverWidget(TestDriver *module);
@@ -155,7 +154,7 @@ struct TestDriverWidget : LRModuleWidget {
 
 TestDriverWidget::TestDriverWidget(TestDriver *module) : LRModuleWidget(module) {
     panel->addSVGVariant(LRGestaltType::DARK, APP->window->loadSvg(asset::plugin(pluginInstance, "res/panels/TestDriver.svg")));
-    panel->addSVGVariant(LRGestaltType::LIGHT, APP->window->loadSvg(asset::plugin(pluginInstance, "res/panels/TestDriver.svg")));
+    panel->addSVGVariant(LRGestaltType::LIGHT, APP->window->loadSvg(asset::plugin(pluginInstance, "res/panels/TestDriverLight.svg")));
     panel->addSVGVariant(LRGestaltType::AGED, APP->window->loadSvg(asset::plugin(pluginInstance, "res/panels/TestDriver.svg")));
 
     panel->init();
@@ -170,21 +169,13 @@ TestDriverWidget::TestDriverWidget(TestDriver *module) : LRModuleWidget(module) 
     lcd->box.pos = Vec(100, 194);
     lcd->items = {"MODE A", "MODE B", "MODE C", "MODE D", "MODE E"};
     lcd->format = "%s";
+
+    // map quantity if not in preview mode
+    if (!isPreview) lcd->paramQuantity = module->paramQuantities[TestDriver::LCD_PARAM];
+
     addChild(lcd);
     // **** SETUP LCD ********
 
-    // ***** SCREWS **********
-    /*addChild(createWidget<ScrewLight>(Vec(15, 1)));
-    addChild(createWidget<ScrewLight>(Vec(box.size.x - 30, 1)));
-    addChild(createWidget<ScrewLight>(Vec(15, 366)));
-    addChild(createWidget<ScrewLight>(Vec(box.size.x - 30, 366)));*/
-    // ***** SCREWS **********
-
-    // ***** MAIN KNOBS ******
-    /*  module->a1Knob->setIndicatorColors(nvgRGBAf(0.9f, 0.9f, 0.9f, 1.0f));
-      module->a2Knob->setIndicatorColors(nvgRGBAf(0.9f, 0.9f, 0.9f, 1.0f));
-      module->b1Knob->setIndicatorColors(nvgRGBAf(0.9f, 0.9f, 0.9f, 1.0f));
-      module->b2Knob->setIndicatorColors(nvgRGBAf(0.9f, 0.9f, 0.9f, 1.0f));*/
 
     frqKnobLP = createParam<LRBigKnob>(Vec(32.9, 68.6 + 7), module, TestDriver::A1_PARAM);
     peakKnobLP = createParam<LRMiddleKnob>(Vec(39.9, 174.1 + 7), module, TestDriver::A2_PARAM);
@@ -247,13 +238,11 @@ void TestDriver::process(const ProcessArgs &args) {
         reflect->peakKnobLP->setIndicatorActive(inputs[A2_CV_INPUT].isConnected());
         reflect->frqKnobHP->setIndicatorActive(inputs[B1_CV_INPUT].isConnected());
         reflect->peakKnobHP->setIndicatorActive(inputs[B2_CV_INPUT].isConnected());
-        // reflect->driveKnob->setIndicatorActive(inputs[DRIVE_CV_INPUT].isConnected());
 
         reflect->frqKnobLP->setIndicatorValue(params[A1_PARAM].getValue() + a1value);
         reflect->peakKnobLP->setIndicatorValue(params[A2_PARAM].getValue() + a2value);
         reflect->frqKnobHP->setIndicatorValue(params[B1_PARAM].getValue() + b1value);
         reflect->peakKnobHP->setIndicatorValue(params[B2_PARAM].getValue() + b2value);
-        // reflect->driveKnob->setIndicatorValue(params[DRIVE_PARAM].getValue() + drivecv);
     }
 
 
