@@ -23,6 +23,7 @@
 void lrt::Biquad::init() {}
 
 
+/*
 lrt::Biquad::Biquad(float sr) : lrt::DSPEffect(sr) {
     type = LOWPASS;
     a0 = 1.0;
@@ -32,7 +33,7 @@ lrt::Biquad::Biquad(float sr) : lrt::DSPEffect(sr) {
     peakGain = 0.0;
     z1 = z2 = 0.0;
     init();
-}
+}*/
 
 
 lrt::Biquad::Biquad(BiquadType type, double Fc, double Q, double peakGainDB, float sr) : lrt::DSPEffect(sr) {
@@ -81,7 +82,8 @@ void lrt::Biquad::invalidate() {
     double norm;
     double V = pow(10, fabs(peakGain) / 20.0);
     double K = tan(M_PI * Fc / sr);
-    switch (this->type) {
+
+    switch (type) {
         case LOWPASS:
             norm = 1 / (1 + K / Q + K * K);
             a0 = K * K * norm;

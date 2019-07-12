@@ -39,7 +39,6 @@ enum BiquadType {
  */
 struct Biquad : DSPEffect {
 public:
-    Biquad(float sr);
     Biquad(BiquadType type, double Fc, double Q, double peakGainDB, float sr);
     ~Biquad();
     void setType(BiquadType type);
@@ -52,7 +51,7 @@ public:
     void process() override;
     void invalidate() override;
     void init() override;
-    float in, out;
+    double in, out;
 
 protected:
 
