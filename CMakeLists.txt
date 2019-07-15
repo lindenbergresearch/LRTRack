@@ -60,7 +60,6 @@ set(SOURCE_FILES
         src/modules/TestDriver.cpp
         src/widgets/FontIconWidget.cpp
         src/modules/BlankPanelSmall.cpp
-        src/modules/Speck.cpp
         src/widgets/LRGradientWidget.cpp
         src/LRModule.cpp
         src/LRModuleWidget.cpp
@@ -75,9 +74,9 @@ set(SOURCE_FILES
         src/dsp/BiquadFilter.cpp
         src/dsp/BiquadFilter.hpp
         src/dsp/IIRFilter.hpp
-        src/dsp/BBDCore.hpp
+        src/dsp/BBDevice.hpp
         src/modules/EchoBox.cpp
-        src/String.hpp src/LREvent.hpp src/widgets/BitmapWidget.cpp src/widgets/InformationWidget.cpp src/widgets/LRScrew.cpp src/widgets/LRLevelWidget.cpp src/modules/VULevelMeter.cpp)
+        src/String.hpp src/LREvent.hpp src/widgets/BitmapWidget.cpp src/widgets/InformationWidget.cpp src/widgets/LRScrew.cpp src/widgets/LRLevelWidget.cpp src/modules/VULevelMeter.cpp src/dsp/BBDevice.cpp)
 
 include_directories(.)
 include_directories(src)
