@@ -38,7 +38,11 @@ lrt::Biquad::Biquad(float sr) : lrt::DSPEffect(sr) {
 
 lrt::Biquad::Biquad(BiquadType type, double Fc, double Q, double peakGainDB, float sr) : lrt::DSPEffect(sr) {
     setBiquad(type, Fc, Q, peakGainDB);
+    a0 = 1.0;
+    a1 = a2 = b1 = b2 = 0.0;
     z1 = z2 = 0.0;
+
+    invalidate();
 }
 
 
