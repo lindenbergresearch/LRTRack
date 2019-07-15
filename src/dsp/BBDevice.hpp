@@ -95,20 +95,9 @@ struct BBDCore : DSPEffect {
     }
 
 
-    /**
-     * @brief Calculate output and update BBD
-     */
-    void process() override {
-        T value = fvect[i];
-
-
-        // increment fractional index with overflow check
-        if (i + stepsize > STAGES) i = (i + stepsize) - STAGES;
-        else i += stepsize;
-    }
+    void init() override;
+    void process() override;
 };
-
-
 
 
 }
