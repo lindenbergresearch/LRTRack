@@ -27,119 +27,88 @@ namespace lrt {
  */
 template<class T>
 struct FracVector {
-    std::vector<T> data;
+    std::vector<T> v;
 
 
+    /**
+     * @brief Constructs a new Flowting index vector
+     * @param size
+     */
     FracVector(int size) {
-        data.resize(size);
+        v.resize(size);
     }
 
 
+    /**
+     * @brief Get interpolated value with fractional index
+     * @param position fractional index
+     * @return interpolated value
+     */
     T get(float position) {
         // get the fractional part of the float
         int c0 = (int) truncf(position);
         T c1 = position - (T) c0;
         // get counterpart
         T c2 = 1 - c1;
-        T v1 = data[c0];
-        T v2 = data[c0 + 1];
 
-        return c1 * v1 + c2 + v2;
+        return c1 * v[c0] + c2 * v[c0 + 1];
     }
-
-
-    void set(float position, T value) {
-        // get the fractional part of the float
-        int c0 = (int) truncf(position);
-        T c1 = position - (T) c0;
-        // get counterpart
-        T c2 = 1 - c1;
-
-        data[c0] = value * c1;
-        data[c0 + 1] = value * c2;
-    }
-
-};
-
-
-/**
- * Interpolation type used for value computation
- */
-enum BBDInterpolation {
-    NONE,
-    LINEAR
-};
-
-
-/**
- * @brief Bucket Brigade Device model
- */
-struct BBDCore : DSPEffect {
-private:
-    float *data;
-
-    // current index in array and memory stages
-    unsigned int index, stages;
-
-    // delay length in seconds
-    float length;
-
-    // current sampling frequency
-    float samplefrq;
-
-
-    float stepsize;
-public:
-
-    float in, out;
 
 
     /**
-     * @brief Construct a new BBD memory core object
-     * @param size Size of the memory chip in bytes
+     * @brief Operator wrapper for frac access
+     * @param position
+     * @return
      */
-    BBDCore(float sr, unsigned int size = 4096) : DSPEffect(sr) {
-        data = new float[size];
-        index = 0;
-        this->stages = size;
-    }
-
-
-    virtual ~BBDCore() {
-        delete[] data;
-    }
-
-
-    void init() override {
-        DSPEffect::init();
+    T operator[](float position) {
+        return get(position);
     }
 
 
     /**
-     * @brief Compute basic variables depending on the setup
+     * @brief Operator wrapper for normal access
+     * @param position
+     * @return
+     */
+    T operator[](int position) {
+        return v[position];
+    }
+
+};
+
+
+template<class T, int STAGES>
+struct BBDCore : DSPEffect {
+    FracVector<T> fvect = FracVector<T>(STAGES);
+
+    T clk, stepsize, time;
+    T i;
+    T in, out;
+
+
+    /**
+     * @brief Update DDB parameters
      */
     void invalidate() override {
-        samplefrq = stages / length;
-        stepsize = sr / samplefrq;
-
-    }
-
-
-    void process() override {
-        DSPEffect::process();
+        clk = STAGES / (2 * time);  // clock-rate of the BBD
+        stepsize = sr / clk;        // step size
     }
 
 
     /**
-     * @brief Set the delay length in seconds
-     * @param length
+     * @brief Calculate output and update BBD
      */
-    inline void setLength(float length) {
-        this->length = length;
-        invalidate();
-    }
+    void process() override {
+        T value = fvect[i];
 
+
+        // increment fractional index with overflow check
+        if (i + stepsize > STAGES) i = (i + stepsize) - STAGES;
+        else i += stepsize;
+    }
 };
+
+
 
 
 }
