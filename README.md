@@ -27,7 +27,7 @@ You can obtain the latest release via the VCV Rack package manager, or download 
 <https://github.com/lindenbergresearch/LRTRack/releases>
 
 
-Just download for you architecture and unzip in your _**Rack**_ folder located in your documents.
+Just download for your architecture and unzip in your _**Rack**_ folder located in your documents.
 
 
 ## 2. Build from source
