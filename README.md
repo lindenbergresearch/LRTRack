@@ -1,24 +1,20 @@
-![SCREENSHOT](doc/LRTRackGITHeader.png)
+## _**+++ IMPORTANT +++**_ 
 
+This project is not maintained anymore. I really love open source, but since I started this project I spend a lot of time in researching DSP and a few new modules (The analog delay for example) containing code which took me hours of work to get it done. There will be also a commercial package for VCV Rack in the near future around beginning of 2020.
+If you are interested in the sources just write me an email - you may obtain a commercial license for a small fee to use it for your own stuff.
 
+I hope you can understand my decition and why I went this way.
 
-![SCREENSHOT](doc/LRTRackModules_1.0.0.png)
+Cheers,
+Patrick
 
-## _**+++ NEWS +++**_ 
-
-Finally v1 is ready for release it at the PM of VCV Rack. It took a lot
-of work, not even to adapt the code to work with Rack V1 - also many
-portions where cleaned and rewritten. The design has been improved, it
-looks now more fresh and modern. The only thing which is still left, is
-a full polyphony imlementation for V1 which will come in V1.1.0 on July.
-
-Thanks for supporting me, I received some donation which let me pay for
-pizza and beer's during development ;) But still:
+----------------
 
 [Donate on PayPal](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=MF9AVCUQ73ELN&source=url)
 
 __THANKS!__
 
+![SCREENSHOT](doc/LRTRackModules_1.0.0.png)
 
 ## 1. Installation
 
