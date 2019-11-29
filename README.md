@@ -1,6 +1,6 @@
-## _**+++ IMPORTANT +++**_ 
+### _**+++ IMPORTANT +++**_ 
 
-This project is not maintained anymore. I really love open source, but since I started this project I spend a lot of time in researching DSP and a few new modules (The analog delay for example) containing code which took me hours of work to get it done. There will be also a commercial package for VCV Rack in the near future around beginning of 2020.
+**This project is not maintained anymore.** I really love open source, but since I started this project I spend a lot of time in researching DSP and a few new modules (The analog delay for example) containing code which took me hours of work to get it done. There will be also a commercial package for VCV Rack in the near future around beginning of 2020.
 If you are interested in the sources just write me an email - you may obtain a commercial license for a small fee to use it for your own stuff.
 
 I hope you can understand my decition and why I went this way.
